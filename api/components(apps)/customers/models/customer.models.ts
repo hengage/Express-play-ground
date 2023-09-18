@@ -1,0 +1,68 @@
+import { Schema, model } from "mongoose";
+import { ICustomer } from "./customer.models.interface";
+
+const customerSchema = new Schema<ICustomer>(
+  {
+    _id: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+    },
+    address: {
+      street: {
+        type: String,
+        required: true,
+      },
+      city: {
+        type: String,
+        required: true,
+      },
+      state: {
+        type: String,
+        required: true,
+      },
+      postalCode: {
+        type: String,
+        required: true,
+      },
+      country: String,
+    },
+    geolocation: {
+      latitude: Number,
+      longitude: Number,
+    },
+    dateOfBirth: Date,
+    gender: {
+      type: String,
+      required: true,
+      enum: Object.values(Gender),
+    },
+    profilePhoto: String,
+    accountStatus: {
+      type: String,
+      enum: Object.values(AccountStatus),
+      default: AccountStatus.Active,
+    },
+    lastLoginDate: Date,
+  },
+  { timestamps: true }
+);
+
+export const Customer = model<ICustomer>("Customerr", customerSchema);
