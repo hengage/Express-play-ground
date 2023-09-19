@@ -1,12 +1,14 @@
 import { Schema, model } from "mongoose";
 import { ICustomer } from "./customer.models.interface";
 import { AccountStatus, Gender } from "../../../constants";
+import { uniqueString } from "../../../utils";
 
 const customerSchema = new Schema<ICustomer>(
   {
     _id: {
       type: String,
       required: true,
+      default: () => uniqueString.generateUniqueString(4),
     },
     firstName: {
       type: String,

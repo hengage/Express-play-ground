@@ -1,10 +1,10 @@
+import { uniqueString } from "../../../utils";
 import { Customer } from "../models/customer.models";
 
 class CustomerService {
   async signup(customerData: any): Promise<any> {
     try {
       const newCustomer = new Customer({
-        _id: 123,
         firstName: customerData.firstName,
         lastName: customerData.lastName,
         email: customerData.email,
