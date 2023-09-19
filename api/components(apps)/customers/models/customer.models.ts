@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { ICustomer } from "./customer.models.interface";
 import { AccountStatus, Gender } from "../../../constants";
-import { uniqueString } from "../../../utils";
+import { encryption, uniqueString } from "../../../utils";
 
 const customerSchema = new Schema<ICustomer>(
   {
@@ -70,5 +70,18 @@ const customerSchema = new Schema<ICustomer>(
   },
   { timestamps: true, _id: false }
 );
+
+
+customerSchema.pre('save', async function (next) {
+    if (this.isModified('password')) {
+      try {
+        this.password = await encryption.encryptValue(this.password);
+        
+      } catch (error: any) {
+        return next(error);
+      }
+    }
+    next();
+  });
 
 export const Customer = model<ICustomer>("Customerr", customerSchema);
