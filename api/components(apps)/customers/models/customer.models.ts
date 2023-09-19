@@ -27,6 +27,10 @@ const customerSchema = new Schema<ICustomer>(
       type: String,
       required: true,
     },
+    password: {
+      type: String,
+      required: true,
+    },
     address: {
       street: {
         type: String,

@@ -9,6 +9,7 @@ class CustomerService {
         lastName: customerData.lastName,
         email: customerData.email,
         phoneNumber: customerData.phoneNumber,
+        password: customerData.password,
         gender: customerData.gender,
         address: {
           street: customerData.street,

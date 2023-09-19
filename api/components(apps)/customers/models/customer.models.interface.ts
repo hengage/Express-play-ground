@@ -4,6 +4,7 @@ export interface ICustomer extends Document {
     lastName: string;
     email: string;
     phoneNumber: string;
+    password: string;
     country: string;
     address: {
       street: string;
