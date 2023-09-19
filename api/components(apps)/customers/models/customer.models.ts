@@ -26,6 +26,7 @@ const customerSchema = new Schema<ICustomer>(
     phoneNumber: {
       type: String,
       required: true,
+      unique: true
     },
     password: {
       type: String,
@@ -84,4 +85,4 @@ customerSchema.pre('save', async function (next) {
     next();
   });
 
-export const Customer = model<ICustomer>("Customerr", customerSchema);
+export const Customer = model<ICustomer>("Customer", customerSchema);
