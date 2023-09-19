@@ -9,6 +9,7 @@ import { Server } from "http";
 
 import { dbConfig } from "../config/db.config";
 import { routes } from "../routes";
+import { centralErrorHandler } from "../middleware/centralErrorHandler";
 
 class App {
   public app: Express;
@@ -21,6 +22,7 @@ class App {
     this.connectDB();
     this.initializeMiddleware();
     this.initializeRoutes();
+    this.initializeCentralErrorMiddleware();
   }
 
   private connectDB = async () => {
@@ -37,13 +39,19 @@ class App {
     this.app.use(express.urlencoded({ extended: true }));
   }
 
+  private initializeCentralErrorMiddleware() {
+    this.app.use(
+      centralErrorHandler.handle404Error,
+      centralErrorHandler.handle404OrServerError
+    );
+  }
+
   public initializeRoutes() {
     this.app.get("/", (req: Request, res: Response) => {
       res.send("Express typeScript app is set");
     });
 
     this.app.use("/api", routes.router);
-
 
     //   this.app.use("/api/v1", routes.router);
   }
