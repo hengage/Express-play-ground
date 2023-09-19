@@ -40,8 +40,10 @@ class App {
   public initializeRoutes() {
     this.app.get("/", (req: Request, res: Response) => {
       res.send("Express typeScript app is set");
-      this.app.use("/api", routes.router);
     });
+
+    this.app.use("/api", routes.router);
+
 
     //   this.app.use("/api/v1", routes.router);
   }
