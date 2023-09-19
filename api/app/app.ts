@@ -8,6 +8,7 @@ import express, {
 import { Server } from "http";
 
 import { dbConfig } from "../config/db.config";
+import { routes } from "../routes";
 
 class App {
   public app: Express;
@@ -25,7 +26,7 @@ class App {
   private connectDB = async () => {
     try {
       await dbConfig.connect();
-       console.log("conected to db");
+      console.log("conected to db");
     } catch (error) {
       console.error(error);
     }
@@ -39,6 +40,7 @@ class App {
   public initializeRoutes() {
     this.app.get("/", (req: Request, res: Response) => {
       res.send("Express typeScript app is set");
+      this.app.use("/api", routes.router);
     });
 
     //   this.app.use("/api/v1", routes.router);

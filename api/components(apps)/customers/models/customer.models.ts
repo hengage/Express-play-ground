@@ -1,12 +1,12 @@
 import { Schema, model } from "mongoose";
 import { ICustomer } from "./customer.models.interface";
+import { AccountStatus, Gender } from "../../../constants";
 
 const customerSchema = new Schema<ICustomer>(
   {
     _id: {
       type: String,
       required: true,
-      unique: true,
     },
     firstName: {
       type: String,
@@ -62,7 +62,7 @@ const customerSchema = new Schema<ICustomer>(
     },
     lastLoginDate: Date,
   },
-  { timestamps: true }
+  { timestamps: true, _id: false }
 );
 
 export const Customer = model<ICustomer>("Customerr", customerSchema);

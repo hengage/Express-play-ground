@@ -1,10 +1,10 @@
- enum Gender {
+ export enum Gender {
     Male = 'Male',
     Female = 'Female',
     Other = 'Other',
   }
   
-  enum AccountStatus {
+export enum AccountStatus {
     Active = 'Active',
     Inactive = 'Inactive',
     Suspended = 'Suspended',
