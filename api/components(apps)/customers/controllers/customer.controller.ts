@@ -34,6 +34,24 @@ class CustomerController {
         .json({ message: "Error creating customer", error: error.message });
     }
   }
+
+  async login(req: Request, res: Response) {
+    const phoneNumber = req.body.phoneNumber
+    const password = req.body.password
+
+    try {
+      const customer = await customerService.login({phoneNumber, password})
+      res.status(200).json({
+        message: "Successfully logged in",
+        data: customer
+      })
+    } catch (error: any) {
+      res.status(error.status || 500).json({
+        message: 'Failed to login',
+        error: error.message
+      })
+    }
+  }
 }
 
 export const customerController = new CustomerController();
