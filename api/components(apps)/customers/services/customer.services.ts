@@ -24,6 +24,18 @@ class CustomerService {
       throw new Error("Error creating customer: " + error.message);
     }
   }
+
+  async getCustomerByPhoneNumber(phoneNumber: string): Promise<any> {
+    try {
+      const customer = await Customer.findOne({
+        phoneNumber: { $eq: phoneNumber },
+      }).select('phoneNumber');
+      console.log({customer})
+      return customer
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
 }
 
 export const customerService = new CustomerService();
