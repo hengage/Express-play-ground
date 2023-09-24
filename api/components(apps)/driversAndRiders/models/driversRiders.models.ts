@@ -51,4 +51,4 @@ driverRiderSchema.pre("save", async function (next) {
   next();
 });
 
-export const driverRider = model<IDriverRider>("Customer", driverRiderSchema);
+export const DriverRider = model<IDriverRider>("DriverRider", driverRiderSchema);
