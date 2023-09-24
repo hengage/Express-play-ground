@@ -46,7 +46,6 @@ class CustomerService {
       if (!customer) {
         throw new HandleException(401, "Customer not found");
       }
-      console.log({ customer });
       return customer;
     } catch (error: any) {
       throw new Error(error.message);

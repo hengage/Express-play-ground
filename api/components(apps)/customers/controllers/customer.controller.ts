@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { customerService } from "../services/customer.services";
 import { userService } from "../../../services";
-import { HandleException } from "../../../utils";
+import { HandleException, jwtUtils } from "../../../utils";
 import { STATUS_CODES } from "../../../constants";
 
 class CustomerController {
@@ -27,7 +27,20 @@ class CustomerController {
 
       const customerData = req.body;
       const savedCustomer = await customerService.signup(customerData);
-      res.status(201).json(savedCustomer);
+
+      const payload = {
+        phoneNumber: savedCustomer.phoneNumber,
+        _id: savedCustomer._id,
+      };
+      const accessToken = jwtUtils.generateToken(payload, "1h");
+
+      res.status(201).json({
+        message: "Customer created successfully",
+        data: {
+          customerId: savedCustomer._id,
+          accessToken,
+        },
+      });
     } catch (error: any) {
       res
         .status(400)
@@ -36,20 +49,24 @@ class CustomerController {
   }
 
   async login(req: Request, res: Response) {
-    const phoneNumber = req.body.phoneNumber
-    const password = req.body.password
+    const phoneNumber = req.body.phoneNumber;
+    const password = req.body.password;
 
     try {
-      const customer = await customerService.login({phoneNumber, password})
+      const customer = await customerService.login({ phoneNumber, password });
+      const payload = { phoneNumber: customer.phoneNumber, _id: customer._id };
+      const accessToken = jwtUtils.generateToken(payload, "1h");
       res.status(200).json({
         message: "Successfully logged in",
-        data: customer
-      })
+        data: {
+          accessToken,
+        },
+      });
     } catch (error: any) {
       res.status(error.status || 500).json({
-        message: 'Failed to login',
-        error: error.message
-      })
+        message: "Failed to login",
+        error: error.message,
+      });
     }
   }
 }
