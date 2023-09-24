@@ -10,6 +10,11 @@ export enum AccountStatus {
   Suspended = "Suspended",
 }
 
+export enum DriverRiderType {
+  Driver = 'Driver',
+  Rider = 'Rider',
+}
+
 export const STATUS_CODES = {
   OK: 200,
   CREATED: 201,
