@@ -10,7 +10,7 @@ _id: string;
   email: string;
   phoneNumber: string;
   password: string;
-  type: DriverRiderType;
+  accountType: DriverRiderType;
   vehicleType: string;
   vehicleInsurancePhoto: string;
   licenseNumber: string;

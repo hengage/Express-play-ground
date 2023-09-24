@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { IDriverRider } from "./driversRiders.models.interface";
 import { encryption, uniqueString } from "../../../utils";
-import { AccountStatus } from "../../../constants";
+import { AccountStatus, DriverRiderType } from "../../../constants";
 
 const driverRiderSchema = new Schema<IDriverRider>(
   {
@@ -17,6 +17,7 @@ const driverRiderSchema = new Schema<IDriverRider>(
     },
     email: { type: String, required: true },
     phoneNumber: { type: String, required: true },
+    password: { type: String, required: true },
     address: {
       street: { type: String, required: true },
       city: { type: String, required: true },
@@ -28,6 +29,11 @@ const driverRiderSchema = new Schema<IDriverRider>(
     vehicleType: { type: String, required: true },
     vehicleInsurancePhoto: { type: String, required: true },
     govtIdPhoto: { type: String, required: true },
+    accountType: {
+      type: String,
+      required: true,
+      enum: DriverRiderType,
+    },
     accountStatus: {
       type: String,
       enum: Object.values(AccountStatus),
@@ -51,4 +57,7 @@ driverRiderSchema.pre("save", async function (next) {
   next();
 });
 
-export const DriverRider = model<IDriverRider>("DriverRider", driverRiderSchema);
+export const DriverRider = model<IDriverRider>(
+  "DriverRider",
+  driverRiderSchema
+);
