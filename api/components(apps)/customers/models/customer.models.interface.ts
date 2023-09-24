@@ -20,7 +20,7 @@ export interface ICustomer extends Document {
     gender: 'Male' | 'Female' | 'Other';
     profilePhoto: string;
     accountStatus: string;
-    lastLoginDate: Date;
+    lastLoggedIn: Date;
     createdAt: Date;
     updatedAt: Date;
   }

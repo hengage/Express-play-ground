@@ -67,7 +67,7 @@ const customerSchema = new Schema<ICustomer>(
       enum: Object.values(AccountStatus),
       default: AccountStatus.Active,
     },
-    lastLoginDate: Date,
+    lastLoggedIn: Date,
   },
   { timestamps: true, _id: false }
 );
