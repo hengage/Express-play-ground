@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import { driverRiderService } from "../services/driversRiders.services";
 import { jwtUtils } from "../../../utils";
 
-class DriverRiderController {
+class DriversRidersController {
   public async signup(req: Request, res: Response) {
-    const accountType = req.params.accountType;
+    const accountType = req.query.accountType as string;
     try {
       if (!accountType) {
         return res.status(400).json({
@@ -35,3 +35,5 @@ class DriverRiderController {
     }
   }
 }
+
+export const driversRidersController = new DriversRidersController()
