@@ -15,8 +15,8 @@ const driverRiderSchema = new Schema<IDriverRider>(
       middleName: { type: String },
       lastName: { type: String, required: true },
     },
-    email: { type: String, required: true },
-    phoneNumber: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    phoneNumber: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     address: {
       street: { type: String, required: true },
