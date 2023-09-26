@@ -43,7 +43,7 @@ class CustomerController {
       });
     } catch (error: any) {
       res
-        .status(400)
+        .status(error.status || STATUS_CODES.SERVER_ERROR)
         .json({ message: "Error creating customer", error: error.message });
     }
   }
@@ -63,7 +63,7 @@ class CustomerController {
         },
       });
     } catch (error: any) {
-      res.status(error.status || 500).json({
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Failed to login",
         error: error.message,
       });
