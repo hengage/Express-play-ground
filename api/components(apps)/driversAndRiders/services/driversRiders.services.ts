@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { HandleException } from "../../../utils";
 import { DriverRider } from "../models/driversRiders.models";
 import { IDriverRider } from "../models/driversRiders.models.interface";
+import { STATUS_CODES } from "../../../constants";
 
 class DriverRiderService {
   async getDriverOrRiderByPhoneNumber(
@@ -97,7 +98,7 @@ class DriverRiderService {
         driverRider.password
       );
       if (!passwordsMatch) {
-        throw new HandleException(401, "Incorrect password");
+        throw new HandleException(STATUS_CODES.UNAUTHORIZED, "Incorrect password");
       }
 
       const loggedIn = {

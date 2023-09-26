@@ -4,6 +4,7 @@ import { Customer } from "../models/customer.models";
 import { HandleException } from "../../../utils";
 import { ICustomer } from "../models/customer.models.interface";
 import { ILoginCustomer } from "./customer.services.interface";
+import { STATUS_CODES } from "../../../constants";
 
 class CustomerService {
   async signup(customerData: any): Promise<any> {
@@ -25,7 +26,7 @@ class CustomerService {
       const savedCustomer = await newCustomer.save();
       return savedCustomer;
     } catch (error: any) {
-      throw new Error("Error creating customer: " + error.message);
+      throw new HandleException(error.status, error.message);
     }
   }
 
@@ -48,7 +49,7 @@ class CustomerService {
       }
       return customer;
     } catch (error: any) {
-      throw new Error(error.message);
+      throw new HandleException(error.status, error.message);
     }
   }
 
@@ -64,7 +65,7 @@ class CustomerService {
         customer.password
       );
       if (!passwordsMatch) {
-        throw new HandleException(401, "Incorrect password");
+        throw new HandleException(STATUS_CODES.UNAUTHORIZED, "Incorrect password");
       }
       const loggedInCustomer = {
         _id: customer._id,
