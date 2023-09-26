@@ -1,3 +1,5 @@
+import bcrypt from "bcrypt";
+
 import { HandleException } from "../../../utils";
 import { DriverRider } from "../models/driversRiders.models";
 import { IDriverRider } from "../models/driversRiders.models.interface";
@@ -18,7 +20,7 @@ class DriverRiderService {
 
       const driverRider = await query.exec();
       if (!driverRider) {
-        throw new HandleException(401, "Driver or rider not found");
+        throw new HandleException(404, "Driver or rider not found");
       }
       return driverRider;
     } catch (error: any) {
@@ -38,7 +40,7 @@ class DriverRiderService {
 
       const driverRider = await query.exec();
       if (!driverRider) {
-        throw new HandleException(401, "Driver or rider not found");
+        throw new HandleException(404, "Driver or rider not found");
       }
       return driverRider;
     } catch (error: any) {
@@ -69,17 +71,42 @@ class DriverRiderService {
         licenseNumber: payload.licenseNumber,
         govtIdPhoto: payload.govtIdPhoto,
         address: {
-            street: payload.street,
-            city: payload.city,
-            state: payload.state,
-            country: payload.country,
-            zipCode: payload.zipCode,
-        }
+          street: payload.street,
+          city: payload.city,
+          state: payload.state,
+          country: payload.country,
+          zipCode: payload.zipCode,
+        },
       });
       const savedDriverrider = newDriverRider.save();
       return savedDriverrider;
     } catch (error: any) {
-        throw new HandleException(500, error.message);
+      throw new HandleException(500, error.message);
+    }
+  }
+
+  async login(payload: any) {
+    try {
+      const driverRider = await this.getDriverOrRiderByPhoneNumber(
+        payload.phoneNumber,
+        "phoneNumber password"
+      );
+
+      const passwordsMatch = await bcrypt.compare(
+        payload.password,
+        driverRider.password
+      );
+      if (!passwordsMatch) {
+        throw new HandleException(401, "Incorrect password");
+      }
+
+      const loggedIn = {
+        _id: driverRider._id,
+        phoneNumber: driverRider.phoneNumber,
+      };
+      return loggedIn;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
     }
   }
 }

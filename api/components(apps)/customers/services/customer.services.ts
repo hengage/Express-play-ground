@@ -44,7 +44,7 @@ class CustomerService {
 
       const customer = await query.exec();
       if (!customer) {
-        throw new HandleException(401, "Customer not found");
+        throw new HandleException(404, "Customer not found");
       }
       return customer;
     } catch (error: any) {

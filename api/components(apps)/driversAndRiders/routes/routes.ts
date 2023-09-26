@@ -10,6 +10,7 @@ class DriversRidesrRoutes {
 
   public initializeRoutes() {
     this.router.post(`/create`, driversRidersController.signup);
+    this.router.post(`/login`, driversRidersController.login);
   }
 }
 
