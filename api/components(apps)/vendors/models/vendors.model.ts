@@ -35,3 +35,6 @@ const vendorSchema = new Schema<IVendor>(
   },
   { timestamps: true, _id: false }
 );
+
+
+export const vendor = model<IVendor>('Vendor', vendorSchema);
