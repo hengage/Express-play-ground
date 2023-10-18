@@ -1,5 +1,5 @@
 import { HandleException } from "../../../utils";
-import { vendor } from "../models/vendors.model";
+import { Vendor } from "../models/vendors.model";
 
 class VendorService {
     async signup(payload: any) {
@@ -10,7 +10,7 @@ class VendorService {
           middleName = null;
         }
         try {
-          const newVendor = new vendor({
+          const newVendor = new Vendor({
             name: {
               firstName: payload.firstName,
               lastName: payload.lastName,

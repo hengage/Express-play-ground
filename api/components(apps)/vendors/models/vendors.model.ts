@@ -16,6 +16,7 @@ const vendorSchema = new Schema<IVendor>(
       lastName: { type: String, required: true },
     },
     phoneNumber: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     address: {
       street: { type: String, required: true },
@@ -49,4 +50,4 @@ vendorSchema.pre('save', async function (next) {
     next();
   });
 
-export const vendor = model<IVendor>('Vendor', vendorSchema);
+export const Vendor = model<IVendor>('Vendor', vendorSchema);
