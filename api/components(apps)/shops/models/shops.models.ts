@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
-import { IShop } from "./shops.models.interface";
+import { IShop, ICategory } from "./shops.models.interface";
 import { uniqueString } from "../../../utils";
-import { AccountStatus } from "../../../constants";
+import { AccountStatus, ShopCategory } from "../../../constants";
 import { model } from "mongoose";
 
 const shopSchema = new Schema<IShop>(
@@ -30,6 +30,13 @@ const shopSchema = new Schema<IShop>(
       latitude: Number,
       longitude: Number,
     },
+    categories: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Category",
+        enum: ShopCategory,
+      },
+    ],
     logo: { type: String, default: "" },
     approved: { type: Boolean, default: false },
     status: {
@@ -41,4 +48,22 @@ const shopSchema = new Schema<IShop>(
   { timestamps: true, _id: false }
 );
 
+const categorySchema = new Schema<ICategory>(
+  {
+    _id: {
+      type: String,
+      required: true,
+      default: () => uniqueString.generateUniqueString(4),
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    description: String,
+    image: { type: String, required: true },
+  },
+  { timestamps: true, _id: false }
+);
+
 export const Store = model<IShop>("Vendor", shopSchema);
+export const Category = model<ICategory>("Category", categorySchema);

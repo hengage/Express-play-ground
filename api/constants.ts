@@ -15,6 +15,13 @@ export enum DriverRiderType {
   Rider = 'Rider',
 }
 
+export enum ShopCategory {
+  Healthcare = "HEALTHCARE",
+  Boutique = 'BOUTIQUE',
+  Pharmacy = 'PHARMACY',
+  FoodAndGroceries = 'FOOD AND GROCERIES',
+}
+
 export const STATUS_CODES = {
   OK: 200,
   CREATED: 201,

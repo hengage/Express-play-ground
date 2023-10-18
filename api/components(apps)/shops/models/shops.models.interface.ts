@@ -1,4 +1,5 @@
-import { AccountStatus,  } from "../../../constants";
+import { Schema } from "mongoose";
+import { AccountStatus, ShopCategory,  } from "../../../constants";
 import { IVendor } from "../../vendors";
 
 export interface IShop extends Document {
@@ -19,9 +20,17 @@ _id: string;
     latitiude: number;
     longitiude: number;
   }
+  categories: ShopCategory
   logo: string;
   status: AccountStatus;
   approved: boolean;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface ICategory extends Document {
+  _id: string;
+  name: string;
+  description: string;
+  image: string;
 }
