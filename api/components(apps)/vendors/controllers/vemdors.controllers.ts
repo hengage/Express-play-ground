@@ -35,6 +35,28 @@ class VendorController {
       });
     }
   }
+
+  async login(req: Request, res: Response) {
+    const phoneNumber = req.body.phoneNumber;
+    const password = req.body.password;
+
+    try {
+      const vendor = await vendorService.login({ phoneNumber, password });
+      const payload = { phoneNumber: vendor.phoneNumber, _id: vendor._id };
+      const accessToken = jwtUtils.generateToken(payload, "1h");
+      res.status(200).json({
+        message: "Successfully logged in",
+        data: {
+          accessToken,
+        },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to login",
+        error: error.message,
+      });
+    }
+  }
 }
 
 export const vendorController = new VendorController();

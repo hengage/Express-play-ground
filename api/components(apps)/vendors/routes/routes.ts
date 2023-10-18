@@ -10,6 +10,7 @@ class VendorsRoutes {
 
   public initializeRoutes() {
     this.router.route(`/signup`).post(vendorController.signup);
+    this.router.route(`/login`).post(vendorController.login);
   }
 }
 
