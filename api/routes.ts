@@ -17,7 +17,7 @@ class Routes {
     }
 
     private initializeRoutes() {
-        this.router.use('/customer', customersRoutes.router)
+        this.router.use('/customers', customersRoutes.router)
         this.router.use('/drivers-riders', driversRidesrRoutes.router)
         this.router.use('/vendors', vendorsRoutes.router)
     }

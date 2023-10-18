@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { IVendor } from "./vendors.models.interface";
-import { uniqueString } from "../../../utils";
+import { encryption, uniqueString } from "../../../utils";
 import { AccountStatus } from "../../../constants";
 
 const vendorSchema = new Schema<IVendor>(
@@ -36,5 +36,17 @@ const vendorSchema = new Schema<IVendor>(
   { timestamps: true, _id: false }
 );
 
+
+vendorSchema.pre('save', async function (next) {
+    if (this.isModified('password')) {
+      try {
+        this.password = await encryption.encryptValue(this.password);
+        
+      } catch (error: any) {
+        return next(error);
+      }
+    }
+    next();
+  });
 
 export const vendor = model<IVendor>('Vendor', vendorSchema);
