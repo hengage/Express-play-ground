@@ -1,6 +1,8 @@
 import { Customer } from "../components(apps)/customers";
 import { DriverRider } from "../components(apps)/driversAndRiders";
 import { Vendor } from "../components(apps)/vendors";
+import { STATUS_CODES } from "../constants";
+import { HandleException } from "../utils";
 
 class UserService {
   public async isEmailTaken(email: string) {
@@ -10,9 +12,15 @@ class UserService {
     }).select("email");
     const driverRider = await DriverRider.findOne({ email }).select("email");
     const vendor = await Vendor.findOne({ email }).select("email");
+    
     console.log({ customer });
     console.log({ vendor });
-    return !!customer || !!driverRider || !!vendor;
+    console.log({ driverRider });
+    if (customer || driverRider || vendor) {
+      throw new HandleException(STATUS_CODES.CONFLICT, "Email is already taken");
+    }
+
+    return false; // Email is not taken
   }
 
   public async isPhoneNumberTaken(phoneNumber: string) {
@@ -24,7 +32,13 @@ class UserService {
       "phoneNumber"
     );
     const vendor = await Vendor.findOne({ phoneNumber }).select("phoneNumber");
-    return !!customer || !!driverRider || !!vendor;
+    if (customer || driverRider || vendor) {
+      throw new HandleException(
+        STATUS_CODES.CONFLICT,
+        "Phone number is already taken"
+      );
+    }
+    return false;
   }
 }
 
