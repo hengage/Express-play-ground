@@ -14,6 +14,11 @@ const shopSchema = new Schema<IShop>(
     name: { type: String, required: true },
     email: { type: String },
     phoneNumber: { type: String, required: true },
+    vendor: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "Vendor",
+    },
     address: {
       street: { type: String, required: true },
       city: { type: String, required: true },
@@ -25,7 +30,7 @@ const shopSchema = new Schema<IShop>(
       latitude: Number,
       longitude: Number,
     },
-    logo: { type: String, default: "" }, 
+    logo: { type: String, default: "" },
     approved: { type: Boolean, default: false },
     status: {
       type: String,
@@ -36,5 +41,4 @@ const shopSchema = new Schema<IShop>(
   { timestamps: true, _id: false }
 );
 
-
-export const Store = model<IShop>('Vendor', shopSchema);
+export const Store = model<IShop>("Vendor", shopSchema);
