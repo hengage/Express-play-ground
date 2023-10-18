@@ -65,5 +65,5 @@ const categorySchema = new Schema<ICategory>(
   { timestamps: true, _id: false }
 );
 
-export const Store = model<IShop>("Vendor", shopSchema);
+export const Shop = model<IShop>("Shop", shopSchema);
 export const Category = model<ICategory>("Category", categorySchema);
