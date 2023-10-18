@@ -1,7 +1,35 @@
+import bcrypt from "bcrypt";
+
+import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { Vendor } from "../models/vendors.model";
+import { IVendor } from "../models/vendors.models.interface";
 
 class VendorService {
+  async getVendorByPhoneNumber(
+    phoneNumber: string,
+    selectFields?: string
+  ): Promise<IVendor> {
+    try {
+      const query = Vendor.findOne({
+        phoneNumber: { $eq: phoneNumber },
+      });
+
+      if (selectFields) {
+        query.select(selectFields);
+      }
+
+      const customer = await query.exec();
+      if (!customer) {
+        throw new HandleException(404, "Vendor not found");
+      }
+      return customer;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+
     async signup(payload: any) {
         let middleName;
         if (payload.middleName) {
@@ -31,7 +59,32 @@ class VendorService {
           const savedDriverrider = newVendor.save();
           return savedDriverrider;
         } catch (error: any) {
-          throw new HandleException(500, error.message);
+          throw new HandleException(STATUS_CODES.SERVER_ERROR, error.message);
+        }
+      }
+
+      async login(payload: any): Promise<any> {
+        try {
+          const vendor = await this.getVendorByPhoneNumber(
+            payload.phoneNumber,
+            "phoneNumber password"
+          );
+    
+          const passwordsMatch = await bcrypt.compare(
+            payload.password,
+            vendor.password
+          );
+          if (!passwordsMatch) {
+            throw new HandleException(STATUS_CODES.UNAUTHORIZED, "Incorrect password");
+          }
+          const loggedInVendor = {
+            _id: vendor._id,
+            phoneNumber: vendor.phoneNumber,
+          };
+    
+          return loggedInVendor;
+        } catch (error: any) {
+          throw new HandleException(error.status, error.message);
         }
       }
 }
