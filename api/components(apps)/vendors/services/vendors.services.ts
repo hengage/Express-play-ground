@@ -56,8 +56,8 @@ class VendorService {
               zipCode: payload.zipCode,
             },
           });
-          const savedDriverrider = newVendor.save();
-          return savedDriverrider;
+          const savedVendor = await newVendor.save();
+          return savedVendor;
         } catch (error: any) {
           throw new HandleException(STATUS_CODES.SERVER_ERROR, error.message);
         }
