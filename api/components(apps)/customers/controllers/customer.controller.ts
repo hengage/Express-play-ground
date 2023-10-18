@@ -7,23 +7,8 @@ import { STATUS_CODES } from "../../../constants";
 class CustomerController {
   async signup(req: Request, res: Response): Promise<void> {
     try {
-      const emailTaken = await userService.isEmailTaken(req.body.email);
-      if (emailTaken) {
-        throw new HandleException(
-          STATUS_CODES.CONFLICT,
-          "Email is already taken"
-        );
-      }
-
-      const phoneNumberTaken = await userService.isPhoneNumberTaken(
-        req.body.phoneNumber
-      );
-      if (phoneNumberTaken) {
-        throw new HandleException(
-          STATUS_CODES.CONFLICT,
-          "Phone number is already taken"
-        );
-      }
+      await userService.isEmailTaken(req.body.email);
+      await userService.isPhoneNumberTaken(req.body.phoneNumber);
 
       const customerData = req.body;
       const savedCustomer = await customerService.signup(customerData);

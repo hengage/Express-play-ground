@@ -9,7 +9,7 @@ class CustomersRoutes {
   }
 
   public initializeRoutes() {
-    this.router.post(`/create`, customerController.signup);
+    this.router.post(`/signup`, customerController.signup);
     this.router.post(`/login`, customerController.login);
   }
 }

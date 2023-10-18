@@ -1,35 +1,30 @@
 import { Request, Response } from "express";
-import { driverRiderService } from "../services/driversRiders.services";
+import { vendorService } from "../services/vendors.services";
 import { HandleException, jwtUtils } from "../../../utils";
 import { STATUS_CODES } from "../../../constants";
 import { userService } from "../../../services";
 
-class DriversRidersController {
+class VendorController {
   public async signup(req: Request, res: Response) {
-    const accountType = req.query.accountType as string;
+    console.log({vndorEmail: req.body.email})
     try {
-      if (!accountType) {
-        return res.status(400).json({
-          message: "Account type is required",
-        });
-      }
-
       await userService.isEmailTaken(req.body.email);
+
       await userService.isPhoneNumberTaken(req.body.phoneNumber);
 
-      const driverRider = await driverRiderService.signup(
-        req.body,
-        accountType
-      );
+      const vendor = await vendorService.signup(req.body);
       const payload = {
-        phoneNumber: driverRider.phoneNumber,
-        _id: driverRider._id,
+        phoneNumber: vendor.phoneNumber,
+        _id: vendor._id,
       };
       const accessToken = jwtUtils.generateToken(payload, "1h");
       return res.status(201).json({
         message: "Account created successfully",
         data: {
-          ...driverRider,
+          vendor: {
+            _id: vendor._id,
+            phoneNumber: vendor.phoneNumber,
+          },
           accessToken,
         },
       });
@@ -41,23 +36,17 @@ class DriversRidersController {
     }
   }
 
-  public async login(req: Request, res: Response) {
-    const { phoneNumber, password } = req.body;
+  async login(req: Request, res: Response) {
+    const phoneNumber = req.body.phoneNumber;
+    const password = req.body.password;
 
     try {
-      const driverRider = await driverRiderService.login({
-        phoneNumber,
-        password,
-      });
-      const payload = {
-        phoneNumber: driverRider.phoneNumber,
-        _id: driverRider._id,
-      };
+      const vendor = await vendorService.login({ phoneNumber, password });
+      const payload = { phoneNumber: vendor.phoneNumber, _id: vendor._id };
       const accessToken = jwtUtils.generateToken(payload, "1h");
-      return res.status(200).json({
-        message: "Logged in",
+      res.status(200).json({
+        message: "Successfully logged in",
         data: {
-          ...driverRider,
           accessToken,
         },
       });
@@ -70,4 +59,4 @@ class DriversRidersController {
   }
 }
 
-export const driversRidersController = new DriversRidersController();
+export const vendorController = new VendorController();
