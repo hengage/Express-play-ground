@@ -1,0 +1,1 @@
+export { shopsRoutes } from "./routes/shops.routes";

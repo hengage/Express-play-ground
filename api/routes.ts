@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { customersRoutes } from './components(apps)/customers';
 import { driversRidesrRoutes } from './components(apps)/driversAndRiders/routes/routes';
 import { vendorsRoutes } from './components(apps)/vendors';
+import { shopsRoutes } from './components(apps)/shops';
 
 class Routes {
     /*
@@ -20,6 +21,7 @@ class Routes {
         this.router.use('/customers', customersRoutes.router)
         this.router.use('/drivers-riders', driversRidesrRoutes.router)
         this.router.use('/vendors', vendorsRoutes.router)
+        this.router.use('/shops', shopsRoutes.router)
     }
 }
 
