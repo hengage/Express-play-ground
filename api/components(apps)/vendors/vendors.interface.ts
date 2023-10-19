@@ -1,4 +1,4 @@
-import { AccountStatus,  } from "../../../constants";
+import { AccountStatus,  } from "../../constants";
 
 export interface IVendor extends Document {
 _id: string;

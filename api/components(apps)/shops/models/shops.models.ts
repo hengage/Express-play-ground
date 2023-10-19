@@ -1,8 +1,8 @@
 import { Schema } from "mongoose";
-import { IShop, ICategory } from "./shops.models.interface";
 import { uniqueString } from "../../../utils";
 import { AccountStatus, ShopCategory } from "../../../constants";
 import { model } from "mongoose";
+import { IShop, ICategory } from "../interfaces/shops.interface";
 
 const shopSchema = new Schema<IShop>(
   {

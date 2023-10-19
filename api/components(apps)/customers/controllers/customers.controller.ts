@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { customerService } from "../services/customer.services";
+import { customerService } from "../services/customers.services";
 import { userService } from "../../../services";
 import { HandleException, jwtUtils } from "../../../utils";
 import { STATUS_CODES } from "../../../constants";

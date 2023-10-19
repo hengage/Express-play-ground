@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IVendor } from "./vendors.models.interface";
+import { IVendor } from "../vendors.interface";
 import { encryption, uniqueString } from "../../../utils";
 import { AccountStatus } from "../../../constants";
 

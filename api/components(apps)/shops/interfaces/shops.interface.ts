@@ -1,4 +1,3 @@
-import { Schema } from "mongoose";
 import { AccountStatus, ShopCategory,  } from "../../../constants";
 import { IVendor } from "../../vendors";
 
@@ -33,4 +32,10 @@ export interface ICategory extends Document {
   name: string;
   description: string;
   image: string;
+}
+
+export interface IAddCategory {
+    name: string;
+    description: string;
+    image: string;
 }

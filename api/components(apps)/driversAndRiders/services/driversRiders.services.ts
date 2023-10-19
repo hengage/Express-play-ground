@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 
 import { HandleException } from "../../../utils";
 import { DriverRider } from "../models/driversRiders.models";
-import { IDriverRider } from "../models/driversRiders.models.interface";
+import { IDriverRider, ILoginDriverAndRider, ISignupDriverAndRider } from "../driversRiders.interface";
 import { STATUS_CODES } from "../../../constants";
 
 class DriverRiderService {
@@ -49,7 +49,7 @@ class DriverRiderService {
     }
   }
 
-  async signup(payload: any, accountType: string) {
+  async signup(payload: ISignupDriverAndRider, accountType: string) {
     let middleName;
     if (payload.middleName) {
       middleName = payload.middleName;
@@ -86,7 +86,7 @@ class DriverRiderService {
     }
   }
 
-  async login(payload: any) {
+  async login(payload: ILoginDriverAndRider) {
     try {
       const driverRider = await this.getDriverOrRiderByPhoneNumber(
         payload.phoneNumber,

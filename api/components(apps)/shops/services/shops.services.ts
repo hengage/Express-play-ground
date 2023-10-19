@@ -1,9 +1,10 @@
 import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
+import { IAddCategory } from "../interfaces/shops.interface";
 import { Category } from "../models/shops.models";
 
 class ShopServices {
-    public async addcategory (payload: any) {
+    public async addcategory (payload: IAddCategory) {
         try {
             const newCategory = new Category({
                 name: payload.name,

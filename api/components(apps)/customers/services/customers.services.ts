@@ -1,26 +1,27 @@
 import bcrypt from "bcrypt";
 
-import { Customer } from "../models/customer.models";
+import { Customer } from "../models/customers.models";
 import { HandleException } from "../../../utils";
-import { ICustomer } from "../models/customer.models.interface";
-import { ILoginCustomer } from "./customer.services.interface";
+import { ICustomer, ISignupCustomer } from "../customers.interface";
+import { ILoginCustomer } from "../customers.interface";
 import { STATUS_CODES } from "../../../constants";
 
 class CustomerService {
-  async signup(customerData: any): Promise<any> {
+  async signup(payload: ISignupCustomer): Promise<any> {
     try {
       const newCustomer = new Customer({
-        firstName: customerData.firstName,
-        lastName: customerData.lastName,
-        email: customerData.email,
-        phoneNumber: customerData.phoneNumber,
-        password: customerData.password,
-        gender: customerData.gender,
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        email: payload.email,
+        phoneNumber: payload.phoneNumber,
+        password: payload.password,
+        gender: payload.gender,
         address: {
-          street: customerData.street,
-          city: customerData.city,
-          state: customerData.state,
-          postalCode: customerData.postalCode,
+          street: payload.street,
+          city: payload.city,
+          state: payload.state,
+          country: payload.country,
+          postalCode: payload.postalCode,
         },
       });
       const savedCustomer = await newCustomer.save();

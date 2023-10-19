@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { ICustomer } from "./customer.models.interface";
+import { ICustomer } from "../customers.interface";
 import { AccountStatus, Gender } from "../../../constants";
 import { encryption, uniqueString } from "../../../utils";
 
@@ -26,7 +26,7 @@ const customerSchema = new Schema<ICustomer>(
     phoneNumber: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     password: {
       type: String,
@@ -49,7 +49,10 @@ const customerSchema = new Schema<ICustomer>(
         type: String,
         required: true,
       },
-      country: String,
+      country: {
+        type: String,
+        required: true,
+      },
     },
     geolocation: {
       latitude: Number,
@@ -72,17 +75,15 @@ const customerSchema = new Schema<ICustomer>(
   { timestamps: true, _id: false }
 );
 
-
-customerSchema.pre('save', async function (next) {
-    if (this.isModified('password')) {
-      try {
-        this.password = await encryption.encryptValue(this.password);
-        
-      } catch (error: any) {
-        return next(error);
-      }
+customerSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    try {
+      this.password = await encryption.encryptValue(this.password);
+    } catch (error: any) {
+      return next(error);
     }
-    next();
-  });
+  }
+  next();
+});
 
 export const Customer = model<ICustomer>("Customer", customerSchema);

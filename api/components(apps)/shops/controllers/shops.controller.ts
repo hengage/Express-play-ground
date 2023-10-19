@@ -4,8 +4,9 @@ import { STATUS_CODES } from "../../../constants";
 
 class ShopController {
   public async addcategory(req: Request, res: Response) {
+    const {name, description, image} = req.body
     try {
-      const newCategory = shopServices.addcategory(req.body);
+      const newCategory = shopServices.addcategory({name, description, image});
       res.status(STATUS_CODES.CREATED).json({
         message: "Added new category",
         data: newCategory,
