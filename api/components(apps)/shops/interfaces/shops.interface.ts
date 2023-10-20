@@ -36,6 +36,5 @@ export interface ICategory extends Document {
 
 export interface IAddCategory {
     name: string;
-    description: string;
     image: string;
 }

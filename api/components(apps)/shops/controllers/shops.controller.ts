@@ -4,11 +4,10 @@ import { STATUS_CODES } from "../../../constants";
 
 class ShopController {
   public async addcategory(req: Request, res: Response) {
-    const { name, description, image } = req.body;
+    const { name, image } = req.body;
     try {
       const newCategory = await shopServices.addcategory({
         name,
-        description,
         image,
       });
       res.status(STATUS_CODES.CREATED).json({

@@ -9,7 +9,6 @@ class ShopServices {
         try {
             const newCategory = new Category({
                 name: payload.name,
-                description: payload.description,
                 image: payload.image
             })
 

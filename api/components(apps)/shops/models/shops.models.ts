@@ -59,7 +59,6 @@ const categorySchema = new Schema<ICategory>(
       type: String,
       required: true,
     },
-    description: String,
     image: { type: String, required: true },
   },
   { timestamps: true, _id: false }
