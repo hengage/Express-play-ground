@@ -6,7 +6,7 @@ class ShopController {
   public async addcategory(req: Request, res: Response) {
     const { name, description, image } = req.body;
     try {
-      const newCategory = shopServices.addcategory({
+      const newCategory = await shopServices.addcategory({
         name,
         description,
         image,

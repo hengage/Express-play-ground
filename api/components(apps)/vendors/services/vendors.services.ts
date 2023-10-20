@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { Vendor } from "../models/vendors.model";
-import { IVendor } from "../models/vendors.models.interface";
+import { IVendor } from "../vendors.interface";
 
 class VendorService {
   async getVendorByPhoneNumber(
