@@ -15,7 +15,7 @@ const shopSchema = new Schema<IShop>(
     email: { type: String },
     phoneNumber: { type: String, required: true },
     vendor: {
-      type: Schema.Types.ObjectId,
+      type: String,
       required: true,
       ref: "Vendor",
     },
@@ -32,7 +32,7 @@ const shopSchema = new Schema<IShop>(
     },
     categories: [
       {
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: "Category",
         enum: ShopCategory,
       },

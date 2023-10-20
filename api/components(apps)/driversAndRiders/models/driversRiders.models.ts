@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IDriverRider } from "./driversRiders.models.interface";
+import { IDriverRider } from "../driversRiders.interface";
 import { encryption, uniqueString } from "../../../utils";
 import { AccountStatus, DriverRiderType } from "../../../constants";
 
