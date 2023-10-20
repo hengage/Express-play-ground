@@ -10,6 +10,7 @@ class ShopsRoutes {
 
   public initializeRoutes() {
     this.router.route(`/category/create`).post(shopController.addcategory);
+    this.router.route(`/create`).post(shopController.createShop);
   }
 }
 
