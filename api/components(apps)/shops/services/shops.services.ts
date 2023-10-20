@@ -1,7 +1,8 @@
 import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
-import { IAddCategory } from "../interfaces/shops.interface";
+import { IAddCategory, IShop } from "../interfaces/shops.interface";
 import { Category } from "../models/shops.models";
+import { Shop } from "../models/shops.models";
 
 class ShopServices {
     public async addcategory (payload: IAddCategory) {
@@ -17,6 +18,32 @@ class ShopServices {
         } catch (error: any) {
             throw new HandleException(STATUS_CODES.SERVER_ERROR, error.message);
         }
+    }
+
+    public async createShop (payload: any, vendor: string): Promise<IShop> {
+        const logo = payload.logo || 'URL_LINKS.DEFAULT_SHOP_LOGO'
+        try {
+            const newShop = new Shop({
+                name: payload.name,
+                email: payload.email,
+                phoneNumber: payload.phoneNumber,
+                vendor,
+                address: {
+                    street: payload.street,
+                    city: payload.city,
+                    state: payload.state,
+                    country: payload.country,
+                    zipCode: payload.zipCode
+                },
+                categories: payload.categories,
+                logo: logo
+            })
+            const savedShop = await newShop.save()
+            return savedShop
+        } catch (error: any) {
+            throw new HandleException(error.status, error.message)
+        }
+
     }
 }
 

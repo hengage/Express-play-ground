@@ -37,7 +37,7 @@ const shopSchema = new Schema<IShop>(
         enum: ShopCategory,
       },
     ],
-    logo: { type: String, default: "" },
+    logo: { type: String, required: true },
     approved: { type: Boolean, default: false },
     status: {
       type: String,
