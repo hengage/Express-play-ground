@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import { shopServices } from "../services/shops.services";
-import { STATUS_CODES } from "../../../constants";
+import { STATUS_CODES, ShopCategory } from "../../../constants";
+import { HandleException } from "../../../utils";
 
 class ShopController {
   public async addcategory(req: Request, res: Response) {
     const { name, image } = req.body;
+
     try {
       const newCategory = await shopServices.addcategory({
         name,
@@ -23,7 +25,12 @@ class ShopController {
 
   public async createShop(req: Request, res: Response) {
     const vendor = req.params.vendorId;
+    const { category } = req.body;
+
     try {
+      if (!Object.values(ShopCategory).includes(category.toUpperCase())) {
+        throw new HandleException(STATUS_CODES.BAD_REQUEST, "Invalid category");
+      }
       const shop = await shopServices.createShop(req.body, vendor);
       res.status(STATUS_CODES.CREATED).json({
         message: "Created shop",

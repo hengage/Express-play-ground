@@ -16,10 +16,9 @@ export enum DriverRiderType {
 }
 
 export enum ShopCategory {
-  Healthcare = "HEALTHCARE",
-  Boutique = 'BOUTIQUE',
-  Pharmacy = 'PHARMACY',
-  FoodAndGroceries = 'FOOD AND GROCERIES',
+  CLOTHING = 'CLOTHING',
+  PHARMACY = 'PHARMACY',
+  FOOD_AND_GROCERIS = 'FOOD AND GROCERIES',
 }
 
 export const STATUS_CODES = {
