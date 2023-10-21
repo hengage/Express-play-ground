@@ -27,6 +27,7 @@ class ShopController {
     const vendor = req.params.vendorId;
 
     try {
+      await shopServices.isValidCategoryID(req.body.category)
       const shop = await shopServices.createShop(req.body, vendor);
       res.status(STATUS_CODES.CREATED).json({
         message: "Created shop",
