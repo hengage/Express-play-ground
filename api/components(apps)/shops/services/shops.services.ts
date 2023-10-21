@@ -1,4 +1,4 @@
-import { STATUS_CODES } from "../../../constants";
+import { STATUS_CODES, URL_LINKS } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { IAddCategory, IShop } from "../interfaces/shops.interface";
 import { Category } from "../models/shops.models";
@@ -20,7 +20,7 @@ class ShopServices {
     }
 
     public async createShop (payload: any, vendor: string): Promise<IShop> {
-        const logo = payload.logo || 'URL_LINKS.DEFAULT_SHOP_LOGO'
+        const logo = payload.logo || URL_LINKS.DEFAULT_SHOP_LOGO
         try {
             const newShop = new Shop({
                 name: payload.name,
