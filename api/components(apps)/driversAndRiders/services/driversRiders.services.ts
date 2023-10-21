@@ -76,7 +76,7 @@ class DriverRiderService {
           city: payload.city,
           state: payload.state,
           country: payload.country,
-          zipCode: payload.zipCode,
+          postalCode: payload.postalCode,
         },
       });
       const savedDriverrider = newDriverRider.save();

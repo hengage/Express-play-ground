@@ -1,9 +1,9 @@
-import { AccountStatus, ShopCategory,  } from "../../../constants";
+import { AccountStatus, ShopCategory } from "../../../constants";
 import { IVendor } from "../../vendors";
 
 export interface IShop extends Document {
-_id: string;
-  name: string
+  _id: string;
+  name: string;
   email: string;
   phoneNumber: string;
   password: string;
@@ -13,13 +13,13 @@ _id: string;
     city: string;
     state: string;
     country: string;
-    zipCode: string;
+    postalCode: string;
   };
   geoLocation: {
     latitiude: number;
     longitiude: number;
-  }
-  category: ShopCategory
+  };
+  category: ShopCategory;
   logo: string;
   status: AccountStatus;
   approved: boolean;
@@ -35,6 +35,20 @@ export interface ICategory extends Document {
 }
 
 export interface IAddCategory {
-    name: string;
-    image: string;
+  name: string;
+  image: string;
+}
+
+export interface ICreateShop {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  vendor: string;
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  postalCode: string;
+  category: string;
+  logo: string;
 }

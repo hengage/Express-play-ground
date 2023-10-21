@@ -1,6 +1,6 @@
 import { STATUS_CODES, URL_LINKS } from "../../../constants";
 import { HandleException } from "../../../utils";
-import { IAddCategory, ICategory, IShop } from "../interfaces/shops.interface";
+import { IAddCategory, ICategory, ICreateShop, IShop } from "../interfaces/shops.interface";
 import { Category } from "../models/shops.models";
 import { Shop } from "../models/shops.models";
 
@@ -19,7 +19,7 @@ class ShopServices {
     }
   }
 
-  public async createShop(payload: any, vendor: string): Promise<IShop> {
+  public async createShop(payload: ICreateShop, vendor: string): Promise<IShop> {
     const logo = payload.logo || URL_LINKS.DEFAULT_SHOP_LOGO;
     try {
       const newShop = new Shop({
@@ -32,7 +32,7 @@ class ShopServices {
           city: payload.city,
           state: payload.state,
           country: payload.country,
-          zipCode: payload.zipCode,
+          postalCode: payload.postalCode,
         },
         category: payload.category,
         logo: logo,

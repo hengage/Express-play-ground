@@ -20,7 +20,7 @@ export interface IDriverRider extends Document {
     city: string;
     state: string;
     country: string;
-    zipCode: string;
+    postalCode: string;
   };
   accountStatus: AccountStatus;
   rating: number;
@@ -45,7 +45,7 @@ export interface ISignupDriverAndRider {
   city: string;
   state: string;
   country: string;
-  zipCode: string;
+  postalCode: string;
 }
 
 export interface ILoginDriverAndRider {

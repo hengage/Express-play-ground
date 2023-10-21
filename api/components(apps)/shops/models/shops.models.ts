@@ -11,7 +11,7 @@ const shopSchema = new Schema<IShop>(
       required: true,
       default: () => uniqueString.generateUniqueString(4),
     },
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
     email: { type: String },
     phoneNumber: { type: String, required: true },
     vendor: {
@@ -24,7 +24,7 @@ const shopSchema = new Schema<IShop>(
       city: { type: String, required: true },
       state: { type: String, required: true },
       country: { type: String, required: true },
-      zipCode: { type: String, required: true },
+      postalCode: { type: String, required: true },
     },
     geoLocation: {
       latitude: Number,
@@ -53,10 +53,7 @@ const categorySchema = new Schema<ICategory>(
       required: true,
       default: () => uniqueString.generateUniqueString(4),
     },
-    name: {
-      type: String,
-      required: true,
-    },
+    name: { type: String, required: true, unique: true },
     image: { type: String, required: true },
   },
   { timestamps: true, _id: false }
