@@ -25,12 +25,8 @@ class ShopController {
 
   public async createShop(req: Request, res: Response) {
     const vendor = req.params.vendorId;
-    const { category } = req.body;
 
     try {
-      if (!Object.values(ShopCategory).includes(category.toUpperCase())) {
-        throw new HandleException(STATUS_CODES.BAD_REQUEST, "Invalid category");
-      }
       const shop = await shopServices.createShop(req.body, vendor);
       res.status(STATUS_CODES.CREATED).json({
         message: "Created shop",

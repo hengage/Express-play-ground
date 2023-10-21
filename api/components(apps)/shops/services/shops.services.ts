@@ -34,7 +34,7 @@ class ShopServices {
                     country: payload.country,
                     zipCode: payload.zipCode
                 },
-                categories: payload.categories,
+                category: payload.category,
                 logo: logo
             })
             const savedShop = await newShop.save()

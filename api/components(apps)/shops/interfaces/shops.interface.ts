@@ -19,7 +19,7 @@ _id: string;
     latitiude: number;
     longitiude: number;
   }
-  categories: ShopCategory
+  category: ShopCategory
   logo: string;
   status: AccountStatus;
   approved: boolean;

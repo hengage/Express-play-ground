@@ -30,13 +30,11 @@ const shopSchema = new Schema<IShop>(
       latitude: Number,
       longitude: Number,
     },
-    categories: [
-      {
-        type: String,
-        ref: "Category",
-        enum: ShopCategory,
-      },
-    ],
+    category: {
+      type: String,
+      ref: "Category",
+      required: true,
+    },
     logo: { type: String, required: true },
     approved: { type: Boolean, default: false },
     status: {
