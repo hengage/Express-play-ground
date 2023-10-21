@@ -11,6 +11,7 @@ class ShopsRoutes {
   public initializeRoutes() {
     this.router.route(`/category/create`).post(shopController.addcategory);
     this.router.route(`/create/:vendorId`).post(shopController.createShop);
+    this.router.route(`/categories`).get(shopController.getAllCategories);
   }
 }
 

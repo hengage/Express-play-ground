@@ -40,6 +40,22 @@ class ShopController {
       });
     }
   }
+
+  public async getAllCategories(req: Request, res: Response) {
+    try {
+      const categories = await shopServices.getAllCategories()
+      return res.status(STATUS_CODES.OK).json({
+        messsage: "Fetched categories",
+        data: categories
+      })
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR)
+      .json({
+        message: "error fetching categories",
+        error: error.message
+      })
+    }
+  }
 }
 
 export const shopController = new ShopController();

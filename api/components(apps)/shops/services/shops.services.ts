@@ -1,6 +1,6 @@
 import { STATUS_CODES, URL_LINKS } from "../../../constants";
 import { HandleException } from "../../../utils";
-import { IAddCategory, IShop } from "../interfaces/shops.interface";
+import { IAddCategory, ICategory, IShop } from "../interfaces/shops.interface";
 import { Category } from "../models/shops.models";
 import { Shop } from "../models/shops.models";
 
@@ -51,6 +51,21 @@ class ShopServices {
         return true;
       }
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Category not found");
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  public async getAllCategories(): Promise<ICategory[] | string> {
+    try {
+      const categories = await Category.find({});
+      if (categories.length < 1) {
+        throw new HandleException(
+          STATUS_CODES.NOT_FOUND,
+          "There are no categories available"
+        );
+      }
+      return categories;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
