@@ -22,10 +22,10 @@ class ShopMiddleware {
       }
       return res
         .status(403)
-        .json({ message: "You are not authorized to access this resource" });
+        .json({ message: "You are not authorized to perform this action" });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Operartion failed",
+        message: "Operation failed",
         error: error.message,
       });
     }
