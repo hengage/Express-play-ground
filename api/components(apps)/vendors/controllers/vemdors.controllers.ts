@@ -48,6 +48,7 @@ class VendorController {
       res.status(200).json({
         message: "Successfully logged in",
         data: {
+          ...vendor,
           accessToken,
         },
       });
