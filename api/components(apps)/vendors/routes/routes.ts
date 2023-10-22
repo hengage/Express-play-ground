@@ -11,6 +11,7 @@ class VendorsRoutes {
   public initializeRoutes() {
     this.router.route(`/signup`).post(vendorController.signup);
     this.router.route(`/login`).post(vendorController.login);
+    this.router.route(`/:vendorId/shops`).get(vendorController.getShops);
   }
 }
 

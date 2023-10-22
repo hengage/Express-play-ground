@@ -3,10 +3,11 @@ import { vendorService } from "../services/vendors.services";
 import { HandleException, jwtUtils } from "../../../utils";
 import { STATUS_CODES } from "../../../constants";
 import { userService } from "../../../services";
+import { shopServices } from "../../shops";
 
 class VendorController {
   public async signup(req: Request, res: Response) {
-    console.log({vndorEmail: req.body.email})
+    console.log({ vndorEmail: req.body.email });
     try {
       await userService.isEmailTaken(req.body.email);
 
@@ -55,6 +56,27 @@ class VendorController {
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Failed to login",
+        error: error.message,
+      });
+    }
+  }
+
+  async getShops(req: Request, res: Response) {
+    const vendorId = req.params.vendorId;
+    try {
+      const shops = await shopServices.getAllShopsForAVendor(vendorId);
+      if (shops.length < 1) {
+        return res.status(STATUS_CODES.NOT_FOUND).json({
+          message: "You currently have no shop",
+        });
+      }
+      res.status(STATUS_CODES.OK).json({
+        message: `Fetched shops for vendor: ${vendorId}`,
+        data: shops
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to fetch shops",
         error: error.message,
       });
     }

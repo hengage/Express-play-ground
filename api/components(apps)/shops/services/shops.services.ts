@@ -93,6 +93,15 @@ class ShopServices {
       throw new HandleException(error.status, error.message);
     }
   }
+
+  public async getAllShopsForAVendor(vendorId: string): Promise<IShop[]> {
+    try {
+      const shops = await Shop.find({vendor: vendorId})
+      return shops
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message)
+    }
+  }
 }
 
 export const shopServices = new ShopServices();
