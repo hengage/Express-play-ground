@@ -1,6 +1,11 @@
 import { STATUS_CODES, URL_LINKS } from "../../../constants";
 import { HandleException } from "../../../utils";
-import { IAddCategory, ICategory, ICreateShop, IShop } from "../interfaces/shops.interface";
+import {
+  IAddCategory,
+  ICategory,
+  ICreateShop,
+  IShop,
+} from "../interfaces/shops.interface";
 import { Category } from "../models/shops.models";
 import { Shop } from "../models/shops.models";
 
@@ -19,7 +24,10 @@ class ShopServices {
     }
   }
 
-  public async createShop(payload: ICreateShop, vendor: string): Promise<IShop> {
+  public async createShop(
+    payload: ICreateShop,
+    vendor: string
+  ): Promise<IShop> {
     const logo = payload.logo || URL_LINKS.DEFAULT_SHOP_LOGO;
     try {
       const newShop = new Shop({
@@ -66,6 +74,21 @@ class ShopServices {
         );
       }
       return categories;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  public async isNameTaken(name: string): Promise<boolean> {
+    try {
+      const shop = await Shop.findOne({ name }).select("name");
+      if (shop) {
+        throw new HandleException(
+          STATUS_CODES.CONFLICT,
+          "Name is not available"
+        );
+      }
+      return false;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
