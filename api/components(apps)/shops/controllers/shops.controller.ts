@@ -14,7 +14,13 @@ class ShopController {
       });
       res.status(STATUS_CODES.CREATED).json({
         message: "Added new category",
-        data: newCategory,
+        data: {
+          category: {
+            _id: newCategory._id,
+            name: newCategory.name,
+            image: newCategory.image,
+          },
+        },
       });
     } catch (error: any) {
       res
@@ -27,11 +33,16 @@ class ShopController {
     const vendor = req.params.vendorId;
 
     try {
-      await shopServices.isValidCategoryID(req.body.category)
+      await shopServices.isValidCategoryID(req.body.category);
       const shop = await shopServices.createShop(req.body, vendor);
       res.status(STATUS_CODES.CREATED).json({
         message: "Created shop",
-        data: shop,
+        data: {
+          shop: {
+            _id: shop._id,
+            name: shop.name
+          },
+        },
       });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
@@ -43,17 +54,16 @@ class ShopController {
 
   public async getAllCategories(req: Request, res: Response) {
     try {
-      const categories = await shopServices.getAllCategories()
+      const categories = await shopServices.getAllCategories();
       return res.status(STATUS_CODES.OK).json({
         messsage: "Fetched categories",
-        data: categories
-      })
+        data: categories,
+      });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR)
-      .json({
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "error fetching categories",
-        error: error.message
-      })
+        error: error.message,
+      });
     }
   }
 }

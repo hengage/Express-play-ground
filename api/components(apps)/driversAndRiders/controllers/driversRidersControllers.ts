@@ -29,7 +29,10 @@ class DriversRidersController {
       return res.status(201).json({
         message: "Account created successfully",
         data: {
-          ...driverRider,
+          driverRider: {
+            _id: driverRider.id,
+            firstName: driverRider.name.firstName
+          },
           accessToken,
         },
       });
