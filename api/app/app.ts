@@ -7,6 +7,8 @@ import express, {
 } from "express";
 import { Server } from "http";
 
+import fileUpload from "express-fileupload";
+
 import { dbConfig } from "../config/db.config";
 import { routes } from "../routes";
 import { centralErrorHandler } from "../middleware/centralErrorHandler";
@@ -37,6 +39,7 @@ class App {
   private initializeMiddleware() {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(fileUpload({ useTempFiles: true }));
   }
 
   private initializeCentralErrorMiddleware() {
