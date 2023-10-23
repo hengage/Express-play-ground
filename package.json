@@ -2,7 +2,7 @@
   "name": "mr_delivery_server",
   "version": "1.0.0",
   "description": "",
-  "main": "api/server.ts",
+  "main": "dist/server.js",
   "scripts": {
     "dev-start": "nodemon --watch api/server.ts",
     "start": "node dist/server.js",
@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "cloudinary": "^1.41.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.1",

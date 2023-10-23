@@ -11,7 +11,7 @@ class MediaRoutes {
 
   public initializeRoutes(): void {
     this.router
-      .route(`files/upload`)
+      .route(`/files/upload`)
       .post(mediaController.uploadMedia);
   }
 }
