@@ -1,0 +1,1 @@
+export { mediaUploadConfig } from "./cloudinary.config";
