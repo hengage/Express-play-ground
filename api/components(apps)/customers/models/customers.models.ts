@@ -35,7 +35,6 @@ const customerSchema = new Schema<ICustomer>(
     address: {
       street: {
         type: String,
-        required: true,
       },
       city: {
         type: String,
@@ -43,11 +42,9 @@ const customerSchema = new Schema<ICustomer>(
       },
       state: {
         type: String,
-        required: true,
       },
       postalCode: {
         type: String,
-        required: true,
       },
       country: {
         type: String,
@@ -61,7 +58,6 @@ const customerSchema = new Schema<ICustomer>(
     dateOfBirth: Date,
     gender: {
       type: String,
-      required: true,
       enum: Object.values(Gender),
     },
     profilePhoto: String,
