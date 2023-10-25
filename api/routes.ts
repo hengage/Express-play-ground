@@ -27,10 +27,10 @@ class Routes {
     this.router.use("/media", mediaRoutes.router);
     this.router.use("/media", mediaRoutes.router);
     this.router
-      .route("/verify/send-code")
+      .route("/verify/phone-number/send-code")
       .post(verifyService.sendVerificationCode);
     this.router
-      .route("/verify/check-code")
+      .route("/verify/phone-number/check-code")
       .post(verifyService.checkVerificationCode);
   }
 }
