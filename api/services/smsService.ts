@@ -4,6 +4,7 @@ import {
   TWILIO_AUTH_TOKEN,
   TWILIO_PHONE_NUMBER,
 } from "../config/secrets.config";
+import { ISendSMS } from "./services.interface";
 
 class SmsService {
   private twilioClient: Twilio;
@@ -12,13 +13,12 @@ class SmsService {
     this.twilioClient = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
   }
 
-  async sendSms(to: string, message: string) {
-    console.log({ to });
+  async sendSms(payload: ISendSMS) {
     try {
       const response = await this.twilioClient.messages.create({
-        body: message,
+        body: payload.message,
         from: `${TWILIO_PHONE_NUMBER}`,
-        to,
+        to: payload.recipientPhoneNumber,
       });
       console.log(`SMS sent with SID: ${response.sid}`);
       return response;

@@ -1,4 +1,3 @@
-// verifyService.ts
 import { Twilio } from "twilio";
 import {
   TWILIO_ACCOUNT_SID,
@@ -11,12 +10,11 @@ import { HandleException } from "../utils";
 
 class VerifyService {
   private twilioClient: Twilio;
-  private verifyServiceSID: string; // Your Verify Service SID
+  private verifyServiceSID: string;
 
   constructor() {
     this.twilioClient = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
     this.verifyServiceSID = `${TWILIO_VERIFY_SID}`;
-    console.log({servicesid: this.verifyServiceSID})
   }
 
   sendVerificationCode = async (req: Request, res: Response) => {
@@ -26,10 +24,8 @@ class VerifyService {
         .services(this.verifyServiceSID)
         .verifications.create({
           to: recipientPhoneNumber,
-          channel: "sms", // You can change this to 'whatsapp' for WhatsApp verification
+          channel: "sms",
         });
-      console.log(`Verification code sent: ${verification.sid}`);
-      //   return verification;
       res.status(STATUS_CODES.OK).json({
         message: "Verification code sent",
         data: verification,
@@ -37,7 +33,7 @@ class VerifyService {
     } catch (error: any) {
       console.error(`Failed to send verification code: ${error}`);
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "operation failed",
+        message: "Failed to send verification code",
         errror: error.message,
       });
     }
@@ -53,12 +49,10 @@ class VerifyService {
           code: otpCode,
         });
       if (verificationCheck.status === "approved") {
-        console.log("Verification code is valid.");
         res.status(STATUS_CODES.OK).json({
           message: "Verification successful",
         });
       } else {
-        console.log("Verification code is not valid.");
         throw new HandleException(
           STATUS_CODES.BAD_REQUEST,
           "Inavlid code"
@@ -66,7 +60,7 @@ class VerifyService {
       }
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "operation failed",
+        message: "Failed to verify code",
         errror: error.message,
       });
     }
