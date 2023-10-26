@@ -4,7 +4,7 @@ import { vendorsRoutes } from "./components(apps)/vendors";
 import { shopsRoutes } from "./components(apps)/shops";
 import { mediaRoutes } from "./components(apps)/media";
 import { driversRidesrRoutes } from "./components(apps)/driversAndRiders";
-import { verifyService } from "./services";
+import { authRoutes } from "./components(apps)/auth";
 
 class Routes {
   /*
@@ -26,12 +26,7 @@ class Routes {
     this.router.use("/shops", shopsRoutes.router);
     this.router.use("/media", mediaRoutes.router);
     this.router.use("/media", mediaRoutes.router);
-    this.router
-      .route("/verify/phone-number/send-code")
-      .post(verifyService.sendVerificationCode);
-    this.router
-      .route("/verify/phone-number/check-code")
-      .post(verifyService.checkVerificationCode);
+    this.router.use("/auth", authRoutes.router);
   }
 }
 
