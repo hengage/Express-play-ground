@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { verifyController } from "../controllers/verify.controller";
+import { passwordMgmtController } from "../controllers/passwordMgmt.controller";
 
 
 class AuthRoutes  {
@@ -17,8 +18,10 @@ class AuthRoutes  {
       this.router
       .route('/verify/phone-number/check-code')
       .post(verifyController.checkVerificationCode);
-    
-   
+
+      this.router
+      .route('/password/reset')
+      .post(passwordMgmtController.resetPassword);
   }
 }
 
