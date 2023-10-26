@@ -5,14 +5,13 @@ import { STATUS_CODES } from "../../../constants";
 class PasswordMgmtController {
   public async resetPassword(req: Request, res: Response) {
     const  userType   = req.query.usertype as string;
-    console.log({userType })
     try {
       await passwordMgmtService.resetPassword(
         req.body.phoneNumber,
         req.body.newPassword,
         userType.toLowerCase()
       );
-      res.status(STATUS_CODES.SERVER_ERROR)
+      res.status(STATUS_CODES.OK)
       .json({message: "Password reset successful"})
     } catch (error: any ) {
         res.status(error.status|| STATUS_CODES.SERVER_ERROR)
