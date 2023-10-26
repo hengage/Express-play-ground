@@ -21,7 +21,7 @@ class AuthRoutes  {
 
       this.router
       .route('/password/reset')
-      .post(passwordMgmtController.resetPassword);
+      .patch(passwordMgmtController.resetPassword);
   }
 }
 
