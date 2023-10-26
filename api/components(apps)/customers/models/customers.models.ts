@@ -38,7 +38,6 @@ const customerSchema = new Schema<ICustomer>(
       },
       city: {
         type: String,
-        required: true,
       },
       state: {
         type: String,
@@ -48,7 +47,6 @@ const customerSchema = new Schema<ICustomer>(
       },
       country: {
         type: String,
-        required: true,
       },
     },
     geolocation: {
