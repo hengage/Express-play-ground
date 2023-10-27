@@ -44,6 +44,7 @@ class CustomerController {
       res.status(200).json({
         message: "Successfully logged in",
         data: {
+          _id: customer._id,
           accessToken,
         },
       });
