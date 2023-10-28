@@ -4,12 +4,12 @@ import { STATUS_CODES } from "../../../constants";
 
 class PasswordMgmtController {
   public async resetPassword(req: Request, res: Response) {
-    const userType = req.query.usertype as string;
+    const accountType = req.query.accountType as string;
     try {
       await passwordMgmtService.resetPassword(
         req.body.phoneNumber,
         req.body.newPassword,
-        userType.toLowerCase()
+        accountType.toLowerCase()
       );
       res
         .status(STATUS_CODES.OK)
@@ -29,7 +29,7 @@ class PasswordMgmtController {
         req.params.accountId,
         req.body.currentPassword,
         req.body.newPassword,
-        accountType
+        accountType.toLowerCase()
       );
       res.status(STATUS_CODES.OK).json({
         message: "Password changed",

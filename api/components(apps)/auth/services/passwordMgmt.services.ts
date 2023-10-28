@@ -8,23 +8,22 @@ class PasswordMgmtService {
   async resetPassword(
     phoneNumber: string,
     newPassword: string,
-    userType: string
+    accountType: string
   ) {
-    const UserModel = await this.getUserModel(userType);
-    const user = await (UserModel as any).findOne({ phoneNumber });
-    if (!user) {
+    const AccountModel = await this.getUserAccountModel(accountType);
+    const account = await (AccountModel as any).findOne({ phoneNumber });
+    if (!account) {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "User not found");
     }
 
-    user.password = newPassword;
-    user.save();
+    account.password = newPassword;
+    account.save();
   }
 
   public async changePassword(accountId: string, currentPassword: string, newPassword: string, accountType: string) {
     try {
-      const UserModel = await this.getUserModel(accountType);
-      const account = await (UserModel as any).findById(accountId);
-      console.log({currentPassword})
+      const AccountModel = await this.getUserAccountModel(accountType);
+      const account = await (AccountModel as any).findById(accountId);
 
       if (!account) {
         throw new HandleException(STATUS_CODES.NOT_FOUND, "User not found");
@@ -49,7 +48,7 @@ class PasswordMgmtService {
     }
   }
 
-  private async getUserModel(accountType: string) {
+  private async getUserAccountModel(accountType: string) {
     switch (accountType) {
       case "customer":
         return Customer;
