@@ -6,12 +6,8 @@ import { STATUS_CODES } from "../constants";
 
 class AuthMiddleware {
   public isUserAuthorized(req: Request, res: Response, next: NextFunction) {
-    const decodedUser = jwtUtils.verifyToken(req);
-    // if (typeof decodedUser === 'object' && '_id' in decodedUser) {
-    if (
-      typeof decodedUser !== "string" &&
-      decodedUser._id === req.params.vendorId
-    ) {
+    const decodedUser = jwtUtils.verifyToken(req) as { _id: string, };
+    if (decodedUser._id === req.params.vendorId) {
       next();
       return;
     }
