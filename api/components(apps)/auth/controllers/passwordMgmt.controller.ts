@@ -23,16 +23,20 @@ class PasswordMgmtController {
   }
 
   public async changePassword(req: Request, res: Response) {
-    const userType = req.query.usertype as string;
-    const { userId, newPassword } = req.body;
+    const accountType = req.query.accountType as string;
     try {
-      await passwordMgmtService.changePassword(userId, newPassword, userType);
+      await passwordMgmtService.changePassword(
+        req.params.accountId,
+        req.body.currentPassword,
+        req.body.newPassword,
+        accountType
+      );
       res.status(STATUS_CODES.OK).json({
-        message: "Password changed"
-      })
+        message: "Password changed",
+      });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Password chnage failed",
+        message: "Password change failed",
         error: error.message,
       });
     }

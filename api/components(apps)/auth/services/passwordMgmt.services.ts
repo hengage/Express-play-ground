@@ -20,32 +20,37 @@ class PasswordMgmtService {
     user.save();
   }
 
-  public async changePassword(userId: string, newPassword: string, userType: string) {
+  public async changePassword(accountId: string, currentPassword: string, newPassword: string, accountType: string) {
     try {
-      const UserModel = await this.getUserModel(userType);
-      const user = await (UserModel as any).findById(userId);
+      const UserModel = await this.getUserModel(accountType);
+      const account = await (UserModel as any).findById(accountId);
+      console.log({currentPassword})
+
+      if (!account) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "User not found");
+      }
 
       const currentPasswordMatch = await encryption.compareValues(
-        newPassword,
-        user.password
+        currentPassword,
+        account.password
       );
 
       if (!currentPasswordMatch) {
         throw new HandleException(
           STATUS_CODES.BAD_REQUEST,
-          "Incorrect password"
+          "Your current password is incorrect"
         );
       }
-      user.password = newPassword
-      user.save();
+      account.password = newPassword
+      account.save();
       return;
     } catch (error: any) {
         throw new HandleException(error.status, error.message);
     }
   }
 
-  private async getUserModel(userType: string) {
-    switch (userType) {
+  private async getUserModel(accountType: string) {
+    switch (accountType) {
       case "customer":
         return Customer;
       case "vendor":
@@ -53,7 +58,7 @@ class PasswordMgmtService {
       case "driver-rider":
         return DriverRider;
       default:
-        throw new Error("Invalid user type");
+        throw new Error("Invalid account type");
     }
   }
 }
