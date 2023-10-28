@@ -5,6 +5,13 @@ import { STATUS_CODES } from "../../../constants";
 class PasswordMgmtController {
   public async resetPassword(req: Request, res: Response) {
     const accountType = req.query.accountType as string;
+    if (!accountType) {
+        return res.status(STATUS_CODES.BAD_REQUEST).json({
+          message: "Password reset failed",
+          error: "Provide account type",
+        });
+      }
+
     try {
       await passwordMgmtService.resetPassword(
         req.body.phoneNumber,
@@ -24,6 +31,13 @@ class PasswordMgmtController {
 
   public async changePassword(req: Request, res: Response) {
     const accountType = req.query.accountType as string;
+    if (!accountType) {
+      return res.status(STATUS_CODES.BAD_REQUEST).json({
+        message: "Password change failed",
+        error: "Provide account type",
+      });
+    }
+
     try {
       await passwordMgmtService.changePassword(
         req.params.accountId,

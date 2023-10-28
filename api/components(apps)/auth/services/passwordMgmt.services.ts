@@ -20,7 +20,12 @@ class PasswordMgmtService {
     account.save();
   }
 
-  public async changePassword(accountId: string, currentPassword: string, newPassword: string, accountType: string) {
+  public async changePassword(
+    accountId: string,
+    currentPassword: string,
+    newPassword: string,
+    accountType: string
+  ) {
     try {
       const AccountModel = await this.getUserAccountModel(accountType);
       const account = await (AccountModel as any).findById(accountId);
@@ -40,11 +45,11 @@ class PasswordMgmtService {
           "Your current password is incorrect"
         );
       }
-      account.password = newPassword
+      account.password = newPassword;
       account.save();
       return;
     } catch (error: any) {
-        throw new HandleException(error.status, error.message);
+      throw new HandleException(error.status, error.message);
     }
   }
 
@@ -57,7 +62,10 @@ class PasswordMgmtService {
       case "driver-rider":
         return DriverRider;
       default:
-        throw new Error("Invalid account type");
+        throw new HandleException(
+          STATUS_CODES.BAD_REQUEST,
+          "Invalid account type"
+        );
     }
   }
 }
