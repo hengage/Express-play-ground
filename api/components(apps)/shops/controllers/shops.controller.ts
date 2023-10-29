@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { shopServices } from "../services/shops.services";
 import { STATUS_CODES, ShopCategory } from "../../../constants";
 import { HandleException } from "../../../utils";
+import { vendorService } from "../../vendors";
 
 class ShopController {
   public async addcategory(req: Request, res: Response) {
@@ -33,6 +34,7 @@ class ShopController {
     const vendor = req.params.vendorId;
 
     try {
+      await vendorService.getVendorById(req.params.vendorId, 'select')
       await shopServices.isNameTaken(req.body.name)
       await shopServices.isValidCategoryID(req.body.category);
       const shop = await shopServices.createShop(req.body, vendor);
