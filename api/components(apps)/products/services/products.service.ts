@@ -1,8 +1,9 @@
 import { HandleException } from "../../../utils";
 import { Product } from "../models/products.mode";
+import { IAddProduct } from "../products.interface";
 
 class ProductsService {
-  public async addProducts(payload: any, vendorId: string, shopId: string) {
+  public async addProducts(payload: IAddProduct, vendorId: string, shopId: string) {
     try {
       const product = new Product({
         name: payload.name,
