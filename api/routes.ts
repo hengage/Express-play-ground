@@ -5,6 +5,7 @@ import { shopsRoutes } from "./components(apps)/shops";
 import { mediaRoutes } from "./components(apps)/media";
 import { driversRidesrRoutes } from "./components(apps)/driversAndRiders";
 import { authRoutes } from "./components(apps)/auth";
+import { productsRoutes } from "./components(apps)/products";
 
 class Routes {
   /*
@@ -27,6 +28,7 @@ class Routes {
     this.router.use("/media", mediaRoutes.router);
     this.router.use("/media", mediaRoutes.router);
     this.router.use("/auth", authRoutes.router);
+    this.router.use("/products", productsRoutes.router);
   }
 }
 
