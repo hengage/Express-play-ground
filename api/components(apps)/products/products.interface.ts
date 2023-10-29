@@ -1,6 +1,7 @@
 import { Document } from 'mongoose';
 
 export interface IProduct extends Document {
+  _id: string;
   name: string;
   description: string;
   price: number;
@@ -9,6 +10,8 @@ export interface IProduct extends Document {
   vendor: string; 
   sizes: string[]; 
   colors: string[]; 
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IAddProduct {
