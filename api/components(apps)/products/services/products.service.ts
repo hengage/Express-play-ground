@@ -2,7 +2,7 @@ import { HandleException } from "../../../utils";
 import { Product } from "../models/products.mode";
 
 class ProductsService {
-  public async addProducts(payload: any, shopId: string) {
+  public async addProducts(payload: any, vendorId: string, shopId: string) {
     try {
       const product = new Product({
         name: payload.name,
@@ -12,7 +12,7 @@ class ProductsService {
         sizes: payload.sizes,
         colors: payload.colors,
         shop: shopId,
-        vendor: payload.vendorId,
+        vendor: vendorId,
       });
       await product.save();
       return product
