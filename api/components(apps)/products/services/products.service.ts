@@ -8,6 +8,7 @@ class ProductsService {
         name: payload.name,
         description: payload.description,
         price: payload.price,
+        photos: payload.photos,
         sizes: payload.sizes,
         colors: payload.colors,
         shop: shopId,
