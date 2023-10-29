@@ -28,6 +28,27 @@ class VendorService {
       throw new HandleException(error.status, error.message);
     }
   }
+  
+  async getVendorById(
+    id: string,
+    selectFields?: string
+  ): Promise<IVendor> {
+    try {
+      const query = Vendor.findById(id);
+
+      if (selectFields) {
+        query.select(selectFields);
+      }
+
+      const vendor = await query.exec();
+      if (!vendor) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "Vendor not found");
+      }
+      return vendor;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
 
 
     async signup(payload: any) {

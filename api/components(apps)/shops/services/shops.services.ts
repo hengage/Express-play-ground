@@ -10,6 +10,27 @@ import { Category } from "../models/shops.models";
 import { Shop } from "../models/shops.models";
 
 class ShopServices {
+  async getShopById(
+    id: string,
+    selectFields?: string
+  ): Promise<IShop> {
+    try {
+      const query = Shop.findById(id);
+
+      if (selectFields) {
+        query.select(selectFields);
+      }
+
+      const shop = await query.exec();
+      if (!shop) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "Shop not found");
+      }
+      return shop;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
   public async addcategory(payload: IAddCategory) {
     try {
       const newCategory = new Category({
