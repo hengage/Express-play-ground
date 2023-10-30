@@ -23,7 +23,7 @@ class Routes {
   private initializeRoutes() {
     this.router.use("/customers", customersRoutes.router);
     this.router.use("/drivers-riders", driversRidesrRoutes.router);
-    this.router.use("/vendors", vendorsRoutes.router);
+    this.router.use("/vendor", vendorsRoutes.router);
     this.router.use("/shops", shopsRoutes.router);
     this.router.use("/media", mediaRoutes.router);
     this.router.use("/media", mediaRoutes.router);

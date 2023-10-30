@@ -58,8 +58,8 @@ class CustomerController {
 
   async getMe(req: Request, res: Response) {
     try {
-      const user = jwtUtils.verifyToken(req) as { _id: string };
-      const customer = await customerService.getMe(user._id);
+      const customerId = (req as any).user._id
+      const customer = await customerService.getMe(customerId);
       res.status(STATUS_CODES.OK).json({
         message: "Fetched custommer profile",
         data: { customer },

@@ -7,11 +7,10 @@ import { jwtUtils } from "../../../utils";
 class ProductsController {
   public async addProducts(req: Request, res: Response) {
     try {
-      const user = jwtUtils.verifyToken(req) as { _id: string };
-
+      const userId = (req as any).user._id
       const vendorShop = await Shop.findOne({
         _id: req.params.shopId,
-        vendor: user._id,
+        vendor: userId,
       });
 
       if (! vendorShop) {
@@ -23,7 +22,7 @@ class ProductsController {
 
       const product = await productsService.addProducts(
         req.body,
-        user._id,
+        userId,
         req.params.shopId
       );
       res.status(STATUS_CODES.CREATED).json({

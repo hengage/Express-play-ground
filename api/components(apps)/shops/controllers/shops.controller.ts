@@ -30,31 +30,6 @@ class ShopController {
     }
   }
 
-  public async createShop(req: Request, res: Response) {
-    const vendor = req.params.vendorId;
-
-    try {
-      await vendorService.getVendorById(req.params.vendorId, 'select')
-      await shopServices.isNameTaken(req.body.name)
-      await shopServices.isValidCategoryID(req.body.category);
-      const shop = await shopServices.createShop(req.body, vendor);
-      res.status(STATUS_CODES.CREATED).json({
-        message: "Created shop",
-        data: {
-          shop: {
-            _id: shop._id,
-            name: shop.name
-          },
-        },
-      });
-    } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error creating shop",
-        error: error.message,
-      });
-    }
-  }
-
   public async getAllCategories(req: Request, res: Response) {
     try {
       const categories = await shopServices.getAllCategories();
@@ -65,6 +40,32 @@ class ShopController {
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "error fetching categories",
+        error: error.message,
+      });
+    }
+  }
+
+  public async createShop(req: Request, res: Response) {
+    try {
+      const vendorId = (req as any).user._id
+      await vendorService.getVendorById(vendorId, '_id')
+      await shopServices.isNameTaken(req.body.name)
+      await shopServices.isValidCategoryID(req.body.category);
+
+      const shop = await shopServices.createShop(req.body, vendorId);
+      res.status(STATUS_CODES.CREATED).json({
+        message: "Created shop",
+        data: {
+          shop: {
+            _id: shop._id,
+            name: shop.name,
+            vendor: shop.vendor
+          },
+        },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error creating shop",
         error: error.message,
       });
     }

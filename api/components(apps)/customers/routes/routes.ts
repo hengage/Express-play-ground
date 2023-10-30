@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { customerController } from "../controllers/customers.controller";
+import { jwtUtils } from "../../../utils";
 
 class CustomersRoutes {
   public router = Router();
@@ -11,6 +12,8 @@ class CustomersRoutes {
   public initializeRoutes() {
     this.router.post(`/signup`, customerController.signup);
     this.router.post(`/login`, customerController.login);
+
+    this.router.use(jwtUtils.verifyTokenMiddleware)
     this.router.route('/me/').get(customerController.getMe)
   }
 }

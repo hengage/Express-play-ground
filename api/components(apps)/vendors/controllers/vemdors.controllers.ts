@@ -62,9 +62,8 @@ class VendorController {
   }
 
   async getShops(req: Request, res: Response) {
-    const vendorId = req.params.vendorId;
     try {
-      jwtUtils.verifyToken(req)
+      const vendorId = (req as any).user._id
       const shops = await shopServices.getAllShopsForAVendor(vendorId);
       if (shops.length < 1) {
         return res.status(STATUS_CODES.NOT_FOUND).json({

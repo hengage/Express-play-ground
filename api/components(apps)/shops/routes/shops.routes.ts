@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { shopController } from "../controllers/shops.controller";
+import { jwtUtils } from "../../../utils";
 
 class ShopsRoutes {
   public router = Router();
@@ -11,7 +12,9 @@ class ShopsRoutes {
   public initializeRoutes() {
     this.router.route(`/category`).post(shopController.addcategory);
     this.router.route(`/categories`).get(shopController.getAllCategories);
-    this.router.route(`/create/:vendorId`).post(shopController.createShop);
+
+    this.router.use(jwtUtils.verifyTokenMiddleware)
+    this.router.route(`/create/`).post(shopController.createShop);
   }
 }
 

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { vendorController } from "../controllers/vemdors.controllers";
 import { authMiddleware } from "../../../middleware/authMiddleware";
+import { jwtUtils } from "../../../utils";
 
 class VendorsRoutes {
   public router = Router();
@@ -12,9 +13,9 @@ class VendorsRoutes {
   public initializeRoutes() {
     this.router.route(`/signup`).post(vendorController.signup);
     this.router.route(`/login`).post(vendorController.login);
-    this.router
-      .route(`/:vendorId/shops`)
-      .get(authMiddleware.isUserAuthorized, vendorController.getShops);
+
+    this.router.use(jwtUtils.verifyTokenMiddleware)
+    this.router.route(`/shops`).get(vendorController.getShops);
   }
 }
 
