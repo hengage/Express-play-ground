@@ -67,7 +67,10 @@ class CustomerService {
         customer.password
       );
       if (!passwordsMatch) {
-        throw new HandleException(STATUS_CODES.UNAUTHORIZED, "Incorrect password");
+        throw new HandleException(
+          STATUS_CODES.UNAUTHORIZED,
+          "Incorrect password"
+        );
       }
       const loggedInCustomer = {
         _id: customer._id,
@@ -75,6 +78,24 @@ class CustomerService {
       };
 
       return loggedInCustomer;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  async getMe(id: string) {
+    try {
+      const customer = await Customer.findOne({ _id: id }).select(
+        "-__v -password -updatedAt"
+      );
+      if (!customer) {
+        throw new HandleException(
+          STATUS_CODES.NOT_FOUND,
+          "Customer account not found"
+        );
+      }
+      console.log({ customer });
+      return customer;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }

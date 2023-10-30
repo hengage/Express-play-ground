@@ -11,6 +11,7 @@ class CustomersRoutes {
   public initializeRoutes() {
     this.router.post(`/signup`, customerController.signup);
     this.router.post(`/login`, customerController.login);
+    this.router.route('/me/').get(customerController.getMe)
   }
 }
 

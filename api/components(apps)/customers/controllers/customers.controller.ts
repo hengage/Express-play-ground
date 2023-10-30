@@ -55,6 +55,22 @@ class CustomerController {
       });
     }
   }
+
+  async getMe(req: Request, res: Response) {
+    try {
+      const user = jwtUtils.verifyToken(req) as { _id: string };
+      const customer = await customerService.getMe(user._id);
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched custommer profile",
+        data: { customer },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to get customer profile",
+        error: error.message
+      });
+    }
+  }
 }
 
 export const customerController = new CustomerController();
