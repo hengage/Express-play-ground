@@ -66,6 +66,7 @@ class DriverRiderService {
         email: payload.email,
         phoneNumber: payload.phoneNumber,
         password: payload.password,
+        photo: payload.photo,
         accountType,
         vehicleType: payload.vehicleType,
         vehicleInsurancePhoto: payload.vehicleInsurancePhoto,

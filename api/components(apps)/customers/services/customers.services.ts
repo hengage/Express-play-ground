@@ -15,6 +15,7 @@ class CustomerService {
         email: payload.email,
         phoneNumber: payload.phoneNumber,
         password: payload.password,
+        photo: payload.photo,
         gender: payload.gender,
         address: {
           street: payload.street,

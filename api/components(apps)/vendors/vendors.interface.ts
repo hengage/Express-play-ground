@@ -9,6 +9,7 @@ _id: string;
   };
   email: string;
   phoneNumber: string;
+  photo: string;
   password: string;
   govtIdPhoto: string;
   address: {
@@ -25,4 +26,21 @@ _id: string;
   lastLoggedIn: Date;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface ISignupVendor {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  phoneNumber: string;
+  password: string;
+  photo: string;
+  email: string;
+  govtIdPhoto: string;
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  postalCode: string;
+  
 }

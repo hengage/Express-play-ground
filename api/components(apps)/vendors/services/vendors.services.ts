@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { Vendor } from "../models/vendors.model";
-import { IVendor } from "../vendors.interface";
+import { ISignupVendor, IVendor } from "../vendors.interface";
 
 class VendorService {
   async getVendorByPhoneNumber(
@@ -51,7 +51,7 @@ class VendorService {
   }
 
 
-    async signup(payload: any) {
+    async signup(payload: ISignupVendor) {
         let middleName;
         if (payload.middleName) {
           middleName = payload.middleName;
@@ -68,13 +68,14 @@ class VendorService {
             email: payload.email,
             phoneNumber: payload.phoneNumber,
             password: payload.password,
+            photo: payload.photo,
             govtIdPhoto: payload.govtIdPhoto,
             address: {
               street: payload.street,
               city: payload.city,
               state: payload.state,
               country: payload.country,
-              zipCode: payload.zipCode,
+              postalCode: payload.postalCode,
             },
           });
           const savedVendor = await newVendor.save();

@@ -32,6 +32,7 @@ const customerSchema = new Schema<ICustomer>(
       type: String,
       required: true,
     },
+    photo: String,
     address: {
       street: {
         type: String,

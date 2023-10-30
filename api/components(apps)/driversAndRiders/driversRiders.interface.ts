@@ -10,6 +10,7 @@ export interface IDriverRider extends Document {
   email: string;
   phoneNumber: string;
   password: string;
+  photo: string;
   accountType: DriverRiderType;
   vehicleType: string;
   vehicleInsurancePhoto: string;
@@ -37,6 +38,7 @@ export interface ISignupDriverAndRider {
   email: string;
   phoneNumber: string;
   password: string;
+  photo: string;
   vehicleType: string;
   vehicleInsurancePhoto: string;
   licenseNumber: string;

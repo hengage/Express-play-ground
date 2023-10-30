@@ -5,6 +5,7 @@ export interface ICustomer extends Document {
   email: string;
   phoneNumber: string;
   password: string;
+  photo: string;
   country: string;
   address: {
     street: string;
@@ -31,6 +32,7 @@ export interface ISignupCustomer {
   email: string;
   phoneNumber: string;
   password: string;
+  photo: string;
   gender: string;
   street: string;
   city: string;

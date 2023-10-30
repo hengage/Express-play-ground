@@ -18,6 +18,7 @@ const driverRiderSchema = new Schema<IDriverRider>(
     email: { type: String, required: true, unique: true },
     phoneNumber: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    photo: String,
     address: {
       street: { type: String, required: true },
       city: { type: String, required: true },
