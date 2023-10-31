@@ -40,6 +40,22 @@ class UserService {
     }
     return false;
   }
+
+  public async getUserAccountModel(accountType: string) {
+    switch (accountType) {
+      case "customer":
+        return Customer;
+      case "vendor":
+        return Vendor;
+      case "driver-rider":
+        return DriverRider;
+      default:
+        throw new HandleException(
+          STATUS_CODES.BAD_REQUEST,
+          "Invalid account type"
+        );
+    }
+  }
 }
 
 export const userService = new UserService();

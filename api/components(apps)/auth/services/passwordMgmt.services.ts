@@ -1,8 +1,6 @@
 import { STATUS_CODES } from "../../../constants";
+import { userService } from "../../../services";
 import { HandleException, encryption } from "../../../utils";
-import { Customer } from "../../customers";
-import { DriverRider } from "../../driversAndRiders";
-import { Vendor } from "../../vendors";
 
 class PasswordMgmtService {
   async resetPassword(
@@ -10,7 +8,7 @@ class PasswordMgmtService {
     newPassword: string,
     accountType: string
   ) {
-    const AccountModel = await this.getUserAccountModel(accountType);
+    const AccountModel = await userService.getUserAccountModel(accountType);
     const account = await (AccountModel as any).findOne({ phoneNumber });
     if (!account) {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "User not found");
@@ -27,7 +25,7 @@ class PasswordMgmtService {
     accountType: string
   ) {
     try {
-      const AccountModel = await this.getUserAccountModel(accountType);
+      const AccountModel = await userService.getUserAccountModel(accountType);
       const account = await (AccountModel as any).findById(accountId);
 
       if (!account) {
@@ -50,22 +48,6 @@ class PasswordMgmtService {
       return;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
-    }
-  }
-
-  private async getUserAccountModel(accountType: string) {
-    switch (accountType) {
-      case "customer":
-        return Customer;
-      case "vendor":
-        return Vendor;
-      case "driver-rider":
-        return DriverRider;
-      default:
-        throw new HandleException(
-          STATUS_CODES.BAD_REQUEST,
-          "Invalid account type"
-        );
     }
   }
 }
