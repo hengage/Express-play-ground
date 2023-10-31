@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { verifyController } from "../controllers/verify.controller";
 import { passwordMgmtController } from "../controllers/passwordMgmt.controller";
+import { jwtUtils } from "../../../utils";
 
 
 class AuthRoutes  {
@@ -23,8 +24,9 @@ class AuthRoutes  {
       .route('/password/reset')
       .patch(passwordMgmtController.resetPassword);
 
+      this.router.use(jwtUtils.verifyTokenMiddleware)
       this.router
-      .route('/:accountId/password/change')
+      .route('/password/change')
       .patch(passwordMgmtController.changePassword);
   }
 }

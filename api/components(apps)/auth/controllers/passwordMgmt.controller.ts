@@ -37,10 +37,10 @@ class PasswordMgmtController {
         error: "Provide account type",
       });
     }
-
+    const userId = (req as any).user._id
     try {
       await passwordMgmtService.changePassword(
-        req.params.accountId,
+        userId,
         req.body.currentPassword,
         req.body.newPassword,
         accountType.toLowerCase()

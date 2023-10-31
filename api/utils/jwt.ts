@@ -40,7 +40,6 @@ class JWT {
 
     try {
       const decoded = jwt.verify(token, `${SECRET_KEY}`);
-      console.log({decoded});
       (req as any).user = decoded;
       next();
     } catch (error: any) {
