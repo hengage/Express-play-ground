@@ -27,23 +27,6 @@ class ProductsService {
     }
   }
 
-  public async getProductsForAShop(shopId: string): Promise<IProduct[]> {
-    try {
-      const products = await Product.find({ shop: shopId }).select(
-        "_id name photos price"
-      ).lean();
-      if (products.length < 1) {
-        throw new HandleException(
-          STATUS_CODES.NOT_FOUND,
-          "This shop has no item"
-        );
-      }
-      return products;
-    } catch (error: any) {
-      throw new HandleException(error.status, error.message);
-    }
-  }
-
   public async getProductById(productId: string): Promise<IProduct> {
     try {
       const product = await Product.findById({_id: productId})

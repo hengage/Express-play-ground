@@ -70,6 +70,27 @@ class ShopController {
       });
     }
   }
+
+  
+  public async getProductsForAshop(req: Request, res: Response) {
+    const { shopId } = req.params;
+    try {
+      const products = await shopServices.getProductsForAShop(
+        req.params.shopId
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: `Fetched products for shop: ${shopId}`,
+        data: {
+          products,
+        },
+      });
+    } catch (error: any) {
+      res.status(error.status).json({
+        message: "Failed to fetch products",
+        error: error.message
+      })
+    }
+  }
 }
 
 export const shopController = new ShopController();

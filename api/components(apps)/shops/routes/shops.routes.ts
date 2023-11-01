@@ -15,6 +15,8 @@ class ShopsRoutes {
 
     this.router.use(jwtUtils.verifyTokenMiddleware)
     this.router.route(`/create/`).post(shopController.createShop);
+    this.router.route(`/:shopId/products`).get( shopController.getProductsForAshop);
+
   }
 }
 

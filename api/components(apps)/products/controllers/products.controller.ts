@@ -37,30 +37,9 @@ class ProductsController {
     }
   }
 
-  public async getProductsForAshop(req: Request, res: Response) {
-    const { shopId } = req.params;
-    try {
-      const products = await productsService.getProductsForAShop(
-        req.params.shopId
-      );
-      res.status(STATUS_CODES.OK).json({
-        message: `Fetched products for shop: ${shopId}`,
-        data: {
-          products,
-        },
-      });
-    } catch (error: any) {
-      res.status(error.status).json({
-        message: "Failed to fetch products",
-        error: error.message
-      })
-    }
-  }
-
   public async getProductById (req: Request, res: Response) {
     try {
       const product = await productsService.getProductById(req.params.productId)
-      console.log({product})
       res.status(STATUS_CODES.OK).json({
         message: "Fetched product",
         data: {
