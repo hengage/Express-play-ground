@@ -85,7 +85,7 @@ class ShopController {
         },
       });
     } catch (error: any) {
-      res.status(error.status).json({
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Failed to fetch products",
         error: error.message
       })

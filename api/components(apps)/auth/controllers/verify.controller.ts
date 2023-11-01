@@ -13,7 +13,7 @@ class VerifyController {
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Failed to send verification code",
-        errror: error.message,
+        error: error.message,
       });
     }
   };
@@ -28,7 +28,7 @@ class VerifyController {
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Failed to verify code",
-        errror: error.message,
+        error: error.message,
       });
     }
   };
