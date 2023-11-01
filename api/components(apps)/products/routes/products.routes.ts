@@ -12,7 +12,8 @@ class ProductsRoutes {
   public initializeRoutes() {
     this.router.use(jwtUtils.verifyTokenMiddleware)
     this.router.route(`/new/:shopId`).post( productsController.addProducts);
-    this.router.route(`/:shopId`).get( productsController.getProductsForAshop);
+    // this.router.route(`/:shopId`).get( productsController.getProductsForAshop);
+    this.router.route(`/:productId`).get( productsController.getProductById);
   }
 }
 

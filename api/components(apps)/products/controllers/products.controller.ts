@@ -56,6 +56,25 @@ class ProductsController {
       })
     }
   }
+
+  public async getProductById (req: Request, res: Response) {
+    try {
+      const product = await productsService.getProductById(req.params.productId)
+      console.log({product})
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched product",
+        data: {
+          product
+        }
+      })
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR)
+      .json({
+        message: "Failed to fetch product",
+        error: error.message
+      })
+    }
+  }
 }
 
 export const productsController = new ProductsController();

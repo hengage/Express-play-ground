@@ -43,6 +43,20 @@ class ProductsService {
       throw new HandleException(error.status, error.message);
     }
   }
+
+  public async getProductById(productId: string): Promise<IProduct> {
+    try {
+      const product = await Product.findById({_id: productId})
+      .select('_id name description photos price')
+
+      if (! product ) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, 'Product not found')
+      }
+      return product
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message)
+    }
+  }
 }
 
 export const productsService = new ProductsService();
