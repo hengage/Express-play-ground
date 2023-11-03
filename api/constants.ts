@@ -21,6 +21,13 @@ export enum ShopCategory {
   FOOD_AND_GROCERIS = 'FOOD AND GROCERIES',
 }
 
+export enum OrderStatus  {
+  PENDING = 'PENDING',
+  PICKED_UP = 'PICKED UP',
+  DELIVERED = 'DELIVERED',
+  CANCELLED = 'CANCELLED'
+}
+
 export const URL_LINKS = {
   DEFAULT_SHOP_LOGO: 'DEFAULT_SHOP_LOGO',
 };
@@ -37,3 +44,4 @@ export const STATUS_CODES = {
   NOT_FOUND: 404,
   CONFLICT: 409,
 };
+
