@@ -22,10 +22,10 @@ export enum ShopCategory {
 }
 
 export enum OrderStatus  {
-  PENDING = 'PENDING',
-  PICKED_UP = 'PICKED UP',
-  DELIVERED = 'DELIVERED',
-  CANCELLED = 'CANCELLED'
+  PENDING = 'Pending',
+  PICKED_UP = 'Picked up',
+  DELIVERED = 'Delivered',
+  CANCELLED = 'Cancelled'
 }
 
 export const URL_LINKS = {
