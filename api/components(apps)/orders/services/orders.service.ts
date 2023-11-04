@@ -3,6 +3,7 @@ import { Order } from "../models/orders.models";
 
 class OrdersService {
   public async createOrder(payload: any, customerId: string) {
+    console.log({customerId})
     try {
       const orderItems = payload.items.map((item: any) => {
         return {
@@ -18,12 +19,14 @@ class OrdersService {
         items: orderItems,
         totalAmount: payload.totalAmount,
       });
+      console.log({newOrder})
+
 
       await newOrder.save();
 
       const order = {
         _id: newOrder._id,
-        cuatomer: newOrder.customer,
+        customer: newOrder.customer,
         items: newOrder.items,
         totalAmount: newOrder.totalAmount,
         status: newOrder.status,

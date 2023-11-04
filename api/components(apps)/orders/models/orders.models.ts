@@ -9,6 +9,7 @@ const orderSchema = new Schema<IOrder>({
     required: true,
     default: () => uniqueString.generateUniqueString(4),
   },
+  customer: { type: String, required: true, ref: "Customer" },
   items: [{
     product: {
         type: String,
@@ -26,6 +27,7 @@ const orderSchema = new Schema<IOrder>({
       shop: {
         type: String,
         required: true,
+        ref: "Shop"
       },
   }],
   totalAmount: {
