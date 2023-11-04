@@ -1,5 +1,7 @@
+import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { Order } from "../models/orders.models";
+import { IOrder } from "../orders.interface";
 
 class OrdersService {
   public async createOrder(payload: any, customerId: string) {
@@ -35,6 +37,21 @@ class OrdersService {
       return order;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
+    }
+  }
+
+  public async getOrder(orderId: string): Promise<IOrder> {
+    try {
+        const order = await Order.findById({_id: orderId})
+        .select('_id items totalAmount status createdAt')
+        .lean()
+
+        if (! order) {
+            throw new HandleException(STATUS_CODES.NOT_FOUND, 'Order not found')
+        }
+        return order;
+    } catch (error: any) {
+        throw new HandleException(error.status, error.message)
     }
   }
 }

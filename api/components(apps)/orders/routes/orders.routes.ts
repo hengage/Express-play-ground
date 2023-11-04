@@ -14,6 +14,7 @@ class OrdersRoutes {
   
       this.router.use(jwtUtils.verifyTokenMiddleware)
       this.router.route(`/create`).post(ordersController.createOrder);
+      this.router.route(`/:orderId`).get(ordersController.getOrder);
     }
   }
 
