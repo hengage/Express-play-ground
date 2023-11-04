@@ -31,7 +31,7 @@ const vendorSchema = new Schema<IVendor>(
     accountStatus: {
       type: String,
       enum: Object.values(AccountStatus),
-      default: AccountStatus.Active,
+      default: AccountStatus.ACTIVE,
     },
     lastLoggedIn: String,
   },

@@ -63,7 +63,7 @@ const customerSchema = new Schema<ICustomer>(
     accountStatus: {
       type: String,
       enum: Object.values(AccountStatus),
-      default: AccountStatus.Active,
+      default: AccountStatus.ACTIVE,
     },
     lastLoggedIn: Date,
   },

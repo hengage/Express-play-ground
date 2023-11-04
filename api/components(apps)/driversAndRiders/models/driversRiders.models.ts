@@ -38,7 +38,7 @@ const driverRiderSchema = new Schema<IDriverRider>(
     accountStatus: {
       type: String,
       enum: Object.values(AccountStatus),
-      default: AccountStatus.Active,
+      default: AccountStatus.ACTIVE,
     },
     rating: { type: Number, default: 2.5 },
     lastLoggedIn: { type: Date },
