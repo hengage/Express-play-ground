@@ -2,7 +2,7 @@ import { HandleException } from "../../../utils";
 import { Order } from "../models/orders.models";
 
 class OrdersService {
-  public async createOrder(payload: any) {
+  public async createOrder(payload: any, customerId: string) {
     try {
       const orderItems = payload.items.map((item: any) => {
         return {
@@ -14,7 +14,7 @@ class OrdersService {
       });
 
       const newOrder = new Order({
-        customer: payload.customer,
+        customer: customerId,
         items: orderItems,
         totalAmount: payload.totalAmount,
       });

@@ -5,7 +5,8 @@ import { STATUS_CODES } from "../../../constants";
 class OrdersController  {
     async createOrder(req: Request, res: Response) {
         try {
-            const order = await ordersService.createOrder(req.body)
+            const customerId = (req as any).user_id;
+            const order = await ordersService.createOrder(req.body, customerId)
             res.status(STATUS_CODES.OK).json({
                 message: "Created order",
                 data: {
