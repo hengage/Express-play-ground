@@ -45,7 +45,7 @@ class VerifyService {
       if (verificationCheck.status === "approved") {
         return true;
       } else {
-        throw new HandleException(STATUS_CODES.BAD_REQUEST, "Inavlid code");
+        throw new HandleException(STATUS_CODES.BAD_REQUEST, "Invalid code");
       }
     } catch (error) {
       throw error;
