@@ -5,7 +5,7 @@ import { HandleException } from "../../../utils";
 import { ICustomer, ISignupCustomer } from "../customers.interface";
 import { ILoginCustomer } from "../customers.interface";
 import { STATUS_CODES } from "../../../constants";
-import { Order } from "../../orders";
+import { IOrder, Order } from "../../orders";
 
 class CustomerService {
   async signup(payload: ISignupCustomer): Promise<any> {
@@ -102,15 +102,33 @@ class CustomerService {
     }
   }
 
-  async getOrders(customerId: string) {
+  async getOrders(customerId: string, status?: string): Promise<IOrder[]> {
     try {
-      const orders = await Order.find({ customer: customerId })
-        .select("-v -updatedAt")
-        .lean();
-      if (orders.length < 1) {
-        throw new HandleException(STATUS_CODES.NOT_FOUND, "You have no order.");
+      const filter: { customer: string; status?: string } = {
+        customer: customerId,
+      };
+
+      if (status) {
+        filter.status = status;
       }
-      return orders
+
+      const orders = await Order.find(filter).select("-__v -updatedAt").lean();
+
+      if (orders.length < 1) {
+        if (status) {
+          throw new HandleException(
+            STATUS_CODES.NOT_FOUND,
+            `You have no ${status} order.`
+          );
+        } else {
+          throw new HandleException(
+            STATUS_CODES.NOT_FOUND,
+            "You have no order."
+          );
+        }
+      }
+
+      return orders;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
