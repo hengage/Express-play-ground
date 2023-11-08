@@ -1,31 +1,31 @@
 export enum Gender {
-  MALE = "Male",
-  FEMALE = "Female",
-  OTHER = "Other",
+  MALE = "male",
+  FEMALE = "memale",
+  OTHER = "other",
 }
 
 export enum AccountStatus {
-  ACTIVE = "Active",
-  INACTIVE = "Inactive",
-  SUSPENDED = "Suspended",
+  ACTIVE = "active",
+  INACTIVE = "inactive",
+  SUSPENDED = "suspended",
 }
 
 export enum DriverRiderType {
-  DRIVER = 'Driver',
-  RIDER = 'Rider',
+  DRIVER = 'driver',
+  RIDER = 'rider',
 }
 
 export enum ShopCategory {
-  CLOTHING = 'Clothing',
-  PHARMACY = 'Pharmacy',
-  FOOD_AND_GROCERIS = 'Food and grocerries',
+  CLOTHING = 'clothing',
+  PHARMACY = 'pharmacy',
+  FOOD_AND_GROCERIS = 'food_and_groceries',
 }
 
 export enum OrderStatus  {
-  PENDING = 'Pending',
-  PICKED_UP = 'Picked up',
-  DELIVERED = 'Delivered',
-  CANCELLED = 'Cancelled'
+  PENDING = 'pending',
+  PICKED_UP = 'picked_up',
+  DELIVERED = 'delivered',
+  CANCELLED = 'cancelled'
 }
 
 export const URL_LINKS = {
