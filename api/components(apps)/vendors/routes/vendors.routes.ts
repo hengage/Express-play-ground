@@ -16,6 +16,7 @@ class VendorsRoutes {
 
     this.router.use(jwtUtils.verifyTokenMiddleware)
     this.router.route(`/shops`).get(vendorController.getShops);
+    this.router.route('/me').get(vendorController.getMe);
   }
 }
 

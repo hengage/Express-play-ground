@@ -81,6 +81,23 @@ class VendorController {
       });
     }
   }
+
+  async getMe(req: Request, res: Response) {
+    try {
+      const vendorId = (req as any).user._id;
+      const vendor = await vendorService.getMe(vendorId);
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched vendor profile",
+        data: { vendor },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to get vendor profile",
+        error: error.message,
+      });
+    }
+  }
+
 }
 
 export const vendorController = new VendorController();

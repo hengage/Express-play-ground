@@ -28,11 +28,8 @@ class VendorService {
       throw new HandleException(error.status, error.message);
     }
   }
-  
-  async getVendorById(
-    id: string,
-    selectFields?: string
-  ): Promise<IVendor> {
+
+  async getVendorById(id: string, selectFields?: string): Promise<IVendor> {
     try {
       const query = Vendor.findById(id);
 
@@ -50,65 +47,84 @@ class VendorService {
     }
   }
 
+  async signup(payload: ISignupVendor) {
+    let middleName;
+    if (payload.middleName) {
+      middleName = payload.middleName;
+    } else {
+      middleName = null;
+    }
+    try {
+      const newVendor = new Vendor({
+        name: {
+          firstName: payload.firstName,
+          lastName: payload.lastName,
+          middleName,
+        },
+        email: payload.email,
+        phoneNumber: payload.phoneNumber,
+        password: payload.password,
+        photo: payload.photo,
+        govtIdPhoto: payload.govtIdPhoto,
+        address: {
+          street: payload.street,
+          city: payload.city,
+          state: payload.state,
+          country: payload.country,
+          postalCode: payload.postalCode,
+        },
+      });
+      const savedVendor = await newVendor.save();
+      return savedVendor;
+    } catch (error: any) {
+      throw new HandleException(STATUS_CODES.SERVER_ERROR, error.message);
+    }
+  }
 
-    async signup(payload: ISignupVendor) {
-        let middleName;
-        if (payload.middleName) {
-          middleName = payload.middleName;
-        } else {
-          middleName = null;
-        }
-        try {
-          const newVendor = new Vendor({
-            name: {
-              firstName: payload.firstName,
-              lastName: payload.lastName,
-              middleName,
-            },
-            email: payload.email,
-            phoneNumber: payload.phoneNumber,
-            password: payload.password,
-            photo: payload.photo,
-            govtIdPhoto: payload.govtIdPhoto,
-            address: {
-              street: payload.street,
-              city: payload.city,
-              state: payload.state,
-              country: payload.country,
-              postalCode: payload.postalCode,
-            },
-          });
-          const savedVendor = await newVendor.save();
-          return savedVendor;
-        } catch (error: any) {
-          throw new HandleException(STATUS_CODES.SERVER_ERROR, error.message);
-        }
-      }
+  async login(payload: any): Promise<any> {
+    try {
+      const vendor = await this.getVendorByPhoneNumber(
+        payload.phoneNumber,
+        "phoneNumber password"
+      );
 
-      async login(payload: any): Promise<any> {
-        try {
-          const vendor = await this.getVendorByPhoneNumber(
-            payload.phoneNumber,
-            "phoneNumber password"
-          );
-    
-          const passwordsMatch = await bcrypt.compare(
-            payload.password,
-            vendor.password
-          );
-          if (!passwordsMatch) {
-            throw new HandleException(STATUS_CODES.UNAUTHORIZED, "Incorrect password");
-          }
-          const loggedInVendor = {
-            _id: vendor._id,
-            phoneNumber: vendor.phoneNumber,
-          };
-    
-          return loggedInVendor;
-        } catch (error: any) {
-          throw new HandleException(error.status, error.message);
-        }
+      const passwordsMatch = await bcrypt.compare(
+        payload.password,
+        vendor.password
+      );
+      if (!passwordsMatch) {
+        throw new HandleException(
+          STATUS_CODES.UNAUTHORIZED,
+          "Incorrect password"
+        );
       }
+      const loggedInVendor = {
+        _id: vendor._id,
+        phoneNumber: vendor.phoneNumber,
+      };
+
+      return loggedInVendor;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  async getMe(id: string) {
+    try {
+      const vendor = await Vendor.findOne({ _id: id })
+        .select("-__v -password -updatedAt")
+        .lean();
+      if (! vendor) {
+        throw new HandleException(
+          STATUS_CODES.NOT_FOUND,
+          "Vendor account not found"
+        );
+      }
+      return vendor;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
 }
 
 export const vendorService = new VendorService();
