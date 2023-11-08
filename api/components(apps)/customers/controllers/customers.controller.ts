@@ -58,7 +58,7 @@ class CustomerController {
 
   async getMe(req: Request, res: Response) {
     try {
-      const customerId = (req as any).user._id
+      const customerId = (req as any).user._id;
       const customer = await customerService.getMe(customerId);
       res.status(STATUS_CODES.OK).json({
         message: "Fetched custommer profile",
@@ -67,7 +67,25 @@ class CustomerController {
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Failed to get customer profile",
-        error: error.message
+        error: error.message,
+      });
+    }
+  }
+
+  async getOrders(req: Request, res: Response) {
+    try {
+      const customerId = (req as any).user._id;
+      const orders = await customerService.getOrders(customerId);
+      console.log({ orders });
+
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched orders",
+        data: { orders },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error fetching orders",
+        error: error.message,
       });
     }
   }

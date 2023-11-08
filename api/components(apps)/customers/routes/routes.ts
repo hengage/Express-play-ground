@@ -14,7 +14,8 @@ class CustomersRoutes {
     this.router.post(`/login`, customerController.login);
 
     this.router.use(jwtUtils.verifyTokenMiddleware)
-    this.router.route('/me/').get(customerController.getMe)
+    this.router.route('/me').get(customerController.getMe)
+    this.router.route('/orders').get(customerController.getOrders)
   }
 }
 

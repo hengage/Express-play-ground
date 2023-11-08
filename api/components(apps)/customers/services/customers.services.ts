@@ -5,6 +5,7 @@ import { HandleException } from "../../../utils";
 import { ICustomer, ISignupCustomer } from "../customers.interface";
 import { ILoginCustomer } from "../customers.interface";
 import { STATUS_CODES } from "../../../constants";
+import { Order } from "../../orders";
 
 class CustomerService {
   async signup(payload: ISignupCustomer): Promise<any> {
@@ -96,6 +97,20 @@ class CustomerService {
       }
       console.log({ customer });
       return customer;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  async getOrders(customerId: string) {
+    try {
+      const orders = await Order.find({ customer: customerId })
+        .select("-v -updatedAt")
+        .lean();
+      if (orders.length < 1) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "You have no order.");
+      }
+      return orders
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
