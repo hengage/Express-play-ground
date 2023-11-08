@@ -40,7 +40,7 @@ const shopSchema = new Schema<IShop>(
     status: {
       type: String,
       enum: Object.values(AccountStatus),
-      default: AccountStatus.Active,
+      default: AccountStatus.ACTIVE,
     },
   },
   { timestamps: true, _id: false }

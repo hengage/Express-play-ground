@@ -22,6 +22,23 @@ class OrdersController  {
             })
         }
     }
+
+    async getOrder(req: Request, res: Response) {
+        try {
+            const order = await ordersService.getOrder(req.params.orderId)
+            res.status(STATUS_CODES.OK).json({
+                message: "Fetched order",
+                data: {
+                    order
+                }
+            })
+        } catch (error: any) {
+            res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+                message: "Error fetching order",
+                error: error.message
+            })
+        }
+    }
 }
 
 export const ordersController = new OrdersController()
