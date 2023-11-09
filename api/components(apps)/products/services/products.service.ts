@@ -44,9 +44,11 @@ class ProductsService {
 
   public async getProductById(productId: string): Promise<IProduct> {
     try {
-      const product = await Product.findById({ _id: productId }).select(
-        "_id name description photos price"
-      );
+      const product = await Product.findById({ _id: productId })
+        .populate({ path: "shop", select: "name" })
+        .select("_id name description photos price")
+        .lean()
+        .exec();
 
       if (!product) {
         throw new HandleException(STATUS_CODES.NOT_FOUND, "Product not found");
@@ -72,7 +74,7 @@ class ProductsService {
         .lean()
         .exec();
 
-        return products;
+      return products;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
