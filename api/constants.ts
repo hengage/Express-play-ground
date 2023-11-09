@@ -11,25 +11,27 @@ export enum AccountStatus {
 }
 
 export enum DriverRiderType {
-  DRIVER = 'driver',
-  RIDER = 'rider',
+  DRIVER = "driver",
+  RIDER = "rider",
 }
 
 export enum ShopCategory {
-  CLOTHING = 'clothing',
-  PHARMACY = 'pharmacy',
-  FOOD_AND_GROCERIS = 'food_and_groceries',
+  CLOTHING = "clothing",
+  PHARMACY = "pharmacy",
+  FOOD_AND_GROCERIS = "food_and_groceries",
 }
 
-export enum OrderStatus  {
-  PENDING = 'pending',
-  PICKED_UP = 'picked_up',
-  DELIVERED = 'delivered',
-  CANCELLED = 'cancelled'
+export enum OrderStatus {
+  PENDING = "pending",
+  PICKED_UP = "picked_up",
+  DELIVERED = "delivered",
+  CANCELLED = "cancelled",
 }
 
 export const URL_LINKS = {
-  DEFAULT_SHOP_LOGO: 'DEFAULT_SHOP_LOGO',
+  DEFAULT_SHOP_LOGO: "DEFAULT_SHOP_LOGO",
+  DEFAULT_ACCOUNT_PHOTO:
+    "https://res.cloudinary.com/drzhdxgqk/image/upload/v1699539159/tmp-1-1699539159364_weik0e.jpg",
 };
 
 export const STATUS_CODES = {
@@ -44,4 +46,3 @@ export const STATUS_CODES = {
   NOT_FOUND: 404,
   CONFLICT: 409,
 };
-

@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { ICustomer } from "../customers.interface";
-import { AccountStatus, Gender } from "../../../constants";
+import { AccountStatus, Gender, URL_LINKS } from "../../../constants";
 import { encryption, uniqueString } from "../../../utils";
 
 const customerSchema = new Schema<ICustomer>(
@@ -59,7 +59,7 @@ const customerSchema = new Schema<ICustomer>(
       type: String,
       enum: Object.values(Gender),
     },
-    profilePhoto: String,
+    profilePhoto: { type: String, default: URL_LINKS.DEFAULT_ACCOUNT_PHOTO },
     accountStatus: {
       type: String,
       enum: Object.values(AccountStatus),
