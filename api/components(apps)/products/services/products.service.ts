@@ -1,5 +1,6 @@
 import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
+import { Shop } from "../../shops";
 import { Product } from "../models/products.model";
 import { IAddProduct, IProduct } from "../products.interface";
 
@@ -10,6 +11,19 @@ class ProductsService {
     shopId: string
   ) {
     try {
+      const shop = await Shop.findById(shopId).select("category").lean().exec();
+
+      if (!shop) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "Shop not found");
+      }
+
+      if (! shop.category) {
+        throw new HandleException(
+          STATUS_CODES.NOT_FOUND,
+          "Shop does not have a category"
+        );
+      }
+
       const product = new Product({
         name: payload.name,
         description: payload.description,
@@ -18,6 +32,7 @@ class ProductsService {
         sizes: payload.sizes,
         colors: payload.colors,
         shop: shopId,
+        category: shop.category,
         vendor: vendorId,
       });
       await product.save();
@@ -29,15 +44,16 @@ class ProductsService {
 
   public async getProductById(productId: string): Promise<IProduct> {
     try {
-      const product = await Product.findById({_id: productId})
-      .select('_id name description photos price')
+      const product = await Product.findById({ _id: productId }).select(
+        "_id name description photos price"
+      );
 
-      if (! product ) {
-        throw new HandleException(STATUS_CODES.NOT_FOUND, 'Product not found')
+      if (!product) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "Product not found");
       }
-      return product
+      return product;
     } catch (error: any) {
-      throw new HandleException(error.status, error.message)
+      throw new HandleException(error.status, error.message);
     }
   }
 }
