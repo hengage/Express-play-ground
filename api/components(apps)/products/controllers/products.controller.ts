@@ -57,9 +57,10 @@ class ProductsController {
   }
 
   public async getProductsByCategory(req: Request, res: Response) {
+    const page = parseInt(req.query.page as string) || 1
     try {
       const products = await productsService.getProductByCategory(
-        req.params.categoryId
+        req.params.categoryId, page
       );
       res.status(STATUS_CODES.OK).json({
         message: "Fetched product",

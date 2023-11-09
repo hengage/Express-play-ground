@@ -57,20 +57,22 @@ class ProductsService {
     }
   }
 
-  public async getProductByCategory(categoryId: string): Promise<IProduct[]> {
+  public async getProductByCategory(
+    categoryId: string,
+    page: number,
+    limit: number = 2
+  ): Promise<IProduct[]> {
+    const skip = (page - 1) * limit;
+
     try {
       const products = await Product.find({ category: categoryId })
         .select("_id name description photos price")
+        .skip(skip)
+        .limit(limit)
         .lean()
         .exec();
 
-      if (products.length < 1) {
-        throw new HandleException(
-          STATUS_CODES.NOT_FOUND,
-          "No product for this category"
-        );
-      }
-      return products;
+        return products;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
