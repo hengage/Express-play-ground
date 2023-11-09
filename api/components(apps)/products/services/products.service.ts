@@ -60,7 +60,7 @@ class ProductsService {
   public async getProductByCategory(
     categoryId: string,
     page: number,
-    limit: number = 2
+    limit: number = 20
   ): Promise<IProduct[]> {
     const skip = (page - 1) * limit;
 
