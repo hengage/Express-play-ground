@@ -37,21 +37,41 @@ class ProductsController {
     }
   }
 
-  public async getProductById (req: Request, res: Response) {
+  public async getProductById(req: Request, res: Response) {
     try {
-      const product = await productsService.getProductById(req.params.productId)
+      const product = await productsService.getProductById(
+        req.params.productId
+      );
       res.status(STATUS_CODES.OK).json({
         message: "Fetched product",
         data: {
-          product
-        }
-      })
+          product,
+        },
+      });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR)
-      .json({
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Failed to fetch product",
-        error: error.message
-      })
+        error: error.message,
+      });
+    }
+  }
+
+  public async getProductsByCategory(req: Request, res: Response) {
+    try {
+      const products = await productsService.getProductByCategory(
+        req.params.categoryId
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched product",
+        data: {
+          products,
+        },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to fetch product",
+        error: error.message,
+      });
     }
   }
 }

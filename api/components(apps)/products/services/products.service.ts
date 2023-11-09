@@ -17,7 +17,7 @@ class ProductsService {
         throw new HandleException(STATUS_CODES.NOT_FOUND, "Shop not found");
       }
 
-      if (! shop.category) {
+      if (!shop.category) {
         throw new HandleException(
           STATUS_CODES.NOT_FOUND,
           "Shop does not have a category"
@@ -52,6 +52,25 @@ class ProductsService {
         throw new HandleException(STATUS_CODES.NOT_FOUND, "Product not found");
       }
       return product;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  public async getProductByCategory(categoryId: string): Promise<IProduct[]> {
+    try {
+      const products = await Product.find({ category: categoryId })
+        .select("_id name description photos price")
+        .lean()
+        .exec();
+
+      if (products.length < 1) {
+        throw new HandleException(
+          STATUS_CODES.NOT_FOUND,
+          "No product for this category"
+        );
+      }
+      return products;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
