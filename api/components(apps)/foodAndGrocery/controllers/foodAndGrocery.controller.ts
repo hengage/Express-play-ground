@@ -1,0 +1,32 @@
+import { Request, Response } from "express";
+import { vendorService } from "../../vendors";
+import { STATUS_CODES } from "../../../constants";
+import { foodAndGroceryService } from "../services/foodAndGrocery.service";
+
+class FoodAndGroceryController {
+  async createShop(req: Request, res: Response) {
+    try {
+      const vendorId = (req as any).user._id;
+      await vendorService.getVendorById(vendorId, "_id");
+      //   await shopServices.isNameTaken(req.body.name)
+      const shop = await foodAndGroceryService.createShop(req.body, vendorId);
+      res.status(STATUS_CODES.CREATED).json({
+        message: "Created shop",
+        data: {
+          shop: {
+            _id: shop._id,
+            name: shop.name,
+            vendor: shop.vendor,
+          },
+        },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error creating shop",
+        error: error.message,
+      });
+    }
+  }
+}
+
+export const foodAndGroceryController = new FoodAndGroceryController();

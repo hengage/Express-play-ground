@@ -4,7 +4,7 @@ import { AccountStatus, ShopCategory } from "../../../constants";
 import { model } from "mongoose";
 import { IShop, ICategory } from "../interfaces/shops.interface";
 
-const shopSchema = new Schema<IShop>(
+export const shopSchema = new Schema<IShop>(
   {
     _id: {
       type: String,
@@ -46,7 +46,7 @@ const shopSchema = new Schema<IShop>(
   { timestamps: true, _id: false }
 );
 
-const categorySchema = new Schema<ICategory>(
+export const categorySchema = new Schema<ICategory>(
   {
     _id: {
       type: String,
