@@ -5,7 +5,6 @@ import { IOrder } from "../orders.interface";
 
 class OrdersService {
   public async createOrder(payload: any, customerId: string) {
-    console.log({customerId})
     try {
       const orderItems = payload.items.map((item: any) => {
         return {
@@ -21,8 +20,6 @@ class OrdersService {
         items: orderItems,
         totalAmount: payload.totalAmount,
       });
-      console.log({newOrder})
-
 
       await newOrder.save();
 

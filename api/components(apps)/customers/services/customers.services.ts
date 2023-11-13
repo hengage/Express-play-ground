@@ -95,7 +95,6 @@ class CustomerService {
           "Customer account not found"
         );
       }
-      console.log({ customer });
       return customer;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);

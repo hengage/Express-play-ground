@@ -20,7 +20,6 @@ class SmsService {
         from: `${TWILIO_PHONE_NUMBER}`,
         to: payload.recipientPhoneNumber,
       });
-      console.log(`SMS sent with SID: ${response.sid}`);
       return response;
     } catch (error) {
       console.error(`Failed to send SMS: ${error}`);

@@ -1,1 +1,1 @@
-export { foodAndGroceryRoutes } from "./routes/foodAndGrocer.routes";
+export { foodAndGroceryRoutes } from "./routes/foodAndGrocery.routes";

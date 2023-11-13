@@ -132,7 +132,6 @@ class DriverRiderService {
           `${accountType} not found`
         );
       }
-      console.log({driverRider})
 
       // Increase the number of times the account has been rated
       driverRider.rating.ratingCount += 1;

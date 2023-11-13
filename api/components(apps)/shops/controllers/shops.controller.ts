@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { shopServices } from "../services/shops.services";
-import { STATUS_CODES, ShopCategory } from "../../../constants";
-import { HandleException } from "../../../utils";
+import { STATUS_CODES } from "../../../constants";
 import { vendorService } from "../../vendors";
 
 class ShopController {

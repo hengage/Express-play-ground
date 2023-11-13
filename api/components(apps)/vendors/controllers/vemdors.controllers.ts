@@ -7,7 +7,6 @@ import { shopServices } from "../../shops";
 
 class VendorController {
   public async signup(req: Request, res: Response) {
-    console.log({ vndorEmail: req.body.email });
     try {
       await userService.isEmailTaken(req.body.email);
 

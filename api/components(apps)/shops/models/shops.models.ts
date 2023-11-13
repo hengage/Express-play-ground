@@ -1,7 +1,6 @@
-import { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 import { uniqueString } from "../../../utils";
-import { AccountStatus, ShopCategory } from "../../../constants";
-import { model } from "mongoose";
+import { AccountStatus } from "../../../constants";
 import { IShop, ICategory } from "../interfaces/shops.interface";
 
 export const shopSchema = new Schema<IShop>(

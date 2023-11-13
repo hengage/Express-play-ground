@@ -15,12 +15,6 @@ export enum DriverRiderType {
   RIDER = "rider",
 }
 
-export enum ShopCategory {
-  CLOTHING = "clothing",
-  PHARMACY = "pharmacy",
-  FOOD_AND_GROCERIS = "food_and_groceries",
-}
-
 export enum OrderStatus {
   PENDING = "pending",
   PICKED_UP = "picked_up",

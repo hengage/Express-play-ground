@@ -6,25 +6,29 @@ import { HandleException } from "../utils";
 
 class UserService {
   public async isEmailTaken(email: string) {
-    console.log({ email: email });
     const customer = await Customer.findOne({
       email: { $eq: email },
-    }).select("email");
-    const driverRider = await DriverRider.findOne({ email }).select("email");
-    const vendor = await Vendor.findOne({ email }).select("email");
-    
-    console.log({ customer });
-    console.log({ vendor });
-    console.log({ driverRider });
+    })
+      .select("email")
+      .lean();
+
+    const driverRider = await DriverRider.findOne({ email })
+      .select("email")
+      .lean();
+
+    const vendor = await Vendor.findOne({ email }).select("email").lean();
+
     if (customer || driverRider || vendor) {
-      throw new HandleException(STATUS_CODES.CONFLICT, "Email is already taken");
+      throw new HandleException(
+        STATUS_CODES.CONFLICT,
+        "Email is already taken"
+      );
     }
 
     return false; // Email is not taken
   }
 
   public async isPhoneNumberTaken(phoneNumber: string) {
-    console.log({ phoneNumber });
     const customer = await Customer.findOne({
       phoneNumber: { $eq: phoneNumber },
     }).select("phoneNumber");
