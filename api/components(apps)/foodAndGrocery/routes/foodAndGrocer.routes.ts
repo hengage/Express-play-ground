@@ -12,6 +12,7 @@ class FoodAndGroceryRoutes {
   public initializeRoutes() {
     this.router.use(jwtUtils.verifyTokenMiddleware);
     this.router.route(`/create-shop`).post(foodAndGroceryController.createShop);
+    this.router.route(`/category`).post(foodAndGroceryController.addcategory);
   }
 }
 export const foodAndGroceryRoutes = new FoodAndGroceryRoutes();

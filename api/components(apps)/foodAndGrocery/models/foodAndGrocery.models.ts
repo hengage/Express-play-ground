@@ -22,5 +22,3 @@ export const FoodAndGroceryCategory = model<IFoodAndGroceryCategory>(
   "FoodAndGroceryCategory",
   foodAndGroceryCategorySchema
 );
-
-
