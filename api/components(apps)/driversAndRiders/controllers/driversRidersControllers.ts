@@ -31,7 +31,7 @@ class DriversRidersController {
         data: {
           driverRider: {
             _id: driverRider.id,
-            firstName: driverRider.name.firstName
+            firstName: driverRider.name.firstName,
           },
           accessToken,
         },
@@ -67,6 +67,25 @@ class DriversRidersController {
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Failed to login",
+        error: error.message,
+      });
+    }
+  }
+
+  public async rateDriverOrRider(req: Request, res: Response) {
+    const accountType = req.query.accountType;
+    try {
+      await driverRiderService.rateDriverOrRider(
+        req.params.driverRiderId,
+        req.body.rating,
+        `${accountType}`
+      );
+      res
+        .status(STATUS_CODES.OK)
+        .json({ message: `${accountType} rated` });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: `Error rating ${accountType}`,
         error: error.message,
       });
     }

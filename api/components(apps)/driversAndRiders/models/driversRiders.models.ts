@@ -40,7 +40,20 @@ const driverRiderSchema = new Schema<IDriverRider>(
       enum: Object.values(AccountStatus),
       default: AccountStatus.ACTIVE,
     },
-    rating: { type: Number, default: 2.5 },
+    rating: {
+      totalRatingSum: {
+        type: Number,
+        default: 0,
+      },
+      ratingCount: {
+        type: Number,
+        default: 0,
+      },
+      averageRating: {
+        type: Number,
+        default: 0,
+      },
+    },
     lastLoggedIn: { type: Date },
     approved: { type: Boolean, default: false },
   },

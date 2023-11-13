@@ -24,7 +24,11 @@ export interface IDriverRider extends Document {
     postalCode: string;
   };
   accountStatus: AccountStatus;
-  rating: number;
+  rating: {
+    totalRatingSum: number,
+    ratingCount: number;
+    averageRating: number;
+  };
   approved: boolean;
   lastLoggedIn: Date;
   createdAt: Date;

@@ -2,7 +2,11 @@ import bcrypt from "bcrypt";
 
 import { HandleException } from "../../../utils";
 import { DriverRider } from "../models/driversRiders.models";
-import { IDriverRider, ILoginDriverAndRider, ISignupDriverAndRider } from "../driversRiders.interface";
+import {
+  IDriverRider,
+  ILoginDriverAndRider,
+  ISignupDriverAndRider,
+} from "../driversRiders.interface";
 import { STATUS_CODES } from "../../../constants";
 
 class DriverRiderService {
@@ -99,7 +103,10 @@ class DriverRiderService {
         driverRider.password
       );
       if (!passwordsMatch) {
-        throw new HandleException(STATUS_CODES.UNAUTHORIZED, "Incorrect password");
+        throw new HandleException(
+          STATUS_CODES.UNAUTHORIZED,
+          "Incorrect password"
+        );
       }
 
       const loggedIn = {
@@ -107,6 +114,37 @@ class DriverRiderService {
         phoneNumber: driverRider.phoneNumber,
       };
       return loggedIn;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  async rateDriverOrRider(id: string, rating: number, accountType: string) {
+    try {
+      const driverRider = await DriverRider.findOne({
+        _id: id,
+        accountType,
+      }).select('rating');
+
+      if (!driverRider) {
+        throw new HandleException(
+          STATUS_CODES.NOT_FOUND,
+          `${accountType} not found`
+        );
+      }
+      console.log({driverRider})
+
+      // Increase the number of times the account has been rated
+      driverRider.rating.ratingCount += 1;
+
+      // Add the new rating to the sum of the previous ratings
+      driverRider.rating.totalRatingSum += rating;
+
+      // Calculate the average rating
+      driverRider.rating.averageRating =
+        driverRider.rating.totalRatingSum / driverRider.rating.ratingCount;
+
+      await driverRider.save();
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
