@@ -5,12 +5,12 @@ import { vendorService } from "../../vendors";
 
 class ShopController {
   public async addcategory(req: Request, res: Response) {
-    const { name, image } = req.body;
+    const { categoryName, categoryImage } = req.body;
 
     try {
       const newCategory = await shopServices.addcategory({
-        name,
-        image,
+        categoryName,
+        categoryImage,
       });
       res.status(STATUS_CODES.CREATED).json({
         message: "Added new category",
@@ -26,6 +26,24 @@ class ShopController {
       res
         .status(error.status || STATUS_CODES.SERVER_ERROR)
         .json({ message: "Error creating category", error: error.message });
+    }
+  }
+
+  async createShopType(req: Request, res: Response) {
+    try {
+      const shopType = await shopServices.createShopType(req.body)
+      res.status(STATUS_CODES.CREATED).json({
+        message: "Created shop type",
+        data: {
+          shopType
+        }
+      })
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR)
+      .json({
+        message: "Failed to create shop type",
+        error: error.message
+      })
     }
   }
 

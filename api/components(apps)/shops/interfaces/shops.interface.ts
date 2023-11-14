@@ -43,8 +43,8 @@ export interface ICategory extends Document {
 }
 
 export interface IAddCategory {
-  name: string;
-  image: string;
+  categoryName: string;
+  categoryImage: string;
 }
 
 export interface ICreateShop {

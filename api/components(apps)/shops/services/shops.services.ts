@@ -8,14 +8,11 @@ import {
   ICreateShop,
   IShop,
 } from "../interfaces/shops.interface";
-import { Category } from "../models/shops.models";
+import { Category, ShopType } from "../models/shops.models";
 import { Shop } from "../models/shops.models";
 
 class ShopServices {
-  async getShopById(
-    id: string,
-    selectFields?: string
-  ): Promise<IShop> {
+  async getShopById(id: string, selectFields?: string): Promise<IShop> {
     try {
       const query = Shop.findById(id);
 
@@ -33,11 +30,32 @@ class ShopServices {
     }
   }
 
+  public async createShopType(payload: any) {
+    const { categoryName, categoryImage } = payload;
+    try {
+      const category = await this.addcategory({ categoryName, categoryImage });
+      console.log({ category });
+      console.log({ payload });
+
+      const shopType = new ShopType({
+        name: payload.name,
+        description: payload.description,
+        image: payload.image,
+        categories: [category],
+      });
+
+      const savedShopType = await shopType.save();
+      return savedShopType;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
   public async addcategory(payload: IAddCategory) {
     try {
       const newCategory = new Category({
-        name: payload.name,
-        image: payload.image,
+        name: payload.categoryName,
+        image: payload.categoryImage,
       });
 
       const savedCategory = await newCategory.save();
@@ -119,19 +137,18 @@ class ShopServices {
 
   public async getAllShopsForAVendor(vendorId: string): Promise<IShop[]> {
     try {
-      const shops = await Shop.find({vendor: vendorId})
-      return shops
+      const shops = await Shop.find({ vendor: vendorId });
+      return shops;
     } catch (error: any) {
-      throw new HandleException(error.status, error.message)
+      throw new HandleException(error.status, error.message);
     }
   }
 
-  
   public async getProductsForAShop(shopId: string): Promise<IProduct[]> {
     try {
-      const products = await Product.find({ shop: shopId }).select(
-        "_id name photos price"
-      ).lean();
+      const products = await Product.find({ shop: shopId })
+        .select("_id name photos price")
+        .lean();
       if (products.length < 1) {
         throw new HandleException(
           STATUS_CODES.NOT_FOUND,

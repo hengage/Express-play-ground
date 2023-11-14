@@ -4,7 +4,7 @@ import { IAddCategory, ICategory } from "../../shops";
 import { FoodAndGroceryCategory, FoodAndGroceryShop } from "../models/foodAndGrocery.models";
 
 class FoodAndGroceryService {
-  public async addcategory(payload: IAddCategory) {
+  public async addcategory(payload: any) {
     try {
       const newCategory = new FoodAndGroceryCategory({
         name: payload.name,
