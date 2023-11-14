@@ -1,1 +1,0 @@
-export { foodAndGroceryRoutes } from "./routes/foodAndGrocery.routes";
