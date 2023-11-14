@@ -33,9 +33,18 @@ class ShopServices {
   public async createShopType(payload: any) {
     const { categoryName, categoryImage } = payload;
     try {
+      const shopTypeExists = await ShopType.findOne({ name: payload.name })
+        .select("name")
+        .lean();
+
+      if (shopTypeExists) {
+        throw new HandleException(
+          STATUS_CODES.CONFLICT,
+          `A shop type with this name '${payload.name}' exists already`
+        );
+      }
+
       const category = await this.addcategory({ categoryName, categoryImage });
-      console.log({ category });
-      console.log({ payload });
 
       const shopType = new ShopType({
         name: payload.name,
@@ -53,6 +62,19 @@ class ShopServices {
 
   public async addcategory(payload: IAddCategory) {
     try {
+      const categoryExists = await Category.findOne({
+        name: payload.categoryName,
+      })
+        .select("name")
+        .lean();
+
+      if (categoryExists) {
+        throw new HandleException(
+          STATUS_CODES.CONFLICT,
+          `A category with this name '${payload.categoryName}' exists already`
+        );
+      }
+
       const newCategory = new Category({
         name: payload.categoryName,
         image: payload.categoryImage,
