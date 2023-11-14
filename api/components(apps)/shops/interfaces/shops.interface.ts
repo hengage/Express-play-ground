@@ -1,4 +1,4 @@
-import { AccountStatus, ShopCategory } from "../../../constants";
+import { AccountStatus } from "../../../constants";
 import { IVendor } from "../../vendors";
 
 export interface IShop extends Document {
@@ -19,7 +19,7 @@ export interface IShop extends Document {
     latitiude: number;
     longitiude: number;
   };
-  category: ShopCategory;
+  category: string;
   logo: string;
   status: AccountStatus;
   approved: boolean;
