@@ -1,6 +1,6 @@
-import { URL_LINKS } from "../../../constants";
+import { STATUS_CODES, URL_LINKS } from "../../../constants";
 import { HandleException } from "../../../utils";
-import { IAddCategory } from "../../shops";
+import { IAddCategory, ICategory } from "../../shops";
 import { FoodAndGroceryCategory, FoodAndGroceryShop } from "../models/foodAndGrocery.models";
 
 class FoodAndGroceryService {
@@ -13,6 +13,21 @@ class FoodAndGroceryService {
 
       const savedCategory = await newCategory.save();
       return savedCategory;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  public async getAllCategories(): Promise<ICategory[] | string> {
+    try {
+      const categories = await FoodAndGroceryCategory.find({});
+      if (categories.length < 1) {
+        throw new HandleException(
+          STATUS_CODES.NOT_FOUND,
+          "There are no categories available"
+        );
+      }
+      return categories;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
