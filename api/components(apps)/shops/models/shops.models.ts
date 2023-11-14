@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { uniqueString } from "../../../utils";
 import { AccountStatus } from "../../../constants";
-import { IShop, ICategory } from "../interfaces/shops.interface";
+import { IShop, ICategory, IShopType } from "../interfaces/shops.interface";
 
 export const shopSchema = new Schema<IShop>(
   {
@@ -29,6 +29,7 @@ export const shopSchema = new Schema<IShop>(
       latitude: Number,
       longitude: Number,
     },
+    type: { type: String, ref: "ShopType", required: true },
     category: {
       type: String,
       ref: "Category",
@@ -41,6 +42,21 @@ export const shopSchema = new Schema<IShop>(
       enum: Object.values(AccountStatus),
       default: AccountStatus.ACTIVE,
     },
+  },
+  { timestamps: true, _id: false }
+);
+
+const shopTypeSchema = new Schema<IShopType>(
+  {
+    _id: {
+      type: String,
+      required: true,
+      default: () => uniqueString.generateUniqueString(4),
+    },
+    name: { type: String, required: true, unique: true },
+    description: { type: String },
+    image: { type: String, required: true },
+    categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }]
   },
   { timestamps: true, _id: false }
 );
@@ -59,4 +75,5 @@ export const categorySchema = new Schema<ICategory>(
 );
 
 export const Shop = model<IShop>("Shop", shopSchema);
+export const ShopType = model<IShopType>("ShopType", shopTypeSchema);
 export const Category = model<ICategory>("Category", categorySchema);

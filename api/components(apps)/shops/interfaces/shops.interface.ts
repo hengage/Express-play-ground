@@ -19,6 +19,7 @@ export interface IShop extends Document {
     latitiude: number;
     longitiude: number;
   };
+  type: string;
   category: string;
   logo: string;
   status: AccountStatus;
@@ -27,6 +28,13 @@ export interface IShop extends Document {
   updatedAt: Date;
 }
 
+export interface IShopType extends Document {
+  _id: string;
+  name: string;
+  description: string;
+  image: string;
+  categories: string[];
+}
 export interface ICategory extends Document {
   _id: string;
   name: string;
