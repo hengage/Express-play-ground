@@ -44,16 +44,17 @@ class ShopServices {
         );
       }
 
-      const category = await this.addcategory({ categoryName, categoryImage });
 
       const shopType = new ShopType({
         name: payload.name,
         description: payload.description,
         image: payload.image,
-        categories: [category],
       });
 
       const savedShopType = await shopType.save();
+      const shopTypeId = savedShopType._id 
+      await this.addcategory({ categoryName, categoryImage, shopTypeId});
+
       return savedShopType;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
@@ -78,6 +79,7 @@ class ShopServices {
       const newCategory = new Category({
         name: payload.categoryName,
         image: payload.categoryImage,
+        shopType: payload.shopTypeId,
       });
 
       const savedCategory = await newCategory.save();

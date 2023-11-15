@@ -5,12 +5,14 @@ import { vendorService } from "../../vendors";
 
 class ShopController {
   public async addcategory(req: Request, res: Response) {
+    const { shopTypeId } =  req.params
     const { categoryName, categoryImage } = req.body;
 
     try {
       const newCategory = await shopServices.addcategory({
         categoryName,
         categoryImage,
+        shopTypeId
       });
       res.status(STATUS_CODES.CREATED).json({
         message: "Added new category",

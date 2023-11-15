@@ -33,18 +33,18 @@ export interface IShopType extends Document {
   name: string;
   description: string;
   image: string;
-  categories: string[];
 }
 export interface ICategory extends Document {
   _id: string;
   name: string;
-  description: string;
   image: string;
+  shopType: string
 }
 
 export interface IAddCategory {
   categoryName: string;
   categoryImage: string;
+  shopTypeId: string
 }
 
 export interface ICreateShop {
