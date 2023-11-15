@@ -19,11 +19,11 @@ class VendorService {
         query.select(selectFields);
       }
 
-      const customer = await query.exec();
-      if (!customer) {
+      const vendor = await query.exec();
+      if (!vendor) {
         throw new HandleException(404, "Vendor not found");
       }
-      return customer;
+      return vendor;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
