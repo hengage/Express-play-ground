@@ -65,6 +65,20 @@ class ShopController {
     }
   }
 
+  async getCategoriesByShopType(req: Request, res: Response) {
+    const {shopTypeId} = req.params
+    try {
+      const categories = await shopServices.getCategoriesByShopType(shopTypeId)
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched categories for shop type: " + shopTypeId,
+        data: categories
+      })
+
+    } catch (error) {
+      
+    }
+  }
+
   public async getAllCategories(req: Request, res: Response) {
     try {
       const categories = await shopServices.getAllCategories();

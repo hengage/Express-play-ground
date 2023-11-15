@@ -9,7 +9,7 @@ import {
   IShop,
   IShopType,
 } from "../interfaces/shops.interface";
-import { Category, ShopType } from "../models/shops.models";
+import { Category, ShopType, categorySchema } from "../models/shops.models";
 import { Shop } from "../models/shops.models";
 
 class ShopServices {
@@ -96,6 +96,18 @@ class ShopServices {
       return savedCategory;
     } catch (error: any) {
       throw new HandleException(STATUS_CODES.SERVER_ERROR, error.message);
+    }
+  }
+
+  public async getCategoriesByShopType(shopTypeId: string) {
+    try {
+      const categories = await Category.find({shopType: shopTypeId})
+      .select('_id name image')
+      .lean()
+      
+      return categories
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message)
     }
   }
 

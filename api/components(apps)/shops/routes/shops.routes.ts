@@ -18,7 +18,7 @@ class ShopsRoutes {
     this.router.route(`/create/`).post(shopController.createShop);
     this.router.route(`/:shopId/products`).get( shopController.getProductsForAshop);
     this.router.route("/types").get( shopController.getShopTypes)
-
+    this.router.route("/types/:shopTypeId/categories").get( shopController.getCategoriesByShopType)
   }
 }
 
