@@ -37,7 +37,7 @@ class ShopController {
       res.status(STATUS_CODES.CREATED).json({
         message: "Created shop type",
         data: {
-          shopType
+          _id: shopType._id
         }
       })
     } catch (error: any) {
