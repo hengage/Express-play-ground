@@ -7,6 +7,7 @@ import {
   ICategory,
   ICreateShop,
   IShop,
+  IShopType,
 } from "../interfaces/shops.interface";
 import { Category, ShopType } from "../models/shops.models";
 import { Shop } from "../models/shops.models";
@@ -58,6 +59,15 @@ class ShopServices {
       return savedShopType;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
+    }
+  }
+
+  public async getShopTypes(): Promise<IShopType[]> {
+    try {
+      const shopTypes = await ShopType.find().select('_id name image').lean();
+      return shopTypes
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message)
     }
   }
 

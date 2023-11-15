@@ -49,6 +49,22 @@ class ShopController {
     }
   }
 
+  async getShopTypes(req: Request, res: Response) {
+    try {
+      const shopTypes = await shopServices.getShopTypes()
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched shop types",
+        data: shopTypes
+      })
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR)
+      .json({
+        message: "Failed to fetch shop types",
+        error: error.message
+      })
+    }
+  }
+
   public async getAllCategories(req: Request, res: Response) {
     try {
       const categories = await shopServices.getAllCategories();
