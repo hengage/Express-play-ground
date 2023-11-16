@@ -129,6 +129,7 @@ class ShopServices {
           country: payload.country,
           postalCode: payload.postalCode,
         },
+        type: payload.type,
         category: payload.category,
         logo: logo,
       });
