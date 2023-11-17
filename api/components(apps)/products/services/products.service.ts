@@ -46,6 +46,7 @@ class ProductsService {
     try {
       const product = await Product.findById({ _id: productId })
         .populate({ path: "shop", select: "name" })
+        .populate({ path: "vendor", select: "name.firstName name.lastName" })
         .select("_id name description photos price")
         .lean()
         .exec();
