@@ -12,6 +12,7 @@ export interface IOrder extends Document {
   _id: string;
   customer: string;
   items: IOrderItem[];
+  deliveryFee: number;
   totalAmount: number;
   status: OrderStatus;
   createdAt: Date;

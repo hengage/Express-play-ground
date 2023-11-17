@@ -30,6 +30,7 @@ const orderSchema = new Schema<IOrder>({
         ref: "Shop"
       },
   }],
+  deliveryFee: {type: Number, required: true},
   totalAmount: {
     type: Number,
     required: true,

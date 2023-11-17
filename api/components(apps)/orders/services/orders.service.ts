@@ -18,6 +18,7 @@ class OrdersService {
       const newOrder = new Order({
         customer: customerId,
         items: orderItems,
+        deliveryFee: payload.deliveryFee,
         totalAmount: payload.totalAmount,
       });
 
@@ -27,6 +28,7 @@ class OrdersService {
         _id: newOrder._id,
         customer: newOrder.customer,
         items: newOrder.items,
+        deliveryFee: newOrder.deliveryFee,
         totalAmount: newOrder.totalAmount,
         status: newOrder.status,
         createdAt: newOrder.createdAt,
