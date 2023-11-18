@@ -1,3 +1,4 @@
+export { notificationService } from "./notification.service";
 export { initializeWebSocket } from "./socket.service";
 // export { verifyService } from "./verifyService";
 export { smsService } from "./smsService";
