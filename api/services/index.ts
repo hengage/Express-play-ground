@@ -1,3 +1,4 @@
+export { redisClient } from "./redis.service";
 export { notificationService } from "./notification.service";
 export { initializeWebSocket } from "./socket.service";
 // export { verifyService } from "./verifyService";
