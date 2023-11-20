@@ -9,19 +9,8 @@ class InitializeWebSocket {
   public async connectSocket(server: Server) {
     const io = socketIO(server);
 
-    let vendor: string;
     io.on("connection", (socket: Socket) => {
       console.log("User connected");
-
-      socket.on("message", (message) => {
-        console.log("Message received", message);
-      });
-
-      socket.on("create-vendor-room", async (message) => {
-        vendor = message.vendorId;
-        console.log("Message received", message.vendorId);
-        socket.join(message.vendorId);
-      });
 
       socket.on("send-order-notification", async (message) => {
         const { vendor: vendorId } = message
@@ -54,7 +43,6 @@ class InitializeWebSocket {
 
       socket.on("disconnect", () => {
         console.log("User disconnected");
-        socket.leave(vendor);
       });
     });
   }
