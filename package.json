@@ -2,7 +2,7 @@
   "name": "mr_delivery_server",
   "version": "1.0.0",
   "description": "",
-  "main": "api/server.ts",
+  "main": "dist/server.js",
   "scripts": {
     "dev-start": "nodemon --watch api/server.ts",
     "start": "node dist/server.js",
