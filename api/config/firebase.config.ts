@@ -5,7 +5,7 @@ import * as admin from "firebase-admin";
 
 
 const filePath = process.env.FIREBASE_ADMIN_SDK_KEY_MrD;
-
+console.log({filePath})
 if (!filePath) {
   console.error("FIREBASE_ADMIN_SDK_KEY_MrD environment variable is not set.");
   process.exit(1);
