@@ -16,6 +16,7 @@ class InitializeWebSocket {
         const { vendor: vendorId } = message
         const vendorDeviceToken = await redisClient.get(vendorId)
         console.log({vendorDeviceToken})
+        
         const payload = {
           notification: {
             title: "New message",
@@ -33,12 +34,12 @@ class InitializeWebSocket {
       });
 
       socket.on("fcm-customer-device-token", async (message) => {
-        const { vendorId, deviceToken }  = message;
-        redisClient.set(vendorId, deviceToken);
+        const { customer: customerId, deviceToken }  = message;
+        redisClient.set(customerId, deviceToken);
       });
       socket.on("fcm-rider-driver-device-token", async (message) => {
-        const { vendorId, deviceToken }  = message;
-        redisClient.set(vendorId, deviceToken);
+        const { driverRider: driverRiderId, deviceToken }  = message;
+        redisClient.set(driverRiderId, deviceToken);
       });
 
       socket.on("disconnect", () => {
