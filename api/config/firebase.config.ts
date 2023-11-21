@@ -2,21 +2,25 @@
 const fs = require('fs');
 
 import * as admin from "firebase-admin";
+import { serviceAccountKey } from "./fireBaseServiceAccount.config";
 
 
-const filePath = process.env.FIREBASE_ADMIN_SDK_KEY_MrD;
-console.log({filePath})
-if (!filePath) {
-  console.error("FIREBASE_ADMIN_SDK_KEY_MrD environment variable is not set.");
-  process.exit(1);
-}
+// const filePath = process.env.FIREBASE_ADMIN_SDK_KEY_MrD;
+// console.log({filePath})
+// if (!filePath) {
+//   console.error("FIREBASE_ADMIN_SDK_KEY_MrD environment variable is not set.");
+//   process.exit(1);
+// }
 
-// Read the content of the file
-const serviceAccountJson = fs.readFileSync(filePath, 'utf8');
+// // Read the content of the file
+// const serviceAccountJson = fs.readFileSync(filePath, 'utf8');
 
-console.log("Raw content of FIREBASE_ADMIN_SDK_KEY_MrD:", serviceAccountJson);
-const serviceAccount = JSON.parse(serviceAccountJson)
+console.log("Raw content of FIREBASE_ADMIN_SDK_KEY_MrD:", serviceAccountKey);
+
+
+// const serviceAccount = JSON.parse(serviceAccountKey)
+const key = JSON.stringify(serviceAccountKey);
 
 export const firebaseAdmin = admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(JSON.parse(key)),
 });
