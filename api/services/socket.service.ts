@@ -23,7 +23,7 @@ class InitializeWebSocket {
             body: 'Accept or reject the incoming order',
           },
           "data" : {
-            order : JSON.stringify(message.items)
+            order : JSON.stringify(message)
           },
           token: `${vendorDeviceToken}`,
         };
