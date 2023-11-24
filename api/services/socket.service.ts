@@ -29,7 +29,9 @@ class InitializeWebSocket {
         };
         console.log({message: JSON.stringify(message)})
 
-        notificationService.sendNotification(payload);
+       await  notificationService.sendNotification(payload);
+
+        socket.emit('order-notification-sent', message);
       });
 
       socket.on("fcm-vendor-device-token", async (message) => {
