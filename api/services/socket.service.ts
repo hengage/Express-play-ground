@@ -19,11 +19,15 @@ class InitializeWebSocket {
         
         const payload = {
           notification: {
-            title: "New message",
-            body: "You have a new message from John",
+            title: "You have an order to attend to",
+            body: 'Accept or reject the incoming order',
+          },
+          "data" : {
+            order : JSON.stringify(message.items)
           },
           token: `${vendorDeviceToken}`,
         };
+        console.log({message: JSON.stringify(message)})
 
         notificationService.sendNotification(payload);
       });
