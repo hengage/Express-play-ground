@@ -184,7 +184,9 @@ class ShopServices {
 
   public async getAllShopsForAVendor(vendorId: string): Promise<IShop[]> {
     try {
-      const shops = await Shop.find({ vendor: vendorId });
+      const shops = await Shop.find({ vendor: vendorId })
+      .select('name')
+      .populate({path: "category", select: "name"});
       return shops;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
