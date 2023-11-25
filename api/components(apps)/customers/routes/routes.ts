@@ -16,6 +16,7 @@ class CustomersRoutes {
     this.router.use(jwtUtils.verifyTokenMiddleware)
     this.router.route('/me').get(customerController.getMe)
     this.router.route('/orders').get(customerController.getOrders)
+    this.router.route('/me/delete').post(customerController.deleteAccount)
   }
 }
 

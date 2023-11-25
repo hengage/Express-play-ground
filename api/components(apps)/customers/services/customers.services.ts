@@ -132,6 +132,15 @@ class CustomerService {
       throw new HandleException(error.status, error.message);
     }
   }
+
+  async deleteAccount(customerId: string) {
+    try {
+      await Customer.deleteOne({_id: customerId})
+      console.log('Customer deleted successfully', customerId);
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }  
 }
 
 export const customerService = new CustomerService();

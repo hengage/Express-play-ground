@@ -73,7 +73,7 @@ class CustomerController {
   }
 
   async getOrders(req: Request, res: Response) {
-    const  status  = req.query.status as string;
+    const status = req.query.status as string;
 
     try {
       const customerId = (req as any).user._id;
@@ -86,6 +86,22 @@ class CustomerController {
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Error fetching orders",
+        error: error.message,
+      });
+    }
+  }
+
+  async deleteAccount(req: Request, res: Response) {
+    const userId = (req as any).user._id;
+    console.log({customerId: userId})
+    try {
+      await customerService.deleteAccount(userId);
+      res.status(STATUS_CODES.OK).json({
+        message: "Customer deleted successfully",
+      });
+    } catch (error: any) {
+      res.status(error.status).json({
+        message: "Error deleting customer",
         error: error.message,
       });
     }
