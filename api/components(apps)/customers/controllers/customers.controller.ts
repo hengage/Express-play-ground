@@ -93,7 +93,6 @@ class CustomerController {
 
   async deleteAccount(req: Request, res: Response) {
     const userId = (req as any).user._id;
-    console.log({customerId: userId})
     try {
       await customerService.deleteAccount(userId);
       res.status(STATUS_CODES.OK).json({

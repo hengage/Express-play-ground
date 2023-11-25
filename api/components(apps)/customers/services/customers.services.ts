@@ -135,7 +135,11 @@ class CustomerService {
 
   async deleteAccount(customerId: string) {
     try {
-      await Customer.deleteOne({_id: customerId})
+      const result = await Customer.deleteOne({ _id: customerId });
+
+      if (result.deletedCount === 0) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "Customer not found");
+      }
       console.log('Customer deleted successfully', customerId);
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
