@@ -19,6 +19,11 @@ class OrdersService {
         customer: customerId,
         items: orderItems,
         deliveryFee: payload.deliveryFee,
+        deliveryAddress: {
+          address: payload.deliveryAddress,
+          latitude: payload.deliveryLatitude,
+          longitude: payload.deliveryLongitude
+        },
         totalAmount: payload.totalAmount,
       });
 
@@ -29,6 +34,9 @@ class OrdersService {
         customer: newOrder.customer,
         items: newOrder.items,
         deliveryFee: newOrder.deliveryFee,
+        deliveryAddress: {
+          address: newOrder.deliveryAddress.address,
+        },
         totalAmount: newOrder.totalAmount,
         status: newOrder.status,
         createdAt: newOrder.createdAt,

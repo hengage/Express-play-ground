@@ -31,6 +31,11 @@ const orderSchema = new Schema<IOrder>({
       },
   }],
   deliveryFee: {type: Number, required: true},
+  deliveryAddress: {
+    address: {type: String, required: true },
+    latitude: {type: Number, required: true}, 
+    longitude: {type: Number, required: true} 
+  },
   totalAmount: {
     type: Number,
     required: true,

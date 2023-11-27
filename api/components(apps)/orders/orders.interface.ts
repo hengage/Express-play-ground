@@ -13,6 +13,11 @@ export interface IOrder extends Document {
   customer: string;
   items: IOrderItem[];
   deliveryFee: number;
+  deliveryAddress: {
+    address: string;
+    latitude: number;
+    longitude: number;
+  },
   totalAmount: number;
   status: OrderStatus;
   createdAt: Date;
