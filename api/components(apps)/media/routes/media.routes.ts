@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { mediaController } from "../../controllers/media.controller";
+import { mediaController } from "../controllers/media.controller";
 // import { mediaController } from "../controllers/media.contoller";
 
 class MediaRoutes {

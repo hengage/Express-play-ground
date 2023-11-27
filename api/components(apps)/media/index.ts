@@ -1,1 +1,1 @@
-export { mediaRoutes } from "./services/routes/media.routes";
+export { mediaRoutes } from "./routes/media.routes";
