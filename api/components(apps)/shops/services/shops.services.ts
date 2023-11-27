@@ -129,6 +129,10 @@ class ShopServices {
           country: payload.country,
           postalCode: payload.postalCode,
         },
+        geoLocation: {
+          latitiude: payload.latitude,
+          longitude: payload.longitude
+        },
         type: payload.type,
         category: payload.category,
         logo: logo,

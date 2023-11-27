@@ -57,6 +57,8 @@ export interface ICreateShop {
   state: string;
   country: string;
   postalCode: string;
+  latitude: number;
+  longitude: number;
   type: string;
   category: string;
   logo: string;

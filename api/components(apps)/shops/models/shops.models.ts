@@ -26,8 +26,8 @@ export const shopSchema = new Schema<IShop>(
       postalCode: { type: String, required: true },
     },
     geoLocation: {
-      latitude: Number,
-      longitude: Number,
+      latitude: { type: Number, required: true },
+      longitude: { type: Number, required: true },
     },
     type: { type: String, ref: "ShopType", required: true },
     category: {
