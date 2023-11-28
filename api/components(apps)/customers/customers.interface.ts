@@ -7,16 +7,12 @@ export interface ICustomer extends Document {
   password: string;
   photo: string;
   country: string;
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    postalCode: string;
-  };
-  geolocation: {
-    longitude: number;
-    latitude: number;
-  };
+  street: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  longitude: number;
+  latitude: number;
   dateOfBirth: Date;
   gender: "Male" | "Female" | "Other";
   profilePhoto: string;

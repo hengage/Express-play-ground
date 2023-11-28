@@ -2,11 +2,9 @@ import { AccountStatus, DriverRiderType } from "../../constants";
 
 export interface IDriverRider extends Document {
   _id: string;
-  name: {
-    firstName: string;
-    lastName: string;
-    middleName: string;
-  };
+  firstName: string;
+  lastName: string;
+  middleName: string;
   email: string;
   phoneNumber: string;
   password: string;
@@ -16,16 +14,14 @@ export interface IDriverRider extends Document {
   vehicleInsurancePhoto: string;
   licenseNumber: string;
   govtIdPhoto: string;
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    country: string;
-    postalCode: string;
-  };
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  postalCode: string;
   accountStatus: AccountStatus;
   rating: {
-    totalRatingSum: number,
+    totalRatingSum: number;
     ratingCount: number;
     averageRating: number;
   };

@@ -62,11 +62,9 @@ class DriverRiderService {
     }
     try {
       const newDriverRider = new DriverRider({
-        name: {
-          firstName: payload.firstName,
-          lastName: payload.lastName,
-          middleName,
-        },
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        middleName,
         email: payload.email,
         phoneNumber: payload.phoneNumber,
         password: payload.password,
@@ -76,13 +74,11 @@ class DriverRiderService {
         vehicleInsurancePhoto: payload.vehicleInsurancePhoto,
         licenseNumber: payload.licenseNumber,
         govtIdPhoto: payload.govtIdPhoto,
-        address: {
-          street: payload.street,
-          city: payload.city,
-          state: payload.state,
-          country: payload.country,
-          postalCode: payload.postalCode,
-        },
+        street: payload.street,
+        city: payload.city,
+        state: payload.state,
+        country: payload.country,
+        postalCode: payload.postalCode,
       });
       const savedDriverrider = newDriverRider.save();
       return savedDriverrider;
@@ -124,7 +120,7 @@ class DriverRiderService {
       const driverRider = await DriverRider.findOne({
         _id: id,
         accountType,
-      }).select('rating');
+      }).select("rating");
 
       if (!driverRider) {
         throw new HandleException(

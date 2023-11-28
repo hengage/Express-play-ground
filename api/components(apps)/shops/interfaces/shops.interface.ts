@@ -8,17 +8,13 @@ export interface IShop extends Document {
   phoneNumber: string;
   password: string;
   vendor: IVendor;
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    country: string;
-    postalCode: string;
-  };
-  geoLocation: {
-    latitiude: number;
-    longitiude: number;
-  };
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  postalCode: string;
+  latitude: number;
+  longitude: number;
   type: string;
   category: string;
   logo: string;
@@ -38,13 +34,13 @@ export interface ICategory extends Document {
   _id: string;
   name: string;
   image: string;
-  shopType: string
+  shopType: string;
 }
 
 export interface IAddCategory {
   categoryName: string;
   categoryImage: string;
-  shopTypeId: string
+  shopTypeId: string;
 }
 
 export interface ICreateShop {

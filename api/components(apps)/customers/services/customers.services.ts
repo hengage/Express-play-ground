@@ -17,14 +17,6 @@ class CustomerService {
         phoneNumber: payload.phoneNumber,
         password: payload.password,
         photo: payload.photo,
-        gender: payload.gender,
-        address: {
-          street: payload.street,
-          city: payload.city,
-          state: payload.state,
-          country: payload.country,
-          postalCode: payload.postalCode,
-        },
       });
       const savedCustomer = await newCustomer.save();
       return savedCustomer;

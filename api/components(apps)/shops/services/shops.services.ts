@@ -45,7 +45,6 @@ class ShopServices {
         );
       }
 
-
       const shopType = new ShopType({
         name: payload.name,
         description: payload.description,
@@ -53,8 +52,8 @@ class ShopServices {
       });
 
       const savedShopType = await shopType.save();
-      const shopTypeId = savedShopType._id 
-      await this.addcategory({ categoryName, categoryImage, shopTypeId});
+      const shopTypeId = savedShopType._id;
+      await this.addcategory({ categoryName, categoryImage, shopTypeId });
 
       return savedShopType;
     } catch (error: any) {
@@ -64,10 +63,10 @@ class ShopServices {
 
   public async getShopTypes(): Promise<IShopType[]> {
     try {
-      const shopTypes = await ShopType.find().select('_id name image').lean();
-      return shopTypes
+      const shopTypes = await ShopType.find().select("_id name image").lean();
+      return shopTypes;
     } catch (error: any) {
-      throw new HandleException(error.status, error.message)
+      throw new HandleException(error.status, error.message);
     }
   }
 
@@ -101,13 +100,13 @@ class ShopServices {
 
   public async getCategoriesByShopType(shopTypeId: string) {
     try {
-      const categories = await Category.find({shopType: shopTypeId})
-      .select('_id name image')
-      .lean()
-      
-      return categories
+      const categories = await Category.find({ shopType: shopTypeId })
+        .select("_id name image")
+        .lean();
+
+      return categories;
     } catch (error: any) {
-      throw new HandleException(error.status, error.message)
+      throw new HandleException(error.status, error.message);
     }
   }
 
@@ -122,17 +121,13 @@ class ShopServices {
         email: payload.email,
         phoneNumber: payload.phoneNumber,
         vendor,
-        address: {
-          street: payload.street,
-          city: payload.city,
-          state: payload.state,
-          country: payload.country,
-          postalCode: payload.postalCode,
-        },
-        geoLocation: {
-          latitude: payload.latitude,
-          longitude: payload.longitude
-        },
+        street: payload.street,
+        city: payload.city,
+        state: payload.state,
+        country: payload.country,
+        postalCode: payload.postalCode,
+        latitude: payload.latitude,
+        longitude: payload.longitude,
         type: payload.type,
         category: payload.category,
         logo: logo,
@@ -189,8 +184,8 @@ class ShopServices {
   public async getAllShopsForAVendor(vendorId: string): Promise<IShop[]> {
     try {
       const shops = await Shop.find({ vendor: vendorId })
-      .select('name')
-      .populate({path: "category", select: "name"});
+        .select("name")
+        .populate({ path: "category", select: "name" });
       return shops;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
