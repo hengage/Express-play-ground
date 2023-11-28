@@ -130,7 +130,7 @@ class ShopServices {
           postalCode: payload.postalCode,
         },
         geoLocation: {
-          latitiude: payload.latitude,
+          latitude: payload.latitude,
           longitude: payload.longitude
         },
         type: payload.type,
