@@ -20,11 +20,11 @@ const vendorSchema = new Schema<IVendor>(
     password: { type: String, required: true },
     photo: String,
     address: {
-      street: { type: String, required: true },
+      street: String,
       city: { type: String, required: true },
       state: { type: String, required: true },
       country: { type: String, required: true },
-      postalCode: { type: String, required: true },
+      postalCode: String,
     },
     govtIdPhoto: { type: String, required: true },
     businessname: String,
