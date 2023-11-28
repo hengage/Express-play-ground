@@ -3,10 +3,13 @@ dotenv.config();
 
 import { app } from "./app/app";
 import { PORT, NODE_ENV } from "./config/secrets.config";
-import { initializeWebSocket, redisClient } from "./services";
+import { WebSocket, redisClient } from "./services";
 
 
 redisClient.connect()
+
 const server = app.listenToPort(PORT, NODE_ENV);
 
-initializeWebSocket.connectSocket(server)
+const InitializeWebSocket = new WebSocket(server)
+InitializeWebSocket.connectSocket()
+
