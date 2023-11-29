@@ -5,7 +5,7 @@ import { Shop } from "../../shops";
 import { jwtUtils } from "../../../utils";
 
 class ProductsController {
-  public async addProducts(req: Request, res: Response) {
+  public async addProduct(req: Request, res: Response) {
     try {
       const userId = (req as any).user._id;
       const vendorShop = await Shop.findOne({
@@ -20,7 +20,7 @@ class ProductsController {
         });
       }
 
-      const product = await productsService.addProducts(
+      const product = await productsService.addProduct(
         req.body,
         userId,
         req.params.shopId
@@ -59,7 +59,7 @@ class ProductsController {
   public async getProductsByCategory(req: Request, res: Response) {
     const page = parseInt(req.query.page as string) || 1;
     try {
-      const products = await productsService.getProductByCategory(
+      const products = await productsService.getProductsByCategory(
         req.params.categoryId,
         page
       );

@@ -5,7 +5,7 @@ import { Product } from "../models/products.model";
 import { IAddProduct, IProduct } from "../products.interface";
 
 class ProductsService {
-  public async addProducts(
+  public async addProduct(
     payload: IAddProduct,
     vendorId: string,
     shopId: string
@@ -60,7 +60,7 @@ class ProductsService {
     }
   }
 
-  public async getProductByCategory(
+  public async getProductsByCategory(
     categoryId: string,
     page: number,
     limit: number = 20
