@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { vendorController } from "../controllers/vemdors.controllers";
+import { vendorController } from "../controllers/vendors.controllers";
 import { authMiddleware } from "../../../middleware/authMiddleware";
 import { jwtUtils } from "../../../utils";
 

@@ -23,7 +23,7 @@ const vendorSchema = new Schema<IVendor>(
     country: { type: String, required: true },
     postalCode: String,
     govtIdPhoto: { type: String, required: true },
-    approved: true,
+    approved: {type: Boolean, default: true},
     accountStatus: {
       type: String,
       enum: Object.values(AccountStatus),

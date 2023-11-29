@@ -23,7 +23,7 @@ class VendorController {
         data: {
           vendor: {
             _id: vendor._id,
-            firstname: vendor.name.firstName,
+            firstname: vendor.firstName,
             phoneNumber: vendor.phoneNumber,
           },
           accessToken,
