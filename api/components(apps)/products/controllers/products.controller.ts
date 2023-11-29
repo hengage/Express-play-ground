@@ -102,7 +102,7 @@ class ProductsController {
   public async deleteProduct(req: Request, res: Response) {
     const vendorId = (req as any).user._id;
     try {
-      await productsService.deleteProduct(req.params.id, vendorId)
+      await productsService.deleteProduct(req.params.productId, vendorId)
       res.status(STATUS_CODES.OK).json({
         message: "Product deleted",
       });
