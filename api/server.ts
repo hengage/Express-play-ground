@@ -12,10 +12,3 @@ const server = app.listenToPort(PORT, NODE_ENV);
 
 const InitializeWebSocket = new WebSocket(server);
 InitializeWebSocket.connectSocket();
-
-async function initializeMigrations() {
-    console.log('Starting migrations');
-  await vendorService.updateVendorSchema();
-}
-
-initializeMigrations()
