@@ -31,7 +31,7 @@ class DriversRidersController {
         data: {
           driverRider: {
             _id: driverRider.id,
-            firstName: driverRider.name.firstName,
+            firstName: driverRider.firstName,
           },
           accessToken,
         },
