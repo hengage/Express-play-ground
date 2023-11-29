@@ -5,14 +5,14 @@ import { vendorService } from "../../vendors";
 
 class ShopController {
   public async addcategory(req: Request, res: Response) {
-    const { shopTypeId } =  req.params
+    const { shopTypeId } = req.params;
     const { categoryName, categoryImage } = req.body;
 
     try {
       const newCategory = await shopServices.addcategory({
         categoryName,
         categoryImage,
-        shopTypeId
+        shopTypeId,
       });
       res.status(STATUS_CODES.CREATED).json({
         message: "Added new category",
@@ -33,50 +33,45 @@ class ShopController {
 
   async createShopType(req: Request, res: Response) {
     try {
-      const shopType = await shopServices.createShopType(req.body)
+      const shopType = await shopServices.createShopType(req.body);
       res.status(STATUS_CODES.CREATED).json({
         message: "Created shop type",
         data: {
-          _id: shopType._id
-        }
-      })
+          _id: shopType._id,
+        },
+      });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR)
-      .json({
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Failed to create shop type",
-        error: error.message
-      })
+        error: error.message,
+      });
     }
   }
 
   async getShopTypes(req: Request, res: Response) {
     try {
-      const shopTypes = await shopServices.getShopTypes()
+      const shopTypes = await shopServices.getShopTypes();
       res.status(STATUS_CODES.OK).json({
         message: "Fetched shop types",
-        data: shopTypes
-      })
+        data: shopTypes,
+      });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR)
-      .json({
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Failed to fetch shop types",
-        error: error.message
-      })
+        error: error.message,
+      });
     }
   }
 
   async getCategoriesByShopType(req: Request, res: Response) {
-    const {shopTypeId} = req.params
+    const { shopTypeId } = req.params;
     try {
-      const categories = await shopServices.getCategoriesByShopType(shopTypeId)
+      const categories = await shopServices.getCategoriesByShopType(shopTypeId);
       res.status(STATUS_CODES.OK).json({
         message: "Fetched categories for shop type: " + shopTypeId,
-        data: categories
-      })
-
-    } catch (error) {
-      
-    }
+        data: categories,
+      });
+    } catch (error) {}
   }
 
   public async getAllCategories(req: Request, res: Response) {
@@ -96,9 +91,9 @@ class ShopController {
 
   public async createShop(req: Request, res: Response) {
     try {
-      const vendorId = (req as any).user._id
-      await vendorService.getVendorById(vendorId, '_id')
-      await shopServices.isNameTaken(req.body.name)
+      const vendorId = (req as any).user._id;
+      await vendorService.getVendorById(vendorId, "_id");
+      await shopServices.isNameTaken(req.body.name);
       await shopServices.isValidCategoryID(req.body.category);
 
       const shop = await shopServices.createShop(req.body, vendorId);
@@ -108,7 +103,7 @@ class ShopController {
           shop: {
             _id: shop._id,
             name: shop.name,
-            vendor: shop.vendor
+            vendor: shop.vendor,
           },
         },
       });
@@ -121,12 +116,17 @@ class ShopController {
   }
 
   public async updateShop(req: Request, res: Response) {
+    const vendorId = (req as any).user._id;
     try {
-      const shop = await shopServices.updateShop(req.params.shopId, req.body)
+      const shop = await shopServices.updateShop(
+        req.params.shopId,
+        vendorId,
+        req.body
+      );
       res.status(STATUS_CODES.OK).json({
         message: "Updated shop",
-        data: shop
-      })
+        data: shop,
+      });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Error updating shop",
@@ -134,7 +134,7 @@ class ShopController {
       });
     }
   }
-  
+
   public async getProductsForAshop(req: Request, res: Response) {
     const { shopId } = req.params;
     try {
@@ -150,8 +150,8 @@ class ShopController {
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Failed to fetch products",
-        error: error.message
-      })
+        error: error.message,
+      });
     }
   }
 }

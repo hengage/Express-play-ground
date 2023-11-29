@@ -139,8 +139,23 @@ class ShopServices {
     }
   }
 
-  public async updateShop(shopId: string, payload: Partial<IShop>) {
+  public async updateShop(
+    shopId: string,
+    vendorId: string,
+    payload: Partial<IShop>
+  ) {
     try {
+      const vendorOwnsShop = await Shop.exists({
+        _id: shopId,
+        vendor: vendorId,
+      });
+      if (!vendorOwnsShop) {
+        throw new HandleException(
+          STATUS_CODES.FORBIDDEN,
+          "Vendor does not own the shop"
+        );
+      }
+
       const shop = await Shop.findByIdAndUpdate(
         shopId,
         { $set: payload },
