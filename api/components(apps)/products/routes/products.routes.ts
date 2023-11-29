@@ -19,6 +19,9 @@ class ProductsRoutes {
     this.router
       .route("/:productId/update")
       .patch(productsController.updateProduct);
+    this.router
+      .route("/:productId/delete")
+      .post(productsController.deleteProduct);
   }
 }
 
