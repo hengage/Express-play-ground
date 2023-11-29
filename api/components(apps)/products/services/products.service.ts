@@ -45,7 +45,7 @@ class ProductsService {
   public async getProductById(productId: string): Promise<IProduct> {
     try {
       const product = await Product.findById({ _id: productId })
-        .populate({ path: "shop", select: "name" })
+        .populate({ path: "shop", select: "name longitude latitude" })
         .populate({ path: "vendor", select: "firstName lastName" })
         .select("_id name description photos price sizes colors")
         .lean()
