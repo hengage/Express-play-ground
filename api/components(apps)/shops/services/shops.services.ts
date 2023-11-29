@@ -162,6 +162,8 @@ class ShopServices {
         { new: true }
       )
         .select("name email phoneNumber city state country type category logo")
+        .populate({path: "type", select: "name"})
+        .populate({path: "category", select: "name"})
         .lean();
       return shop;
     } catch (error: any) {
