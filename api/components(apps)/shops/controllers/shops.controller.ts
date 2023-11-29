@@ -120,6 +120,20 @@ class ShopController {
     }
   }
 
+  public async updateShop(req: Request, res: Response) {
+    try {
+      const shop = await shopServices.updateShop(req.params.shopId, req.body)
+      res.status(STATUS_CODES.OK).json({
+        message: "Updated shop",
+        data: shop
+      })
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error updating shop",
+        error: error.message,
+      });
+    }
+  }
   
   public async getProductsForAshop(req: Request, res: Response) {
     const { shopId } = req.params;

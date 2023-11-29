@@ -139,6 +139,17 @@ class ShopServices {
     }
   }
 
+  public async updateShop(shopId: string, payload: Partial<IShop>) {
+    try {
+      const shop = await Shop.findByIdAndUpdate(shopId, {$set: payload}, { new: true })
+        .select("name email phoneNumber city state country type category logo")
+        .lean();
+      return shop;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
   public async isValidCategoryID(categoryID: string): Promise<boolean> {
     try {
       const category = await Category.findById(categoryID).select("_id");
