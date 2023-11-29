@@ -78,7 +78,7 @@ class ProductsController {
   }
 
   public async updateProduct(req: Request, res: Response) {
-    const vendorId = (req as any).user._id
+    const vendorId = (req as any).user._id;
 
     try {
       const product = await productsService.updateProduct(
@@ -89,13 +89,27 @@ class ProductsController {
 
       res.status(STATUS_CODES.OK).json({
         message: "Product updated successfully",
-        data: product
-      })
+        data: product,
+      });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR)
-      .json({
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Product update failed",
-        error: error.message 
+        error: error.message,
+      });
+    }
+  }
+
+  public async deleteProduct(req: Request, res: Response) {
+    const vendorId = (req as any).user._id;
+    try {
+      await productsService.deleteProduct(req.params.id, vendorId)
+      res.status(STATUS_CODES.OK).json({
+        message: "Product deleted",
+      });
+    } catch (error: any) {
+      res.status(error.status).json({
+        message: "Failed to delete product",
+        error: error.message
       })
     }
   }

@@ -85,7 +85,7 @@ class ProductsService {
     productId: string,
     vendor: string,
     payload: Partial<IProduct>
-  ): Promise<IProduct > {
+  ): Promise<IProduct> {
     try {
       const vendorOwnsProduct = await Product.exists({
         _id: productId,
@@ -102,14 +102,38 @@ class ProductsService {
         productId,
         { $set: payload },
         { new: true }
-      ).select('name description price photos shop category sizes colors')
-      .lean();
+      )
+        .select("name description price photos shop category sizes colors")
+        .lean();
 
-      if(!product) {
-        throw new HandleException(STATUS_CODES.NOT_FOUND, 'Product not found')
+      if (!product) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "Product not found");
       }
 
       return product;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  async deleteProduct(productId: string, vendor: string) {
+    try {
+      const vendorOwnsProduct = await Product.exists({
+        _id: productId,
+        vendor,
+      });
+      if (!vendorOwnsProduct) {
+        throw new HandleException(
+          STATUS_CODES.FORBIDDEN,
+          "You cannot perform this action"
+        );
+      }
+      const result = await Product.deleteOne({ _id: productId });
+
+      if (result.deletedCount === 0) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "Product not found");
+      }
+      console.log("Product deleted", productId);
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
