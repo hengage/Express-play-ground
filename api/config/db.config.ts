@@ -43,7 +43,8 @@ class DBConfig {
             console.log(`Connected to database`);
         });
 
-       
+    //    await this.db.collection('vendors').updateMany({}, {$unset: {name: 1}})
+    //    console.log('Updated successfully')
     }
 
     public createPartialIndex() {

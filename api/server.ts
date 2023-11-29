@@ -18,4 +18,4 @@ async function initializeMigrations() {
   await vendorService.updateVendorSchema();
 }
 
-// initializeMigrations()
+initializeMigrations()

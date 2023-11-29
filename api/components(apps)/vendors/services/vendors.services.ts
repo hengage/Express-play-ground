@@ -126,21 +126,21 @@ class VendorService {
       console.log({ vendors });
 
       for (const vendor of vendors) {
-        const oldName = vendor.get("name");
-        console.log({ oldName });
-        // Transform vendor structure according to the new schema
-        const updatedVendor = {
-          firstName: oldName.firstName,
-          middleName: oldName.middleName,
-          lastName: oldName.lastName,
-          name: null,
-        } as any;
+      //   const oldName = vendor.get("name");
+      //   console.log({ oldName });
+      //   // Transform vendor structure according to the new schema
+      //   const updatedVendor = {
+      //     firstName: oldName.firstName,
+      //     middleName: oldName.middleName,
+      //     lastName: oldName.lastName,
+      //     name: null,
+      //   } as any;
 
         // updatedVendor['name'] = undefined;
         
         await Vendor.updateOne(
           {_id: vendor._id},
-          { $set: updatedVendor,  $unset: { name: 1 },},
+          {  $unset: { name: 1 },},
           {
             new: true,
           }
