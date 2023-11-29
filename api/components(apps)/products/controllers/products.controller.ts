@@ -57,10 +57,11 @@ class ProductsController {
   }
 
   public async getProductsByCategory(req: Request, res: Response) {
-    const page = parseInt(req.query.page as string) || 1
+    const page = parseInt(req.query.page as string) || 1;
     try {
       const products = await productsService.getProductByCategory(
-        req.params.categoryId, page
+        req.params.categoryId,
+        page
       );
       res.status(STATUS_CODES.OK).json({
         message: "Fetched product",
@@ -73,6 +74,29 @@ class ProductsController {
         message: "Failed to fetch product",
         error: error.message,
       });
+    }
+  }
+
+  public async updateProduct(req: Request, res: Response) {
+    const vendorId = (req as any).user._id
+
+    try {
+      const product = await productsService.updateProduct(
+        req.params.productId,
+        vendorId,
+        req.body
+      );
+
+      res.status(STATUS_CODES.OK).json({
+        message: "Product updated successfully",
+        data: product
+      })
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR)
+      .json({
+        message: "Product update failed",
+        error: error.message 
+      })
     }
   }
 }

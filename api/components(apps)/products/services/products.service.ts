@@ -80,6 +80,40 @@ class ProductsService {
       throw new HandleException(error.status, error.message);
     }
   }
+
+  public async updateProduct(
+    productId: string,
+    vendor: string,
+    payload: Partial<IProduct>
+  ): Promise<IProduct > {
+    try {
+      const vendorOwnsProduct = await Product.exists({
+        _id: productId,
+        vendor,
+      });
+      if (!vendorOwnsProduct) {
+        throw new HandleException(
+          STATUS_CODES.FORBIDDEN,
+          "Vendor does not own the product"
+        );
+      }
+
+      const product = await Product.findByIdAndUpdate(
+        productId,
+        { $set: payload },
+        { new: true }
+      ).select('name description price photos shop category sizes colors')
+      .lean();
+
+      if(!product) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, 'Product not found')
+      }
+
+      return product;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
 }
 
 export const productsService = new ProductsService();

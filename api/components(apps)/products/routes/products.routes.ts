@@ -16,6 +16,9 @@ class ProductsRoutes {
     this.router
       .route(`/category/:categoryId`)
       .get(productsController.getProductsByCategory);
+    this.router
+      .route("/:productId/update")
+      .patch(productsController.updateProduct);
   }
 }
 
