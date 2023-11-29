@@ -56,23 +56,17 @@ class VendorService {
     }
     try {
       const newVendor = new Vendor({
-        name: {
-          firstName: payload.firstName,
-          lastName: payload.lastName,
-          middleName,
-        },
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        middleName,
         email: payload.email,
         phoneNumber: payload.phoneNumber,
         password: payload.password,
         photo: payload.photo,
         govtIdPhoto: payload.govtIdPhoto,
-        address: {
-          street: payload.street,
-          city: payload.city,
-          state: payload.state,
-          country: payload.country,
-          postalCode: payload.postalCode,
-        },
+        city: payload.city,
+        state: payload.state,
+        country: payload.country,
       });
       const savedVendor = await newVendor.save();
       return savedVendor;
@@ -114,7 +108,7 @@ class VendorService {
       const vendor = await Vendor.findOne({ _id: id })
         .select("-__v -password -updatedAt")
         .lean();
-      if (! vendor) {
+      if (!vendor) {
         throw new HandleException(
           STATUS_CODES.NOT_FOUND,
           "Vendor account not found"
