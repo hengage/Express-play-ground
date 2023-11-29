@@ -141,7 +141,11 @@ class ShopServices {
 
   public async updateShop(shopId: string, payload: Partial<IShop>) {
     try {
-      const shop = await Shop.findByIdAndUpdate(shopId, {$set: payload}, { new: true })
+      const shop = await Shop.findByIdAndUpdate(
+        shopId,
+        { $set: payload },
+        { new: true }
+      )
         .select("name email phoneNumber city state country type category logo")
         .lean();
       return shop;

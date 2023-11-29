@@ -16,7 +16,7 @@ class ShopsRoutes {
 
     this.router.use(jwtUtils.verifyTokenMiddleware);
     this.router.route(`/create/`).post(shopController.createShop);
-    this.router.route(`:shopId/update`).post(shopController.updateShop);
+    this.router.route(`/:shopId/update`).patch(shopController.updateShop);
     this.router
       .route(`/:shopId/products`)
       .get(shopController.getProductsForAshop);
@@ -28,3 +28,4 @@ class ShopsRoutes {
 }
 
 export const shopsRoutes = new ShopsRoutes();
+555
