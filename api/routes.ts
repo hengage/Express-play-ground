@@ -7,6 +7,7 @@ import { driversRidesrRoutes } from "./components(apps)/driversAndRiders";
 import { authRoutes } from "./components(apps)/auth";
 import { productsRoutes } from "./components(apps)/products";
 import { ordersRoutes } from "./components(apps)/orders";
+import { adminRoutes } from "./components(apps)/admin";
 
 class Routes {
   /*
@@ -27,10 +28,10 @@ class Routes {
     this.router.use("/vendor", vendorsRoutes.router);
     this.router.use("/shops", shopsRoutes.router);
     this.router.use("/media", mediaRoutes.router);
-    this.router.use("/media", mediaRoutes.router);
     this.router.use("/auth", authRoutes.router);
     this.router.use("/products", productsRoutes.router);
     this.router.use("/orders", ordersRoutes.router);
+    this.router.use("/admin", adminRoutes.router);
   }
 }
 

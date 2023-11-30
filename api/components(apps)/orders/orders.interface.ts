@@ -23,3 +23,10 @@ export interface IOrder extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IDeliveryRate {
+  _id: string;
+  baseFee: number;
+  feePerKM: number;
+  riderFeePerKM: number;
+}
