@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+
 import { IDeliveryRate, IOrder } from "../orders.interface";
 import { uniqueString } from "../../../utils";
 import { OrderStatus } from "../../../constants";
@@ -54,9 +55,11 @@ const deliveryRateSchema = new Schema<IDeliveryRate>({
     required: true,
     default: () => uniqueString.generateUniqueString(4),
   },
-  baseFee: {type: Number, required: true},
-  feePerKM: {type: Number, required: true},
-  riderFeePerKM: {type: Number, required: true},
+  baseFee: {
+    type: String, required: true,
+},
+  feePerKM: { type: String, required: true},
+  riderFeePerKM: {type: String, required: true},
 })
 
 

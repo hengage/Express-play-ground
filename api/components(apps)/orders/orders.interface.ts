@@ -26,7 +26,7 @@ export interface IOrder extends Document {
 
 export interface IDeliveryRate {
   _id: string;
-  baseFee: number;
-  feePerKM: number;
-  riderFeePerKM: number;
+  baseFee: string;
+  feePerKM: string;
+  riderFeePerKM: string;
 }
