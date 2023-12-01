@@ -216,7 +216,7 @@ class ShopServices {
   public async getAllShopsForAVendor(vendorId: string): Promise<IShop[]> {
     try {
       const shops = await Shop.find({ vendor: vendorId })
-        .select("name")
+        .select("name email logo")
         .populate({ path: "category", select: "name" });
       return shops;
     } catch (error: any) {
