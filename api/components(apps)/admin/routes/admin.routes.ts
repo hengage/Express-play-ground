@@ -14,6 +14,7 @@ class AdminRoutes {
     // this.router.use(jwtUtils.verifyTokenMiddleware)
     this.router.route('/delivery-rate').post(adminController.deliveryRate);
     this.router.route('/vehicle-type').post(adminController.createVehicleType);
+    this.router.route('/vehicle-type/:vehicleTypeId').patch(adminController.updateVehicleType);
   }
 }
 
