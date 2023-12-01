@@ -4,3 +4,9 @@ export interface ICreateVehicleType {
     feePerKM: string;
     riderPercentage: string;
 }
+
+export interface IAddCategory {
+    categoryName: string;
+    categoryImage: string;
+    shopTypeId: string;
+  }

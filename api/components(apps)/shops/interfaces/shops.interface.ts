@@ -36,13 +36,6 @@ export interface ICategory extends Document {
   image: string;
   shopType: string;
 }
-
-export interface IAddCategory {
-  categoryName: string;
-  categoryImage: string;
-  shopTypeId: string;
-}
-
 export interface ICreateShop {
   name: string;
   email: string;

@@ -2,9 +2,68 @@ import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { IVehicleType, VehicleType } from "../../maku";
 import { DeliveryRate, IDeliveryRate } from "../../orders";
-import { ICreateVehicleType } from "../admin.interfacee";
+import { Category, ShopType } from "../../shops";
+import { IAddCategory, ICreateVehicleType } from "../admin.interfacee";
 
 class AdminService {
+  public async createShopType(payload: any) {
+    const { categoryName, categoryImage } = payload;
+    try {
+      const shopTypeExists = await ShopType.findOne({ name: payload.name })
+        .select("name")
+        .lean();
+
+      if (shopTypeExists) {
+        throw new HandleException(
+          STATUS_CODES.CONFLICT,
+          `A shop type with this name '${payload.name}' exists already`
+        );
+      }
+
+      const shopType = new ShopType({
+        name: payload.name,
+        description: payload.description,
+        image: payload.image,
+      });
+
+      const savedShopType = await shopType.save();
+      const shopTypeId = savedShopType._id;
+      await this.addcategory({ categoryName, categoryImage, shopTypeId });
+
+      return savedShopType;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  public async addcategory(payload: IAddCategory) {
+    try {
+      const categoryExists = await Category.findOne({
+        name: payload.categoryName,
+      })
+        .select("name")
+        .lean();
+
+      if (categoryExists) {
+        throw new HandleException(
+          STATUS_CODES.CONFLICT,
+          `A category with this name '${payload.categoryName}' exists already`
+        );
+      }
+
+      const newCategory = new Category({
+        name: payload.categoryName,
+        image: payload.categoryImage,
+        shopType: payload.shopTypeId,
+      });
+
+      const savedCategory = await newCategory.save();
+      return savedCategory;
+    } catch (error: any) {
+      throw new HandleException(STATUS_CODES.SERVER_ERROR, error.message);
+    }
+  }
+
   public async deliveryRate(payload: IDeliveryRate) {
     try {
       const existingConfig = await DeliveryRate.findOne();

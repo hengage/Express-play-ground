@@ -4,50 +4,6 @@ import { STATUS_CODES } from "../../../constants";
 import { vendorService } from "../../vendors";
 
 class ShopController {
-  public async addcategory(req: Request, res: Response) {
-    const { shopTypeId } = req.params;
-    const { categoryName, categoryImage } = req.body;
-
-    try {
-      const newCategory = await shopServices.addcategory({
-        categoryName,
-        categoryImage,
-        shopTypeId,
-      });
-      res.status(STATUS_CODES.CREATED).json({
-        message: "Added new category",
-        data: {
-          category: {
-            _id: newCategory._id,
-            name: newCategory.name,
-            image: newCategory.image,
-          },
-        },
-      });
-    } catch (error: any) {
-      res
-        .status(error.status || STATUS_CODES.SERVER_ERROR)
-        .json({ message: "Error creating category", error: error.message });
-    }
-  }
-
-  async createShopType(req: Request, res: Response) {
-    try {
-      const shopType = await shopServices.createShopType(req.body);
-      res.status(STATUS_CODES.CREATED).json({
-        message: "Created shop type",
-        data: {
-          _id: shopType._id,
-        },
-      });
-    } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to create shop type",
-        error: error.message,
-      });
-    }
-  }
-
   async getShopTypes(req: Request, res: Response) {
     try {
       const shopTypes = await shopServices.getShopTypes();
