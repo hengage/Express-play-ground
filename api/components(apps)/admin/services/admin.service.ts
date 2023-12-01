@@ -1,5 +1,6 @@
-import { STATUS_CODES } from "../../../constants";
+import { DriverRiderType, STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
+import { DriverRider, IDriverRider } from "../../driversAndRiders";
 import { IVehicleType, VehicleType } from "../../maku";
 import { DeliveryRate, IDeliveryRate } from "../../orders";
 import { Category, ShopType } from "../../shops";
@@ -162,6 +163,18 @@ class AdminService {
         );
       }
       return vehicleType;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  public async getDrivers(): Promise<IDriverRider[]>{
+    try {
+      const drivers = await DriverRider.find({accountType: DriverRiderType.DRIVER})
+      .select('firstName lastName phoneNumber')
+      .lean()
+
+      return drivers
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }

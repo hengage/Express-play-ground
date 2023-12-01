@@ -78,6 +78,7 @@ class AdminController {
       });
     }
   }
+
   public async deliveryRate(req: Request, res: Response) {
     try {
       const deliveryRate = await adminService.deliveryRate(req.body);
@@ -121,6 +122,21 @@ class AdminController {
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Operation failed",
+        error: error.message,
+      });
+    }
+  }
+
+  public async getDrivers(req: Request, res: Response) {
+    try {
+      const drivers = await adminService.getDrivers();
+      res.status(STATUS_CODES.OK).json({
+        message: "Drivers found",
+        data: drivers,
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Couuld not get drivers",
         error: error.message,
       });
     }
