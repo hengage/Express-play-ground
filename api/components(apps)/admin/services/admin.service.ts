@@ -68,6 +68,26 @@ class AdminService {
     }
   }
 
+  public async updateShopType(id: string, payload: any) {
+    try {
+      const shopType = await ShopType.findByIdAndUpdate(
+        id,
+        { $set: payload },
+        { new: true }
+      ).select(payload);
+      if (!shopType) {
+        throw new HandleException(
+          STATUS_CODES.NOT_FOUND,
+          "Shop type not found"
+        );
+      }
+      
+      return shopType
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
   public async deliveryRate(payload: IDeliveryRate) {
     try {
       const existingConfig = await DeliveryRate.findOne();
