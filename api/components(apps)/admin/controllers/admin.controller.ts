@@ -22,7 +22,7 @@ class AdminController {
         try {
             const vehicleType = await adminService.createVehicleType(req.body);
             res.status(STATUS_CODES.CREATED).json({
-                message: "Operation succesful",
+                message: "Operation successful",
                 data: vehicleType
             })
         } catch (error: any) {
