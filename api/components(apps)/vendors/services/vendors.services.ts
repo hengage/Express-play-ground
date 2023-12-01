@@ -4,6 +4,7 @@ import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { Vendor } from "../models/vendors.model";
 import { ISignupVendor, IVendor } from "../vendors.interface";
+import { IShop, Shop } from "../../shops";
 
 class VendorService {
   async getVendorByPhoneNumber(
@@ -115,6 +116,17 @@ class VendorService {
         );
       }
       return vendor;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  public async getAllShopsForAVendor(vendorId: string): Promise<IShop[]> {
+    try {
+      const shops = await Shop.find({ vendor: vendorId })
+        .select("name email logo")
+        .populate({ path: "category", select: "name" });
+      return shops;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }

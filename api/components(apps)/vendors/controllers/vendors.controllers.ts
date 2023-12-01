@@ -63,7 +63,7 @@ class VendorController {
   async getShops(req: Request, res: Response) {
     try {
       const vendorId = (req as any).user._id
-      const shops = await shopServices.getAllShopsForAVendor(vendorId);
+      const shops = await vendorService.getAllShopsForAVendor(vendorId);
       if (shops.length < 1) {
         return res.status(STATUS_CODES.NOT_FOUND).json({
           message: "You currently have no shop",
