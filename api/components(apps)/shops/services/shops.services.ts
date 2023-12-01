@@ -217,13 +217,6 @@ class ShopServices {
     try {
       const products = await Product.find({ shop: shopId })
         .select("_id name photos price")
-        .lean();
-      if (products.length < 1) {
-        throw new HandleException(
-          STATUS_CODES.NOT_FOUND,
-          "This shop has no item"
-        );
-      }
       return products;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
