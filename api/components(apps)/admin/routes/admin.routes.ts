@@ -18,6 +18,9 @@ class AdminRoutes {
     this.router
       .route("/update-shop-type/:shopTypeId")
       .patch(adminController.updateShopType);
+    this.router
+      .route("/update-shop-category/:categoryId")
+      .patch(adminController.updateCategory);
     this.router.route("/delivery-rate").post(adminController.deliveryRate);
     this.router.route("/vehicle-type").post(adminController.createVehicleType);
     this.router

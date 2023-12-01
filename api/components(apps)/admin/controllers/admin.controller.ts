@@ -65,6 +65,19 @@ class AdminController {
     }
   }
 
+  public async updateCategory(req: Request, res: Response) {
+    try {
+      await adminService.updateCategory(req.params.categoryId, req.body);
+      res.status(STATUS_CODES.OK).json({
+        message: "Operation successful",
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Operation failed",
+        error: error.message,
+      });
+    }
+  }
   public async deliveryRate(req: Request, res: Response) {
     try {
       const deliveryRate = await adminService.deliveryRate(req.body);

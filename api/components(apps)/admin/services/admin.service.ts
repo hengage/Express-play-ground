@@ -81,8 +81,26 @@ class AdminService {
           "Shop type not found"
         );
       }
-      
-      return shopType
+
+      return shopType;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  public async updateCategory(id: string, payload: any) {
+    try {
+      const category = await Category.findByIdAndUpdate(
+        id,
+        { $set: payload },
+        { new: true }
+      );
+      if (!category) {
+        throw new HandleException(
+          STATUS_CODES.NOT_FOUND,
+          "Category does not exist"
+        );
+      }
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
