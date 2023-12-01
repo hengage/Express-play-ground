@@ -1,0 +1,1 @@
+export { VehicleType } from "./models/maku.model";

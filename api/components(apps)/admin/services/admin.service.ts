@@ -1,5 +1,7 @@
 import { HandleException } from "../../../utils";
+import { VehicleType } from "../../maku";
 import { DeliveryRate, IDeliveryRate } from "../../orders";
+import { ICreateVehicleType } from "../admin.interfacee";
 
 class AdminService {
     public async deliveryRate (payload: IDeliveryRate) {
@@ -24,6 +26,22 @@ class AdminService {
             console.error('Error updating/creating delivery pricing:', error.message);
             throw new HandleException(error.status, error.message);
           }
+    }
+
+    public async createVehicleType(payload: ICreateVehicleType) {
+      try {
+        const vehicleType = new VehicleType({
+          vehicleType: payload.vehicleType,
+          baseFee: payload.baseFee,
+          feePerKM: payload.feePerKM,
+          riderPercentage: payload.riderPercentage
+        })
+
+        const savedVehicleType = await vehicleType.save()
+        return savedVehicleType
+      } catch (error: any) {
+        throw new HandleException(error.status, error.message)
+      }
     }
 }
 
