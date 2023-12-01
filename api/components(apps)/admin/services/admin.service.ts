@@ -28,7 +28,11 @@ class AdminService {
 
       const savedShopType = await shopType.save();
       const shopTypeId = savedShopType._id;
-      await this.addcategory({ categoryName, categoryImage, shopTypeId });
+      await this.addcategory({
+        name: categoryName,
+        image: categoryImage,
+        shopTypeId,
+      });
 
       return savedShopType;
     } catch (error: any) {
@@ -39,7 +43,7 @@ class AdminService {
   public async addcategory(payload: IAddCategory) {
     try {
       const categoryExists = await Category.findOne({
-        name: payload.categoryName,
+        name: payload.name,
       })
         .select("name")
         .lean();
@@ -47,13 +51,13 @@ class AdminService {
       if (categoryExists) {
         throw new HandleException(
           STATUS_CODES.CONFLICT,
-          `A category with this name '${payload.categoryName}' exists already`
+          `A category with this name '${payload.name}' exists already`
         );
       }
 
       const newCategory = new Category({
-        name: payload.categoryName,
-        image: payload.categoryImage,
+        name: payload.name,
+        image: payload.image,
         shopType: payload.shopTypeId,
       });
 

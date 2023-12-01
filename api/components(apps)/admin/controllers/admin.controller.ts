@@ -22,12 +22,12 @@ class AdminController {
 
       public async addcategory(req: Request, res: Response) {
         const { shopTypeId } = req.params;
-        const { categoryName, categoryImage } = req.body;
+        const { name, image } = req.body;
     
         try {
           const newCategory = await adminService.addcategory({
-            categoryName,
-            categoryImage,
+            name,
+            image,
             shopTypeId,
           });
           res.status(STATUS_CODES.CREATED).json({

@@ -6,7 +6,7 @@ export interface ICreateVehicleType {
 }
 
 export interface IAddCategory {
-    categoryName: string;
-    categoryImage: string;
+    name: string;
+    image: string;
     shopTypeId: string;
   }
