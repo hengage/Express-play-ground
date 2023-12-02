@@ -27,6 +27,7 @@ class AdminRoutes {
       .route("/vehicle-type/:vehicleTypeId")
       .patch(adminController.updateVehicleType);
     this.router.route("/drivers").get(adminController.getDrivers)
+    this.router.route("/riders").get(adminController.getRiders)
   }
 }
 

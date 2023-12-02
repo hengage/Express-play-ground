@@ -141,6 +141,21 @@ class AdminController {
       });
     }
   }
+
+  public async getRiders(req: Request, res: Response) {
+    try {
+      const riders = await adminService.getRiders();
+      res.status(STATUS_CODES.OK).json({
+        message: "Riders found",
+        data: riders,
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Couuld not get riders",
+        error: error.message,
+      });
+    }
+  }
 }
 
 export const adminController = new AdminController();
