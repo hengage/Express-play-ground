@@ -6,7 +6,7 @@ class OrdersController  {
     async createOrder(req: Request, res: Response) {
         try {
             const customerId = (req as any).user._id;
-            const order = await ordersService.createOrder(req.body, customerId)
+            const order = await ordersService.createOrder(req.body)
             res.status(STATUS_CODES.OK).json({
                 message: "Created order",
                 data: {

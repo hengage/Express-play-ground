@@ -15,9 +15,12 @@ export interface IOrder extends Document {
   deliveryFee: number;
   deliveryAddress: {
     address: string;
-    latitude: number;
     longitude: number;
   },
+  deliveryAddressCord: {
+    type: string;
+    coordinates: [number]
+  }
   totalAmount: number;
   status: OrderStatus;
   createdAt: Date;

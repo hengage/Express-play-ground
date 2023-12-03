@@ -4,50 +4,61 @@ import { IDeliveryRate, IOrder } from "../orders.interface";
 import { uniqueString } from "../../../utils";
 import { OrderStatus } from "../../../constants";
 
-const orderSchema = new Schema<IOrder>({
-  _id: {
-    type: String,
-    required: true,
-    default: () => uniqueString.generateUniqueString(4),
-  },
-  customer: { type: String, required: true, ref: "Customer" },
-  items: [{
-    product: {
+const orderSchema = new Schema<IOrder>(
+  {
+    _id: {
+      type: String,
+      required: true,
+      default: () => uniqueString.generateUniqueString(4),
+    },
+    customer: { type: String, required: true, ref: "Customer" },
+    items: [
+      {
+        product: {
+          type: String,
+          ref: "Product",
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+        },
+        price: {
+          type: Number,
+          required: true,
+        },
+        shop: {
+          type: String,
+          required: true,
+          ref: "Shop",
+        },
+      },
+    ],
+    deliveryFee: { type: Number, required: true },
+    deliveryAddress: { type: String, required: true },
+    deliveryAddressCord: {
+      type: {
         type: String,
-        ref: 'Product', 
-        required: true,
+        default: "Point",
+        required: true
       },
-      quantity: {
-        type: Number,
-        required: true,
-      },
-      price: {
-        type: Number,
-        required: true,
-      },
-      shop: {
-        type: String,
-        required: true,
-        ref: "Shop"
-      },
-  }],
-  deliveryFee: {type: Number, required: true},
-  deliveryAddress: {
-    address: {type: String, required: true },
-    latitude: {type: Number, required: true}, 
-    longitude: {type: Number, required: true} 
+      coordinates: {
+        type: [Number],
+        required: true
+    }
+    },
+    totalAmount: {
+      type: Number,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: Object.values(OrderStatus),
+      default: OrderStatus.PENDING,
+    },
   },
-  totalAmount: {
-    type: Number,
-    required: true,
-  },
-  status: {
-    type: String,
-    enum: Object.values(OrderStatus),
-    default: OrderStatus.PENDING,
-  },
-}, {_id: false, timestamps: true});
-
+  { _id: false, timestamps: true }
+);
 
 const deliveryRateSchema = new Schema<IDeliveryRate>({
   _id: {
@@ -56,12 +67,15 @@ const deliveryRateSchema = new Schema<IDeliveryRate>({
     default: () => uniqueString.generateUniqueString(4),
   },
   baseFee: {
-    type: String, required: true,
-},
-  feePerKM: { type: String, required: true},
-  riderFeePerKM: {type: String, required: true},
-})
-
+    type: String,
+    required: true,
+  },
+  feePerKM: { type: String, required: true },
+  riderFeePerKM: { type: String, required: true },
+});
 
 export const Order = model<IOrder>("Order", orderSchema);
-export const DeliveryRate = model<IDeliveryRate>("DeliveryRate", deliveryRateSchema);
+export const DeliveryRate = model<IDeliveryRate>(
+  "DeliveryRate",
+  deliveryRateSchema
+);

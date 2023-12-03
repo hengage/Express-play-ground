@@ -4,6 +4,7 @@ const socketIO = require("socket.io");
 import { Socket } from "socket.io";
 import { notificationService } from "./notification.service";
 import { redisClient } from "./redis.service";
+import { ordersService } from "../components(apps)/orders";
 
 class WebSocket {
   private io: Socket;
@@ -42,6 +43,15 @@ class WebSocket {
     socket.on("fcm-rider-driver-device-token", async (message) => {
       const { driverRider: driverRiderId, deviceToken } = message;
       await redisClient.set(driverRiderId, deviceToken);
+    });
+
+    socket.on("save-order", async (message) => {
+      console.log({ message });
+      try {
+        ordersService.createOrder(message);
+      } catch (error) {
+        console.error({error});
+      }
     });
   }
 

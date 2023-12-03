@@ -4,7 +4,7 @@ import { Order } from "../models/orders.models";
 import { IOrder } from "../orders.interface";
 
 class OrdersService {
-  public async createOrder(payload: any, customerId: string) {
+  public async createOrder(payload: any) {
     try {
       const orderItems = payload.items.map((item: any) => {
         return {
@@ -16,32 +16,31 @@ class OrdersService {
       });
 
       const newOrder = new Order({
-        customer: customerId,
+        customer: payload.customer,
         items: orderItems,
         deliveryFee: payload.deliveryFee,
-        deliveryAddress: {
-          address: payload.deliveryAddress,
-          latitude: payload.deliveryLatitude,
-          longitude: payload.deliveryLongitude
+        deliveryAddress: payload.address,
+        deliveryAddressCord: {
+          coordinates: payload.coordinates
         },
-        totalAmount: payload.totalAmount,
+        totalAmount: payload.totalPrice,
       });
 
       await newOrder.save();
-
-      const order = {
-        _id: newOrder._id,
-        customer: newOrder.customer,
-        items: newOrder.items,
-        deliveryFee: newOrder.deliveryFee,
-        deliveryAddress: {
-          address: newOrder.deliveryAddress.address,
-        },
-        totalAmount: newOrder.totalAmount,
-        status: newOrder.status,
-        createdAt: newOrder.createdAt,
-      };
-      return order;
+      console.log('saved order', newOrder)
+      // const order = {
+      //   _id: newOrder._id,
+      //   customer: newOrder.customer,
+      //   items: newOrder.items,
+      //   deliveryFee: newOrder.deliveryFee,
+      //   deliveryAddress: {
+      //     address: newOrder.deliveryAddress.address,
+      //   },
+      //   totalAmount: newOrder.totalAmount,
+      //   status: newOrder.status,
+      //   createdAt: newOrder.createdAt,
+      // };
+      // return order;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
@@ -49,16 +48,16 @@ class OrdersService {
 
   public async getOrder(orderId: string): Promise<IOrder> {
     try {
-        const order = await Order.findById({_id: orderId})
-        .select('_id items totalAmount status createdAt')
-        .lean()
+      const order = await Order.findById({ _id: orderId })
+        .select("_id items totalAmount status createdAt")
+        .lean();
 
-        if (! order) {
-            throw new HandleException(STATUS_CODES.NOT_FOUND, 'Order not found')
-        }
-        return order;
+      if (!order) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "Order not found");
+      }
+      return order;
     } catch (error: any) {
-        throw new HandleException(error.status, error.message)
+      throw new HandleException(error.status, error.message);
     }
   }
 }
