@@ -37,6 +37,7 @@ class WebSocket {
 
     socket.on("fcm-customer-device-token", async (message) => {
       const { customer: customerId, deviceToken } = message;
+      console.log({ customerId, deviceToken });
       await redisClient.set(customerId, deviceToken);
     });
 
@@ -46,11 +47,11 @@ class WebSocket {
     });
 
     socket.on("save-order", async (message) => {
-      console.log({ message });
       try {
-        ordersService.createOrder(message);
+        const order = await ordersService.createOrder(message);
+        this.sendSavedOrder(order);
       } catch (error) {
-        console.error({error});
+        console.error({ error });
       }
     });
   }
@@ -75,6 +76,24 @@ class WebSocket {
     await notificationService.sendNotification(payload);
 
     socket.emit("order-notification-sent", message);
+  }
+
+  private async sendSavedOrder(order: any) {
+    console.log({ order });
+    const customerDeviceToken = await redisClient.get(order.customer);
+    console.log({ customerDeviceToken });
+    const payload = {
+      notification: {
+        title: "Your order has been accepted",
+        // body: "Please view your order",
+      },
+      data: {
+        order: JSON.stringify(order),
+      },
+      token: `${customerDeviceToken}`,
+    };
+
+    await notificationService.sendNotification(payload);
   }
 }
 

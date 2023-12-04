@@ -28,19 +28,19 @@ class OrdersService {
 
       await newOrder.save();
       console.log('saved order', newOrder)
-      // const order = {
-      //   _id: newOrder._id,
-      //   customer: newOrder.customer,
-      //   items: newOrder.items,
-      //   deliveryFee: newOrder.deliveryFee,
-      //   deliveryAddress: {
-      //     address: newOrder.deliveryAddress.address,
-      //   },
-      //   totalAmount: newOrder.totalAmount,
-      //   status: newOrder.status,
-      //   createdAt: newOrder.createdAt,
-      // };
-      // return order;
+      const order = {
+        _id: newOrder._id,
+        customer: newOrder.customer,
+        items: newOrder.items,
+        deliveryFee: newOrder.deliveryFee,
+        deliveryAddress: {
+          address: newOrder.deliveryAddress,
+        },
+        totalAmount: newOrder.totalAmount,
+        status: newOrder.status,
+        createdAt: newOrder.createdAt,
+      };
+      return order;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
