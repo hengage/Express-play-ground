@@ -103,7 +103,12 @@ class CustomerService {
         filter.status = status;
       }
 
-      const orders = await Order.find(filter).select("-__v -updatedAt").lean();
+      const orders = await Order.find(filter)
+      .select("-__v -updatedAt")
+      .populate({path: "items.product", select: "name photos sizes colors"})
+      .populate({path: "items.shop", select: "name"})
+      .lean()
+      .exec();
 
       if (orders.length < 1) {
         if (status) {
@@ -132,11 +137,11 @@ class CustomerService {
       if (result.deletedCount === 0) {
         throw new HandleException(STATUS_CODES.NOT_FOUND, "Customer not found");
       }
-      console.log('Customer deleted successfully', customerId);
+      console.log("Customer deleted successfully", customerId);
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
-  }  
+  }
 }
 
 export const customerService = new CustomerService();
