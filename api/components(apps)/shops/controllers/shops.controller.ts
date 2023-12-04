@@ -110,6 +110,23 @@ class ShopController {
       });
     }
   }
+
+  
+  async getOrders(req: Request, res: Response) {
+    try {
+      const orders = await shopServices.getOrders(req.params.shopId);
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched orders",
+        data: orders
+      })
+    } catch (error: any) {
+        res.status(error.status || STATUS_CODES.SERVER_ERROR)
+        .json({
+            message: "Error getting orders",
+            error: error.message
+        })
+    }
+  }
 }
 
 export const shopController = new ShopController();

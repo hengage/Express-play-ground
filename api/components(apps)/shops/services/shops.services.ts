@@ -1,5 +1,6 @@
 import { STATUS_CODES, URL_LINKS } from "../../../constants";
 import { HandleException } from "../../../utils";
+import { Order } from "../../orders";
 import { IProduct } from "../../products";
 import { Product } from "../../products/models/products.model";
 import {
@@ -29,8 +30,6 @@ class ShopServices {
       throw new HandleException(error.status, error.message);
     }
   }
-
- 
 
   public async getShopTypes(): Promise<IShopType[]> {
     try {
@@ -105,8 +104,8 @@ class ShopServices {
         { new: true }
       )
         .select("name email phoneNumber city state country type category logo")
-        .populate({path: "type", select: "name"})
-        .populate({path: "category", select: "name"})
+        .populate({ path: "type", select: "name" })
+        .populate({ path: "category", select: "name" })
         .lean();
       return shop;
     } catch (error: any) {
@@ -158,9 +157,37 @@ class ShopServices {
 
   public async getProductsForAShop(shopId: string): Promise<IProduct[]> {
     try {
-      const products = await Product.find({ shop: shopId })
-        .select("_id name photos price")
+      const products = await Product.find({ shop: shopId }).select(
+        "_id name photos price"
+      );
       return products;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  public async getOrders(shopId: string) {
+    try {
+      const orders = await Order.aggregate([
+        {
+          $match: {
+            "items.shop": shopId,
+          },
+        },
+        {
+          $addFields: {
+            items: {
+              $filter: {
+                input: "$items",
+                as: "item",
+                cond: { $eq: ["$$item.shop", shopId] },
+              },
+            },
+          },
+        },
+      ]);
+
+      return orders;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }

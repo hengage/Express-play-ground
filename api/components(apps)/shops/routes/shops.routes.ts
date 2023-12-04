@@ -21,8 +21,9 @@ class ShopsRoutes {
     this.router
       .route("/types/:shopTypeId/categories")
       .get(shopController.getCategoriesByShopType);
+    this.router.route("/:shopId/orders").get(shopController.getOrders);
   }
 }
 
 export const shopsRoutes = new ShopsRoutes();
-555
+555;
