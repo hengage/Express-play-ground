@@ -185,6 +185,12 @@ class ShopServices {
             },
           },
         },
+        {
+          $project: {
+            deliveryAddressCord: 0,
+            updatedAt: 0
+          }
+        }
       ]);
 
       return orders;
