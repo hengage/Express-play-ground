@@ -1,7 +1,7 @@
 import { STATUS_CODES, URL_LINKS } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { Order } from "../../orders";
-import { IProduct } from "../../products";
+import { IProduct, deleteProduct } from "../../products";
 import { Product } from "../../products/models/products.model";
 import {
   ICategory,
@@ -188,12 +188,24 @@ class ShopServices {
         {
           $project: {
             deliveryAddressCord: 0,
-            updatedAt: 0
-          }
-        }
+            updatedAt: 0,
+          },
+        },
       ]);
 
       return orders;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  public async deleteShop(shopId: string) {
+    try {
+      const result = await Shop.deleteOne({ _id: shopId });
+      if (result.deletedCount === 0) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "Shop not found");
+      }
+      await deleteProduct(shopId);
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }

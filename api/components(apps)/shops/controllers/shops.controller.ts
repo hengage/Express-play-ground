@@ -111,20 +111,32 @@ class ShopController {
     }
   }
 
-  
   async getOrders(req: Request, res: Response) {
     try {
       const orders = await shopServices.getOrders(req.params.shopId);
       res.status(STATUS_CODES.OK).json({
         message: "Fetched orders",
-        data: orders
-      })
+        data: orders,
+      });
     } catch (error: any) {
-        res.status(error.status || STATUS_CODES.SERVER_ERROR)
-        .json({
-            message: "Error getting orders",
-            error: error.message
-        })
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error getting orders",
+        error: error.message,
+      });
+    }
+  }
+
+  async deleteShop(req: Request, res: Response) {
+    try {
+      await shopServices.deleteShop(req.params.shopId);
+      res.status(STATUS_CODES.OK).json({
+        message: "Shop deleted successfully",
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error deleting shop",
+        error: error.message,
+      });
     }
   }
 }
