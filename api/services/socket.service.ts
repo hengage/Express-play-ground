@@ -32,18 +32,18 @@ class WebSocket {
 
     socket.on("fcm-vendor-device-token", async (message) => {
       const { vendor: vendorId, deviceToken } = message;
-      await redisClient.set(vendorId, deviceToken);
+      await redisClient.set(`device-token$${vendorId}`, deviceToken);
     });
 
     socket.on("fcm-customer-device-token", async (message) => {
       const { customer: customerId, deviceToken } = message;
       console.log({ customerId, deviceToken });
-      await redisClient.set(customerId, deviceToken);
+      await redisClient.set(`device-token$${customerId}`, deviceToken);
     });
 
     socket.on("fcm-rider-driver-device-token", async (message) => {
       const { driverRider: driverRiderId, deviceToken } = message;
-      await redisClient.set(driverRiderId, deviceToken);
+      await redisClient.set(`device-token$${driverRiderId}`, deviceToken);
     });
 
     socket.on("save-order", async (message) => {

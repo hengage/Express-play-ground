@@ -20,7 +20,8 @@ class NotificationService {
 
   public async handleOrderRequest(socket: Socket, message: any) {
     const { vendor: vendorId } = message;
-    const vendorDeviceToken = await redisClient.get(vendorId);
+    console.log({ vendorId });
+    const vendorDeviceToken = await redisClient.get(`device-token$${vendorId}`);
     console.log({ vendorDeviceToken });
 
     const payload = {
@@ -41,7 +42,9 @@ class NotificationService {
   }
 
   public async sendSavedOrder(order: any) {
-    const customerDeviceToken = await redisClient.get(order.customer);
+    const customerDeviceToken = await redisClient.get(
+      `device-token$${order.customer}`
+    );
     console.log({ customerDeviceToken });
     const payload = {
       notification: {
