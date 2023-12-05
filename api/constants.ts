@@ -22,6 +22,15 @@ export enum OrderStatus {
   CANCELLED = "cancelled",
 }
 
+export enum MakuCabStatus {
+  PENDING = "pending",
+  ACCEPTED = "accepted",
+  REJECTED = "rejected",
+  ENROUTE = "enroute",
+  COMPLETED = "completed",
+  CANCELLED = "cancelled"
+}
+
 export const URL_LINKS = {
   DEFAULT_SHOP_LOGO: "DEFAULT_SHOP_LOGO",
   DEFAULT_ACCOUNT_PHOTO:

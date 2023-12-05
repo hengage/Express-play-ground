@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 import { ITrip, IVehicleType } from "../maku.interfaces";
 import { uniqueString } from "../../../utils";
+import { MakuCabStatus } from "../../../constants";
 
 const vehicleTypeSchema = new Schema<IVehicleType>({
   _id: {
@@ -45,7 +46,7 @@ const tripSchema = new Schema<ITrip>(
     },
     vehicleType: { type: String, required: true },
     price: { type: String, required: true },
-    status: { type: String, default: "" },
+    status: { type: String, default: MakuCabStatus.PENDING },
   },
   { timestamps: true, _id: false }
 );
