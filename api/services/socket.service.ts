@@ -27,7 +27,7 @@ class WebSocket {
 
   private listenForEvents(socket: Socket) {
     socket.on("send-order-notification", async (message) => {
-      await this.handleOrderNotification(socket, message);
+      await notificationService.handleOrderRequest(socket, message);
     });
 
     socket.on("fcm-vendor-device-token", async (message) => {
@@ -49,54 +49,12 @@ class WebSocket {
     socket.on("save-order", async (message) => {
       try {
         const orderId = await ordersService.createOrder(message);
-        const order = await ordersService.getOrder(orderId)
-        this.sendSavedOrder(order);
+        const order = await ordersService.getOrder(orderId);
+        notificationService.sendSavedOrder(order);
       } catch (error) {
         console.error({ error });
       }
     });
-  }
-
-  private async handleOrderNotification(socket: Socket, message: any) {
-    const { vendor: vendorId } = message;
-    const vendorDeviceToken = await redisClient.get(vendorId);
-    console.log({ vendorDeviceToken });
-
-    const payload = {
-      notification: {
-        title: "You have an order to attend to",
-        body: "Accept or reject the incoming order",
-      },
-      data: {
-        order: JSON.stringify(message),
-      },
-      token: `${vendorDeviceToken}`,
-    };
-    console.log({ message: JSON.stringify(message) });
-
-    await notificationService.sendNotification(payload);
-
-    socket.emit("order-notification-sent", message);
-  }
-
-  private async sendSavedOrder(order: any) {
-     order.items.map((product: any )=> {
-      console.log(product)
-    }) ;
-    const customerDeviceToken = await redisClient.get(order.customer);
-    console.log({ customerDeviceToken });
-    const payload = {
-      notification: {
-        title: "Your order has been accepted",
-        // body: "Please view your order",
-      },
-      data: {
-        order: JSON.stringify(order),
-      },
-      token: `${customerDeviceToken}`,
-    };
-
-    await notificationService.sendNotification(payload);
   }
 }
 
