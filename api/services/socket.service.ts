@@ -48,7 +48,8 @@ class WebSocket {
 
     socket.on("save-order", async (message) => {
       try {
-        const order = await ordersService.createOrder(message);
+        const orderId = await ordersService.createOrder(message);
+        const order = await ordersService.getOrder(orderId)
         this.sendSavedOrder(order);
       } catch (error) {
         console.error({ error });
@@ -79,7 +80,9 @@ class WebSocket {
   }
 
   private async sendSavedOrder(order: any) {
-    console.log({ order });
+     order.items.map((product: any )=> {
+      console.log(product)
+    }) ;
     const customerDeviceToken = await redisClient.get(order.customer);
     console.log({ customerDeviceToken });
     const payload = {

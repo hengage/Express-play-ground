@@ -21,13 +21,13 @@ class OrdersService {
         deliveryFee: payload.deliveryFee,
         deliveryAddress: payload.address,
         deliveryAddressCord: {
-          coordinates: payload.coordinates
+          coordinates: payload.coordinates,
         },
         totalAmount: payload.totalPrice,
       });
 
       await newOrder.save();
-      console.log('saved order', newOrder)
+      // console.log("saved order", newOrder);
       const order = {
         _id: newOrder._id,
         customer: newOrder.customer,
@@ -40,7 +40,7 @@ class OrdersService {
         status: newOrder.status,
         createdAt: newOrder.createdAt,
       };
-      return order;
+      return newOrder._id;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
@@ -49,7 +49,11 @@ class OrdersService {
   public async getOrder(orderId: string): Promise<IOrder> {
     try {
       const order = await Order.findById({ _id: orderId })
-        .select("_id items totalAmount status createdAt")
+        .select(
+          "-__v -updatedAt -deliveryAddressCord.type"
+        )
+        .populate({path: "items.product", select: "name photos" })
+        .populate({path: "items.shop", select: "name" })
         .lean();
 
       if (!order) {
