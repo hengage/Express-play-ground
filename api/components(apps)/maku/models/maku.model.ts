@@ -9,7 +9,7 @@ const vehicleTypeSchema = new Schema<IVehicleType>({
     required: true,
     default: () => uniqueString.generateUniqueString(4),
   },
-  vehicleType: { type: String, required: true },
+  vehicleType: { type: String, required: true, unique: true },
   baseFee: { type: String, required: true },
   feePerKM: { type: String, required: true },
   riderPercentage: { type: String, required: true },
