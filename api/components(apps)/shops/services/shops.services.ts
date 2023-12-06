@@ -185,10 +185,47 @@ class ShopServices {
             },
           },
         },
+         {
+          $lookup: {
+            from: "customers",
+            let: { customerId: "$customer" },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $eq: ["$_id", "$$customerId"],
+                  },
+                },
+              },
+              {
+                $project: {
+                  _id: 1,
+                  firstName: 1,
+                  lastName: 1,
+                },
+              },
+            ],
+            as: "customerDetails",
+          },
+        },
+        {
+          $unwind: "$customerDetails",
+        },
         {
           $project: {
-            deliveryAddressCord: 0,
-            updatedAt: 0,
+            _id: 1,
+            customer: {
+              _id: "$customerDetails._id",
+              firstName: "$customerDetails.firstName",
+              lastName: "$customerDetails.lastName",
+            },
+            items: 1,
+            deliveryFee: 1,
+            deliveryAddress: 1,
+            deliveryAddressCord: 1,
+            totalAmount: 1,
+            status: 1,
+            createdAt: 1,
           },
         },
       ]);

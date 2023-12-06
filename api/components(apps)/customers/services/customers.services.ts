@@ -104,8 +104,7 @@ class CustomerService {
       }
 
       const orders = await Order.find(filter)
-      .select("-__v -updatedAt")
-      .populate({path: "customer", select: "firstName lastName",})
+      .select("-__v -updatedAt -customer")
       .populate({path: "items.product", select: "name photos sizes colors"})
       .populate({path: "items.shop", select: "name"})
       .lean()
