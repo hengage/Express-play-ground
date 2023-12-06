@@ -50,11 +50,17 @@ const driverRiderSchema = new Schema<IDriverRider>(
         default: 0,
       },
     },
+    location: {
+      type: { type: String },
+      coordinates: [Number, Number],
+    },
     lastLoggedIn: { type: Date },
     approved: { type: Boolean, default: false },
   },
   { timestamps: true, _id: false }
 );
+
+driverRiderSchema.index({location: "2dsphere"})
 
 driverRiderSchema.pre("save", async function (next) {
   if (this.isModified("password")) {

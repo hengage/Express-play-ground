@@ -1,5 +1,9 @@
 import { AccountStatus, DriverRiderType } from "../../constants";
 
+interface Location {
+  type: string;
+  coordinates: [number];
+}
 export interface IDriverRider extends Document {
   _id: string;
   firstName: string;
@@ -25,6 +29,7 @@ export interface IDriverRider extends Document {
     ratingCount: number;
     averageRating: number;
   };
+  location: Location & Document['location']
   approved: boolean;
   lastLoggedIn: Date;
   createdAt: Date;
