@@ -5,6 +5,9 @@ import { Socket } from "socket.io";
 import { notificationService } from "./notification.service";
 import { redisClient } from "./redis.service";
 import { ordersService } from "../components(apps)/orders";
+import { DriverRider } from "../components(apps)/driversAndRiders";
+import { HandleException } from "../utils";
+import { STATUS_CODES } from "../constants";
 
 class WebSocket {
   private io: Socket;
@@ -53,6 +56,23 @@ class WebSocket {
         notificationService.sendSavedOrder(order);
       } catch (error) {
         console.error({ error });
+      }
+    });
+
+    socket.on("update-driver-rider-location", async (message) => {
+      try {
+        const driver = await DriverRider.findById(message._id);
+
+        if (!driver) {
+          throw new HandleException(
+            STATUS_CODES.NOT_FOUND,
+            "Cannot find driver"
+          );
+        }
+        driver.location.coordinates = message.coordinates;
+        await driver.save();
+      } catch (error) {
+        console.log({ error });
       }
     });
   }
