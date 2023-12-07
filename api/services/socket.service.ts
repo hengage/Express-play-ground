@@ -8,6 +8,7 @@ import { ordersService } from "../components(apps)/orders";
 import { DriverRider } from "../components(apps)/driversAndRiders";
 import { HandleException } from "../utils";
 import { STATUS_CODES } from "../constants";
+import { findClosestDriver } from "./geospatial.services";
 
 class WebSocket {
   private io: Socket;
@@ -73,6 +74,20 @@ class WebSocket {
         await driver.save();
       } catch (error) {
         console.log({ error });
+      }
+    });
+
+    socket.on("find-nearest-driver-rider", async (message) => {
+      try {
+        const rider = await findClosestDriver(
+          message.coordinates,
+          message.accountType,
+          message.distanceInKilometers
+        )
+        console.log('Rider found', rider)
+        socket.emit('nearest-driver-rider', rider)
+      } catch (error) {
+        console.error({error})
       }
     });
   }
