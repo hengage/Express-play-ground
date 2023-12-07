@@ -5,7 +5,10 @@ import { Socket } from "socket.io";
 import { notificationService } from "./notification.service";
 import { redisClient } from "./redis.service";
 import { ordersService } from "../components(apps)/orders";
-import { DriverRider } from "../components(apps)/driversAndRiders";
+import {
+  DriverRider,
+  driverRiderService,
+} from "../components(apps)/driversAndRiders";
 import { HandleException } from "../utils";
 import { STATUS_CODES } from "../constants";
 import { findClosestDriver } from "./geospatial.services";
@@ -20,16 +23,29 @@ class WebSocket {
   public connectSocket() {
     this.io.on("connection", (socket: Socket) => {
       console.log("User connected");
+      const clientId = socket.id;
+      this.listenForEvents(socket, clientId);
 
-      this.listenForEvents(socket);
-
-      socket.on("disconnect", () => {
+      socket.on("disconnect", async () => {
         console.log("User disconnected");
+        const driverId = await redisClient.get(`socketId:${clientId}`);
+        driverRiderService.setDriverUnavailable(driverId);
+        redisClient.delete(`socketId:${clientId}`);
       });
     });
   }
 
-  private listenForEvents(socket: Socket) {
+  private listenForEvents(socket: Socket, clientId: string) {
+    socket.on("driver-start-working", (message) => {
+      driverRiderService.setDriverAvailable(message.driverId);
+      redisClient.set(`socketId:${clientId}`, message.driverId);
+    });
+
+    socket.on("driver-stop-working", (message) => {
+      driverRiderService.setDriverUnavailable(message.driverId);
+      redisClient.delete(`socketId:${clientId}`);
+    });
+
     socket.on("send-order-notification", async (message) => {
       await notificationService.handleOrderRequest(socket, message);
     });
@@ -61,8 +77,10 @@ class WebSocket {
     });
 
     socket.on("update-driver-rider-location", async (message) => {
+      const { driverId, coordinates } = message;
+      console.log({driverId, coordinates});
       try {
-        const driver = await DriverRider.findById(message._id);
+        const driver = await DriverRider.findById(driverId);
 
         if (!driver) {
           throw new HandleException(
@@ -70,7 +88,7 @@ class WebSocket {
             "Cannot find driver"
           );
         }
-        driver.location.coordinates = message.coordinates;
+        driver.location.coordinates = coordinates;
         await driver.save();
       } catch (error) {
         console.log({ error });
@@ -78,16 +96,17 @@ class WebSocket {
     });
 
     socket.on("find-nearest-driver-rider", async (message) => {
+      const { coordinates, accountType, distanceInKilometers } = message;
       try {
         const rider = await findClosestDriver(
-          message.coordinates,
-          message.accountType,
-          message.distanceInKilometers
-        )
-        console.log('Rider found', rider)
-        socket.emit('nearest-driver-rider', rider)
+          coordinates,
+          accountType,
+          distanceInKilometers
+        );
+        console.log("Rider found", rider);
+        socket.emit("nearest-driver-rider", rider);
       } catch (error) {
-        console.error({error})
+        console.error({ error });
       }
     });
   }

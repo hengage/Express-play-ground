@@ -144,6 +144,22 @@ class DriverRiderService {
       throw new HandleException(error.status, error.message);
     }
   }
+
+  async setDriverAvailable(id: string | null) {
+    const driverRider = await DriverRider.findById(id).select("available");
+    if (driverRider) {
+      driverRider.available = true;
+      await driverRider.save();
+    }
+  }
+
+  async setDriverUnavailable(id: string | null) {
+    const driverRider = await DriverRider.findById(id).select("available");
+    if (driverRider) {
+      driverRider.available = false;
+      await driverRider.save();
+    }
+  }
 }
 
 export const driverRiderService = new DriverRiderService();

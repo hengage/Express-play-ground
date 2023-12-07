@@ -56,6 +56,7 @@ const driverRiderSchema = new Schema<IDriverRider>(
     },
     lastLoggedIn: { type: Date },
     approved: { type: Boolean, default: false },
+    available: { type: Boolean, default: false},
   },
   { timestamps: true, _id: false }
 );

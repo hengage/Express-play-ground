@@ -28,6 +28,7 @@ async function findClosestDriver(
     {
       $match: {
         accountType,
+        available: true,
       },
     },
     {

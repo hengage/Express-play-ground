@@ -32,6 +32,7 @@ export interface IDriverRider extends Document {
   location: Location & Document['location']
   approved: boolean;
   lastLoggedIn: Date;
+  available: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
