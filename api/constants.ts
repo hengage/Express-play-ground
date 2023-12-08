@@ -17,8 +17,9 @@ export enum DriverRiderType {
 
 export enum OrderStatus {
   PENDING = "pending",
-  PICKED_UP = "picked_up",
+  PROCESSING = "processing",
   DELIVERED = "delivered",
+  TRANSIT = "transit",
   CANCELLED = "cancelled",
 }
 

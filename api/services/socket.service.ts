@@ -70,7 +70,8 @@ class WebSocket {
       try {
         const orderId = await ordersService.createOrder(message);
         const order = await ordersService.getOrder(orderId);
-        notificationService.sendSavedOrder(order);
+        await notificationService.sendSavedOrder(order);
+        await ordersService.setStatusToProcessing(orderId);
       } catch (error) {
         console.error({ error });
       }
@@ -78,7 +79,7 @@ class WebSocket {
 
     socket.on("update-driver-rider-location", async (message) => {
       const { driverId, coordinates } = message;
-      console.log({driverId, coordinates});
+      console.log({ driverId, coordinates });
       try {
         const driver = await DriverRider.findById(driverId);
 
