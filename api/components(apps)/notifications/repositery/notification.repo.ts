@@ -1,3 +1,4 @@
+import { HandleException } from "../../../utils";
 import { Notifications } from "../models/notifications.models";
 
 async function saveNotification(
@@ -20,4 +21,16 @@ async function saveNotification(
   }
 }
 
-export { saveNotification };
+async function getUserNotifications(userId: string) {
+  try {
+    const notification = await Notifications.find({ user: userId })
+      .select("-__v")
+      .lean()
+      .exec();
+    return notification
+  } catch (error: any) {
+    throw new HandleException(error.status, error.message)
+  }
+}
+
+export { saveNotification, getUserNotifications };
