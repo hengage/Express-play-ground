@@ -2,7 +2,7 @@ import { Server } from "http";
 
 const socketIO = require("socket.io");
 import { Socket } from "socket.io";
-import { notificationService } from "./notification.service";
+import { notificationService } from "../components(apps)/notifications";
 import { redisClient } from "./redis.service";
 import { ordersService } from "../components(apps)/orders";
 import {

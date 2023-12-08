@@ -1,7 +1,8 @@
-import { firebaseAdmin } from "../config";
 import * as admin from "firebase-admin";
 import { Socket } from "socket.io";
-import { redisClient } from "./redis.service";
+import { redisClient } from "../../../services";
+import { firebaseAdmin } from "../../../config";
+import { saveNotification } from "../repositery/notification.repo";
 
 class NotificationService {
   private messaging: admin.messaging.Messaging;
@@ -37,8 +38,13 @@ class NotificationService {
     // console.log({ message: JSON.stringify(message) });
 
     await this.sendNotification(payload);
-
     socket.emit("order-notification-sent", message);
+    await saveNotification(
+      vendorId,
+      payload.notification.title,
+      payload.notification.body,
+      payload.data
+    );
   }
 
   public async sendSavedOrder(order: any) {
@@ -58,6 +64,11 @@ class NotificationService {
     };
 
     await this.sendNotification(payload);
+    await saveNotification(
+      order.customer,
+      payload.notification.title,
+      payload.data.order
+    );
   }
 }
 
