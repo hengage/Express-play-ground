@@ -32,7 +32,7 @@ const customerSchema = new Schema<ICustomer>(
       type: String,
       required: true,
     },
-    photo: { type: String, default: '' },
+    profilePhoto: { type: String, default: URL_LINKS.DEFAULT_ACCOUNT_PHOTO },
     street: { type: String, default: '' },
     city: { type: String, default: '' },
     state: { type: String, default: '' },
@@ -45,7 +45,6 @@ const customerSchema = new Schema<ICustomer>(
       type: String,
       enum: Object.values(Gender),
     },
-    profilePhoto: { type: String, default: URL_LINKS.DEFAULT_ACCOUNT_PHOTO },
     accountStatus: {
       type: String,
       enum: Object.values(AccountStatus),

@@ -5,7 +5,7 @@ export interface ICustomer extends Document {
   email: string;
   phoneNumber: string;
   password: string;
-  photo: string;
+  profilePhoto: string;
   country: string;
   street: string;
   city: string;
@@ -15,7 +15,6 @@ export interface ICustomer extends Document {
   latitude: number;
   dateOfBirth: Date;
   gender: "Male" | "Female" | "Other";
-  profilePhoto: string;
   accountStatus: string;
   lastLoggedIn: Date;
   createdAt: Date;
