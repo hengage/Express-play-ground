@@ -41,11 +41,13 @@ class CustomerController {
       const customer = await customerService.login({ phoneNumber, password });
       const payload = { phoneNumber: customer.phoneNumber, _id: customer._id };
       const accessToken = jwtUtils.generateToken(payload, "1h");
+      const refreshToken = jwtUtils.generateToken(payload, "14d");
       res.status(200).json({
         message: "Successfully logged in",
         data: {
           _id: customer._id,
           accessToken,
+          refreshToken
         },
       });
     } catch (error: any) {

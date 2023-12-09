@@ -2,6 +2,7 @@ import { Router } from "express";
 import { verifyController } from "../controllers/verify.controller";
 import { passwordMgmtController } from "../controllers/passwordMgmt.controller";
 import { jwtUtils } from "../../../utils";
+import { authController } from "../controllers/auth.controller";
 
 
 class AuthRoutes  {
@@ -23,6 +24,10 @@ class AuthRoutes  {
       this.router
       .route('/password/reset')
       .patch(passwordMgmtController.resetPassword);
+
+      this.router.
+      route('/refresh-access-token')
+      .post(authController.refreshAccessToken)
 
       this.router.use(jwtUtils.verifyTokenMiddleware)
       this.router

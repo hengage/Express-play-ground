@@ -2,12 +2,12 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
 import { HandleException } from "../utils";
-import { SECRET_KEY } from "../config/secrets.config";
+import { JWT_SECRET_KEY } from "../config/secrets.config";
 import { STATUS_CODES } from "../constants";
 
 class JWT {
   public generateToken(payload: any, expiresIn: string): string {
-    return jwt.sign(payload, `${SECRET_KEY}`, { expiresIn });
+    return jwt.sign(payload, `${JWT_SECRET_KEY}`, { expiresIn });
   }
 
   public verifyToken(req: Request) {
@@ -18,7 +18,7 @@ class JWT {
     }
 
     try {
-      const decoded = jwt.verify(token, `${SECRET_KEY}`);
+      const decoded = jwt.verify(token, `${JWT_SECRET_KEY}`);
       return decoded;
     } catch (error: any) {
       throw new HandleException(401, error.message);
@@ -39,7 +39,7 @@ class JWT {
     }
 
     try {
-      const decoded = jwt.verify(token, `${SECRET_KEY}`);
+      const decoded = jwt.verify(token, `${JWT_SECRET_KEY}`);
       (req as any).user = decoded;
       next();
     } catch (error: any) {
