@@ -18,6 +18,8 @@ class VendorController {
         _id: vendor._id,
       };
       const accessToken = jwtUtils.generateToken(payload, "1h");
+      const refreshToken = jwtUtils.generateToken(payload, "14d");
+
       return res.status(201).json({
         message: "Account created successfully",
         data: {
@@ -27,6 +29,7 @@ class VendorController {
             phoneNumber: vendor.phoneNumber,
           },
           accessToken,
+          refreshToken,
         },
       });
     } catch (error: any) {
@@ -45,11 +48,14 @@ class VendorController {
       const vendor = await vendorService.login({ phoneNumber, password });
       const payload = { phoneNumber: vendor.phoneNumber, _id: vendor._id };
       const accessToken = jwtUtils.generateToken(payload, "1h");
+      const refreshToken = jwtUtils.generateToken(payload, "14d");
+
       res.status(200).json({
         message: "Successfully logged in",
         data: {
           ...vendor,
           accessToken,
+          refreshToken
         },
       });
     } catch (error: any) {
@@ -62,7 +68,7 @@ class VendorController {
 
   async getShops(req: Request, res: Response) {
     try {
-      const vendorId = (req as any).user._id
+      const vendorId = (req as any).user._id;
       const shops = await vendorService.getAllShopsForAVendor(vendorId);
       if (shops.length < 1) {
         return res.status(STATUS_CODES.NOT_FOUND).json({
@@ -71,7 +77,7 @@ class VendorController {
       }
       res.status(STATUS_CODES.OK).json({
         message: `Fetched shops for vendor: ${vendorId}`,
-        data: shops
+        data: shops,
       });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
@@ -96,7 +102,6 @@ class VendorController {
       });
     }
   }
-
 }
 
 export const vendorController = new VendorController();

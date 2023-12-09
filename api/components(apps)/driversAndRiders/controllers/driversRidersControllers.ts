@@ -26,6 +26,8 @@ class DriversRidersController {
         _id: driverRider._id,
       };
       const accessToken = jwtUtils.generateToken(payload, "1h");
+      const refreshToken = jwtUtils.generateToken(payload, "14d");
+
       return res.status(201).json({
         message: "Account created successfully",
         data: {
@@ -34,6 +36,7 @@ class DriversRidersController {
             firstName: driverRider.firstName,
           },
           accessToken,
+          refreshToken
         },
       });
     } catch (error: any) {
@@ -57,11 +60,14 @@ class DriversRidersController {
         _id: driverRider._id,
       };
       const accessToken = jwtUtils.generateToken(payload, "1h");
+      const refreshToken = jwtUtils.generateToken(payload, "14d");
+
       return res.status(200).json({
         message: "Logged in",
         data: {
           ...driverRider,
           accessToken,
+          refreshToken
         },
       });
     } catch (error: any) {

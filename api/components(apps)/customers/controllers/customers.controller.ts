@@ -18,12 +18,14 @@ class CustomerController {
         _id: savedCustomer._id,
       };
       const accessToken = jwtUtils.generateToken(payload, "1h");
+      const refreshToken = jwtUtils.generateToken(payload, "14d");
 
       res.status(201).json({
         message: "Customer created successfully",
         data: {
           customerId: savedCustomer._id,
           accessToken,
+          refreshToken
         },
       });
     } catch (error: any) {
