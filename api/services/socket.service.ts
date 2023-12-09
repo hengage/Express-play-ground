@@ -110,6 +110,18 @@ class WebSocket {
         console.error({ error });
       }
     });
+
+    socket.on("assign-rider", async (message) => {
+      const { orderId, riderId } = message;
+      try {
+        const order = await ordersService.getOrderById(orderId, "rider");
+        order.rider = riderId;
+        await order.save();
+        console.log({"assigned rider": order})
+      } catch (error: any) {
+        socket.emit('assign-rider-error', error.message)
+      }
+    });
   }
 }
 

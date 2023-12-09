@@ -63,12 +63,33 @@ class OrdersService {
     }
   }
 
+  public async getOrderById(id: string, selectField?: string): Promise<IOrder> {
+    try {
+      const query = Order.findById(id);
+      if (selectField) {
+        query.select(selectField);
+      }
+      
+      const order = await query.exec();
+
+      if (!order) {
+        throw new HandleException(
+          STATUS_CODES.NOT_FOUND,
+          "The order was not found and might not exist"
+        );
+      }
+      return order;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
   public async setStatusToProcessing(id: string) {
     const order = await Order.findById(id).select("status").exec();
     if (order) {
       order.status = OrderStatus.PROCESSING;
       await order.save();
-      console.log('order set to processing', {order});
+      console.log("order set to processing", { order });
     }
   }
 }

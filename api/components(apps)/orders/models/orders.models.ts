@@ -40,13 +40,14 @@ const orderSchema = new Schema<IOrder>(
       type: {
         type: String,
         default: "Point",
-        required: true
+        required: true,
       },
       coordinates: {
         type: [Number],
-        required: true
-    }
+        required: true,
+      },
     },
+    rider: {type: String, ref: "DriverRider", default: null},
     totalAmount: {
       type: Number,
       required: true,
