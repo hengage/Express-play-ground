@@ -17,7 +17,7 @@ export interface IDriverRider extends Document {
   vehicleType: string;
   vehicleInsurancePhoto: string;
   licenseNumber: string;
-  govtIdPhoto: string;
+  govtIdPhoto: [string];
   street: string;
   city: string;
   state: string;

@@ -23,9 +23,9 @@ const driverRiderSchema = new Schema<IDriverRider>(
     country: { type: String, required: true },
     postalCode: String,
     licenseNumber: { type: String, required: true },
-    vehicleType: { type: String, required: true },
+    vehicleType: { type: String, ref: "VehicleType", required: true },
     vehicleInsurancePhoto: { type: String, required: true },
-    govtIdPhoto: { type: String, required: true },
+    govtIdPhoto: { type: [String, String], required: true },
     accountType: {
       type: String,
       required: true,
@@ -56,12 +56,12 @@ const driverRiderSchema = new Schema<IDriverRider>(
     },
     lastLoggedIn: { type: Date },
     approved: { type: Boolean, default: false },
-    available: { type: Boolean, default: false},
+    available: { type: Boolean, default: false },
   },
   { timestamps: true, _id: false }
 );
 
-driverRiderSchema.index({location: "2dsphere"})
+driverRiderSchema.index({ location: "2dsphere" });
 
 driverRiderSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
