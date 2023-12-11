@@ -15,7 +15,6 @@ async function saveNotification(
       data,
     });
     const savedNotification = await notification.save();
-    console.log({ savedNotification });
   } catch (error) {
     console.log({ NotificationError: error });
   }

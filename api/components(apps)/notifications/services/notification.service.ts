@@ -49,8 +49,9 @@ class NotificationService {
   }
 
   public async sendSavedOrder(order: any) {
+    console.log({id: order.customer._id})
     const customerDeviceToken = await redisClient.get(
-      `device-token:${order.customer}`
+      `device-token:${order.customer._id}`
     );
     console.log({ customerDeviceToken });
     const payload = {
