@@ -22,7 +22,7 @@ class NotificationService {
   public async handleOrderRequest(socket: Socket, message: any) {
     const { vendor: vendorId } = message;
     console.log({ vendorId });
-    const vendorDeviceToken = await redisClient.get(`device-token$${vendorId}`);
+    const vendorDeviceToken = await redisClient.get(`device-token:${vendorId}`);
     console.log({ vendorDeviceToken });
 
     const payload = {
@@ -49,7 +49,7 @@ class NotificationService {
 
   public async sendSavedOrder(order: any) {
     const customerDeviceToken = await redisClient.get(
-      `device-token$${order.customer}`
+      `device-token:${order.customer}`
     );
     console.log({ customerDeviceToken });
     const payload = {
@@ -71,9 +71,9 @@ class NotificationService {
     );
   }
 
-  public async notifyRiderOfOrder(riderId: string, order: any){
-    const riderDeviceToken = await redisClient.get(`device-token$${riderId}`)
-    console.log({riderDeviceToken})
+  public async notifyRiderOfOrder(riderId: string, order: any) {
+    const riderDeviceToken = await redisClient.get(`device-token:${riderId}`);
+    console.log({ riderDeviceToken });
     const payload = {
       notification: {
         title: "You have an order to attend to",
