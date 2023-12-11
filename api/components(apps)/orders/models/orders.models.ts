@@ -43,7 +43,7 @@ const orderSchema = new Schema<IOrder>(
         required: true,
       },
       coordinates: {
-        type: [Number],
+        type: [Number, Number],
         required: true,
       },
     },

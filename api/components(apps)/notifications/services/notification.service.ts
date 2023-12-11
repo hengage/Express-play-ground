@@ -70,6 +70,23 @@ class NotificationService {
       payload.data.order
     );
   }
+
+  public async notifyRiderOfOrder(riderId: string, order: any){
+    const riderDeviceToken = await redisClient.get(`device-token$${riderId}`)
+    console.log({riderDeviceToken})
+    const payload = {
+      notification: {
+        title: "You have an order to attend to",
+        body: "You can choose to accept or ignore this order",
+      },
+      data: {
+        type: "accept-order-delivery",
+        order: JSON.stringify(order),
+      },
+      token: `${riderDeviceToken}`,
+    };
+    await this.sendNotification(payload);
+  }
 }
 
 export const notificationService = new NotificationService();

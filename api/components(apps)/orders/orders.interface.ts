@@ -19,7 +19,7 @@ export interface IOrder extends Document {
   };
   deliveryAddressCord: {
     type: string;
-    coordinates: [number];
+    coordinates: [number, number];
   };
   rider: string;
   totalAmount: number;

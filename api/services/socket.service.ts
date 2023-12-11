@@ -61,20 +61,15 @@ class WebSocket {
       await redisClient.set(`device-token$${customerId}`, deviceToken);
     });
 
-    socket.on("fcm-rider-driver-device-token", async (message) => {
-      const { driverRider: driverRiderId, deviceToken } = message;
-      await redisClient.set(`device-token$${driverRiderId}`, deviceToken);
+    socket.on("fcm-rider-device-token", async (message) => {
+      const { riderId, deviceToken } = message;
+      console.log({ riderId, deviceToken });
+      await redisClient.set(`device-token$${riderId}`, deviceToken);
     });
 
-    socket.on("save-order", async (message) => {
-      try {
-        const orderId = await ordersService.createOrder(message);
-        const order = await ordersService.getOrder(orderId);
-        await notificationService.sendSavedOrder(order);
-        await ordersService.setStatusToProcessing(orderId);
-      } catch (error) {
-        console.error({ error });
-      }
+    socket.on("fcm-driver-device-token", async (message) => {
+      const { driverRiderId, deviceToken } = message;
+      await redisClient.set(`device-token$${driverRiderId}`, deviceToken);
     });
 
     socket.on("update-driver-rider-location", async (message) => {
@@ -96,20 +91,46 @@ class WebSocket {
       }
     });
 
-    socket.on("find-nearest-driver-rider", async (message) => {
-      const { coordinates, accountType, distanceInKilometers } = message;
+    socket.on("save-order", async (message) => {
       try {
-        const rider = await findClosestDriver(
-          coordinates,
-          accountType,
-          distanceInKilometers
+        const orderId = await ordersService.createOrder(message);
+        const order = await ordersService.getOrder(orderId);
+        await notificationService.sendSavedOrder(order);
+        await ordersService.setStatusToProcessing(orderId);
+        console.log({ savedOrder: order });
+
+        const riders = await findClosestDriver(
+          order.deliveryAddressCord.coordinates,
+          "rider",
+          10.5
         );
-        console.log("Rider found", rider);
-        socket.emit("nearest-driver-rider", rider);
+        console.log({ riders });
+        riders.map((rider) => {
+          notificationService.notifyRiderOfOrder(rider._id, order);
+        });
       } catch (error) {
         console.error({ error });
       }
     });
+
+    // socket.on("find-nearest-driver-rider", async (message) => {
+    //   const { coordinates, accountType, distanceInKilometers } = message;
+    //   try {
+    //     const riders = await findClosestDriver(
+    //       coordinates,
+    //       accountType,
+    //       distanceInKilometers
+    //     );
+    //     console.log("Rider found", riders);
+
+    //     riders.map((rider) => {
+    //       notificationService.notifyRiderOfOrder(rider._id);
+    //     });
+    //     // socket.emit("nearest-driver-rider", rider);
+    //   } catch (error) {
+    //     console.error({ error });
+    //   }
+    // });
 
     socket.on("assign-rider", async (message) => {
       const { orderId, riderId } = message;
@@ -117,9 +138,9 @@ class WebSocket {
         const order = await ordersService.getOrderById(orderId, "rider");
         order.rider = riderId;
         await order.save();
-        console.log({"assigned rider": order})
+        console.log({ "assigned rider": order });
       } catch (error: any) {
-        socket.emit('assign-rider-error', error.message)
+        socket.emit("assign-rider-error", error.message);
       }
     });
   }
