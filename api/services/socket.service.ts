@@ -97,7 +97,8 @@ class WebSocket {
         const order = await ordersService.getOrder(orderId);
         await ordersService.setStatusToProcessing(orderId);
         await notificationService.sendSavedOrder(order);
-        // console.log({ savedOrder: JSON.stringify(order.items) });
+
+        const orderData = ordersService.prepareOrderDataForRider(order)
 
         const riders = await findClosestDriver(
           order.deliveryAddressCord.coordinates,
@@ -105,17 +106,7 @@ class WebSocket {
           10.5
         );
         console.log({ riders });
-        const orderData = {
-          orderId: order._id,
-          // shop: order.items.map((item) => item.shop)[0],
-          shop: order.items.reduce((acc, item) => {
-            acc = item.shop;
-            return acc;
-          }, {}),
-          customer: order.customer,
-          deliveryAddress: order.deliveryAddressCord.coordinates,
-        };
-        // console.log({ orderData: JSON.stringify(orderData) });
+       
 
         riders.forEach((rider) => {
           notificationService.notifyRiderOfOrder(rider._id, orderData);

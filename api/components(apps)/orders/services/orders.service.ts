@@ -51,8 +51,11 @@ class OrdersService {
       const order = await Order.findById({ _id: orderId })
         .select("-__v -updatedAt -deliveryAddressCord.type")
         .populate({ path: "items.product", select: "name photos" })
-        .populate({ path: "items.shop", select: "name  phoneNumber location.coordinates" })
-        .populate({ path: "customer", select: "phoneNumber"})
+        .populate({
+          path: "items.shop",
+          select: "name  phoneNumber location.coordinates",
+        })
+        .populate({ path: "customer", select: "phoneNumber" })
         .lean();
 
       if (!order) {
@@ -70,7 +73,7 @@ class OrdersService {
       if (selectField) {
         query.select(selectField);
       }
-      
+
       const order = await query.exec();
 
       if (!order) {
@@ -92,6 +95,19 @@ class OrdersService {
       await order.save();
       console.log("order set to processing", { order });
     }
+  }
+
+  public prepareOrderDataForRider(order: any) {
+    return {
+      orderId: order._id,
+      // shop: order.items.map((item) => item.shop)[0],
+      shop: order.items.reduce((acc: any, item: any) => {
+        acc = item.shop;
+        return acc;
+      }, {}),
+      customer: order.customer,
+      deliveryAddress: order.deliveryAddressCord.coordinates,
+    };
   }
 }
 
