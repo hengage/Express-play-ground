@@ -26,7 +26,6 @@ export const shopSchema = new Schema<IShop>(
       type: {
         type: String,
         default: "Point",
-        required: true,
       },
       coordinates: {
         type: [Number, Number],

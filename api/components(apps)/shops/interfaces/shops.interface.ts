@@ -3,7 +3,7 @@ import { IVendor } from "../../vendors";
 
 interface ILocation {
   type: string;
-  coordinates: [number];
+  coordinates: [number, number];
 }
 export interface IShop extends Document {
   _id: string;
