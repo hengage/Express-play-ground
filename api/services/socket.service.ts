@@ -113,25 +113,6 @@ class WebSocket {
       }
     });
 
-    // socket.on("find-nearest-driver-rider", async (message) => {
-    //   const { coordinates, accountType, distanceInKilometers } = message;
-    //   try {
-    //     const riders = await findClosestDriver(
-    //       coordinates,
-    //       accountType,
-    //       distanceInKilometers
-    //     );
-    //     console.log("Rider found", riders);
-
-    //     riders.map((rider) => {
-    //       notificationService.notifyRiderOfOrder(rider._id);
-    //     });
-    //     // socket.emit("nearest-driver-rider", rider);
-    //   } catch (error) {
-    //     console.error({ error });
-    //   }
-    // });
-
     socket.on("assign-rider", async (message) => {
       const { orderId, riderId } = message;
       try {
