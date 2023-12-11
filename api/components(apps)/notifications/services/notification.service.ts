@@ -31,6 +31,7 @@ class NotificationService {
         body: "Accept or reject the incoming order",
       },
       data: {
+        type: "attend-to-order",
         order: JSON.stringify(message),
       },
       token: `${vendorDeviceToken}`,
@@ -58,6 +59,7 @@ class NotificationService {
         // body: "Please view your order",
       },
       data: {
+        type: "order-accepted-by-vendor",
         order: JSON.stringify(order),
       },
       token: `${customerDeviceToken}`,
