@@ -51,7 +51,8 @@ class OrdersService {
       const order = await Order.findById({ _id: orderId })
         .select("-__v -updatedAt -deliveryAddressCord.type")
         .populate({ path: "items.product", select: "name photos" })
-        .populate({ path: "items.shop", select: "name" })
+        .populate({ path: "items.shop", select: "name  phoneNumber location.coordinates" })
+        .populate({ path: "customer", select: "phoneNumber"})
         .lean();
 
       if (!order) {

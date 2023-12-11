@@ -1,6 +1,10 @@
 import { AccountStatus } from "../../../constants";
 import { IVendor } from "../../vendors";
 
+interface ILocation {
+  type: string;
+  coordinates: [number];
+}
 export interface IShop extends Document {
   _id: string;
   name: string;
@@ -13,8 +17,7 @@ export interface IShop extends Document {
   state: string;
   country: string;
   postalCode: string;
-  latitude: number;
-  longitude: number;
+  location: ILocation & Document['location'];
   type: string;
   category: string;
   logo: string;

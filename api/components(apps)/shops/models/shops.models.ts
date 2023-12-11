@@ -22,9 +22,18 @@ export const shopSchema = new Schema<IShop>(
     city: { type: String, required: true },
     state: { type: String, required: true },
     country: { type: String, required: true },
+    location: {
+      type: {
+        type: String,
+        default: "Point",
+        required: true,
+      },
+      coordinates: {
+        type: [Number, Number],
+        required: true,
+      },
+    },
     postalCode: { type: String },
-    latitude: { type: Number, required: true },
-    longitude: { type: Number, required: true },
     type: { type: String, ref: "ShopType", required: true },
     category: {
       type: String,
