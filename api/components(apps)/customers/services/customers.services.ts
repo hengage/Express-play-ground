@@ -104,7 +104,7 @@ class CustomerService {
       }
 
       const orders = await Order.find(filter)
-      .select("-__v -updatedAt -customer")
+      .select("-__v -updatedAt -customer -deliveryAddressCord.type")
       .populate({path: "items.product", select: "name photos sizes colors"})
       .populate({path: "items.shop", select: "name"})
       .lean()
