@@ -91,8 +91,13 @@ class WebSocket {
 
         const orderData = ordersService.prepareOrderDataForRider(order)
 
+        const shopCoordinates = order.items.reduce((acc: any, item: any) => {
+          acc = item.shop.location.coordinates
+          return acc
+        }, {})
+
         const riders = await findClosestDriverOrRider(
-          order.deliveryAddressCord.coordinates,
+          shopCoordinates,
           "rider",
           10.5
         );
