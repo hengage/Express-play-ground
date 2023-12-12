@@ -11,7 +11,7 @@ import {
 } from "../components(apps)/driversAndRiders";
 import { HandleException } from "../utils";
 import { STATUS_CODES } from "../constants";
-import { findClosestDriver } from "./geospatial.services";
+import { findClosestDriverOrRider } from "./geospatial.services";
 
 class WebSocket {
   private io: Socket;
@@ -100,7 +100,7 @@ class WebSocket {
 
         const orderData = ordersService.prepareOrderDataForRider(order)
 
-        const riders = await findClosestDriver(
+        const riders = await findClosestDriverOrRider(
           order.deliveryAddressCord.coordinates,
           "rider",
           10.5

@@ -6,7 +6,7 @@ function generateGeohash(latitude: number, longitude: number, precision = 9) {
   return geohash.encode(latitude, longitude, precision);
 }
 
-async function findClosestDriver(
+async function findClosestDriverOrRider(
   coordinates: [number, number],
   accountType: string,
   distanceInKilometers = 20
@@ -47,4 +47,4 @@ async function findClosestDriver(
   return nearbyDriversAndRiders;
 }
 
-export { findClosestDriver };
+export { findClosestDriverOrRider };

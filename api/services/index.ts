@@ -1,4 +1,4 @@
-export { findClosestDriver } from "./geospatial.services";
+export { findClosestDriverOrRider } from "./geospatial.services";
 export { WebSocket } from "./socket.service";
 export { redisClient } from "./redis.service";
 // export { verifyService } from "./verifyService";
