@@ -50,6 +50,8 @@ export const shopSchema = new Schema<IShop>(
   { timestamps: true, _id: false }
 );
 
+shopSchema.index({ location: "2dsphere" });
+
 const shopTypeSchema = new Schema<IShopType>(
   {
     _id: {

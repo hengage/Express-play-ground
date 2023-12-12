@@ -97,7 +97,7 @@ class OrdersService {
     }
   }
 
-  public prepareOrderDataForRider(order: any) {
+  public prepareOrderDataForRider(order: IOrder) {
     return {
       orderId: order._id,
       // shop: order.items.map((item) => item.shop)[0],
@@ -106,7 +106,10 @@ class OrdersService {
         return acc;
       }, {}),
       customer: order.customer,
-      deliveryAddress: order.deliveryAddressCord.coordinates,
+      deliveryAddress: {
+        address: order.deliveryAddress,
+        coordinates: order.deliveryAddressCord.coordinates,
+      } 
     };
   }
 }
