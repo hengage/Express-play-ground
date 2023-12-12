@@ -13,8 +13,12 @@ class DriversRidesrRoutes {
     this.router.post(`/signup`, driversRidersController.signup);
     this.router.post(`/login`, driversRidersController.login);
 
-    this.router.use(jwtUtils.verifyTokenMiddleware)
-    this.router.patch('/:driverRiderId/rate', driversRidersController.rateDriverOrRider)
+    this.router.use(jwtUtils.verifyTokenMiddleware);
+    this.router.patch(
+      "/:driverRiderId/rate",
+      driversRidersController.rateDriverOrRider
+    );
+    this.router.route("/me").get(driversRidersController.getMe);
   }
 }
 

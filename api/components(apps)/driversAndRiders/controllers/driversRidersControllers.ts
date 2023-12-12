@@ -36,7 +36,7 @@ class DriversRidersController {
             firstName: driverRider.firstName,
           },
           accessToken,
-          refreshToken
+          refreshToken,
         },
       });
     } catch (error: any) {
@@ -67,12 +67,28 @@ class DriversRidersController {
         data: {
           ...driverRider,
           accessToken,
-          refreshToken
+          refreshToken,
         },
       });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Failed to login",
+        error: error.message,
+      });
+    }
+  }
+
+  async getMe(req: Request, res: Response) {
+    const id = (req as any).user._id;
+    try {
+      const driverRider = await driverRiderService.getMe(id);
+      res.status(STATUS_CODES.OK).json({
+        message: `Successful`,
+        data: { driverRider },
+      });
+    } catch (error: any) {
+      res.status(error.status | STATUS_CODES.SERVER_ERROR).json({
+        message: "Error getting details",
         error: error.message,
       });
     }
@@ -86,9 +102,7 @@ class DriversRidersController {
         req.body.rating,
         `${accountType}`
       );
-      res
-        .status(STATUS_CODES.OK)
-        .json({ message: `${accountType} rated` });
+      res.status(STATUS_CODES.OK).json({ message: `${accountType} rated` });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: `Error rating ${accountType}`,

@@ -73,6 +73,27 @@ class DriverRiderService {
     }
   }
 
+  async getMe(id: string) {
+    try {
+      const driverRider = await driverRiderRepo.getById(
+        id,
+        `firstName lastName middleName email phoneNumber 
+        vehicleType licenseNumber rating street city state`
+      );
+
+      if (driverRider) {
+        return driverRider;
+      }
+
+      throw new HandleException(
+        STATUS_CODES.NOT_FOUND,
+        "Driver/rider Not found"
+      );
+    } catch (error: any) {
+      throw new HandleException(error.staus, error.message);
+    }
+  }
+
   async rateDriverOrRider(id: string, rating: number, accountType: string) {
     try {
       const driverRider = await DriverRider.findOne({
@@ -111,10 +132,7 @@ class DriverRiderService {
     }
   }
 
-  public async updateLocation(
-    id: string,
-    coordinates: [number, number]
-  ) {
+  public async updateLocation(id: string, coordinates: [number, number]) {
     const driver = await DriverRider.findById(id);
 
     if (!driver) {
