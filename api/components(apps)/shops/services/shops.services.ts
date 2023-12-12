@@ -11,6 +11,7 @@ import {
 } from "../interfaces/shops.interface";
 import { Category, ShopType, categorySchema } from "../models/shops.models";
 import { Shop } from "../models/shops.models";
+import { shopRepository } from "../repository/shops.repo";
 
 class ShopServices {
   async getShopById(id: string, selectFields?: string): Promise<IShop> {
@@ -252,6 +253,11 @@ class ShopServices {
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
+  }
+
+  async getFoodAndGroceryShops() {
+    const shops = await shopRepository.getFoodAndGroceryShops()
+    return shops
   }
 }
 

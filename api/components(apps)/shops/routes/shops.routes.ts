@@ -23,6 +23,7 @@ class ShopsRoutes {
       .get(shopController.getCategoriesByShopType);
     this.router.route("/:shopId/orders").get(shopController.getOrders);
     this.router.route("/:shopId/delete").delete(shopController.deleteShop)
+    this.router.route("/food-and-grocery").get(shopController.getFoodAndGroceryShops)
   }
 }
 

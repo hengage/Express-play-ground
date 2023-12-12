@@ -139,6 +139,22 @@ class ShopController {
       });
     }
   }
+
+  async getFoodAndGroceryShops(req: Request, res: Response) {
+    try {
+      const shops = await shopServices.getFoodAndGroceryShops()
+      res.status(STATUS_CODES.OK).json({
+        message: "Successful",
+        data: {shops}
+      })
+    } catch (error: any) {
+       res.status(error.status | STATUS_CODES.SERVER_ERROR)
+       .json({
+        message: "error fetching shops",
+        error: error.message
+       })
+    }
+  }
 }
 
 export const shopController = new ShopController();
