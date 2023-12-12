@@ -97,15 +97,21 @@ class ShopServices {
           "Vendor does not own the shop"
         );
       }
+      // const projection: Record<string, number | boolean | object> = {};
+      // Object.keys(payload).forEach((key) => {
+      //   projection[key] = 1;
+      // });
+      // projection['_id'] = 0
+
+      const select = Object.keys(payload)
+      select.push('-_id')
 
       const shop = await Shop.findByIdAndUpdate(
         shopId,
         { $set: payload },
         { new: true }
       )
-        .select("name email phoneNumber city state country type category logo")
-        .populate({ path: "type", select: "name" })
-        .populate({ path: "category", select: "name" })
+        .select(select)
         .lean();
       return shop;
     } catch (error: any) {
@@ -185,7 +191,7 @@ class ShopServices {
             },
           },
         },
-         {
+        {
           $lookup: {
             from: "customers",
             let: { customerId: "$customer" },
