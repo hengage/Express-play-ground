@@ -2,7 +2,7 @@ import { AccountStatus, DriverRiderType } from "../../constants";
 
 interface Location {
   type: string;
-  coordinates: [number];
+  coordinates: [number, number];
 }
 export interface IDriverRider extends Document {
   _id: string;

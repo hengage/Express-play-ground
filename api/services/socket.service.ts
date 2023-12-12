@@ -29,7 +29,7 @@ class WebSocket {
       socket.on("disconnect", async () => {
         console.log("User disconnected");
         const driverId = await redisClient.get(`socketId:${clientId}`);
-        driverRiderService.setDriverUnavailable(driverId);
+        driverRiderService.setAvailablity(driverId, false);
         redisClient.delete(`socketId:${clientId}`);
       });
     });
@@ -37,12 +37,12 @@ class WebSocket {
 
   private listenForEvents(socket: Socket, clientId: string) {
     socket.on("driver-start-working", (message) => {
-      driverRiderService.setDriverAvailable(message.driverId);
+      driverRiderService.setAvailablity(message.driverId, true);
       redisClient.set(`socketId:${clientId}`, message.driverId);
     });
 
     socket.on("driver-stop-working", (message) => {
-      driverRiderService.setDriverUnavailable(message.driverId);
+      driverRiderService.setAvailablity(message.driverId, false);
       redisClient.delete(`socketId:${clientId}`);
     });
 
@@ -76,16 +76,7 @@ class WebSocket {
       const { driverId, coordinates } = message;
       console.log({ driverId, coordinates });
       try {
-        const driver = await DriverRider.findById(driverId);
-
-        if (!driver) {
-          throw new HandleException(
-            STATUS_CODES.NOT_FOUND,
-            "Cannot find driver"
-          );
-        }
-        driver.location.coordinates = coordinates;
-        await driver.save();
+       driverRiderService.updateLocation(driverId, coordinates);
       } catch (error) {
         console.log({ error });
       }

@@ -103,20 +103,25 @@ class DriverRiderService {
     }
   }
 
-  async setDriverAvailable(id: string) {
+  async setAvailablity(id: string | null, availability: boolean) {
     const driverRider = await DriverRider.findById(id).select("available");
     if (driverRider) {
-      driverRider.available = true;
+      driverRider.available = availability;
       await driverRider.save();
     }
   }
 
-  async setDriverUnavailable(id: string | null) {
-    const driverRider = await DriverRider.findById(id).select("available");
-    if (driverRider) {
-      driverRider.available = false;
-      await driverRider.save();
+  public async updateLocation(
+    id: string,
+    coordinates: [number, number]
+  ) {
+    const driver = await DriverRider.findById(id);
+
+    if (!driver) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Cannot find driver");
     }
+    driver.location.coordinates = coordinates;
+    await driver.save();
   }
 }
 
