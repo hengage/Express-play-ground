@@ -53,7 +53,7 @@ class OrdersService {
         .populate({ path: "items.product", select: "name photos" })
         .populate({
           path: "items.shop",
-          select: "name  phoneNumber location.coordinates",
+          select: "name  phoneNumber location.coordinates street city state country",
         })
         .populate({ path: "customer", select: "phoneNumber" })
         .lean();
