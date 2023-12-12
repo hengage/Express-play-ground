@@ -8,52 +8,10 @@ import {
   ISignupDriverAndRider,
 } from "../driversRiders.interface";
 import { STATUS_CODES } from "../../../constants";
+import { driverRiderRepo } from "../repository/driverRider.repo";
 
 class DriverRiderService {
-  async getDriverOrRiderByPhoneNumber(
-    phoneNumber: string,
-    selectFields?: string
-  ): Promise<IDriverRider> {
-    try {
-      const query = DriverRider.findOne({
-        phoneNumber: { $eq: phoneNumber },
-      });
-
-      if (selectFields) {
-        query.select(selectFields);
-      }
-
-      const driverRider = await query.exec();
-      if (!driverRider) {
-        throw new HandleException(404, "Driver or rider not found");
-      }
-      return driverRider;
-    } catch (error: any) {
-      throw new Error(error.message);
-    }
-  }
-  async getDriverOrRiderById(
-    _id: string,
-    selectFields?: string
-  ): Promise<IDriverRider> {
-    try {
-      const query = DriverRider.findById(_id);
-
-      if (selectFields) {
-        query.select(selectFields);
-      }
-
-      const driverRider = await query.exec();
-      if (!driverRider) {
-        throw new HandleException(404, "Driver or rider not found");
-      }
-      return driverRider;
-    } catch (error: any) {
-      throw new Error(error.message);
-    }
-  }
-
-  async signup(payload: ISignupDriverAndRider, accountType: string) {
+  public async signup(payload: ISignupDriverAndRider, accountType: string) {
     let middleName;
     if (payload.middleName) {
       middleName = payload.middleName;
@@ -89,7 +47,7 @@ class DriverRiderService {
 
   async login(payload: ILoginDriverAndRider) {
     try {
-      const driverRider = await this.getDriverOrRiderByPhoneNumber(
+      const driverRider = await driverRiderRepo.getByPhoneNumber(
         payload.phoneNumber,
         "phoneNumber password"
       );
@@ -145,7 +103,7 @@ class DriverRiderService {
     }
   }
 
-  async setDriverAvailable(id: string | null) {
+  async setDriverAvailable(id: string) {
     const driverRider = await DriverRider.findById(id).select("available");
     if (driverRider) {
       driverRider.available = true;
