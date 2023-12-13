@@ -255,8 +255,8 @@ class ShopServices {
     }
   }
 
-  async getFoodAndGroceryShops() {
-    const shops = await shopRepository.getFoodAndGroceryShops()
+  async getFoodAndGroceryShops(page: number) {
+    const shops = await shopRepository.getFoodAndGroceryShops(page)
     return shops
   }
 }

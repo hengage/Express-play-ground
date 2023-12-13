@@ -141,8 +141,9 @@ class ShopController {
   }
 
   async getFoodAndGroceryShops(req: Request, res: Response) {
+    const page = parseInt((req.query.page as string)) || 1
     try {
-      const shops = await shopServices.getFoodAndGroceryShops()
+      const shops = await shopServices.getFoodAndGroceryShops(page)
       res.status(STATUS_CODES.OK).json({
         message: "Successful",
         data: {shops}

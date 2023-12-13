@@ -1,4 +1,6 @@
-import { Schema, model } from "mongoose";
+import paginate from "mongoose-paginate-v2";
+
+import mongoose, { Schema, model } from "mongoose";
 import { uniqueString } from "../../../utils";
 import { AccountStatus } from "../../../constants";
 import { IShop, ICategory, IShopType } from "../interfaces/shops.interface";
@@ -51,6 +53,7 @@ export const shopSchema = new Schema<IShop>(
 );
 
 shopSchema.index({ location: "2dsphere" });
+shopSchema.plugin(paginate);
 
 const shopTypeSchema = new Schema<IShopType>(
   {
@@ -80,6 +83,9 @@ export const categorySchema = new Schema<ICategory>(
   { timestamps: true, _id: false }
 );
 
-export const Shop = model<IShop>("Shop", shopSchema);
+export const Shop = model<IShop, mongoose.PaginateModel<IShop>>(
+  "Shop",
+  shopSchema
+);
 export const ShopType = model<IShopType>("ShopType", shopTypeSchema);
 export const Category = model<ICategory>("Category", categorySchema);
