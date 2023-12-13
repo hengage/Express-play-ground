@@ -52,7 +52,7 @@ const driverRiderSchema = new Schema<IDriverRider>(
     },
     location: {
       type: { type: String, default: "Point" },
-      coordinates: [Number, Number],
+      coordinates: {type: [Number, Number], default: [0, 0]} 
     },
     lastLoggedIn: { type: Date },
     approved: { type: Boolean, default: false },
