@@ -12,6 +12,7 @@ import {
 import { HandleException } from "../utils";
 import { STATUS_CODES } from "../constants";
 import { findClosestDriverOrRider } from "./geospatial.services";
+import { makuService } from "../components(apps)/maku";
 
 class WebSocket {
   private io: Socket;
@@ -76,7 +77,7 @@ class WebSocket {
       const { driverId, coordinates } = message;
       console.log({ driverId, coordinates });
       try {
-       driverRiderService.updateLocation(driverId, coordinates);
+        driverRiderService.updateLocation(driverId, coordinates);
       } catch (error) {
         console.log({ error });
       }
@@ -89,12 +90,12 @@ class WebSocket {
         await ordersService.setStatusToProcessing(orderId);
         await notificationService.sendSavedOrder(order);
 
-        const orderData = ordersService.prepareOrderDataForRider(order)
+        const orderData = ordersService.prepareOrderDataForRider(order);
 
         const shopCoordinates = order.items.reduce((acc: any, item: any) => {
-          acc = item.shop.location.coordinates
-          return acc
-        }, {})
+          acc = item.shop.location.coordinates;
+          return acc;
+        }, {});
 
         const riders = await findClosestDriverOrRider(
           shopCoordinates,
@@ -102,7 +103,6 @@ class WebSocket {
           10.5
         );
         console.log({ riders });
-       
 
         riders.forEach((rider) => {
           notificationService.notifyRiderOfOrder(rider._id, orderData);
@@ -121,6 +121,18 @@ class WebSocket {
         console.log({ "assigned rider": order });
       } catch (error: any) {
         socket.emit("assign-rider-error", error.message);
+      }
+    });
+
+    socket.on("find-nearest-drivers", async (message) => {
+      try {
+        const drivers = await makuService.findNearestDrivers(
+          message.pickupLocation
+        );
+        console.log({ nearestDrivers: drivers });
+        socket.emit("found-nearest-drivers", drivers);
+      } catch (error: any) {
+        socket.emit("found-nearest-drivers", error.message);
       }
     });
   }
