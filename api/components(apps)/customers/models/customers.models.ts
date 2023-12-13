@@ -41,10 +41,6 @@ const customerSchema = new Schema<ICustomer>(
     latitude: Number,
     longitude: Number,
     dateOfBirth: Date,
-    gender: {
-      type: String,
-      enum: Object.values(Gender),
-    },
     accountStatus: {
       type: String,
       enum: Object.values(AccountStatus),

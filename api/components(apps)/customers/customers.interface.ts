@@ -14,7 +14,6 @@ export interface ICustomer extends Document {
   longitude: number;
   latitude: number;
   dateOfBirth: Date;
-  gender: "Male" | "Female" | "Other";
   accountStatus: string;
   lastLoggedIn: Date;
   createdAt: Date;
