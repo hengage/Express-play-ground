@@ -78,10 +78,10 @@ class CustomerController {
 
   async getOrders(req: Request, res: Response) {
     const status = req.query.status as string;
-
+    const page = parseInt(req.query.page as string) || 1
     try {
       const customerId = (req as any).user._id;
-      const orders = await customerService.getOrders(customerId, status);
+      const orders = await customerService.getOrders(customerId, page, status);
 
       res.status(STATUS_CODES.OK).json({
         message: "Fetched orders",

@@ -1,4 +1,6 @@
-import { Schema, model } from "mongoose";
+import paginate from "mongoose-paginate-v2";
+
+import mongoose, { Schema, model } from "mongoose";
 
 import { IDeliveryRate, IOrder } from "../orders.interface";
 import { uniqueString } from "../../../utils";
@@ -61,6 +63,9 @@ const orderSchema = new Schema<IOrder>(
   { _id: false, timestamps: true }
 );
 
+orderSchema.plugin(paginate);
+
+
 const deliveryRateSchema = new Schema<IDeliveryRate>({
   _id: {
     type: String,
@@ -75,7 +80,7 @@ const deliveryRateSchema = new Schema<IDeliveryRate>({
   riderFeePerKM: { type: String, required: true },
 });
 
-export const Order = model<IOrder>("Order", orderSchema);
+export const Order = model<IOrder, mongoose.PaginateModel<IOrder>>("Order", orderSchema);
 export const DeliveryRate = model<IDeliveryRate>(
   "DeliveryRate",
   deliveryRateSchema

@@ -93,7 +93,7 @@ class CustomerService {
     }
   }
 
-  async getOrders(customerId: string, status?: string): Promise<IOrder[]> {
+  async getOrders(customerId: string, page: number, status?: string): Promise<IOrder[]> {
     try {
       const filter: { customer: string; status?: string } = {
         customer: customerId,
@@ -103,28 +103,21 @@ class CustomerService {
         filter.status = status;
       }
 
-      const orders = await Order.find(filter)
-      .select("-__v -updatedAt -customer -deliveryAddressCord.type")
-      .populate({path: "items.product", select: "name photos sizes colors"})
-      .populate({path: "items.shop", select: "name"})
-      .lean()
-      .exec();
+      const options = {
+        page,
+        limit: 10,
+        select: '-__v -updatedAt -customer -deliveryAddressCord.type',
+        populate: [
+          { path: 'items.product', select: 'name photos sizes colors' },
+          { path: 'items.shop', select: 'name' },
+        ],
+        lean: true,
+        leanWithId: false,
+      };
 
-      if (orders.length < 1) {
-        if (status) {
-          throw new HandleException(
-            STATUS_CODES.NOT_FOUND,
-            `You have no ${status} order.`
-          );
-        } else {
-          throw new HandleException(
-            STATUS_CODES.NOT_FOUND,
-            "You have no order."
-          );
-        }
-      }
-
-      return orders;
+      const orders = await Order.paginate(filter, options);
+      
+      return orders.docs;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
