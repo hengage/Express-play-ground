@@ -57,7 +57,7 @@ class NotificationService {
     const payload = {
       notification: {
         title: "Your order has been accepted",
-        // body: "Please view your order",
+        body: "View details of your order",
       },
       data: {
         type: "order-accepted-by-vendor",
