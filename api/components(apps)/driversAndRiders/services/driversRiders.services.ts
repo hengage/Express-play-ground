@@ -133,7 +133,7 @@ class DriverRiderService {
   }
 
   public async updateLocation(id: string, coordinates: [number, number]) {
-    const driver = await DriverRider.findById(id);
+    const driver = await DriverRider.findById(id).select("location");
 
     if (!driver) {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Cannot find driver");
