@@ -154,6 +154,15 @@ class WebSocket {
         console.log("error starting trip", error.message)
       }
     })
+
+    socket.on("complete-trip", async(message) => {
+      try {
+        await makuService.completeTrip(message.tripId)
+      } catch (error: any) {
+        socket.emit("error", error.message)
+        console.log("error starting trip", error.message)
+      }
+    })
   }
 }
 
