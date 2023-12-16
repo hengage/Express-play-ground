@@ -12,11 +12,13 @@ export interface ITrip extends Document {
     _id: string;
     customer: string;
     driver: string;
-    pickupLocation: {
+    pickUpAddress: string;
+    pickUpCoordinates: {
         locationType: string;
         coordinates: [number, number];
     };
-    destination: {
+    destinationAddress: string;
+    destinationCoordinates: {
         locationType: string;
         coordinates: [number, number];
     };

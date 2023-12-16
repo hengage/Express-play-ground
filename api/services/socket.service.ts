@@ -135,6 +135,16 @@ class WebSocket {
         socket.emit("found-nearest-drivers", error.message);
       }
     });
+
+    socket.on("create-trip", async (message) => {
+      try {
+        const trip = await makuService.createTrip(message)
+        socket.emit('created-trip', trip)
+      } catch (error: any) {
+        socket.emit("create-trip", error.message)
+        console.log("error creating trip", error.message)
+      }
+    })
   }
 }
 

@@ -1,6 +1,6 @@
 import { findClosestDriverOrRider } from "../../../services";
 import { HandleException } from "../../../utils";
-import { VehicleType } from "../models/maku.model";
+import { Trip, VehicleType } from "../models/maku.model";
 
 class MakuService {
   public async getVehicleTypes() {
@@ -25,6 +25,28 @@ class MakuService {
       return drivers;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
+    }
+  }
+
+  async createTrip(payload: any) {
+    try {
+      const trip = await new Trip({
+        customer: payload.customer,
+        driver: payload.driver,
+        pickUpAddress: payload.pickUpAddress,
+        pickUpCoordinates: {
+          coordinates: payload.pickUpCoordinates,
+        },
+        destinationAddress: payload.destinationAddress,
+        destinationCoordinates: {
+          coordinates: payload.destinationCoordinates,
+        },
+        vehicleType: payload.vehicleType,
+      }).save();
+
+      return trip;
+    } catch (error: any) {
+      throw new HandleException(error, error.message);
     }
   }
 }

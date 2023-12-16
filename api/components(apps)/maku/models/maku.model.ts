@@ -24,7 +24,8 @@ const tripSchema = new Schema<ITrip>(
     },
     customer: { type: String, required: true, ref: "Customer" },
     driver: { type: String, required: true, ref: "DriverRider" },
-    pickupLocation: {
+    pickUpAddress: { type: String, required: true},
+    pickUpCoordinates: {
       locationType: {
         type: String,
         default: "Point",
@@ -34,7 +35,8 @@ const tripSchema = new Schema<ITrip>(
         required: true,
       },
     },
-    destination: {
+    destinationAddress: {type: String, required: true},
+    destinationCoordinates: {
       locationType: {
         type: String,
         default: "Point",
@@ -45,7 +47,7 @@ const tripSchema = new Schema<ITrip>(
       },
     },
     vehicleType: { type: String, required: true },
-    price: { type: String, required: true },
+    price: { type: String },
     status: { type: String, default: MakuCabStatus.PENDING },
   },
   { timestamps: true, _id: false }
