@@ -62,6 +62,12 @@ class MakuService {
       $set: { status: MakuCabStatus.COMPLETED },
     }).select('status');
   }
+
+  async cancelTrip(tripId: string) {
+    await Trip.findByIdAndUpdate(tripId, {
+      $set: { status: MakuCabStatus.CANCELLED },
+    }).select('status');
+  }
 }
 
 export const makuService = new MakuService();

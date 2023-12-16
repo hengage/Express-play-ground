@@ -163,6 +163,15 @@ class WebSocket {
         console.log("error starting trip", error.message)
       }
     })
+
+    socket.on("cancel-trip", async(message) => {
+      try {
+        await makuService.cancelTrip(message.tripId)
+      } catch (error: any) {
+        socket.emit("cancel-trip-error", error.message)
+        console.log("error starting trip", error.message)
+      }
+    })
   }
 }
 
