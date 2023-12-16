@@ -1,3 +1,4 @@
+import { MakuCabStatus } from "../../../constants";
 import { findClosestDriverOrRider } from "../../../services";
 import { HandleException } from "../../../utils";
 import { Trip, VehicleType } from "../models/maku.model";
@@ -48,6 +49,12 @@ class MakuService {
     } catch (error: any) {
       throw new HandleException(error, error.message);
     }
+  }
+
+  async startTrip(tripId: string) {
+    await Trip.findByIdAndUpdate(tripId, {
+      $set: { status: MakuCabStatus.STARTED },
+    }).select('status');
   }
 }
 

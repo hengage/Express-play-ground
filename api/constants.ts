@@ -25,8 +25,7 @@ export enum OrderStatus {
 
 export enum MakuCabStatus {
   PENDING = "pending",
-  ACCEPTED = "accepted",
-  REJECTED = "rejected",
+  STARTED = "started",
   ENROUTE = "enroute",
   COMPLETED = "completed",
   CANCELLED = "cancelled"
