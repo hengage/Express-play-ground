@@ -6,11 +6,8 @@ import { notificationService } from "../components(apps)/notifications";
 import { redisClient } from "./redis.service";
 import { ordersService } from "../components(apps)/orders";
 import {
-  DriverRider,
   driverRiderService,
 } from "../components(apps)/driversAndRiders";
-import { HandleException } from "../utils";
-import { STATUS_CODES } from "../constants";
 import { findClosestDriverOrRider } from "./geospatial.services";
 import { makuService } from "../components(apps)/maku";
 
@@ -132,7 +129,7 @@ class WebSocket {
         console.log({ nearestDrivers: drivers });
         socket.emit("found-nearest-drivers", drivers);
       } catch (error: any) {
-        socket.emit("found-nearest-drivers", error.message);
+        socket.emit("found-nearest-drivers-error", error.message);
       }
     });
 
@@ -141,7 +138,7 @@ class WebSocket {
         const trip = await makuService.createTrip(message)
         socket.emit('created-trip', trip)
       } catch (error: any) {
-        socket.emit("create-trip", error.message)
+        socket.emit("create-trip-error", error.message)
         console.log("error creating trip", error.message)
       }
     })
@@ -150,7 +147,7 @@ class WebSocket {
       try {
         await makuService.startTrip(message.tripId)
       } catch (error: any) {
-        socket.emit("error", error.message)
+        socket.emit("start-trip-error", error.message)
         console.log("error starting trip", error.message)
       }
     })
@@ -159,7 +156,7 @@ class WebSocket {
       try {
         await makuService.completeTrip(message.tripId)
       } catch (error: any) {
-        socket.emit("error", error.message)
+        socket.emit("complete-trip-error", error.message)
         console.log("error starting trip", error.message)
       }
     })
