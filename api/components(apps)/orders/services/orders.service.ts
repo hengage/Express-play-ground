@@ -53,7 +53,8 @@ class OrdersService {
         .populate({ path: "items.product", select: "name photos" })
         .populate({
           path: "items.shop",
-          select: "name  phoneNumber location.coordinates street city state country",
+          select:
+            "name  phoneNumber location.coordinates street city state country",
         })
         .populate({ path: "customer", select: "phoneNumber" })
         .lean();
@@ -109,8 +110,14 @@ class OrdersService {
       deliveryAddress: {
         address: order.deliveryAddress,
         coordinates: order.deliveryAddressCord.coordinates,
-      } 
+      },
     };
+  }
+
+  async assignRider(orderId: string, riderId: string) {
+    const order = await ordersService.getOrderById(orderId, "rider");
+    order.rider = riderId;
+    await order.save();
   }
 }
 
