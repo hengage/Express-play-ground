@@ -63,7 +63,7 @@ class TowingService {
     }
 
     towingCompany.vehicleTypes.push(payload.towingVehicleType);
-    towingCompany.save();
+    await towingCompany.save();
     return;
   }
 }
