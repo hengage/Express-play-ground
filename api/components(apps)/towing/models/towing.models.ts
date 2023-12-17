@@ -28,11 +28,12 @@ const towingCompanySchema = new Schema<ITowingCompany>(
       type: { type: String, default: "Point" },
       coordinates: { type: [Number, Number], required: true },
     },
-    vehicleType: {
-      type: [String],
-      ref: "TowingVehicleType",
-      required: true,
-    }
+    vehicleTypes: [
+      {
+        vehicleType: { type: String, required: true, ref: "TowingVehicleType" },
+        regNumber: { type: String, required: true },
+      },
+    ],
   },
   {
     timestamps: true,
@@ -40,14 +41,14 @@ const towingCompanySchema = new Schema<ITowingCompany>(
 );
 
 towingCompanySchema.pre("save", async function (next) {
-    if (this.isModified("password")) {
-        try {
-            this.password = await encryption.encryptValue(this.password)
-        } catch (error: any) {
-            return next(error);
-        }
+  if (this.isModified("password")) {
+    try {
+      this.password = await encryption.encryptValue(this.password);
+    } catch (error: any) {
+      return next(error);
     }
-})
+  }
+});
 
 export const TowingVehicleType = model<ITowingVehicleType>(
   "towingVehicleType",

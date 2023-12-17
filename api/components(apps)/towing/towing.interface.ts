@@ -18,7 +18,8 @@ export interface ITowingCompany extends Document {
         type: string;
         coordinates: [number, number];
     },
-    vehicleType: Array<ITowingVehicleType['_id']>;
+    // vehicleType: Array<ITowingVehicleType['_id']>;
+    vehicleTypes: Array<{ vehicleType: ITowingVehicleType['_id']; regNumber: string }>;
     createdAt: Date;
     updatedAt: Date;
 

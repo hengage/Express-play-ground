@@ -11,10 +11,10 @@ class TowingRoutes {
   }
 
   public initializeRoutes() {
+    this.router.route("/create-company").post(towingController.create);
     this.router.route("/login").post(towingController.login);
 
     this.router.use(jwtUtils.verifyTokenMiddleware)
-    this.router.route("/create-company").post(towingController.create);
     this.router
       .route("/add-vehicle-type")
       .patch(towingController.addVehicleType);

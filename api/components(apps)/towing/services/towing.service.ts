@@ -53,7 +53,7 @@ class TowingService {
   async addVehicleType(payload: any) {
     const towingCompany = await TowingCompany.findById(
       payload.towingCompanyId
-    ).select("vehicleType");
+    ).select("vehicleTypes");
 
     if (!towingCompany) {
       throw new HandleException(
@@ -62,7 +62,7 @@ class TowingService {
       );
     }
 
-    towingCompany.vehicleType.push(payload.towingVehicleTypeId);
+    towingCompany.vehicleTypes.push(payload.towingVehicleType);
     towingCompany.save();
     return;
   }
