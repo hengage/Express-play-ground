@@ -43,7 +43,8 @@ class TowingController {
   }
 
   async addVehicleType(req: Request, res: Response) {
-    const { towingCompanyId, towingVehicleTypeId } = req.body;
+    const {  towingVehicleTypeId } = req.body;
+    const towingCompanyId = (req as any).user._id
     try {
       await towingService.addVehicleType({
         towingCompanyId,
