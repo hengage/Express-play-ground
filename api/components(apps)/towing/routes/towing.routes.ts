@@ -11,6 +11,7 @@ class TowingRoutes {
 
   public initializeRoutes() {
     this.router.route("/create-company").post(towingController.create);
+    this.router.route("/add-vehicle-type").patch(towingController.addVehicleType);
   }
 }
 
