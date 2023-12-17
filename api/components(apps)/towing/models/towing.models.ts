@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { uniqueString } from "../../../utils";
+import { encryption, uniqueString } from "../../../utils";
 import { ITowingCompany, ITowingVehicleType } from "../towing.interface";
 
 const towingVehicleTypeSchema = new Schema<ITowingVehicleType>({
@@ -13,15 +13,15 @@ const towingVehicleTypeSchema = new Schema<ITowingVehicleType>({
   towingCompanyPercentage: { type: String, required: true },
 });
 
-const towingCompany = new Schema<ITowingCompany>(
+const towingCompanySchema = new Schema<ITowingCompany>(
   {
     _id: {
       type: String,
       default: () => uniqueString.generateUniqueString(4),
     },
-    name: { type: String, required: true },
-    phoneNumber: { type: String, required: true },
-    email: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
+    phoneNumber: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     address: { type: String, required: true },
     location: {
@@ -39,11 +39,21 @@ const towingCompany = new Schema<ITowingCompany>(
   }
 );
 
+towingCompanySchema.pre("save", async function (next) {
+    if (this.isModified("password")) {
+        try {
+            this.password = await encryption.encryptValue(this.password)
+        } catch (error: any) {
+            return next(error);
+        }
+    }
+})
+
 export const TowingVehicleType = model<ITowingVehicleType>(
   "towingVehicleType",
   towingVehicleTypeSchema
 );
 export const TowingCompany = model<ITowingCompany>(
   "towingCompany",
-  towingCompany
+  towingCompanySchema
 );

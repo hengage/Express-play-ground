@@ -14,7 +14,10 @@ class TowingService {
       },
     }).save();
 
-    return towingCompany;
+    return {
+      _id: towingCompany._id,
+      name: towingCompany.name,
+    };
   }
 }
 
