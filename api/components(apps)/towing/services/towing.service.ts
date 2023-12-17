@@ -1,5 +1,5 @@
 import { STATUS_CODES } from "../../../constants";
-import { HandleException } from "../../../utils";
+import { HandleException, encryption } from "../../../utils";
 import { TowingCompany } from "../models/towing.models";
 
 class TowingService {
@@ -19,6 +19,35 @@ class TowingService {
       _id: towingCompany._id,
       name: towingCompany.name,
     };
+  }
+
+  async login(payload: any) {
+    const towingCompany = await TowingCompany.findOne({
+      phoneNumber: payload.phoneNumber,
+    })
+      .select("phoneNumber password")
+      .lean()
+      .exec();
+
+    if (!towingCompany) {
+      throw new HandleException(
+        STATUS_CODES.NOT_FOUND,
+        "Company account not found"
+      );
+    }
+
+    const password = await encryption.compareValues(
+      payload.password,
+      towingCompany.password
+    );
+    if (!password) {
+      throw new HandleException(STATUS_CODES.UNAUTHORIZED, "Incorrect password");
+    }
+
+    return {
+      _id: towingCompany._id,
+      phoneNumber: towingCompany.phoneNumber
+    }
   }
 
   async addVehicleType(payload: any) {
