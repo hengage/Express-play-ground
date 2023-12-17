@@ -41,19 +41,23 @@ class TowingService {
       towingCompany.password
     );
     if (!password) {
-      throw new HandleException(STATUS_CODES.UNAUTHORIZED, "Incorrect password");
+      throw new HandleException(
+        STATUS_CODES.UNAUTHORIZED,
+        "Incorrect password"
+      );
     }
 
     return {
       _id: towingCompany._id,
-      phoneNumber: towingCompany.phoneNumber
-    }
+      phoneNumber: towingCompany.phoneNumber,
+    };
   }
 
   async addVehicleType(payload: any) {
-    const towingCompany = await TowingCompany.findById(
-      payload.towingCompanyId
-    ).select("vehicleTypes");
+    const { towingCompanyId, towingVehicleType } = payload;
+    const towingCompany = await TowingCompany.findById(towingCompanyId).select(
+      "vehicleTypes"
+    );
 
     if (!towingCompany) {
       throw new HandleException(
@@ -61,8 +65,22 @@ class TowingService {
         "Towing company not found"
       );
     }
+    towingCompany.vehicleTypes.find((vt) => {
+      if (vt.vehicleType === towingVehicleType.vehicleType) {
+        throw new HandleException(
+          STATUS_CODES.CONFLICT,
+          "Vehicle type already exists for the company"
+        );
+      }
 
-    towingCompany.vehicleTypes.push(payload.towingVehicleType);
+      if (vt.regNumber === towingVehicleType.regNumber) {
+        throw new HandleException(
+          STATUS_CODES.CONFLICT,
+          "A vehicle with this registration number already exists"
+        );
+      }
+    });
+    towingCompany.vehicleTypes.push(towingVehicleType);
     await towingCompany.save();
     return;
   }
