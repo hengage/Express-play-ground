@@ -45,6 +45,7 @@ class WebSocket {
     });
 
     socket.on("send-order-notification", async (message) => {
+      console.log(message)
       await notificationService.handleOrderRequest(socket, message);
     });
 

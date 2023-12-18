@@ -26,6 +26,8 @@ const orderSchema = new Schema<IOrder>(
           type: Number,
           required: true,
         },
+        size: {type: String, default: null},
+        color: {type: String, default: null},
         price: {
           type: Number,
           required: true,

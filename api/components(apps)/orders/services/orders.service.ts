@@ -11,6 +11,8 @@ class OrdersService {
           product: item.product,
           quantity: item.quantity,
           price: item.price,
+          size: item.size,
+          color: item.color,
           shop: item.shop,
         };
       });
