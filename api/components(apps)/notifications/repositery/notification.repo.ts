@@ -4,17 +4,17 @@ import { Notifications } from "../models/notifications.models";
 async function saveNotification(
   userId: string,
   title: string,
-  body?: string,
+  body: string,
   data?: any
 ) {
   try {
-    const notification = new Notifications({
+    const notification = await new Notifications({
       user: userId,
       title,
       body,
       data,
-    });
-    const savedNotification = await notification.save();
+    }).save();  
+    console.log(notification)
   } catch (error) {
     console.log({ NotificationError: error });
   }

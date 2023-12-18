@@ -32,7 +32,7 @@ class NotificationService {
       },
       data: {
         type: "attend-to-order",
-        order: JSON.stringify(message),
+        data: JSON.stringify(message),
       },
       token: `${vendorDeviceToken}`,
     };
@@ -61,7 +61,7 @@ class NotificationService {
       },
       data: {
         type: "order-accepted-by-vendor",
-        order: JSON.stringify(order),
+        data: JSON.stringify(order),
       },
       token: `${customerDeviceToken}`,
     };
@@ -70,7 +70,8 @@ class NotificationService {
     await saveNotification(
       order.customer,
       payload.notification.title,
-      payload.data.order
+      payload.notification.body,
+      payload.data
     );
   }
 
@@ -84,7 +85,7 @@ class NotificationService {
       },
       data: {
         type: "accept-order-delivery",
-        order: JSON.stringify(order),
+        data: JSON.stringify(order),
       },
       token: `${riderDeviceToken}`,
     };
