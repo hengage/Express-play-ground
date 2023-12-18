@@ -104,8 +104,8 @@ class ShopServices {
       // });
       // projection['_id'] = 0
 
-      const select = Object.keys(payload)
-      select.push('-_id')
+      const select = Object.keys(payload);
+      select.push("-_id");
 
       const shop = await Shop.findByIdAndUpdate(
         shopId,
@@ -174,11 +174,10 @@ class ShopServices {
   }
 
   public async getOrders(shopId: string, page: number) {
-
     const options = {
       page,
-      limit: 10
-  };
+      limit: 10,
+    };
     try {
       const aggregation = [
         {
@@ -224,6 +223,25 @@ class ShopServices {
           $unwind: "$customerDetails",
         },
         {
+          $lookup: {
+            from: "products",
+            let: { productIds: "$items.product" },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $in: ["$_id", "$$productIds"],
+                  },
+                },
+              },
+            ],
+            as: "productDetails",
+          },
+        },
+        {
+          $unwind: "$productDetails",
+        },
+        {
           $project: {
             _id: 1,
             customer: {
@@ -231,7 +249,14 @@ class ShopServices {
               firstName: "$customerDetails.firstName",
               lastName: "$customerDetails.lastName",
             },
-            items: 1,
+            items: {
+              _id: "$productDetails._id",
+              name: "$productDetails.name",
+              photos: { $arrayElemAt: ["$productDetails.photos", 0] },
+              quantity: 1,
+              price: 1,
+              shop: 1,
+            },
             deliveryFee: 1,
             deliveryAddress: 1,
             deliveryAddressCord: 1,
@@ -240,8 +265,8 @@ class ShopServices {
             createdAt: 1,
           },
         },
-      ]
-      const orders =  Order.aggregate(aggregation)
+      ];
+      const orders = Order.aggregate(aggregation);
       const results = await Order.aggregatePaginate(orders, options);
 
       return results.docs;
@@ -263,8 +288,8 @@ class ShopServices {
   }
 
   async getFoodAndGroceryShops(page: number) {
-    const shops = await shopRepository.getFoodAndGroceryShops(page)
-    return shops
+    const shops = await shopRepository.getFoodAndGroceryShops(page);
+    return shops;
   }
 }
 
