@@ -15,7 +15,7 @@ class OrdersService {
         };
       });
 
-      const newOrder = new Order({
+      const order = await  new Order({
         customer: payload.customer,
         items: orderItems,
         deliveryFee: payload.deliveryFee,
@@ -24,23 +24,9 @@ class OrdersService {
           coordinates: payload.coordinates,
         },
         totalAmount: payload.totalPrice,
-      });
+      }).save();
 
-      await newOrder.save();
-      // console.log("saved order", newOrder);
-      const order = {
-        _id: newOrder._id,
-        customer: newOrder.customer,
-        items: newOrder.items,
-        deliveryFee: newOrder.deliveryFee,
-        deliveryAddress: {
-          address: newOrder.deliveryAddress,
-        },
-        totalAmount: newOrder.totalAmount,
-        status: newOrder.status,
-        createdAt: newOrder.createdAt,
-      };
-      return newOrder._id;
+      return order._id;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
