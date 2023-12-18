@@ -5,9 +5,7 @@ import { Socket } from "socket.io";
 import { notificationService } from "../components(apps)/notifications";
 import { redisClient } from "./redis.service";
 import { ordersService } from "../components(apps)/orders";
-import {
-  driverRiderService,
-} from "../components(apps)/driversAndRiders";
+import { driverRiderService } from "../components(apps)/driversAndRiders";
 import { findClosestDriverOrRider } from "./geospatial.services";
 import { makuService } from "../components(apps)/maku";
 
@@ -44,10 +42,6 @@ class WebSocket {
       redisClient.delete(`socketId:${clientId}`);
     });
 
-    socket.on("send-order-notification", async (message) => {
-      await notificationService.handleOrderRequest(socket, message);
-    });
-
     socket.on("fcm-vendor-device-token", async (message) => {
       const { vendor: vendorId, deviceToken } = message;
       await redisClient.set(`device-token:${vendorId}`, deviceToken);
@@ -82,10 +76,20 @@ class WebSocket {
 
     socket.on("save-order", async (message) => {
       try {
-        const orderId = await ordersService.createOrder(message);
-        const order = await ordersService.getOrder(orderId);
-        await ordersService.setStatusToProcessing(orderId);
-        await notificationService.sendSavedOrder(order);
+        const order = await ordersService.createOrder(message);
+        await notificationService.vendorHandleOrderRequest(socket, message);
+
+        console.log({ savedOrder: order });
+      } catch (error) {
+        console.error({ error });
+      }
+    });
+
+    socket.on("process-order", async (message) => {
+      try {
+        const order = await ordersService.getOrder(message.orderId);
+        await ordersService.setStatusToProcessing(message.orderId);
+        await notificationService.sendOrderToCustomer(order);
 
         const orderData = ordersService.prepareOrderDataForRider(order);
 
@@ -104,15 +108,15 @@ class WebSocket {
         riders.forEach((rider) => {
           notificationService.notifyRiderOfOrder(rider._id, orderData);
         });
-      } catch (error) {
-        console.error({ error });
+      } catch (error: any) {
+        console.error(error);
       }
     });
 
     socket.on("assign-rider", async (message) => {
       const { orderId, riderId } = message;
       try {
-        ordersService.assignRider(orderId, riderId)
+        ordersService.assignRider(orderId, riderId);
       } catch (error: any) {
         socket.emit("assign-rider-error", error.message);
       }
@@ -132,40 +136,40 @@ class WebSocket {
 
     socket.on("create-trip", async (message) => {
       try {
-        const trip = await makuService.createTrip(message)
-        socket.emit('created-trip', trip)
+        const trip = await makuService.createTrip(message);
+        socket.emit("created-trip", trip);
       } catch (error: any) {
-        socket.emit("create-trip-error", error.message)
-        console.log("error creating trip", error.message)
+        socket.emit("create-trip-error", error.message);
+        console.log("error creating trip", error.message);
       }
-    })
+    });
 
-    socket.on("start-trip", async(message) => {
+    socket.on("start-trip", async (message) => {
       try {
-        await makuService.startTrip(message.tripId)
+        await makuService.startTrip(message.tripId);
       } catch (error: any) {
-        socket.emit("start-trip-error", error.message)
-        console.log("error starting trip", error.message)
+        socket.emit("start-trip-error", error.message);
+        console.log("error starting trip", error.message);
       }
-    })
+    });
 
-    socket.on("complete-trip", async(message) => {
+    socket.on("complete-trip", async (message) => {
       try {
-        await makuService.completeTrip(message.tripId)
+        await makuService.completeTrip(message.tripId);
       } catch (error: any) {
-        socket.emit("complete-trip-error", error.message)
-        console.log("error starting trip", error.message)
+        socket.emit("complete-trip-error", error.message);
+        console.log("error starting trip", error.message);
       }
-    })
+    });
 
-    socket.on("cancel-trip", async(message) => {
+    socket.on("cancel-trip", async (message) => {
       try {
-        await makuService.cancelTrip(message.tripId)
+        await makuService.cancelTrip(message.tripId);
       } catch (error: any) {
-        socket.emit("cancel-trip-error", error.message)
-        console.log("error starting trip", error.message)
+        socket.emit("cancel-trip-error", error.message);
+        console.log("error starting trip", error.message);
       }
-    })
+    });
   }
 }
 
