@@ -177,6 +177,7 @@ class ShopServices {
     const options = {
       page,
       limit: 10,
+      sort:  {createdAt: -1}
     };
     try {
       const aggregation = [
