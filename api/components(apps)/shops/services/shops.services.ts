@@ -173,9 +173,14 @@ class ShopServices {
     }
   }
 
-  public async getOrders(shopId: string) {
+  public async getOrders(shopId: string, page: number) {
+
+    const options = {
+      page,
+      limit: 10
+  };
     try {
-      const orders = await Order.aggregate([
+      const aggregation = [
         {
           $match: {
             "items.shop": shopId,
@@ -235,9 +240,11 @@ class ShopServices {
             createdAt: 1,
           },
         },
-      ]);
+      ]
+      const orders =  Order.aggregate(aggregation)
+      const results = await Order.aggregatePaginate(orders, options);
 
-      return orders;
+      return results.docs;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }

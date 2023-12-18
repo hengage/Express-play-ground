@@ -112,8 +112,9 @@ class ShopController {
   }
 
   async getOrders(req: Request, res: Response) {
+    const page = parseInt(req.query.page as string) || 1
     try {
-      const orders = await shopServices.getOrders(req.params.shopId);
+      const orders = await shopServices.getOrders(req.params.shopId, page);
       res.status(STATUS_CODES.OK).json({
         message: "Fetched orders",
         data: orders,

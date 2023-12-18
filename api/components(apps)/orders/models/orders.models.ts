@@ -1,4 +1,5 @@
 import paginate from "mongoose-paginate-v2";
+import aggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 import mongoose, { Schema, model } from "mongoose";
 
@@ -49,7 +50,7 @@ const orderSchema = new Schema<IOrder>(
         required: true,
       },
     },
-    rider: {type: String, ref: "DriverRider", default: null},
+    rider: { type: String, ref: "DriverRider", default: null },
     totalAmount: {
       type: Number,
       required: true,
@@ -64,7 +65,7 @@ const orderSchema = new Schema<IOrder>(
 );
 
 orderSchema.plugin(paginate);
-
+orderSchema.plugin(aggregatePaginate);
 
 const deliveryRateSchema = new Schema<IDeliveryRate>({
   _id: {
@@ -80,7 +81,12 @@ const deliveryRateSchema = new Schema<IDeliveryRate>({
   riderFeePerKM: { type: String, required: true },
 });
 
-export const Order = model<IOrder, mongoose.PaginateModel<IOrder>>("Order", orderSchema);
+export const Order = model<IOrder,  mongoose.AggregatePaginateModel<IOrder> >(
+  "Order",
+  orderSchema
+);
+
+
 export const DeliveryRate = model<IDeliveryRate>(
   "DeliveryRate",
   deliveryRateSchema

@@ -93,32 +93,41 @@ class CustomerService {
     }
   }
 
-  async getOrders(customerId: string, page: number, status?: string): Promise<IOrder[]> {
+  async getOrders(
+    customerId: string,
+    page: number,
+    status?: string
+  ): Promise<IOrder[]> {
     try {
       const filter: { customer: string; status?: string } = {
         customer: customerId,
       };
-
       if (status) {
         filter.status = status;
       }
-
       const options = {
-        page,
+        skip: (page - 1) * 10, // Assuming 10 items per page
         limit: 10,
-        select: '-__v -updatedAt -customer -deliveryAddressCord.type',
+        select: "-__v -updatedAt -customer -deliveryAddressCord.type",
         populate: [
-          { path: 'items.product', select: 'name photos sizes colors' },
-          { path: 'items.shop', select: 'name' },
+          { path: "items.product", select: "name photos sizes colors" },
+          { path: "items.shop", select: "name" },
         ],
-        sort: { createdAt: -1},
+        sort: { createdAt: -1 },
         lean: true,
-        leanWithId: false,
       };
-
-      const orders = await Order.paginate(filter, options);
       
-      return orders.docs;
+
+      const orders = await Order.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(options.skip)
+        .limit(options.limit)
+        .select(options.select)
+        .populate(options.populate)
+        .lean(options.lean)
+        .exec();
+
+      return orders;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
