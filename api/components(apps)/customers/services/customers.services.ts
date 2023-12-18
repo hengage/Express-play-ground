@@ -111,6 +111,7 @@ class CustomerService {
           { path: 'items.product', select: 'name photos sizes colors' },
           { path: 'items.shop', select: 'name' },
         ],
+        sort: { createdAt: -1},
         lean: true,
         leanWithId: false,
       };
