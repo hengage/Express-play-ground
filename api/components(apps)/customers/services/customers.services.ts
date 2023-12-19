@@ -106,11 +106,11 @@ class CustomerService {
         filter.status = status;
       }
       const options = {
-        skip: (page - 1) * 10, // Assuming 10 items per page
+        skip: (page - 1) * 10,
         limit: 10,
         select: "-__v -updatedAt -customer -deliveryAddressCord.type",
         populate: [
-          { path: "items.product", select: "name photos sizes colors" },
+          { path: "items.product", select: "name photos" },
           { path: "items.shop", select: "name" },
         ],
         sort: { createdAt: -1 },
