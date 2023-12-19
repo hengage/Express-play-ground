@@ -32,6 +32,7 @@ const towingCompanySchema = new Schema<ITowingCompany>(
       {
         vehicleType: { type: String, required: true, ref: "TowingVehicleType" },
         regNumber: { type: String, required: true },
+        photos: [{ type: String, required: true}]
       },
     ],
   },
