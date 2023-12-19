@@ -48,13 +48,18 @@ class DriversRidersController {
   }
 
   public async login(req: Request, res: Response) {
+    const accountType = req.query.accountType as string;
     const { phoneNumber, password } = req.body;
 
     try {
-      const driverRider = await driverRiderService.login({
-        phoneNumber,
-        password,
-      });
+      const driverRider = await driverRiderService.login(
+        {
+          phoneNumber,
+          password,
+        },
+        accountType
+      );
+
       const payload = {
         phoneNumber: driverRider.phoneNumber,
         _id: driverRider._id,

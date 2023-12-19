@@ -45,12 +45,20 @@ class DriverRiderService {
     }
   }
 
-  async login(payload: ILoginDriverAndRider) {
+  async login(payload: ILoginDriverAndRider, accountType: string) {
     try {
-      const driverRider = await driverRiderRepo.getByPhoneNumber(
-        payload.phoneNumber,
-        "phoneNumber password"
-      );
+      if(!accountType) {
+        throw new HandleException(STATUS_CODES.BAD_REQUEST, "Account type not specified")
+      }
+
+      const driverRider = await DriverRider.findOne({
+        phoneNumber: payload.phoneNumber,
+        accountType
+      }).select("phoneNumber password accountType")
+
+      if(!driverRider) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, `${accountType} not found`);
+      }
 
       const passwordsMatch = await bcrypt.compare(
         payload.password,
@@ -63,11 +71,10 @@ class DriverRiderService {
         );
       }
 
-      const loggedIn = {
+      return  {
         _id: driverRider._id,
         phoneNumber: driverRider.phoneNumber,
       };
-      return loggedIn;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
