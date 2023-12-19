@@ -256,6 +256,8 @@ class ShopServices {
               photos: { $arrayElemAt: ["$productDetails.photos", 0] },
               quantity: 1,
               price: 1,
+              size: 1,
+              color: 1,
               shop: 1,
             },
             deliveryFee: 1,
