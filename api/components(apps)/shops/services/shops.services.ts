@@ -263,6 +263,7 @@ class ShopServices {
             deliveryFee: 1,
             deliveryAddress: 1,
             deliveryAddressCord: 1,
+            productTotal: 1,
             totalAmount: 1,
             status: 1,
             createdAt: 1,

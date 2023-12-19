@@ -24,6 +24,7 @@ export interface IOrder extends Document {
     coordinates: [number, number];
   };
   rider: string;
+  productTotal: number;
   totalAmount: number;
   status: OrderStatus;
   createdAt: Date;

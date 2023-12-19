@@ -26,8 +26,8 @@ const orderSchema = new Schema<IOrder>(
           type: Number,
           required: true,
         },
-        size: {type: String, default: null},
-        color: {type: String, default: null},
+        size: {type: String},
+        color: {type: String},
         price: {
           type: Number,
           required: true,
@@ -53,6 +53,10 @@ const orderSchema = new Schema<IOrder>(
       },
     },
     rider: { type: String, ref: "DriverRider", default: null },
+    productTotal: {
+      type: Number,
+      required: true,
+    },
     totalAmount: {
       type: Number,
       required: true,

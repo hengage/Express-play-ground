@@ -25,6 +25,7 @@ class OrdersService {
         deliveryAddressCord: {
           coordinates: payload.coordinates,
         },
+        productTotal: payload.productTotal,
         totalAmount: payload.totalPrice,
       }).save();
 
