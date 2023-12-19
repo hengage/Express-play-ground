@@ -65,8 +65,9 @@ class TowingController {
   }
 
   async addDriver(req: Request, res: Response) {
+    const towingCompanyId = (req as any).user._id;
     try {
-      const driver = await towingService.addDriver(req.body);
+      const driver = await towingService.addDriver(req.body, towingCompanyId);
       res.status(STATUS_CODES.CREATED).json({
         message: "Added driver",
         data: { driver },

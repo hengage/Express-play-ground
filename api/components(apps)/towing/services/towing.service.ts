@@ -86,13 +86,14 @@ class TowingService {
     return;
   }
 
-  async addDriver(payload: any) {
+  async addDriver(payload: any, towingCompany: string) {
     const driver = await new TowingDriver({
       firstName: payload.firstName,
       lastName: payload.lastName,
       phoneNumber: payload.phoneNumber,
       licenseNumber: payload.licenseNumber,
-      photo: payload.photo
+      photo: payload.photo,
+      towingCompany
     }).save();
 
     return driver._id

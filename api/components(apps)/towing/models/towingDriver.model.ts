@@ -27,6 +27,10 @@ const towingDriverSchema = new Schema<ITowingDriver>({
   photo: {
     type: String,
     required: true,
+  },
+  towingCompany: {
+    type: String,
+    required: true,
   }
 });
 
