@@ -23,6 +23,7 @@ const towingDriverSchema = new Schema<ITowingDriver>({
   licenseNumber: {
     type: String,
     required: true,
+    unique: true
   },
   photo: {
     type: String,

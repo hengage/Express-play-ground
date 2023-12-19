@@ -87,16 +87,30 @@ class TowingService {
   }
 
   async addDriver(payload: any, towingCompany: string) {
+    const licenseNumberExists = await TowingDriver.findOne({
+      towingCompany,
+      licenseNumber: payload.licenseNumber,
+    })
+      .select("licenseNumber")
+      .lean()
+      .exec();
+
+    if (licenseNumberExists) {
+      throw new HandleException(
+        STATUS_CODES.CONFLICT,
+        "A driver with this license number exists for this company"
+      );
+    }
     const driver = await new TowingDriver({
       firstName: payload.firstName,
       lastName: payload.lastName,
       phoneNumber: payload.phoneNumber,
       licenseNumber: payload.licenseNumber,
       photo: payload.photo,
-      towingCompany
+      towingCompany,
     }).save();
 
-    return driver._id
+    return driver._id;
   }
 }
 
