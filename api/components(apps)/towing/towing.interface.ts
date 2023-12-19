@@ -22,5 +22,13 @@ export interface ITowingCompany extends Document {
     vehicleTypes: Array<{ vehicleType: ITowingVehicleType['_id']; regNumber: string }>;
     createdAt: Date;
     updatedAt: Date;
+}
 
+export interface ITowingDriver extends Document {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    licenseNumber: string;
+    photo: string;
 }
