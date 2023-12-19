@@ -1,6 +1,7 @@
 import { STATUS_CODES } from "../../../constants";
 import { HandleException, encryption } from "../../../utils";
 import { TowingCompany } from "../models/towing.models";
+import { TowingDriver } from "../models/towingDriver.model";
 
 class TowingService {
   async create(payload: any) {
@@ -83,6 +84,18 @@ class TowingService {
     towingCompany.vehicleTypes.push(towingVehicleType);
     await towingCompany.save();
     return;
+  }
+
+  async addDriver(payload: any) {
+    const driver = await new TowingDriver({
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+      phoneNumber: payload.phoneNumber,
+      licenseNumber: payload.licenseNumber,
+      photo: payload.photo
+    }).save();
+
+    return driver._id
   }
 }
 

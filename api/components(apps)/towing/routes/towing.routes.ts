@@ -18,6 +18,9 @@ class TowingRoutes {
     this.router
       .route("/add-vehicle-type")
       .patch(towingController.addVehicleType);
+    this.router
+      .route("/add-driver")
+      .post(towingController.addDriver);
   }
 }
 

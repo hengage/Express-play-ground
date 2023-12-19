@@ -16,10 +16,18 @@ const towingDriverSchema = new Schema<ITowingDriver>({
     type: String,
     required: true,
   },
+  phoneNumber: {
+    type: String,
+    required: true,
+  },
   licenseNumber: {
     type: String,
     required: true,
   },
+  photo: {
+    type: String,
+    required: true,
+  }
 });
 
 export const TowingDriver = model<ITowingDriver>(

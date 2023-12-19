@@ -21,8 +21,11 @@ class TowingController {
 
   async login(req: Request, res: Response) {
     try {
-      const towingCompany = await towingService.login(req.body)
-      const payload = {_id: towingCompany._id, phoneNumber: towingCompany.phoneNumber}
+      const towingCompany = await towingService.login(req.body);
+      const payload = {
+        _id: towingCompany._id,
+        phoneNumber: towingCompany.phoneNumber,
+      };
       const accessToken = jwtUtils.generateToken(payload, "1h");
       const refreshToken = jwtUtils.generateToken(payload, "14d");
 
@@ -31,20 +34,20 @@ class TowingController {
         data: {
           _id: towingCompany._id,
           accessToken,
-          refreshToken
-        }
-      })
+          refreshToken,
+        },
+      });
     } catch (error: any) {
       res.status(error.status || 500).json({
         message: "Failed to login",
-        error: error.message
-      })
+        error: error.message,
+      });
     }
   }
 
   async addVehicleType(req: Request, res: Response) {
-    const {  towingVehicleType } = req.body;
-    const towingCompanyId = (req as any).user._id
+    const { towingVehicleType } = req.body;
+    const towingCompanyId = (req as any).user._id;
     try {
       await towingService.addVehicleType({
         towingCompanyId,
@@ -56,6 +59,21 @@ class TowingController {
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Error adding vehicle type",
+        error: error.message,
+      });
+    }
+  }
+
+  async addDriver(req: Request, res: Response) {
+    try {
+      const driver = await towingService.addDriver(req.body);
+      res.status(STATUS_CODES.CREATED).json({
+        message: "Added driver",
+        data: { driver },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error adding driver",
         error: error.message,
       });
     }
