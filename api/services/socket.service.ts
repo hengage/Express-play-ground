@@ -66,17 +66,18 @@ class WebSocket {
     });
 
     socket.on("fcm-driver-device-token", async (message) => {
-      const { driverRiderId, deviceToken } = message;
-      await redisClient.set(`device-token:${driverRiderId}`, deviceToken);
+      const { driverId, deviceToken } = message;
+      await redisClient.set(`device-token:${driverId}`, deviceToken);
     });
 
     socket.on("update-driver-rider-location", async (message) => {
       const { driverId, coordinates } = message;
       console.log({ driverId, coordinates });
       try {
-        driverRiderService.updateLocation(driverId, coordinates);
+        await driverRiderService.updateLocation(driverId, coordinates);
       } catch (error) {
         console.log({ error });
+        socket.emit("update-driver-rider-location-error", error,message)
       }
     });
 
