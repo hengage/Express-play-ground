@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import { uniqueString } from "../../../utils";
 import { IMovingServiceCompany } from "../movingServices.interface";
 
-const movingSrviceCompanySchema = new Schema<IMovingServiceCompany>(
+const movingServiceCompanySchema = new Schema<IMovingServiceCompany>(
   {
     _id: {
       type: String,
@@ -12,6 +12,21 @@ const movingSrviceCompanySchema = new Schema<IMovingServiceCompany>(
     name: {
       type: String,
       required: true,
+      unique: true
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      reuqired: true,
     },
     address: {
       type: String,
@@ -24,15 +39,16 @@ const movingSrviceCompanySchema = new Schema<IMovingServiceCompany>(
       },
       coordinates: {
         type: [Number, Number],
+        required: true,
       },
     },
   },
   {
-    timestamps: true,
+    timestamps: true, _id: false
   }
 );
 
-export const movingSrviceCompany = model<IMovingServiceCompany>(
+export const MovingServiceCompany = model<IMovingServiceCompany>(
   "movingService",
-  movingSrviceCompanySchema
+  movingServiceCompanySchema
 );

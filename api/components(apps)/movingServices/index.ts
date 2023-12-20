@@ -1,0 +1,1 @@
+export { movingServicesRoutes } from "./routes/movingServices.routes";
