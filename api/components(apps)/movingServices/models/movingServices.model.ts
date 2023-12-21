@@ -1,6 +1,22 @@
 import { Schema, model } from "mongoose";
 import { encryption, uniqueString } from "../../../utils";
-import { IMovingServiceCompany } from "../movingServices.interface";
+import {
+  IMovingServiceCompany,
+  IMovingServiceVehicleType,
+} from "../movingServices.interface";
+
+const movingServicesVehicleTypeSchema = new Schema<IMovingServiceVehicleType>(
+  {
+    _id: {
+      type: String,
+      required: true,
+      default: () => uniqueString.generateUniqueString(4),
+    },
+    name: { type: String, required: true, unique: true },
+    photo: { type: String, required: true, unique: true },
+  },
+  { timestamps: true, _id: false }
+);
 
 const movingServiceCompanySchema = new Schema<IMovingServiceCompany>(
   {
@@ -42,6 +58,12 @@ const movingServiceCompanySchema = new Schema<IMovingServiceCompany>(
         required: true,
       },
     },
+    vehicleType: [
+      {
+        type: String,
+        ref: "MovingServiceVehicleType",
+      },
+    ],
   },
   {
     timestamps: true,
@@ -63,4 +85,9 @@ movingServiceCompanySchema.pre("save", async function (next) {
 export const MovingServiceCompany = model<IMovingServiceCompany>(
   "movingService",
   movingServiceCompanySchema
+);
+
+export const MovingServiceVehicleType = model<IMovingServiceVehicleType>(
+  "movingServiceVehicleType",
+  movingServicesVehicleTypeSchema
 );
