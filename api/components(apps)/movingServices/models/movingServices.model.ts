@@ -57,10 +57,15 @@ const movingServiceCompanySchema = new Schema<IMovingServiceCompany>(
         required: true,
       },
     },
-    vehicleTypes: [
+    vehicles: [
       {
-        type: String,
-        ref: "MovingServiceVehicleType",
+        vehicleType: {
+          type: String,
+          required: true,
+          ref: "MovingServiceVehicleType",
+        },
+        regNumber: { type: String, required: true },
+        photos: [{ type: String, required: true }],
       },
     ],
   },

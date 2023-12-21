@@ -51,10 +51,11 @@ class MovingServicesService {
     };
   }
 
-  async addVehicleType(payload: any, movingServiceId: string) {
+  async addVehicle(payload: any, movingServiceId: string) {
+    const { vehicle } = payload;
     const movingService = await MovingServiceCompany.findById(
       movingServiceId
-    ).select("vehicleTypes");
+    ).select("vehicles");
 
     if (!movingService) {
       throw new HandleException(
@@ -62,16 +63,17 @@ class MovingServicesService {
         "The business does not exist"
       );
     }
-    movingService.vehicleTypes.find((vt) => {
-      if (vt === payload.vehicleType) {
-        throw new HandleException(
-          STATUS_CODES.CONFLICT,
-          "The vehicle type already exists for this business"
-        );
-      } 
-    });
 
-    movingService.vehicleTypes.push(payload.vehicleType);
+    if (
+      movingService.vehicles.some((vt) => vt.regNumber === vehicle.regNumber)
+    ) {
+      throw new HandleException(
+        STATUS_CODES.CONFLICT,
+        "A vehicle with the same registration number already exists for this business"
+      );
+    }
+
+    movingService.vehicles.push(payload.vehicle);
     console.log("added vehicle type");
     await movingService.save();
   }

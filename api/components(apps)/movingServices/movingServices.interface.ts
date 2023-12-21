@@ -19,7 +19,12 @@ export interface IMovingServiceCompany extends Document {
     coordinates: [number, number];
   };
 //   vehicleType: Array<IMovingServiceVehicleType["_id"]>,
-  vehicleTypes: IMovingServiceVehicleType["_id"][],
+//   vehicleTypes: IMovingServiceVehicleType["_id"][],
+  vehicles: Array<{
+    vehicleType: IMovingServiceVehicleType["_id"];
+    regNumber: string;
+    photos: string[];
+  }>;
   createdAt: Date;
   updatedAt: Date;
 }

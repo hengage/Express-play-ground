@@ -17,7 +17,7 @@ class MovingServicesRoutes {
 
     this.router
       .route("/vehicle-type")
-      .patch(movingServicesController.addVehicleType);
+      .patch(movingServicesController.addVehicle);
   }
 }
 

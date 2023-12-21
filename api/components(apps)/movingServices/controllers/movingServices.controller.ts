@@ -54,12 +54,11 @@ class MovingServicesController {
     }
   }
 
-  async addVehicleType(req: Request, res: Response) {
-    const { vehicleType } = req.body
-    console.log({body: vehicleType})
+  async addVehicle(req: Request, res: Response) {
+    const { vehicle } = req.body
     const movingServiceId = (req as any).user._id
     try {
-        await movingServicesService.addVehicleType({vehicleType}, movingServiceId)
+        await movingServicesService.addVehicle({vehicle}, movingServiceId)
         res.status(STATUS_CODES.OK).json({
             message: "Added vehicle type"
         })
