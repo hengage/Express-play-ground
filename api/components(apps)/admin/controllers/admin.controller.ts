@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { adminService } from "../services/admin.service";
 import { STATUS_CODES } from "../../../constants";
 import { adminTowingService } from "../services/admin.towing.services";
-import { adminMovingServicesOperationService } from "../services/admin.ms.sevices";
+import { adminMovingServicesOperationService } from "../services/admin.moving_services.sevices";
 
 class AdminController {
   public async createShopType(req: Request, res: Response) {
