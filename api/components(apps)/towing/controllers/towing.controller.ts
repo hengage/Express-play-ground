@@ -45,14 +45,11 @@ class TowingController {
     }
   }
 
-  async addVehicleType(req: Request, res: Response) {
-    const { towingVehicleType } = req.body;
+  async addVehicle(req: Request, res: Response) {
+    const { vehicle } = req.body;
     const towingCompanyId = (req as any).user._id;
     try {
-      await towingService.addVehicleType({
-        towingCompanyId,
-        towingVehicleType,
-      });
+      await towingService.addVehicle({ vehicle }, towingCompanyId);
       res.status(STATUS_CODES.OK).json({
         message: "Added vehicle type",
       });

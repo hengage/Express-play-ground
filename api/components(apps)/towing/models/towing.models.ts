@@ -28,7 +28,7 @@ const towingCompanySchema = new Schema<ITowingCompany>(
       type: { type: String, default: "Point" },
       coordinates: { type: [Number, Number], required: true },
     },
-    vehicleTypes: [
+    vehicles: [
       {
         vehicleType: { type: String, required: true, ref: "TowingVehicleType" },
         regNumber: { type: String, required: true },

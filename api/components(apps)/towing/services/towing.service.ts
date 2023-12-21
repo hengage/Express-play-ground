@@ -54,10 +54,10 @@ class TowingService {
     };
   }
 
-  async addVehicleType(payload: any) {
-    const { towingCompanyId, towingVehicleType } = payload;
+  async addVehicle(payload: any, towingCompanyId: string) {
+    const {  vehicle } = payload;
     const towingCompany = await TowingCompany.findById(towingCompanyId).select(
-      "vehicleTypes"
+      "vehicles"
     );
 
     if (!towingCompany) {
@@ -66,22 +66,17 @@ class TowingService {
         "Towing company not found"
       );
     }
-    towingCompany.vehicleTypes.find((vt) => {
-      if (vt.vehicleType === towingVehicleType.vehicleType) {
-        throw new HandleException(
-          STATUS_CODES.CONFLICT,
-          "Vehicle type already exists for the company"
-        );
-      }
 
-      if (vt.regNumber === towingVehicleType.regNumber) {
-        throw new HandleException(
-          STATUS_CODES.CONFLICT,
-          "A vehicle with this registration number already exists"
-        );
-      }
-    });
-    towingCompany.vehicleTypes.push(towingVehicleType);
+    if (
+      towingCompany.vehicles.some((vt) => vt.regNumber === vehicle.regNumber)
+    ) {
+      throw new HandleException(
+        STATUS_CODES.CONFLICT,
+        "A vehicle with the same registration number already exists for this business"
+      );
+    }
+
+    towingCompany.vehicles.push(vehicle);
     await towingCompany.save();
     return;
   }

@@ -16,8 +16,8 @@ class TowingRoutes {
 
     this.router.use(jwtUtils.verifyTokenMiddleware)
     this.router
-      .route("/add-vehicle-type")
-      .patch(towingController.addVehicleType);
+      .route("/add-vehicle")
+      .patch(towingController.addVehicle);
     this.router
       .route("/add-driver")
       .post(towingController.addDriver);
