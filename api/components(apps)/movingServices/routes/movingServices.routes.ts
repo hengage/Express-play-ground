@@ -16,7 +16,7 @@ class MovingServicesRoutes {
     this.router.use(jwtUtils.verifyTokenMiddleware);
 
     this.router
-      .route("/vehicle-type")
+      .route("/add-vehicle")
       .patch(movingServicesController.addVehicle);
   }
 }
