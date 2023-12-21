@@ -53,6 +53,24 @@ class MovingServicesController {
       });
     }
   }
+
+  async addVehicleType(req: Request, res: Response) {
+    const { vehicleType } = req.body
+    console.log({body: vehicleType})
+    const movingServiceId = (req as any).user._id
+    try {
+        await movingServicesService.addVehicleType({vehicleType}, movingServiceId)
+        res.status(STATUS_CODES.OK).json({
+            message: "Added vehicle type"
+        })
+    } catch (error: any) {
+        res.status(error.status || STATUS_CODES.SERVER_ERROR)
+        .json({
+            message: "Failed to add vehicle type",
+            error: error.message || "Server error"
+        })
+    }
+  }
 }
 
 export const movingServicesController = new MovingServicesController();

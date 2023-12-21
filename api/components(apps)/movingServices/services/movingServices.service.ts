@@ -46,9 +46,34 @@ class MovingServicesService {
     }
 
     return {
-        _id: msc._id,
-        phoneNumber: msc.phoneNumber
+      _id: msc._id,
+      phoneNumber: msc.phoneNumber,
+    };
+  }
+
+  async addVehicleType(payload: any, movingServiceId: string) {
+    const movingService = await MovingServiceCompany.findById(
+      movingServiceId
+    ).select("vehicleTypes");
+
+    if (!movingService) {
+      throw new HandleException(
+        STATUS_CODES.NOT_FOUND,
+        "The business does not exist"
+      );
     }
+    movingService.vehicleTypes.find((vt) => {
+      if (vt === payload.vehicleType) {
+        throw new HandleException(
+          STATUS_CODES.CONFLICT,
+          "The vehicle type already exists for this business"
+        );
+      } 
+    });
+
+    movingService.vehicleTypes.push(payload.vehicleType);
+    console.log("added vehicle type");
+    await movingService.save();
   }
 }
 

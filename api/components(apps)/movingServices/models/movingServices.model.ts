@@ -57,7 +57,7 @@ const movingServiceCompanySchema = new Schema<IMovingServiceCompany>(
         required: true,
       },
     },
-    vehicleType: [
+    vehicleTypes: [
       {
         type: String,
         ref: "MovingServiceVehicleType",
