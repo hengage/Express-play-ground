@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { uniqueString } from "../../../utils";
+import { encryption, uniqueString } from "../../../utils";
 import { IMovingServiceCompany } from "../movingServices.interface";
 
 const movingServiceCompanySchema = new Schema<IMovingServiceCompany>(
@@ -12,7 +12,7 @@ const movingServiceCompanySchema = new Schema<IMovingServiceCompany>(
     name: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     phoneNumber: {
       type: String,
@@ -44,9 +44,21 @@ const movingServiceCompanySchema = new Schema<IMovingServiceCompany>(
     },
   },
   {
-    timestamps: true, _id: false
+    timestamps: true,
+    _id: false,
   }
 );
+
+movingServiceCompanySchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    try {
+      this.password = await encryption.encryptValue(this.password);
+    } catch (error: any) {
+      return next(error);
+    }
+  }
+  next();
+});
 
 export const MovingServiceCompany = model<IMovingServiceCompany>(
   "movingService",
