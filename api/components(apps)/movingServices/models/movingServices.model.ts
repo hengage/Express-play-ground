@@ -13,7 +13,6 @@ const movingServicesVehicleTypeSchema = new Schema<IMovingServiceVehicleType>(
       default: () => uniqueString.generateUniqueString(4),
     },
     name: { type: String, required: true, unique: true },
-    photo: { type: String, required: true, unique: true },
   },
   { timestamps: true, _id: false }
 );

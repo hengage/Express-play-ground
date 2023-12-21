@@ -4,7 +4,6 @@ import { Document } from "mongoose";
 export interface IMovingServiceVehicleType extends Document {
     _id: string;
     name: string;
-    photo: string;
     createdAt: Date;
     updatedAt: Date;
 }

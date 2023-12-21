@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { adminService } from "../services/admin.service";
 import { STATUS_CODES } from "../../../constants";
 import { adminTowingService } from "../services/admin.towing.services";
+import { adminMovingServicesOperationService } from "../services/admin.ms.sevices";
 
 class AdminController {
   public async createShopType(req: Request, res: Response) {
@@ -159,19 +160,38 @@ class AdminController {
   }
 
   async createTowingVehicleType(req: Request, res: Response) {
-    console.log({body: req.body})
+    console.log({ body: req.body });
     try {
       const towingVehicleType =
         await adminTowingService.createTowingVehicleType(req.body);
-        res.status(STATUS_CODES.CREATED).json({
-          message: "Created towing vehicle type",
-          data: {towingVehicleType}
+      res.status(STATUS_CODES.CREATED).json({
+        message: "Created towing vehicle type",
+        data: { towingVehicleType },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error creating towing vehicle type",
+        error: error.message,
+      });
+    }
+  }
+
+  async createMovingServiceVehicleType(req: Request, res: Response) {
+    try {
+      const vehicleType =
+        await adminMovingServicesOperationService.createMovingServiceVehicleType(
+          req.body
+        );
+        return res.status(STATUS_CODES.CREATED).json({
+          message: "Operation successful",
+          data : {
+            _id: vehicleType
+          }
         })
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR)
-      .json({
-        message: "Error creating towing vehicle type",
-        error: error.message
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Operation failed",
+        error: error.message || "Server error",
       })
     }
   }
