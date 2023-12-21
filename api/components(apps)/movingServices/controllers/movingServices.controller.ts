@@ -60,7 +60,7 @@ class MovingServicesController {
     try {
         await movingServicesService.addVehicle({vehicle}, movingServiceId)
         res.status(STATUS_CODES.OK).json({
-            message: "Added vehicle type"
+            message: "Added vehicle"
         })
     } catch (error: any) {
         res.status(error.status || STATUS_CODES.SERVER_ERROR)
