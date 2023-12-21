@@ -28,6 +28,31 @@ class MovingServicesController {
       });
     }
   }
+
+  async login(req: Request, res: Response) {
+    try {
+      const movingService = await movingServicesService.login(req.body);
+      const payload = {
+        _id: movingService._id,
+        phoneNumber: movingService.phoneNumber,
+      };
+      const accessToken = jwtUtils.generateToken(payload, "2h");
+      const refreshToken = jwtUtils.generateToken(payload, "14d");
+      res.status(STATUS_CODES.CREATED).json({
+        message: "Created successfully",
+        data: {
+          _id: movingService._id,
+          accessToken,
+          refreshToken,
+        },
+      });
+    } catch (error: any) {
+      res.status(error.status || error.message).json({
+        message: "Failed to login",
+        error: error.message,
+      });
+    }
+  }
 }
 
 export const movingServicesController = new MovingServicesController();

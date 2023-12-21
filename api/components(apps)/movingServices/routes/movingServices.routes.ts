@@ -12,6 +12,7 @@ class MovingServicesRoutes {
   private initializeRoutes() {
     // this.router.use(jwtUtils.verifyTokenMiddleware);
     this.router.route(`/signup`).post(movingServicesController.signup);
+    this.router.route("/login").post(movingServicesController.login);
   }
 }
 
