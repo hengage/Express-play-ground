@@ -92,7 +92,7 @@ class NotificationService {
         body: "View details and accept the trip",
       },
       data: {
-        type: "acceopt-maku-trip-request",
+        type: "accept-maku-trip-request",
         data: JSON.stringify(tripDetails),
       },
       token: `${driverDeviceToken}`,

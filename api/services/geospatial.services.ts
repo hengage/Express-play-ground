@@ -29,7 +29,6 @@ async function findClosestDriverOrRider(
   if (vehicleType) {
     filter.vehicleType = vehicleType;
   }
-  console.log({ filter });
   const nearbyDriversAndRiders = await DriverRider.aggregate([
     {
       $geoNear: {

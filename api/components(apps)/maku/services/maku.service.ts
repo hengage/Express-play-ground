@@ -24,7 +24,6 @@ class MakuService {
     searchKMLimit: number,
     vehicleType?: string
   ) {
-    console.log({pickupCoordinates, pickUpAddress, destinationAddress, searchKMLimit})
     try {
       const drivers = await findClosestDriverOrRider(
         pickupCoordinates,

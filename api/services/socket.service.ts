@@ -125,7 +125,6 @@ class WebSocket {
         searchKMLimit,
         vehicleType
       } = message;
-      console.log({message})
       try {
         const drivers = await makuService.findNearestDrivers(
           pickUpCoordinates,
