@@ -39,7 +39,7 @@ class MovingServicesController {
       const accessToken = jwtUtils.generateToken(payload, "2h");
       const refreshToken = jwtUtils.generateToken(payload, "14d");
       res.status(STATUS_CODES.CREATED).json({
-        message: "Created successfully",
+        message: "Login successful",
         data: {
           _id: movingService._id,
           accessToken,
