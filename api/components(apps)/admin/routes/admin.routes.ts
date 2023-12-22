@@ -34,6 +34,8 @@ class AdminRoutes {
     this.router
       .route("/moving-services/vehicle-type")
       .post(adminController.createMovingServiceVehicleType);
+    this.router.route("/vehicle-rental/vehicle-type")
+    .post(adminController.createVehicleRentalVehicleType)
   }
 }
 

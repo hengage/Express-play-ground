@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { adminService } from "../services/admin.service";
 import { STATUS_CODES } from "../../../constants";
 import { adminTowingService } from "../services/admin.towing.services";
-import { adminMovingServicesOperationService } from "../services/admin.moving_services.sevices";
+import { adminMovingServicesOperationService } from "../services/admin.movingServices";
+import { adminVCehicleRentalOperationService } from "../services/admin.vehicleRentals";
 
 class AdminController {
   public async createShopType(req: Request, res: Response) {
@@ -195,6 +196,28 @@ class AdminController {
       })
     }
   }
+
+  async createVehicleRentalVehicleType(req: Request, res: Response) {
+    try {
+      const vehicleType =
+        await adminVCehicleRentalOperationService.createVehicleType(
+          req.body
+        );
+        return res.status(STATUS_CODES.CREATED).json({
+          message: "Operation successful",
+          data : {
+            _id: vehicleType
+          }
+        })
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Operation failed",
+        error: error.message || "Server error",
+      })
+    }
+  }
+
+
 }
 
 export const adminController = new AdminController();
