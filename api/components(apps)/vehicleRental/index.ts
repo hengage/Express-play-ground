@@ -1,0 +1,1 @@
+export { vehicleRentalRoutes } from "./routes/vehicleRental.routes";

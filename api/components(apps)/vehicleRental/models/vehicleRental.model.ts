@@ -89,6 +89,6 @@ export const VehicleRentalCompany = model<IVehicleRentalCompany>(
 );
 
 export const VehicleRentalVehicleType = model<IVehicleRentalVehicleType>(
-  "movingServiceVehicleType",
+  "vehicleRentalVehicleType",
   vehicleRentalVehicleTypeSchema
 );
