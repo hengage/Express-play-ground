@@ -1,6 +1,7 @@
 import { MakuCabStatus } from "../../../constants";
 import { findClosestDriverOrRider } from "../../../services";
 import { HandleException } from "../../../utils";
+import { notificationService } from "../../notifications";
 import { Trip, VehicleType } from "../models/maku.model";
 
 class MakuService {
@@ -16,13 +17,28 @@ class MakuService {
     }
   }
 
-  async findNearestDrivers(pickupCoordinates: [number, number]) {
+  async findNearestDrivers(
+    pickupCoordinates: [number, number],
+    pickUpAddress: string,
+    destinationAddress: string,
+    searchKMLimit: number
+  ) {
+    console.log({pickupCoordinates, pickUpAddress, destinationAddress, searchKMLimit})
     try {
       const drivers = await findClosestDriverOrRider(
         pickupCoordinates,
         "driver",
-        10
+        searchKMLimit
       );
+      drivers.forEach((driver) => {
+        notificationService.noitifyDriversOfMakuRequest(
+          driver._id,
+          {
+            destinationAddress, 
+            pickUpAddress
+          }
+        );
+      });
       return drivers;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
@@ -54,19 +70,19 @@ class MakuService {
   async startTrip(tripId: string) {
     await Trip.findByIdAndUpdate(tripId, {
       $set: { status: MakuCabStatus.STARTED },
-    }).select('status');
+    }).select("status");
   }
 
   async completeTrip(tripId: string) {
     await Trip.findByIdAndUpdate(tripId, {
       $set: { status: MakuCabStatus.COMPLETED },
-    }).select('status');
+    }).select("status");
   }
 
   async cancelTrip(tripId: string) {
     await Trip.findByIdAndUpdate(tripId, {
       $set: { status: MakuCabStatus.CANCELLED },
-    }).select('status');
+    }).select("status");
   }
 }
 

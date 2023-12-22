@@ -5,9 +5,7 @@ import { Socket } from "socket.io";
 import { notificationService } from "../components(apps)/notifications";
 import { redisClient } from "./redis.service";
 import { ordersService } from "../components(apps)/orders";
-import {
-  driverRiderService,
-} from "../components(apps)/driversAndRiders";
+import { driverRiderService } from "../components(apps)/driversAndRiders";
 import { findClosestDriverOrRider } from "./geospatial.services";
 import { makuService } from "../components(apps)/maku";
 
@@ -77,7 +75,7 @@ class WebSocket {
         await driverRiderService.updateLocation(driverId, coordinates);
       } catch (error) {
         console.log({ error });
-        socket.emit("update-driver-rider-location-error", error,message)
+        socket.emit("update-driver-rider-location-error", error, message);
       }
     });
 
@@ -113,16 +111,26 @@ class WebSocket {
     socket.on("assign-rider", async (message) => {
       const { orderId, riderId } = message;
       try {
-        ordersService.assignRider(orderId, riderId)
+        ordersService.assignRider(orderId, riderId);
       } catch (error: any) {
         socket.emit("assign-rider-error", error.message);
       }
     });
 
     socket.on("find-nearest-drivers", async (message) => {
+      const {
+        pickUpCoordinates,
+        pickUpAddress,
+        destinationAddress,
+        searchKMLimit,
+      } = message;
+      console.log({message})
       try {
         const drivers = await makuService.findNearestDrivers(
-          message.pickupLocation
+          pickUpCoordinates,
+          pickUpAddress,
+          destinationAddress,
+          searchKMLimit
         );
         console.log({ nearestDrivers: drivers });
         socket.emit("found-nearest-drivers", drivers);
@@ -133,40 +141,40 @@ class WebSocket {
 
     socket.on("create-trip", async (message) => {
       try {
-        const trip = await makuService.createTrip(message)
-        socket.emit('created-trip', trip)
+        const trip = await makuService.createTrip(message);
+        socket.emit("created-trip", trip);
       } catch (error: any) {
-        socket.emit("create-trip-error", error.message)
-        console.log("error creating trip", error.message)
+        socket.emit("create-trip-error", error.message);
+        console.log("error creating trip", error.message);
       }
-    })
+    });
 
-    socket.on("start-trip", async(message) => {
+    socket.on("start-trip", async (message) => {
       try {
-        await makuService.startTrip(message.tripId)
+        await makuService.startTrip(message.tripId);
       } catch (error: any) {
-        socket.emit("start-trip-error", error.message)
-        console.log("error starting trip", error.message)
+        socket.emit("start-trip-error", error.message);
+        console.log("error starting trip", error.message);
       }
-    })
+    });
 
-    socket.on("complete-trip", async(message) => {
+    socket.on("complete-trip", async (message) => {
       try {
-        await makuService.completeTrip(message.tripId)
+        await makuService.completeTrip(message.tripId);
       } catch (error: any) {
-        socket.emit("complete-trip-error", error.message)
-        console.log("error starting trip", error.message)
+        socket.emit("complete-trip-error", error.message);
+        console.log("error starting trip", error.message);
       }
-    })
+    });
 
-    socket.on("cancel-trip", async(message) => {
+    socket.on("cancel-trip", async (message) => {
       try {
-        await makuService.cancelTrip(message.tripId)
+        await makuService.cancelTrip(message.tripId);
       } catch (error: any) {
-        socket.emit("cancel-trip-error", error.message)
-        console.log("error starting trip", error.message)
+        socket.emit("cancel-trip-error", error.message);
+        console.log("error starting trip", error.message);
       }
-    })
+    });
   }
 }
 

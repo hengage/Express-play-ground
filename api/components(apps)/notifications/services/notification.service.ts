@@ -49,7 +49,7 @@ class NotificationService {
   }
 
   public async sendSavedOrder(order: any) {
-    console.log({id: order.customer._id})
+    console.log({ id: order.customer._id });
     const customerDeviceToken = await redisClient.get(
       `device-token:${order.customer._id}`
     );
@@ -88,6 +88,22 @@ class NotificationService {
         data: JSON.stringify(order),
       },
       token: `${riderDeviceToken}`,
+    };
+    await this.sendNotification(payload);
+  }
+
+  async noitifyDriversOfMakuRequest(driverId: string, tripDetails: any) {
+    const driverDeviceToken = await redisClient.get(`device-token:${driverId}`);
+    const payload = {
+      notification: {
+        title: "You have an order to attend to",
+        body: "You can choose to accept or ignore this order",
+      },
+      data: {
+        type: "accept-order-delivery",
+        data: JSON.stringify(tripDetails),
+      },
+      token: `${driverDeviceToken}`,
     };
     await this.sendNotification(payload);
   }
