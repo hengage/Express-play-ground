@@ -55,7 +55,7 @@ class TowingService {
   }
 
   async addVehicle(payload: any, towingCompanyId: string) {
-    const {  vehicle } = payload;
+    const { vehicle } = payload;
     const towingCompany = await TowingCompany.findById(towingCompanyId).select(
       "vehicles"
     );
@@ -106,6 +106,17 @@ class TowingService {
     }).save();
 
     return driver._id;
+  }
+
+  async getMe(_id: string) {
+    const towingCompany = await TowingCompany.findById(_id).select(
+      "name phoneNumber email address vehicles"
+    );
+
+    if (!towingCompany) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "No company found")
+    }
+    return towingCompany
   }
 }
 

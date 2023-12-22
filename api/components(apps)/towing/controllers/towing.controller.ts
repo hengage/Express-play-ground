@@ -76,6 +76,24 @@ class TowingController {
       });
     }
   }
+
+  async getMe(req: Request, res: Response) {
+    try {
+      const _id = (req as any).user._id;
+      const towingCompny = await towingService.getMe(_id);
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched profile",
+        data: {
+          towingCompny
+        }
+      })
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error fetching profile",
+        error: error.message || "Server error",
+      });
+    }
+  }
 }
 
 export const towingController = new TowingController();
