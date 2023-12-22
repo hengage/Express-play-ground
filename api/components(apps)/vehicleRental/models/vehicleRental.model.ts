@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import { encryption, uniqueString } from "../../../utils";
 import { IVehicleRentalCompany, IVehicleRentalVehicleType } from "../vehicleRental.interface";
 
-const movingServicesVehicleTypeSchema = new Schema<IVehicleRentalVehicleType>(
+const vehicleRentalVehicleTypeSchema = new Schema<IVehicleRentalVehicleType>(
   {
     _id: {
       type: String,
@@ -14,7 +14,7 @@ const movingServicesVehicleTypeSchema = new Schema<IVehicleRentalVehicleType>(
   { timestamps: true, _id: false }
 );
 
-const movingServiceCompanySchema = new Schema<IVehicleRentalCompany>(
+const vehicleRentalSchema = new Schema<IVehicleRentalCompany>(
   {
     _id: {
       type: String,
@@ -72,7 +72,7 @@ const movingServiceCompanySchema = new Schema<IVehicleRentalCompany>(
   }
 );
 
-movingServiceCompanySchema.pre("save", async function (next) {
+vehicleRentalSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     try {
       this.password = await encryption.encryptValue(this.password);
@@ -83,12 +83,12 @@ movingServiceCompanySchema.pre("save", async function (next) {
   next();
 });
 
-export const MovingServiceCompany = model<IVehicleRentalCompany>(
-  "movingService",
-  movingServiceCompanySchema
+export const VehicleRentalCompany = model<IVehicleRentalCompany>(
+  "vehicleRental",
+  vehicleRentalSchema
 );
 
-export const MovingServiceVehicleType = model<IVehicleRentalVehicleType>(
+export const VehicleRentalVehicleType = model<IVehicleRentalVehicleType>(
   "movingServiceVehicleType",
-  movingServicesVehicleTypeSchema
+  vehicleRentalVehicleTypeSchema
 );
