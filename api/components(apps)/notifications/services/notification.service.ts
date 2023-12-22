@@ -10,9 +10,13 @@ class NotificationService {
   constructor() {
     this.messaging = firebaseAdmin.messaging();
   }
-  public async sendNotification(payload: admin.messaging.Message) {
+  public async sendNotification(user:string, payload: admin.messaging.Message) {
     try {
       const message = await this.messaging.send(payload);
+
+      const { title = "", body = "" } = payload.notification || {};
+      await saveNotification(user, title, body, payload.data);
+
       console.log("Notification sent", message);
     } catch (error: any) {
       console.error("Error sending notification:", error);
@@ -36,16 +40,10 @@ class NotificationService {
       },
       token: `${vendorDeviceToken}`,
     };
-    // console.log({ message: JSON.stringify(message) });
 
-    await this.sendNotification(payload);
+    await this.sendNotification(vendorId, payload);
     socket.emit("order-notification-sent", message);
-    await saveNotification(
-      vendorId,
-      payload.notification.title,
-      payload.notification.body,
-      payload.data
-    );
+  
   }
 
   public async sendSavedOrder(order: any) {
@@ -66,13 +64,7 @@ class NotificationService {
       token: `${customerDeviceToken}`,
     };
 
-    await this.sendNotification(payload);
-    await saveNotification(
-      order.customer,
-      payload.notification.title,
-      payload.notification.body,
-      payload.data
-    );
+    await this.sendNotification(order.customer, payload);
   }
 
   public async notifyRiderOfOrder(riderId: string, order: any) {
@@ -89,7 +81,7 @@ class NotificationService {
       },
       token: `${riderDeviceToken}`,
     };
-    await this.sendNotification(payload);
+    await this.sendNotification(riderId,payload);
   }
 
   async noitifyDriversOfMakuRequest(driverId: string, tripDetails: any) {
@@ -105,7 +97,7 @@ class NotificationService {
       },
       token: `${driverDeviceToken}`,
     };
-    await this.sendNotification(payload);
+    await this.sendNotification(driverId, payload);
   }
 }
 
