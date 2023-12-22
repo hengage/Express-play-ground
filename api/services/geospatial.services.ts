@@ -9,13 +9,27 @@ function generateGeohash(latitude: number, longitude: number, precision = 9) {
 async function findClosestDriverOrRider(
   coordinates: [number, number],
   accountType: string,
-  distanceInKilometers = 20
+  distanceInKilometers = 20,
+  vehicleType?: string
 ) {
   //   const targetGeohash = generateGeohash(...coordinates, precision);
 
   //   const centerPoint = geohash.decode(targetGeohash);
   //   const nearbyGeohashes = geohash.neighbors(targetGeohash);
   // console.log({centerPoint, targetGeohash})
+  const filter: {
+    accountType: string;
+    available: boolean;
+    vehicleType?: string;
+  } = {
+    accountType,
+    available: true,
+  };
+
+  if (vehicleType) {
+    filter.vehicleType = vehicleType;
+  }
+  console.log({ filter });
   const nearbyDriversAndRiders = await DriverRider.aggregate([
     {
       $geoNear: {
@@ -26,17 +40,14 @@ async function findClosestDriverOrRider(
       },
     },
     {
-      $match: {
-        accountType,
-        available: true,
-      },
+      $match: filter,
     },
     {
       $project: {
         _id: 1,
         firstName: 1,
         lastName: 1,
-        vehicleType: 1
+        vehicleType: 1,
       },
     },
     {

@@ -123,6 +123,7 @@ class WebSocket {
         pickUpAddress,
         destinationAddress,
         searchKMLimit,
+        vehicleType
       } = message;
       console.log({message})
       try {
@@ -130,7 +131,8 @@ class WebSocket {
           pickUpCoordinates,
           pickUpAddress,
           destinationAddress,
-          searchKMLimit
+          searchKMLimit,
+          vehicleType
         );
         console.log({ nearestDrivers: drivers });
         socket.emit("found-nearest-drivers", drivers);

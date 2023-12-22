@@ -96,8 +96,8 @@ class NotificationService {
     const driverDeviceToken = await redisClient.get(`device-token:${driverId}`);
     const payload = {
       notification: {
-        title: "You have an order to attend to",
-        body: "You can choose to accept or ignore this order",
+        title: "There is a request for a trip",
+        body: "View details and accept the trip",
       },
       data: {
         type: "accept-order-delivery",

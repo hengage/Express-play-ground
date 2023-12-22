@@ -21,14 +21,16 @@ class MakuService {
     pickupCoordinates: [number, number],
     pickUpAddress: string,
     destinationAddress: string,
-    searchKMLimit: number
+    searchKMLimit: number,
+    vehicleType?: string
   ) {
     console.log({pickupCoordinates, pickUpAddress, destinationAddress, searchKMLimit})
     try {
       const drivers = await findClosestDriverOrRider(
         pickupCoordinates,
         "driver",
-        searchKMLimit
+        searchKMLimit,
+        vehicleType
       );
       drivers.forEach((driver) => {
         notificationService.noitifyDriversOfMakuRequest(
