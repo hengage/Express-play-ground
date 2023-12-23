@@ -9,6 +9,7 @@ import {
 } from "../driversRiders.interface";
 import { STATUS_CODES } from "../../../constants";
 import { driverRiderRepo } from "../repository/driverRider.repo";
+import { MakuTrip } from "../../maku";
 
 class DriverRiderService {
   public async signup(payload: ISignupDriverAndRider, accountType: string) {
@@ -147,6 +148,17 @@ class DriverRiderService {
     }
     driver.location.coordinates = coordinates;
     await driver.save();
+  }
+
+  async makuTripHistory (driverId: string) {
+    const trips = MakuTrip.find({ driver: driverId })
+    .select("_id pickUpAddress destinationAddress price status createdAt")
+    .populate({ path: "customer", select: "firstName lastName phoneNumber photo" })
+    .lean()
+    .exec();
+
+  return trips;
+
   }
 }
 

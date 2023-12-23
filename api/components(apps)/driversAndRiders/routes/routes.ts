@@ -19,6 +19,9 @@ class DriversRidesrRoutes {
       driversRidersController.rateDriverOrRider
     );
     this.router.route("/me").get(driversRidersController.getMe);
+    this.router
+      .route("/trips/history")
+      .get(driversRidersController.makuTripHistory);
   }
 }
 
