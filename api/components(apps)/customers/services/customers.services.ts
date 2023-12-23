@@ -6,6 +6,7 @@ import { ICustomer, ISignupCustomer } from "../customers.interface";
 import { ILoginCustomer } from "../customers.interface";
 import { STATUS_CODES } from "../../../constants";
 import { IOrder, Order } from "../../orders";
+import { MakuTrip } from "../../maku";
 
 class CustomerService {
   async signup(payload: ISignupCustomer): Promise<any> {
@@ -116,7 +117,6 @@ class CustomerService {
         sort: { createdAt: -1 },
         lean: true,
       };
-      
 
       const orders = await Order.find(filter)
         .sort({ createdAt: -1 })
@@ -144,6 +144,15 @@ class CustomerService {
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
+  }
+
+  async getMakuTrips(customerId: string) {
+    const trips = MakuTrip.find({ customer: customerId })
+      .select("-__v")
+      .lean()
+      .exec();
+
+    return trips;
   }
 }
 

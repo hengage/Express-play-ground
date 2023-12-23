@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { ITrip, IVehicleType } from "../maku.interfaces";
+import { ITrip as IMakuTrip, IVehicleType } from "../maku.interfaces";
 import { uniqueString } from "../../../utils";
 import { MakuCabStatus } from "../../../constants";
 
@@ -15,7 +15,7 @@ const vehicleTypeSchema = new Schema<IVehicleType>({
   riderPercentage: { type: String, required: true },
 });
 
-const tripSchema = new Schema<ITrip>(
+const tripSchema = new Schema<IMakuTrip>(
   {
     _id: {
       type: String,
@@ -53,7 +53,7 @@ const tripSchema = new Schema<ITrip>(
   { timestamps: true, _id: false }
 );
 
-export const Trip = model<ITrip>("Trip", tripSchema);
+export const MakuTrip = model<IMakuTrip>("makuTrip", tripSchema);
 
 export const VehicleType = model<IVehicleType>(
   "VehicleType",

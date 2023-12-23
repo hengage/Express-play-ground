@@ -109,6 +109,22 @@ class CustomerController {
       });
     }
   }
+
+  async getMakuTrips(req: Request, res: Response) {
+    try {
+      const customerId = (req as any).user._id
+      const trips = await customerService.getMakuTrips(customerId)
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched trips",
+        data: {trips}
+      })
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error getting trips",
+        error: error.message || "Server error"
+      })
+    }
+  }
 }
 
 export const customerController = new CustomerController();

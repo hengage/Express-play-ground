@@ -2,7 +2,7 @@ import { MakuCabStatus } from "../../../constants";
 import { findClosestDriverOrRider } from "../../../services";
 import { HandleException } from "../../../utils";
 import { notificationService } from "../../notifications";
-import { Trip, VehicleType } from "../models/maku.model";
+import { MakuTrip, VehicleType } from "../models/maku.model";
 
 class MakuService {
   public async getVehicleTypes() {
@@ -48,7 +48,7 @@ class MakuService {
 
   async createTrip(payload: any) {
     try {
-      const trip = await new Trip({
+      const trip = await new MakuTrip({
         customer: payload.customer,
         driver: payload.driver,
         pickUpAddress: payload.pickUpAddress,
@@ -69,19 +69,19 @@ class MakuService {
   }
 
   async startTrip(tripId: string) {
-    await Trip.findByIdAndUpdate(tripId, {
+    await MakuTrip.findByIdAndUpdate(tripId, {
       $set: { status: MakuCabStatus.STARTED },
     }).select("status");
   }
 
   async completeTrip(tripId: string) {
-    await Trip.findByIdAndUpdate(tripId, {
+    await MakuTrip.findByIdAndUpdate(tripId, {
       $set: { status: MakuCabStatus.COMPLETED },
     }).select("status");
   }
 
   async cancelTrip(tripId: string) {
-    await Trip.findByIdAndUpdate(tripId, {
+    await MakuTrip.findByIdAndUpdate(tripId, {
       $set: { status: MakuCabStatus.CANCELLED },
     }).select("status");
   }
