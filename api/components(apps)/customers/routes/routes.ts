@@ -17,7 +17,7 @@ class CustomersRoutes {
     this.router.route('/me').get(customerController.getMe)
     this.router.route('/orders').get(customerController.getOrders)
     this.router.route('/me/delete').post(customerController.deleteAccount)
-    this.router.route("/maku/trips").get(customerController.getMakuTrips)
+    this.router.route("/maku/trip-history").get(customerController.makuTripHistory)
   }
 }
 

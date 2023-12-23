@@ -20,7 +20,7 @@ class DriversRidesrRoutes {
     );
     this.router.route("/me").get(driversRidersController.getMe);
     this.router
-      .route("/trips/history")
+      .route("/maku/trip-history")
       .get(driversRidersController.makuTripHistory);
   }
 }
