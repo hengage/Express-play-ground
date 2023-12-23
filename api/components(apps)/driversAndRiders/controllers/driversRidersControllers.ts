@@ -118,8 +118,9 @@ class DriversRidersController {
 
   async makuTripHistory(req: Request, res: Response) {
     const driverId = (req as any).user._id;
+    const page = parseInt(req.query.page as string) || 1
     try {
-      const trips = await driverRiderService.makuTripHistory(driverId);
+      const trips = await driverRiderService.makuTripHistory(driverId, page);
       res.status(STATUS_CODES.OK).json({
         message: "Fetched trip history",
         data: { trips },

@@ -111,9 +111,10 @@ class CustomerController {
   }
 
   async makuTripHistory(req: Request, res: Response) {
+    const page = parseInt(req.query.page as string)  || 1
     try {
       const customerId = (req as any).user._id
-      const trips = await customerService.makuTripHistory(customerId)
+      const trips = await customerService.makuTripHistory(customerId, page)
       res.status(STATUS_CODES.OK).json({
         message: "Fetched trips",
         data: {trips}

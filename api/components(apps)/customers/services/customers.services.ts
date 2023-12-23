@@ -146,13 +146,21 @@ class CustomerService {
     }
   }
 
-  async makuTripHistory(customerId: string) {
-    const trips = MakuTrip.find({ customer: customerId })
-      .select("_id pickUpAddress destinationAddress price status createdAt")
-      .populate({ path: "driver", select: "firstName lastName phoneNumber photo" })
-      .lean()
-      .exec();
+  async makuTripHistory(customerId: string, page: number) {
+    const query = { customer: customerId };
+    const options = {
+      page,
+      limit: 10,
+      select: "_id pickUpAddress destinationAddress price status createdAt",
+      populate: [
+        { path: "driver", select: "firstName lastName phoneNumber photo" },
+      ],
+      lean: true,
+      leanWithId: false,
+      sort: { createdAt: -1 },
+    };
 
+    const trips = MakuTrip.paginate(query, options);
     return trips;
   }
 }

@@ -48,17 +48,23 @@ class DriverRiderService {
 
   async login(payload: ILoginDriverAndRider, accountType: string) {
     try {
-      if(!accountType) {
-        throw new HandleException(STATUS_CODES.BAD_REQUEST, "Account type not specified")
+      if (!accountType) {
+        throw new HandleException(
+          STATUS_CODES.BAD_REQUEST,
+          "Account type not specified"
+        );
       }
 
       const driverRider = await DriverRider.findOne({
         phoneNumber: payload.phoneNumber,
-        accountType
-      }).select("phoneNumber password accountType")
+        accountType,
+      }).select("phoneNumber password accountType");
 
-      if(!driverRider) {
-        throw new HandleException(STATUS_CODES.NOT_FOUND, `${accountType} not found`);
+      if (!driverRider) {
+        throw new HandleException(
+          STATUS_CODES.NOT_FOUND,
+          `${accountType} not found`
+        );
       }
 
       const passwordsMatch = await bcrypt.compare(
@@ -72,7 +78,7 @@ class DriverRiderService {
         );
       }
 
-      return  {
+      return {
         _id: driverRider._id,
         phoneNumber: driverRider.phoneNumber,
       };
@@ -150,15 +156,23 @@ class DriverRiderService {
     await driver.save();
   }
 
-  async makuTripHistory (driverId: string) {
-    const trips = MakuTrip.find({ driver: driverId })
-    .select("_id pickUpAddress destinationAddress price status createdAt")
-    .populate({ path: "customer", select: "firstName lastName phoneNumber photo" })
-    .lean()
-    .exec();
+  async makuTripHistory(driverId: string, page: number) {
+    const query = { driver: driverId };
+    const options = {
+      page,
+      limit: 10,
+      select: "_id pickUpAddress destinationAddress price status createdAt",
+      populate: [
+        { path: "customer", select: "firstName lastName phoneNumber profilePhoto" },
+      ],
+      lean: true,
+      leanWithId: false,
+      sort: { createdAt: -1 },
+    };
 
-  return trips;
+    const trips = MakuTrip.paginate(query, options);
 
+    return trips;
   }
 }
 
