@@ -83,6 +83,26 @@ export const categorySchema = new Schema<ICategory>(
   { timestamps: true, _id: false }
 );
 
+
+shopSchema.pre('save', async function (next) {
+  this.name = this.name.toLowerCase();
+  this.email = this.email.toLowerCase();
+  this.country = this.country.toLowerCase();
+
+  next();
+});
+
+shopTypeSchema.pre('save', async function (next) {
+  this.name = this.name.toLowerCase();
+  next();
+});
+
+categorySchema.pre('save', async function (next) {
+  this.name = this.name.toLowerCase();
+  next();
+});
+
+
 export const Shop = model<IShop, mongoose.PaginateModel<IShop>>(
   "Shop",
   shopSchema

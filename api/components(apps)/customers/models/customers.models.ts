@@ -52,6 +52,11 @@ const customerSchema = new Schema<ICustomer>(
 );
 
 customerSchema.pre("save", async function (next) {
+  this.firstName = this.firstName.toLowerCase();
+  this.lastName = this.lastName.toLowerCase();
+  this.email = this.email.toLowerCase();
+  this.country = this.country.toLowerCase();
+  
   if (this.isModified("password")) {
     try {
       this.password = await encryption.encryptValue(this.password);

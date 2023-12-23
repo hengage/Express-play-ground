@@ -57,6 +57,13 @@ const tripSchema = new Schema<IMakuTrip>(
 
 tripSchema.plugin(paginate)
 
+
+vehicleTypeSchema.pre('save', async function (next) {
+  this.vehicleType = this.vehicleType.toLowerCase();
+  next();
+});
+
+
 export const MakuTrip = model<IMakuTrip, mongoose.PaginateModel<IMakuTrip>>("makuTrip", tripSchema);
 
 export const VehicleType = model<IVehicleType>(
