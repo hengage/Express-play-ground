@@ -148,7 +148,8 @@ class CustomerService {
 
   async getMakuTrips(customerId: string) {
     const trips = MakuTrip.find({ customer: customerId })
-      .select("-__v")
+      .select("_id pickUpAddress destinationAddress price status createdAt")
+      .populate({ path: "driver", select: "firstName lastName phoneNumber photo" })
       .lean()
       .exec();
 
