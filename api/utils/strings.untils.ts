@@ -2,7 +2,7 @@ import crypto from "crypto";
 
 import { DateTime } from "luxon";
 
-class UniqueString {
+class StringsUtils {
   public generateUniqueString(length: number) {
     const randomBytes = crypto.randomBytes(Math.ceil(length / 2));
     const hexString = randomBytes.toString("hex").slice(0, length);
@@ -10,6 +10,10 @@ class UniqueString {
     const uniqueString = `${hexString}${timestamp}`;
     return uniqueString;
   }
+
+  toLowerCaseSetter(value: string): string {
+    return value?.toLowerCase();
+  }
 }
 
-export const uniqueString = new UniqueString();
+export const stringsUtils = new StringsUtils();

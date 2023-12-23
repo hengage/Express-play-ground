@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { encryption, uniqueString } from "../../../utils";
+import { encryption, stringsUtils } from "../../../utils";
 import { IVehicleRentalCompany, IVehicleRentalVehicleType } from "../vehicleRental.interface";
 
 const vehicleRentalVehicleTypeSchema = new Schema<IVehicleRentalVehicleType>(
@@ -7,7 +7,7 @@ const vehicleRentalVehicleTypeSchema = new Schema<IVehicleRentalVehicleType>(
     _id: {
       type: String,
       required: true,
-      default: () => uniqueString.generateUniqueString(4),
+      default: () => stringsUtils.generateUniqueString(4),
     },
     name: { type: String, required: true, unique: true },
   },
@@ -19,12 +19,13 @@ const vehicleRentalSchema = new Schema<IVehicleRentalCompany>(
     _id: {
       type: String,
       unique: true,
-      default: () => uniqueString.generateUniqueString(4),
+      default: () => stringsUtils.generateUniqueString(4),
     },
     name: {
       type: String,
       required: true,
       unique: true,
+      set: stringsUtils.toLowerCaseSetter
     },
     phoneNumber: {
       type: String,
@@ -35,6 +36,7 @@ const vehicleRentalSchema = new Schema<IVehicleRentalCompany>(
       type: String,
       required: true,
       unique: true,
+      set: stringsUtils.toLowerCaseSetter
     },
     password: {
       type: String,

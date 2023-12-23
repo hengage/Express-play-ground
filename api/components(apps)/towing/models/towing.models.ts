@@ -1,12 +1,12 @@
 import { Schema, model } from "mongoose";
-import { encryption, uniqueString } from "../../../utils";
+import { encryption, stringsUtils } from "../../../utils";
 import { ITowingCompany, ITowingVehicleType } from "../towing.interface";
 
 const towingVehicleTypeSchema = new Schema<ITowingVehicleType>({
   _id: {
     type: String,
     required: true,
-    default: () => uniqueString.generateUniqueString(4),
+    default: () => stringsUtils.generateUniqueString(4),
   },
   vehicleType: { type: String, required: true, unique: true },
   feePerKM: { type: String, required: true },
@@ -17,7 +17,7 @@ const towingCompanySchema = new Schema<ITowingCompany>(
   {
     _id: {
       type: String,
-      default: () => uniqueString.generateUniqueString(4),
+      default: () => stringsUtils.generateUniqueString(4),
     },
     name: { type: String, required: true, unique: true },
     phoneNumber: { type: String, required: true, unique: true },

@@ -1,16 +1,16 @@
 import { Schema, model } from "mongoose";
 import { IProduct } from "../products.interface";
-import { uniqueString } from "../../../utils";
+import { stringsUtils } from "../../../utils";
 
 const productSchema = new Schema<IProduct>(
   {
     _id: {
       type: String,
       required: true,
-      default: () => uniqueString.generateUniqueString(4),
+      default: () => stringsUtils.generateUniqueString(4),
     },
-    name: { type: String, required: true },
-    description: { type: String, required: true },
+    name: { type: String, required: true, set: stringsUtils.toLowerCaseSetter },
+    description: { type: String, required: true, set: stringsUtils.toLowerCaseSetter },
     price: { type: Number, required: true },
     photos: [{ type: String, required: true }],
     shop: { type: String, ref: "Shop", required: true },

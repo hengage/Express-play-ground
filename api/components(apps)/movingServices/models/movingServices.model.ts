@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { encryption, uniqueString } from "../../../utils";
+import { encryption, stringsUtils } from "../../../utils";
 import {
   IMovingServiceCompany,
   IMovingServiceVehicleType,
@@ -10,7 +10,7 @@ const movingServicesVehicleTypeSchema = new Schema<IMovingServiceVehicleType>(
     _id: {
       type: String,
       required: true,
-      default: () => uniqueString.generateUniqueString(4),
+      default: () => stringsUtils.generateUniqueString(4),
     },
     name: { type: String, required: true, unique: true },
   },
@@ -22,7 +22,7 @@ const movingServiceCompanySchema = new Schema<IMovingServiceCompany>(
     _id: {
       type: String,
       unique: true,
-      default: () => uniqueString.generateUniqueString(4),
+      default: () => stringsUtils.generateUniqueString(4),
     },
     name: {
       type: String,

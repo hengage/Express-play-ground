@@ -1,27 +1,30 @@
 import { Schema, model } from "mongoose";
 import { ICustomer } from "../customers.interface";
 import { AccountStatus, Gender, URL_LINKS } from "../../../constants";
-import { encryption, uniqueString } from "../../../utils";
+import { encryption, stringsUtils } from "../../../utils";
 
 const customerSchema = new Schema<ICustomer>(
   {
     _id: {
       type: String,
       required: true,
-      default: () => uniqueString.generateUniqueString(4),
+      default: () => stringsUtils.generateUniqueString(4),
     },
     firstName: {
       type: String,
       required: true,
+      set: stringsUtils.toLowerCaseSetter
     },
     lastName: {
       type: String,
       required: true,
+      set: stringsUtils.toLowerCaseSetter
     },
     email: {
       type: String,
       required: true,
       unique: true,
+      set: stringsUtils.toLowerCaseSetter
     },
     phoneNumber: {
       type: String,
@@ -37,7 +40,7 @@ const customerSchema = new Schema<ICustomer>(
     city: { type: String, default: '' },
     state: { type: String, default: '' },
     postalCode: { type: String, default: '' },
-    country: { type: String, default: '' },
+    country: { type: String, default: '', set: stringsUtils.toLowerCaseSetter},
     latitude: Number,
     longitude: Number,
     dateOfBirth: Date,
@@ -52,10 +55,6 @@ const customerSchema = new Schema<ICustomer>(
 );
 
 customerSchema.pre("save", async function (next) {
-  this.firstName = this.firstName.toLowerCase();
-  this.lastName = this.lastName.toLowerCase();
-  this.email = this.email.toLowerCase();
-  this.country = this.country.toLowerCase();
   
   if (this.isModified("password")) {
     try {

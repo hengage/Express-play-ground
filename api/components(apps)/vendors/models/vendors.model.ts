@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { IVendor } from "../vendors.interface";
-import { encryption, uniqueString } from "../../../utils";
+import { encryption, stringsUtils } from "../../../utils";
 import { AccountStatus } from "../../../constants";
 
 const vendorSchema = new Schema<IVendor>(
@@ -8,22 +8,39 @@ const vendorSchema = new Schema<IVendor>(
     _id: {
       type: String,
       required: true,
-      default: () => uniqueString.generateUniqueString(4),
+      default: () => stringsUtils.generateUniqueString(4),
     },
-    firstName: { type: String, required: true },
-    middleName: { type: String },
-    lastName: { type: String, required: true },
+    firstName: {
+      type: String,
+      required: true,
+      set: stringsUtils.toLowerCaseSetter,
+    },
+    middleName: { type: String, set: stringsUtils.toLowerCaseSetter },
+    lastName: {
+      type: String,
+      required: true,
+      set: stringsUtils.toLowerCaseSetter,
+    },
     phoneNumber: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      set: stringsUtils.toLowerCaseSetter,
+    },
     password: { type: String, required: true },
     photo: String,
     street: String,
     city: { type: String, required: true },
     state: { type: String, required: true },
-    country: { type: String, required: true },
+    country: {
+      type: String,
+      required: true,
+      set: stringsUtils.toLowerCaseSetter,
+    },
     postalCode: String,
     govtIdPhoto: { type: String, required: true },
-    approved: {type: Boolean, default: true},
+    approved: { type: Boolean, default: true },
     accountStatus: {
       type: String,
       enum: Object.values(AccountStatus),
@@ -35,12 +52,7 @@ const vendorSchema = new Schema<IVendor>(
 );
 
 vendorSchema.pre("save", async function (next) {
-  this.firstName = this.firstName.toLowerCase();
-  this.middleName = this.middleName.toLowerCase();
-  this.lastName = this.lastName.toLowerCase();
-  this.email = this.email.toLowerCase();
-  this.country = this.country.toLowerCase();
-  
+
   if (this.isModified("password")) {
     try {
       this.password = await encryption.encryptValue(this.password);

@@ -1,20 +1,22 @@
 import { Schema, model } from "mongoose";
-import { uniqueString } from "../../../utils";
+import { stringsUtils } from "../../../utils";
 import { ITowingDriver } from "../towing.interface";
 
 const towingDriverSchema = new Schema<ITowingDriver>({
   _id: {
     type: String,
     required: true,
-    default: () => uniqueString.generateUniqueString(4),
+    default: () => stringsUtils.generateUniqueString(4),
   },
   firstName: {
     type: String,
     required: true,
+    set: stringsUtils.toLowerCaseSetter
   },
   lastName: {
     type: String,
     required: true,
+    set: stringsUtils.toLowerCaseSetter
   },
   phoneNumber: {
     type: String,

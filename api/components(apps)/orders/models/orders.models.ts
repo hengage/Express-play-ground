@@ -4,7 +4,7 @@ import aggregatePaginate from "mongoose-aggregate-paginate-v2";
 import mongoose, { Schema, model } from "mongoose";
 
 import { IDeliveryRate, IOrder } from "../orders.interface";
-import { uniqueString } from "../../../utils";
+import { stringsUtils } from "../../../utils";
 import { OrderStatus } from "../../../constants";
 
 const orderSchema = new Schema<IOrder>(
@@ -12,7 +12,7 @@ const orderSchema = new Schema<IOrder>(
     _id: {
       type: String,
       required: true,
-      default: () => uniqueString.generateUniqueString(4),
+      default: () => stringsUtils.generateUniqueString(4),
     },
     customer: { type: String, required: true, ref: "Customer" },
     items: [
@@ -77,7 +77,7 @@ const deliveryRateSchema = new Schema<IDeliveryRate>({
   _id: {
     type: String,
     required: true,
-    default: () => uniqueString.generateUniqueString(4),
+    default: () => stringsUtils.generateUniqueString(4),
   },
   baseFee: {
     type: String,

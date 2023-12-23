@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { IDriverRider } from "../driversRiders.interface";
-import { encryption, uniqueString } from "../../../utils";
+import { encryption, stringsUtils } from "../../../utils";
 import { AccountStatus, DriverRiderType } from "../../../constants";
 
 const driverRiderSchema = new Schema<IDriverRider>(
@@ -8,19 +8,36 @@ const driverRiderSchema = new Schema<IDriverRider>(
     _id: {
       type: String,
       required: true,
-      default: () => uniqueString.generateUniqueString(4),
+      default: () => stringsUtils.generateUniqueString(4),
     },
-    firstName: { type: String, required: true },
-    middleName: { type: String },
-    lastName: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    firstName: {
+      type: String,
+      required: true,
+      set: stringsUtils.toLowerCaseSetter,
+    },
+    middleName: { type: String, set: stringsUtils.toLowerCaseSetter },
+    lastName: {
+      type: String,
+      required: true,
+      set: stringsUtils.toLowerCaseSetter,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      set: stringsUtils.toLowerCaseSetter,
+    },
     phoneNumber: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     photo: String,
     street: String,
     city: { type: String, required: true },
     state: { type: String, required: true },
-    country: { type: String, required: true },
+    country: {
+      type: String,
+      required: true,
+      set: stringsUtils.toLowerCaseSetter,
+    },
     postalCode: String,
     licenseNumber: { type: String, required: true },
     vehicleType: { type: String, ref: "VehicleType", required: true },
@@ -52,7 +69,7 @@ const driverRiderSchema = new Schema<IDriverRider>(
     },
     location: {
       type: { type: String, default: "Point" },
-      coordinates: {type: [Number, Number], default: [0, 0]} 
+      coordinates: { type: [Number, Number], default: [0, 0] },
     },
     lastLoggedIn: { type: Date },
     approved: { type: Boolean, default: false },
@@ -64,12 +81,6 @@ const driverRiderSchema = new Schema<IDriverRider>(
 driverRiderSchema.index({ location: "2dsphere" });
 
 driverRiderSchema.pre("save", async function (next) {
-  this.firstName = this.firstName.toLowerCase();
-  this.middleName = this.middleName.toLowerCase();
-  this.lastName = this.lastName.toLowerCase();
-  this.email = this.email.toLowerCase();
-  this.country = this.country.toLowerCase();
-  
   if (this.isModified("password")) {
     try {
       this.password = await encryption.encryptValue(this.password);
