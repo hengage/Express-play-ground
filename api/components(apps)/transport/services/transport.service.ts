@@ -1,11 +1,11 @@
 import { STATUS_CODES } from "../../../constants";
 import { HandleException, encryption } from "../../../utils";
-import { TowingCompany } from "../models/towing.models";
-import { TowingDriver } from "../models/towingDriver.model";
+import { TransportCompany } from "../models/transport.models";
+import { TransportDriver } from "../models/transportDrivers.model";
 
-class TowingService {
+class TransportService {
   async create(payload: any) {
-    const towingCompany = await new TowingCompany({
+    const transportCompany = await new TransportCompany({
       name: payload.name,
       phoneNumber: payload.phoneNumber,
       email: payload.email,
@@ -17,20 +17,20 @@ class TowingService {
     }).save();
 
     return {
-      _id: towingCompany._id,
-      name: towingCompany.name,
+      _id: transportCompany._id,
+      name: transportCompany.name,
     };
   }
 
   async login(payload: any) {
-    const towingCompany = await TowingCompany.findOne({
+    const transportCompany = await TransportCompany.findOne({
       phoneNumber: payload.phoneNumber,
     })
       .select("phoneNumber password")
       .lean()
       .exec();
 
-    if (!towingCompany) {
+    if (!transportCompany) {
       throw new HandleException(
         STATUS_CODES.NOT_FOUND,
         "Company account not found"
@@ -39,7 +39,7 @@ class TowingService {
 
     const password = await encryption.compareValues(
       payload.password,
-      towingCompany.password
+      transportCompany.password
     );
     if (!password) {
       throw new HandleException(
@@ -49,18 +49,18 @@ class TowingService {
     }
 
     return {
-      _id: towingCompany._id,
-      phoneNumber: towingCompany.phoneNumber,
+      _id: transportCompany._id,
+      phoneNumber: transportCompany.phoneNumber,
     };
   }
 
-  async addVehicle(payload: any, towingCompanyId: string) {
+  async addVehicle(payload: any, transportCompanyId: string) {
     const { vehicle } = payload;
-    const towingCompany = await TowingCompany.findById(towingCompanyId).select(
+    const transportCompany = await TransportCompany.findById(transportCompanyId).select(
       "vehicles"
     );
 
-    if (!towingCompany) {
+    if (!transportCompany) {
       throw new HandleException(
         STATUS_CODES.NOT_FOUND,
         "Towing company not found"
@@ -68,7 +68,7 @@ class TowingService {
     }
 
     if (
-      towingCompany.vehicles.some((vt) => vt.regNumber === vehicle.regNumber)
+      transportCompany.vehicles.some((vt) => vt.regNumber === vehicle.regNumber)
     ) {
       throw new HandleException(
         STATUS_CODES.CONFLICT,
@@ -76,14 +76,14 @@ class TowingService {
       );
     }
 
-    towingCompany.vehicles.push(vehicle);
-    await towingCompany.save();
+    transportCompany.vehicles.push(vehicle);
+    await transportCompany.save();
     return;
   }
 
-  async addDriver(payload: any, towingCompany: string) {
-    const licenseNumberExists = await TowingDriver.findOne({
-      towingCompany,
+  async addDriver(payload: any, transportCompany: string) {
+    const licenseNumberExists = await TransportDriver.findOne({
+      transportCompany,
       licenseNumber: payload.licenseNumber,
     })
       .select("licenseNumber")
@@ -96,28 +96,28 @@ class TowingService {
         "A driver with this license number exists for this company"
       );
     }
-    const driver = await new TowingDriver({
+    const driver = await new TransportDriver({
       firstName: payload.firstName,
       lastName: payload.lastName,
       phoneNumber: payload.phoneNumber,
       licenseNumber: payload.licenseNumber,
       photo: payload.photo,
-      towingCompany,
+      transportCompany,
     }).save();
 
     return driver._id;
   }
 
   async getMe(_id: string) {
-    const towingCompany = await TowingCompany.findById(_id).select(
+    const transportCompany = await TransportCompany.findById(_id).select(
       "name phoneNumber email address vehicles"
     );
 
-    if (!towingCompany) {
+    if (!transportCompany) {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "No company found")
     }
-    return towingCompany
+    return transportCompany
   }
 }
 
-export const towingService = new TowingService();
+export const transportService = new TransportService();

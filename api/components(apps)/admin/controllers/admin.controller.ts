@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { adminService } from "../services/admin.service";
 import { STATUS_CODES } from "../../../constants";
-import { adminTowingService } from "../services/admin.towing.services";
+import { adminTransportService } from "../services/admin.transport.services";
 import { adminMovingServicesOperationService } from "../services/admin.movingServices";
 import { adminVCehicleRentalOperationService } from "../services/admin.vehicleRentals";
 
@@ -164,7 +164,7 @@ class AdminController {
     console.log({ body: req.body });
     try {
       const towingVehicleType =
-        await adminTowingService.createTowingVehicleType(req.body);
+        await adminTransportService.createTowingVehicleType(req.body);
       res.status(STATUS_CODES.CREATED).json({
         message: "Created towing vehicle type",
         data: { towingVehicleType },

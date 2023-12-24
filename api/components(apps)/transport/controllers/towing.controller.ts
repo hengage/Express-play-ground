@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import { towingService } from "../services/towing.service";
+import { transportService } from "../services/transport.service";
 import { STATUS_CODES } from "../../../constants";
 import { jwtUtils } from "../../../utils";
 
 class TowingController {
   async create(req: Request, res: Response) {
     try {
-      const towingCompany = await towingService.create(req.body);
+      const transportCompany = await transportService.create(req.body);
       res.status(STATUS_CODES.OK).json({
         message: "Created towing company",
-        data: { towingCompany },
+        data: { transportCompany },
       });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
@@ -21,10 +21,10 @@ class TowingController {
 
   async login(req: Request, res: Response) {
     try {
-      const towingCompany = await towingService.login(req.body);
+      const transportCompany = await transportService.login(req.body);
       const payload = {
-        _id: towingCompany._id,
-        phoneNumber: towingCompany.phoneNumber,
+        _id: transportCompany._id,
+        phoneNumber: transportCompany.phoneNumber,
       };
       const accessToken = jwtUtils.generateToken(payload, "1h");
       const refreshToken = jwtUtils.generateToken(payload, "14d");
@@ -32,7 +32,7 @@ class TowingController {
       res.status(STATUS_CODES.OK).json({
         message: "Logged in",
         data: {
-          _id: towingCompany._id,
+          _id: transportCompany._id,
           accessToken,
           refreshToken,
         },
@@ -49,7 +49,7 @@ class TowingController {
     const { vehicle } = req.body;
     const towingCompanyId = (req as any).user._id;
     try {
-      await towingService.addVehicle({ vehicle }, towingCompanyId);
+      await transportService.addVehicle({ vehicle }, towingCompanyId);
       res.status(STATUS_CODES.OK).json({
         message: "Added vehicle type",
       });
@@ -62,9 +62,9 @@ class TowingController {
   }
 
   async addDriver(req: Request, res: Response) {
-    const towingCompanyId = (req as any).user._id;
+    const transportCompanyId = (req as any).user._id;
     try {
-      const driver = await towingService.addDriver(req.body, towingCompanyId);
+      const driver = await transportService.addDriver(req.body, transportCompanyId);
       res.status(STATUS_CODES.CREATED).json({
         message: "Added driver",
         data: { driver },
@@ -80,11 +80,11 @@ class TowingController {
   async getMe(req: Request, res: Response) {
     try {
       const _id = (req as any).user._id;
-      const towingCompny = await towingService.getMe(_id);
+      const transportCompny = await transportService.getMe(_id);
       res.status(STATUS_CODES.OK).json({
         message: "Fetched profile",
         data: {
-          towingCompny
+          transportCompny
         }
       })
     } catch (error: any) {

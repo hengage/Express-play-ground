@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
 import { stringsUtils } from "../../../utils";
-import { ITowingDriver } from "../towing.interface";
+import { ITransportDriver } from "../transport.interface";
 
-const towingDriverSchema = new Schema<ITowingDriver>({
+const transportDriverSchema = new Schema<ITransportDriver>({
   _id: {
     type: String,
     required: true,
@@ -31,13 +31,13 @@ const towingDriverSchema = new Schema<ITowingDriver>({
     type: String,
     required: true,
   },
-  towingCompany: {
+  transportCompany: {
     type: String,
     required: true,
   }
 });
 
-export const TowingDriver = model<ITowingDriver>(
-  "towingdriver",
-  towingDriverSchema
+export const TransportDriver = model<ITransportDriver>(
+  "transportdriver",
+  transportDriverSchema
 );

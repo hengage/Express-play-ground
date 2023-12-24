@@ -2,7 +2,7 @@ import { Router } from "express";
 import { towingController } from "../controllers/towing.controller";
 import { jwtUtils } from "../../../utils";
 
-class TowingRoutes {
+class TransportRoutes {
   public router: Router;
 
   constructor() {
@@ -21,4 +21,4 @@ class TowingRoutes {
   }
 }
 
-export const towingRoutes = new TowingRoutes();
+export const transportRoutes = new TransportRoutes();

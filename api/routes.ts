@@ -10,7 +10,7 @@ import { ordersRoutes } from "./components(apps)/orders";
 import { adminRoutes } from "./components(apps)/admin";
 import { notificationsRoutes } from "./components(apps)/notifications";
 import { makuRoutes } from "./components(apps)/maku";
-import { towingRoutes } from "./components(apps)/towing";
+import { transportRoutes } from "./components(apps)/transport";
 import { movingServicesRoutes } from "./components(apps)/movingServices";
 import { vehicleRentalRoutes } from "./components(apps)/vehicleRental";
 
@@ -39,7 +39,7 @@ class Routes {
     this.router.use("/admin", adminRoutes.router);
     this.router.use("/notifications", notificationsRoutes.router);
     this.router.use("/maku-cab", makuRoutes.router)
-    this.router.use("/towing", towingRoutes.router)
+    this.router.use("/transport", transportRoutes.router)
     this.router.use("/moving-services", movingServicesRoutes.router)
     this.router.use("/vehicle-rental", vehicleRentalRoutes.router)
   }

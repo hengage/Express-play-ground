@@ -1,13 +1,20 @@
 import { Document } from "mongoose";
 
-export interface ITowingVehicleType extends Document {
+export interface ITransportVehicleType extends Document {
   _id: string;
   vehicleType: string;
   feePerKM: string;
-  towingCompanyPercentage: string;
+  transportCompanyPercentage: string;
 }
 
-export interface ITowingCompany extends Document {
+export interface ITransportServiceType extends Document {
+  _id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ITransportCompany extends Document {
   _id: string;
   name: string;
   phoneNumber: string;
@@ -18,8 +25,9 @@ export interface ITowingCompany extends Document {
     type: string;
     coordinates: [number, number];
   };
+  serviceType: ITransportServiceType["_id"]
   vehicles: Array<{
-    vehicleType: ITowingVehicleType["_id"];
+    vehicleType: ITransportVehicleType["_id"];
     regNumber: string;
     photos: string[];
   }>;
@@ -27,12 +35,12 @@ export interface ITowingCompany extends Document {
   updatedAt: Date;
 }
 
-export interface ITowingDriver extends Document {
+export interface ITransportDriver extends Document {
   _id: string;
   firstName: string;
   lastName: string;
   phoneNumber: string;
   licenseNumber: string;
   photo: string;
-  towingCompany: ITowingCompany["_id"];
+  transportCompany: ITransportCompany["_id"];
 }
