@@ -122,14 +122,19 @@ class WebSocket {
         pickUpCoordinates,
         pickUpAddress,
         destinationAddress,
+        destinationCoordinates,
+        customer,
         searchKMLimit,
         vehicleType
       } = message;
+      
       try {
         const drivers = await makuService.findNearestDrivers(
           pickUpCoordinates,
           pickUpAddress,
+          destinationCoordinates,
           destinationAddress,
+          customer,
           searchKMLimit,
           vehicleType
         );

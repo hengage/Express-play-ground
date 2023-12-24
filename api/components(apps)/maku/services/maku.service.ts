@@ -18,15 +18,17 @@ class MakuService {
   }
 
   async findNearestDrivers(
-    pickupCoordinates: [number, number],
+    pickUpCoordinates: [number, number],
     pickUpAddress: string,
+    destinationCoordinates: [number, number],
     destinationAddress: string,
+    customer: string,
     searchKMLimit: number,
     vehicleType?: string
   ) {
     try {
       const drivers = await findClosestDriverOrRider(
-        pickupCoordinates,
+        pickUpCoordinates,
         "driver",
         searchKMLimit,
         vehicleType
@@ -35,8 +37,12 @@ class MakuService {
         notificationService.noitifyDriversOfMakuRequest(
           driver._id,
           {
+            pickUpCoordinates,
+            pickUpAddress,
             destinationAddress, 
-            pickUpAddress
+            destinationCoordinates, 
+            customer,
+            vehicleType
           }
         );
       });
