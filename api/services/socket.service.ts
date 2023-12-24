@@ -125,9 +125,9 @@ class WebSocket {
         destinationCoordinates,
         customer,
         searchKMLimit,
-        vehicleType
+        vehicleType,
       } = message;
-      
+
       try {
         const drivers = await makuService.findNearestDrivers(
           pickUpCoordinates,
@@ -140,6 +140,7 @@ class WebSocket {
         );
         console.log({ nearestDrivers: drivers });
         socket.emit("found-nearest-drivers", drivers);
+        socket.join(`maku:${customer}`);
       } catch (error: any) {
         socket.emit("found-nearest-drivers-error", error.message);
       }
@@ -148,7 +149,9 @@ class WebSocket {
     socket.on("create-trip", async (message) => {
       try {
         const trip = await makuService.createTrip(message);
-        socket.emit("created-trip", trip);
+        const room = `maku:${trip.customer}`;
+        socket.join(room);
+        this.io.to(room).emit("created-trip", trip);
       } catch (error: any) {
         socket.emit("create-trip-error", error.message);
         console.log("error creating trip", error.message);
