@@ -3,6 +3,7 @@ import { Document } from "mongoose";
 export interface ITransportVehicleType extends Document {
   _id: string;
   vehicleType: string;
+  serviceType: ITransportServiceType["_id"]
   feePerKM: string;
   transportCompanyPercentage: string;
 }

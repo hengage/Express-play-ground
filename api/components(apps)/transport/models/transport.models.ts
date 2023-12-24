@@ -14,6 +14,12 @@ const transportVehicleTypeSchema = new Schema<ITransportVehicleType>(
       default: () => stringsUtils.generateUniqueString(4),
     },
     vehicleType: { type: String, required: true, unique: true },
+    serviceType: {
+      type: String,
+      required: true,
+      unique: true,
+      ref: "TransportServiceType",
+    },
     feePerKM: { type: String, required: true },
     transportCompanyPercentage: { type: String, required: true },
   },

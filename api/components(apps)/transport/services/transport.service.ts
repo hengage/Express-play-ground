@@ -14,6 +14,7 @@ class TransportService {
       location: {
         coordinates: payload.coordinates,
       },
+      serviceType: payload.serviceType
     }).save();
 
     return {

@@ -29,13 +29,20 @@ class AdminRoutes {
     this.router.route("/drivers").get(adminController.getDrivers);
     this.router.route("/riders").get(adminController.getRiders);
     this.router
-      .route("/towing/create-vehicle-type")
-      .post(adminController.createTowingVehicleType);
+      .route("/transport/create-vehicle-type")
+      .post(adminController.createTransportVehicleType);
+    this.router
+      .route("/transport/create-service-type")
+      .post(adminController.createTransportServiceType);
+
+
+
     this.router
       .route("/moving-services/vehicle-type")
       .post(adminController.createMovingServiceVehicleType);
-    this.router.route("/vehicle-rental/vehicle-type")
-    .post(adminController.createVehicleRentalVehicleType)
+    this.router
+      .route("/vehicle-rental/vehicle-type")
+      .post(adminController.createVehicleRentalVehicleType);
   }
 }
 

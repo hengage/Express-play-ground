@@ -160,18 +160,35 @@ class AdminController {
     }
   }
 
-  async createTowingVehicleType(req: Request, res: Response) {
+  async createTransportVehicleType(req: Request, res: Response) {
     console.log({ body: req.body });
     try {
-      const towingVehicleType =
-        await adminTransportService.createTowingVehicleType(req.body);
+      const transportVehicleType =
+        await adminTransportService.createVehicleType(req.body);
       res.status(STATUS_CODES.CREATED).json({
-        message: "Created towing vehicle type",
-        data: { towingVehicleType },
+        message: "Created transport vehicle type",
+        data: { transportVehicleType },
       });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error creating towing vehicle type",
+        message: "Error creating transport vehicle type",
+        error: error.message,
+      });
+    }
+  }
+
+  async createTransportServiceType(req: Request, res: Response) {
+    console.log({ body: req.body });
+    try {
+      const transportServiceType =
+        await adminTransportService.createServiceType(req.body);
+      res.status(STATUS_CODES.CREATED).json({
+        message: "Operation successful",
+        data: { transportServiceType },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Operation failed",
         error: error.message,
       });
     }

@@ -1,15 +1,27 @@
-import { TransportVehicleType } from "../../transport";
+import { TransportVehicleType, transportServiceType } from "../../transport";
 
 class AdminTransportService {
-  async createTowingVehicleType(payload: any) {
+  async createVehicleType(payload: any) {
     console.log(payload)
     const transportVehicleType = await new TransportVehicleType({
       vehicleType: payload.vehicleType,
+      serviceType: payload.serviceType,
       feePerKM: payload.feePerKM,
-      towingCompanyPercentage: payload.towingCompanyPercentage,
+      transportCompanyPercentage: payload.transportCompanyPercentage,
     }).save();
 
-    return transportVehicleType
+    return  {
+      _id: transportVehicleType._id,
+      vehicleType: transportVehicleType.vehicleType
+    }
+  }
+
+  async createServiceType(payload: any) {
+    const serviceType = await new transportServiceType ({
+      name: payload.name,
+    }).save()
+
+    return serviceType._id
   }
 }
 
