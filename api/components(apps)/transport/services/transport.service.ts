@@ -2,6 +2,7 @@ import { STATUS_CODES } from "../../../constants";
 import { HandleException, encryption } from "../../../utils";
 import {
   TransportCompany,
+  TransportServiceType,
   TransportVehicleType,
 } from "../models/transport.models";
 import { TransportDriver } from "../models/transportDrivers.model";
@@ -130,6 +131,15 @@ class TransportService {
       .exec();
 
     return vehicleTypes;
+  }
+
+  async getServiceTypes() {
+    const serviceTypes = await TransportServiceType.find()
+      .select("name")
+      .lean()
+      .exec();
+
+    return serviceTypes
   }
 }
 

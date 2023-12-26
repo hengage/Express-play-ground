@@ -1,4 +1,4 @@
-import { TransportVehicleType, transportServiceType } from "../../transport";
+import { TransportVehicleType, TransportServiceType } from "../../transport";
 
 class AdminTransportService {
   async createVehicleType(payload: any) {
@@ -17,7 +17,7 @@ class AdminTransportService {
   }
 
   async createServiceType(payload: any) {
-    const serviceType = await new transportServiceType ({
+    const serviceType = await new TransportServiceType ({
       name: payload.name,
     }).save()
 

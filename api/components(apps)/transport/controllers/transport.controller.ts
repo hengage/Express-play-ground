@@ -114,6 +114,21 @@ class TransportController {
       });
     }
   }
+
+  async getServiceTypes(req: Request, res: Response) {
+    try {
+      const serviceTypes = await transportService.getServiceTypes()
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched service types",
+        data: {serviceTypes}
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to fetch service types",
+        error: error.message || "Server error"
+      })
+    }
+  }
 }
 
 export const transportController = new TransportController();

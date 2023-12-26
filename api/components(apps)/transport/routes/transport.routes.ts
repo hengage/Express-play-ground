@@ -18,7 +18,10 @@ class TransportRoutes {
     this.router.route("/add-vehicle").patch(transportController.addVehicle);
     this.router.route("/add-driver").post(transportController.addDriver);
     this.router.route("/me").get(transportController.getMe);
-    this.router.route("/service-type/:serviceTypeId/vehicle-types").get(transportController.getVehiclesByServiceType)
+    this.router
+      .route("/service-types/:serviceTypeId/vehicle-types")
+      .get(transportController.getVehiclesByServiceType);
+    this.router.route("/service-types").get(transportController.getServiceTypes)
   }
 }
 

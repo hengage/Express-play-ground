@@ -85,7 +85,7 @@ transportCompanySchema.pre("save", async function (next) {
   }
 });
 
-export const transportServiceType = model<ITransportServiceType>(
+export const TransportServiceType = model<ITransportServiceType>(
   "TransportServiceType",
   transportServiceTypeSchema
 );
