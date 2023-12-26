@@ -3,7 +3,7 @@ import { transportService } from "../services/transport.service";
 import { STATUS_CODES } from "../../../constants";
 import { jwtUtils } from "../../../utils";
 
-class TowingController {
+class TransportController {
   async create(req: Request, res: Response) {
     try {
       const transportCompany = await transportService.create(req.body);
@@ -64,7 +64,10 @@ class TowingController {
   async addDriver(req: Request, res: Response) {
     const transportCompanyId = (req as any).user._id;
     try {
-      const driver = await transportService.addDriver(req.body, transportCompanyId);
+      const driver = await transportService.addDriver(
+        req.body,
+        transportCompanyId
+      );
       res.status(STATUS_CODES.CREATED).json({
         message: "Added driver",
         data: { driver },
@@ -84,9 +87,9 @@ class TowingController {
       res.status(STATUS_CODES.OK).json({
         message: "Fetched profile",
         data: {
-          transportCompny
-        }
-      })
+          transportCompny,
+        },
+      });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Error fetching profile",
@@ -94,6 +97,23 @@ class TowingController {
       });
     }
   }
+
+  async getVehiclesByServiceType(req: Request, res: Response) {
+    const { serviceTypeId } = req.params;
+    try {
+      const vehicleTypes = await transportService.getVehiclesByServiceType(
+        `${serviceTypeId}`
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Found vehicle types" ,
+        data: {vehicleTypes}
+      })
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "failed to fetch vehicle types",
+      });
+    }
+  }
 }
 
-export const towingController = new TowingController();
+export const transportController = new TransportController();

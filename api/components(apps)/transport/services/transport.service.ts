@@ -1,6 +1,9 @@
 import { STATUS_CODES } from "../../../constants";
 import { HandleException, encryption } from "../../../utils";
-import { TransportCompany } from "../models/transport.models";
+import {
+  TransportCompany,
+  TransportVehicleType,
+} from "../models/transport.models";
 import { TransportDriver } from "../models/transportDrivers.model";
 
 class TransportService {
@@ -14,7 +17,7 @@ class TransportService {
       location: {
         coordinates: payload.coordinates,
       },
-      serviceType: payload.serviceType
+      serviceType: payload.serviceType,
     }).save();
 
     return {
@@ -57,9 +60,9 @@ class TransportService {
 
   async addVehicle(payload: any, transportCompanyId: string) {
     const { vehicle } = payload;
-    const transportCompany = await TransportCompany.findById(transportCompanyId).select(
-      "vehicles"
-    );
+    const transportCompany = await TransportCompany.findById(
+      transportCompanyId
+    ).select("vehicles");
 
     if (!transportCompany) {
       throw new HandleException(
@@ -115,9 +118,18 @@ class TransportService {
     );
 
     if (!transportCompany) {
-      throw new HandleException(STATUS_CODES.NOT_FOUND, "No company found")
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "No company found");
     }
-    return transportCompany
+    return transportCompany;
+  }
+
+  async getVehiclesByServiceType(serviceType: string) {
+    const vehicleTypes = TransportVehicleType.find({ serviceType })
+      .select("vehicleType")
+      .lean()
+      .exec();
+
+    return vehicleTypes;
   }
 }
 

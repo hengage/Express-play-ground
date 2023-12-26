@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { towingController } from "../controllers/towing.controller";
+import { transportController } from "../controllers/transport.controller";
 import { jwtUtils } from "../../../utils";
 
 class TransportRoutes {
@@ -11,13 +11,14 @@ class TransportRoutes {
   }
 
   public initializeRoutes() {
-    this.router.route("/create-company").post(towingController.create);
-    this.router.route("/login").post(towingController.login);
+    this.router.route("/create-company").post(transportController.create);
+    this.router.route("/login").post(transportController.login);
 
     this.router.use(jwtUtils.verifyTokenMiddleware);
-    this.router.route("/add-vehicle").patch(towingController.addVehicle);
-    this.router.route("/add-driver").post(towingController.addDriver);
-    this.router.route("/me").get(towingController.getMe);
+    this.router.route("/add-vehicle").patch(transportController.addVehicle);
+    this.router.route("/add-driver").post(transportController.addDriver);
+    this.router.route("/me").get(transportController.getMe);
+    this.router.route("/service-type/:serviceTypeId/vehicle-types").get(transportController.getVehiclesByServiceType)
   }
 }
 

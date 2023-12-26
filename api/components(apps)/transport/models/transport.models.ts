@@ -20,7 +20,7 @@ const transportVehicleTypeSchema = new Schema<ITransportVehicleType>(
       unique: true,
       ref: "TransportServiceType",
     },
-    feePerKM: { type: String, required: true },
+    feePerKM: { type: String, },
     transportCompanyPercentage: { type: String, required: true },
   },
   {
