@@ -28,7 +28,7 @@ const messengerOrderShema = new Schema<IMessengerOrder>(
     pickUpLocation: {
       type: {
         type: String,
-        enum: ["Point"],
+        default: "Point",
         required: true,
       },
       coordinates: {
@@ -43,7 +43,7 @@ const messengerOrderShema = new Schema<IMessengerOrder>(
     dropOffLocation: {
       type: {
         type: String,
-        enum: ["Point"],
+        defaul: "Point",
         required: true,
       },
       coordinates: {
@@ -57,7 +57,7 @@ const messengerOrderShema = new Schema<IMessengerOrder>(
     },
     status: {
       type: String,
-      required: true,
+      default: "pending",
     },
     scheduledPickUpTime: {
       type: Date,
