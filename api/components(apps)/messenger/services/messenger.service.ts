@@ -1,11 +1,10 @@
 import {
   findClosestDriverOrRider,
-  scheduleMessengerPickUp,
+  jobScheduler,
 } from "../../../services";
 import { notificationService } from "../../notifications";
 import { IMessengerOrder } from "../messenger.interface";
 import { messengerRepo } from "../repository/messenger.repo";
-
 class Messengerservice {
   public async notifyNearestRiders(
     pickUpCoordinates: [number, number],
@@ -29,7 +28,8 @@ class Messengerservice {
     const order = await messengerRepo.createOrder(payload);
     console.log({pickupCoord: payload.pickUpCoordinates})
     if (order.scheduledPickUpTime) {
-      scheduleMessengerPickUp(order, payload, searchKMLimit);
+      console.log("sending events")
+      jobScheduler.scheduleMessengerPickUp(order, payload, searchKMLimit);
     } else {
       this.notifyNearestRiders(
         payload.pickUpCoordinates,

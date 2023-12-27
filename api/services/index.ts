@@ -1,4 +1,4 @@
-export { scheduleMessengerPickUp } from "./jobs.services";
+export { jobScheduler } from "./jobs.services";
 export { findClosestDriverOrRider } from "./geospatial.services";
 export { WebSocket } from "./socket.service";
 export { redisClient } from "./redis.service";
