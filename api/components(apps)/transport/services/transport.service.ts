@@ -115,7 +115,7 @@ class TransportService {
 
   async getMe(_id: string) {
     const transportCompany = await TransportCompany.findById(_id).select(
-      "name phoneNumber email address vehicles"
+      "name phoneNumber email address vehicles serviceType"
     );
 
     if (!transportCompany) {
