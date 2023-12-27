@@ -159,6 +159,14 @@ class WebSocket {
       }
     });
 
+    socket.on("arrived-pickup-location", async (message) => {
+      try {
+        makuService.driverArrivedLocation(message.tripId)
+      } catch (error: any) {
+        socket.emit("arrived-pickup-location-error", error.message)
+      }
+    })
+
     socket.on("start-trip", async (message) => {
       try {
         await makuService.startTrip(message.tripId);
