@@ -14,9 +14,10 @@ class MessengerRepo {
         coordinates: payload.dropOffCoordinates,
       },
       note: payload.note,
-      scheduledPickUpTime: new Date(payload.scheduledPickUpTime),
+      scheduledPickUpTime: payload.scheduledPickUpTime,
     }).save();
 
+    console.log({Order_created: order})
     return order
   }
 }

@@ -43,7 +43,7 @@ const messengerOrderShema = new Schema<IMessengerOrder>(
     dropOffLocation: {
       type: {
         type: String,
-        defaul: "Point",
+        default: "Point",
         required: true,
       },
       coordinates: {

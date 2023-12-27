@@ -8,6 +8,7 @@ import { ordersService } from "../components(apps)/orders";
 import { driverRiderService } from "../components(apps)/driversAndRiders";
 import { findClosestDriverOrRider } from "./geospatial.services";
 import { makuService } from "../components(apps)/maku";
+import { messengerService } from "../components(apps)/messenger";
 
 class WebSocket {
   private io: Socket;
@@ -183,6 +184,11 @@ class WebSocket {
         socket.emit("cancel-trip-error", error.message);
         console.log("error starting trip", error.message);
       }
+    });
+
+    socket.on("create-messenger-service-order", async (message: any) => {
+      const { order, searchKMLimit } = message;
+      messengerService.createOrder(order, searchKMLimit)
     });
   }
 }

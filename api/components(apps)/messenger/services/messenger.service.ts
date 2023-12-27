@@ -14,10 +14,10 @@ class Messengerservice {
   ) {
     const riders = await findClosestDriverOrRider(
       pickUpCoordinates,
-      "rider",
+      "driver",
       searchKMLimit
     );
-
+      console.log({ridersFound: riders})
     if (riders.length > 0) {
       riders.forEach((rider) => {
         notificationService.notifyRiderOfOrder(rider._id, order);
@@ -27,15 +27,15 @@ class Messengerservice {
 
   async createOrder(payload: any, searchKMLimit: number) {
     const order = await messengerRepo.createOrder(payload);
+    console.log({pickupCoord: payload.pickUpCoordinates})
     if (order.scheduledPickUpTime) {
-      scheduleMessengerPickUp(
-        order,
-        this.notifyNearestRiders(
+      scheduleMessengerPickUp(order, async () => {
+        await this.notifyNearestRiders(
           payload.pickUpCoordinates,
           payload,
           searchKMLimit
-        )
-      );
+        );
+      });
     } else {
       this.notifyNearestRiders(
         payload.pickUpCoordinates,
