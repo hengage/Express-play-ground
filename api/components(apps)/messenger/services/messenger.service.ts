@@ -7,7 +7,7 @@ import { IMessengerOrder } from "../messenger.interface";
 import { messengerRepo } from "../repository/messenger.repo";
 
 class Messengerservice {
-  private async notifyNearestRiders(
+  public async notifyNearestRiders(
     pickUpCoordinates: [number, number],
     order: IMessengerOrder,
     searchKMLimit: number
@@ -29,13 +29,7 @@ class Messengerservice {
     const order = await messengerRepo.createOrder(payload);
     console.log({pickupCoord: payload.pickUpCoordinates})
     if (order.scheduledPickUpTime) {
-      scheduleMessengerPickUp(order, async () => {
-        await this.notifyNearestRiders(
-          payload.pickUpCoordinates,
-          payload,
-          searchKMLimit
-        );
-      });
+      scheduleMessengerPickUp(order, payload, searchKMLimit);
     } else {
       this.notifyNearestRiders(
         payload.pickUpCoordinates,

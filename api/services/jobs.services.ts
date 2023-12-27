@@ -1,30 +1,39 @@
 import cron from "node-cron";
-import { IMessengerOrder } from "../components(apps)/messenger";
+import {
+  IMessengerOrder,
+  messengerService,
+} from "../components(apps)/messenger";
 
 const scheduleMessengerPickUp = (
   order: IMessengerOrder,
-  orderFunc: () => Promise<void>
+  payload: any,
+  searchKMLimit: number
 ) => {
   if (order.scheduledPickUpTime) {
     const expression = dateToCronExpression(order.scheduledPickUpTime);
-    console.log({expression})
-    console.log("Starting messenger job.......")
-    const scheduledTime = order.scheduledPickUpTime.getTime();
-    const currentTime = new Date().getTime();
-    const delay = Math.max(scheduledTime - currentTime, 0);
+    console.log({ expression });
+    const job = cron.schedule(
+      expression,
+      async function () {
+        console.log("Cron job running!");
 
-    console.log({delay})
-    setTimeout(async () => {
-      try {
-        await orderFunc(); 
-        console.log("Job completed successfully.");
-      } catch (error) {
-        console.error("Error in job:", error);
+        // orderFunc;
+        messengerService.notifyNearestRiders(
+          payload.pickUpCoordinates,
+          payload,
+          searchKMLimit
+        );
+        console.log("Finished messenger job");
+      },
+      {
+          timezone: "Africa/Accra"
       }
-    }, delay);
-    console.log("Finished messenger job")
+    );
+
+    job.start();
   }
 };
+
 
 function dateToCronExpression(date: Date): string {
   const minute = date.getMinutes();
@@ -36,4 +45,4 @@ function dateToCronExpression(date: Date): string {
   return `${minute} ${hour} ${dayOfMonth} ${month} *`;
 }
 
-export {scheduleMessengerPickUp}
+export { scheduleMessengerPickUp };
