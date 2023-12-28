@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { transportService } from "../services/transport.service";
 import { STATUS_CODES } from "../../../constants";
 import { jwtUtils } from "../../../utils";
+import { transportRepo } from "../repository/transport.repo";
 
 class TransportController {
   async create(req: Request, res: Response) {
@@ -161,6 +162,26 @@ class TransportController {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Error on getting driver",
         erorr: error.message || "Server error",
+      });
+    }
+  }
+
+  async updateDriver(req: Request, res: Response) {
+    const transportCompanyId = (req as any).user._id;
+    try {
+      const driver = await transportRepo.updateDriver(
+        req.params.driverId,
+        transportCompanyId,
+        req.body
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Updated driver",
+        data: { driver },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error updating driver",
+        error: error.message || "Server error",
       });
     }
   }
