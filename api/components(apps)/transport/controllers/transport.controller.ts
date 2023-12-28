@@ -145,6 +145,25 @@ class TransportController {
       });
     }
   }
+
+  async getTransportCompanyDriver(req: Request, res: Response) {
+    try {
+      const id = (req as any).user._id;
+      const driver = await transportService.getTransportCompanyDriver(
+        id,
+        req.params.driverId
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched driver",
+        data: { driver },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error on getting driver",
+        erorr: error.message || "Server error",
+      });
+    }
+  }
 }
 
 export const transportController = new TransportController();

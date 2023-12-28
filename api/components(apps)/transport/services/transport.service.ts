@@ -151,6 +151,21 @@ class TransportService {
       .exec();
     return drivers;
   }
+
+  async getTransportCompanyDriver(
+    transportCompanyId: string,
+    driverId: string
+  ) {
+    const driver = await TransportDriver.findOne({
+      _id: driverId,
+      transportCompany: transportCompanyId,
+    }).select("-__v -transportCompany");
+
+    if (!driver) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
+    }
+    return driver;
+  }
 }
 
 export const transportService = new TransportService();

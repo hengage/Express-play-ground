@@ -27,6 +27,9 @@ class TransportRoutes {
     this.router
       .route("/drivers")
       .get(transportController.getTransportCompanyDrivers);
+    this.router
+      .route("/drivers/:driverId")
+      .get(transportController.getTransportCompanyDriver);
   }
 }
 
