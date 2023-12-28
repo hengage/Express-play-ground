@@ -1,3 +1,5 @@
+import { STATUS_CODES } from "../../../constants";
+import { HandleException } from "../../../utils";
 import { DriverRider } from "../../driversAndRiders";
 
 class AdminDriversService {
@@ -14,6 +16,17 @@ class AdminDriversService {
 
     const drivers = await DriverRider.paginate(query, options);
     return drivers;
+  }
+
+  async getDriverById(driverId: string) {
+    const driver = await DriverRider.findById(driverId)
+      .select("-middleName -__v -updatedAt -location -accountType -password")
+      .lean();
+
+    if(!driver) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
+    }
+    return driver;
   }
 }
 

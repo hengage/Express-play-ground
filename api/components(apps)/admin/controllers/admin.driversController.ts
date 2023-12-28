@@ -18,6 +18,21 @@ class AdminDriversController {
       });
     }
   }
+
+  async getDriverById(req: Request, res: Response) {
+    try {
+      const driver = await adminDriversService.getDriverById(req.params.driverId);
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched driver",
+        data: { driver },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error getting driver",
+        error: error.message || "Server error",
+      });
+    }
+  }
 }
 
-export const adminDriversController = new AdminDriversController()
+export const adminDriversController = new AdminDriversController();

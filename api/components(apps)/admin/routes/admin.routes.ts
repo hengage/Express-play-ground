@@ -36,6 +36,7 @@ class AdminRoutes {
       .post(adminController.createTransportServiceType);
 
     this.router.route("/drivers").get(adminDriversController.getDrivers);
+    this.router.route("/drivers/:driverId").get(adminDriversController.getDriverById);
   }
 }
 
