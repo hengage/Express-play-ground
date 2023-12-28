@@ -95,9 +95,11 @@ class MakuService {
   }
 
   async cancelTrip(tripId: string) {
-    await MakuTrip.findByIdAndUpdate(tripId, {
+    const trip  = await MakuTrip.findByIdAndUpdate(tripId, {
       $set: { status: MakuCabStatus.CANCELLED },
-    }).select("status");
+    }).select("status customer driver");
+
+    return trip
   }
 }
 

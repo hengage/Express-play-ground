@@ -102,17 +102,32 @@ class NotificationService {
     await this.sendNotification(driverId, payload);
   }
 
-  async notifyCustomerOnDrivalArrival( customerId: string) {
-    const driverDeviceToken = await redisClient.get(`device-token:${customerId}`);
+  async notifyCustomerOnDrivalArrival(customerId: string) {
+    const driverDeviceToken = await redisClient.get(
+      `device-token:${customerId}`
+    );
     const payload = {
       notification: {
         title: "Driver has arrived!",
         body: "Your driver is now at the pickup location. Please proceed to the vehicle",
       },
-      
+
       token: `${driverDeviceToken}`,
     };
     await this.sendNotification(customerId, payload);
+  }
+
+  async notifyOnCancelledTrip(userId: string, whoCancelled: string) {
+    const userDeviceToken = await redisClient.get(`device-token:${userId}`);
+    const payload = {
+      notification: {
+        title: "Trip Cancelled",
+        body: `Unfortunately, your trip has been cancelled by the ${whoCancelled}. We apologize for any inconvenience`,
+      },
+
+      token: `${userDeviceToken}`,
+    };
+    await this.sendNotification(userId, payload);
   }
 }
 
