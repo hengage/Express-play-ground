@@ -167,20 +167,6 @@ class AdminService {
       throw new HandleException(error.status, error.message);
     }
   }
-
-  public async getRiders(): Promise<IDriverRider[]> {
-    try {
-      const drivers = await DriverRider.find({
-        accountType: DriverRiderType.RIDER,
-      })
-        .select("firstName lastName phoneNumber")
-        .lean()
-        .exec();
-      return drivers;
-    } catch (error: any) {
-      throw new HandleException(error.status, error.message);
-    }
-  }
 }
 
 export const adminService = new AdminService();

@@ -27,7 +27,6 @@ class AdminRoutes {
     this.router
       .route("/vehicle-type/:vehicleTypeId")
       .patch(adminController.updateVehicleType);
-    this.router.route("/riders").get(adminController.getRiders);
     this.router
       .route("/transport/create-vehicle-type")
       .post(adminController.createTransportVehicleType);
