@@ -2,6 +2,7 @@ import { Router } from "express";
 import { jwtUtils } from "../../../utils";
 import { adminController } from "../controllers/admin.controller";
 import { adminDriversController } from "../controllers/admin.driversController";
+import { adminRidersController } from "../controllers/admin.RiderController";
 
 class AdminRoutes {
   public router = Router();
@@ -36,6 +37,9 @@ class AdminRoutes {
 
     this.router.route("/drivers").get(adminDriversController.getDrivers);
     this.router.route("/drivers/:driverId").get(adminDriversController.getDriverById);
+
+    this.router.route("/riders").get(adminRidersController.getRiders);
+    this.router.route("/riders/:riderId").get(adminRidersController.getRiderById);
   }
 }
 
