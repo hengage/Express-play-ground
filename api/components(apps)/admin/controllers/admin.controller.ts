@@ -128,21 +128,6 @@ class AdminController {
     }
   }
 
-  public async getDrivers(req: Request, res: Response) {
-    try {
-      const drivers = await adminService.getDrivers();
-      res.status(STATUS_CODES.OK).json({
-        message: "Drivers found",
-        data: drivers,
-      });
-    } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Couuld not get drivers",
-        error: error.message,
-      });
-    }
-  }
-
   public async getRiders(req: Request, res: Response) {
     try {
       const riders = await adminService.getRiders();

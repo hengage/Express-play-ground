@@ -168,20 +168,6 @@ class AdminService {
     }
   }
 
-  public async getDrivers(): Promise<IDriverRider[]> {
-    try {
-      const drivers = await DriverRider.find({
-        accountType: DriverRiderType.DRIVER,
-      })
-        .select("firstName lastName phoneNumber")
-        .lean();
-
-      return drivers;
-    } catch (error: any) {
-      throw new HandleException(error.status, error.message);
-    }
-  }
-
   public async getRiders(): Promise<IDriverRider[]> {
     try {
       const drivers = await DriverRider.find({

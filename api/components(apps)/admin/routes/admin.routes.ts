@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { jwtUtils } from "../../../utils";
 import { adminController } from "../controllers/admin.controller";
+import { adminDriversController } from "../controllers/admin.driversController";
 
 class AdminRoutes {
   public router = Router();
@@ -26,7 +27,6 @@ class AdminRoutes {
     this.router
       .route("/vehicle-type/:vehicleTypeId")
       .patch(adminController.updateVehicleType);
-    this.router.route("/drivers").get(adminController.getDrivers);
     this.router.route("/riders").get(adminController.getRiders);
     this.router
       .route("/transport/create-vehicle-type")
@@ -34,6 +34,8 @@ class AdminRoutes {
     this.router
       .route("/transport/create-service-type")
       .post(adminController.createTransportServiceType);
+
+    this.router.route("/drivers").get(adminDriversController.getDrivers);
   }
 }
 

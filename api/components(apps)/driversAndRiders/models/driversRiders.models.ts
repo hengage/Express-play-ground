@@ -1,4 +1,6 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
+import paginate from "mongoose-paginate-v2";
+
 import { IDriverRider } from "../driversRiders.interface";
 import { encryption, stringsUtils } from "../../../utils";
 import { AccountStatus, DriverRiderType } from "../../../constants";
@@ -91,7 +93,9 @@ driverRiderSchema.pre("save", async function (next) {
   next();
 });
 
-export const DriverRider = model<IDriverRider>(
-  "DriverRider",
-  driverRiderSchema
-);
+driverRiderSchema.plugin(paginate);
+
+export const DriverRider = model<
+  IDriverRider,
+  mongoose.PaginateModel<IDriverRider>
+>("DriverRider", driverRiderSchema);
