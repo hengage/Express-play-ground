@@ -10,7 +10,10 @@ class NotificationService {
   constructor() {
     this.messaging = firebaseAdmin.messaging();
   }
-  public async sendNotification(user:string, payload: admin.messaging.Message) {
+  public async sendNotification(
+    user: string,
+    payload: admin.messaging.Message
+  ) {
     try {
       const message = await this.messaging.send(payload);
 
@@ -43,7 +46,6 @@ class NotificationService {
 
     await this.sendNotification(vendorId, payload);
     socket.emit("order-notification-sent", message);
-  
   }
 
   public async sendSavedOrder(order: any) {
@@ -81,7 +83,7 @@ class NotificationService {
       },
       token: `${riderDeviceToken}`,
     };
-    await this.sendNotification(riderId,payload);
+    await this.sendNotification(riderId, payload);
   }
 
   async noitifyDriversOfMakuRequest(driverId: string, tripDetails: any) {
@@ -98,6 +100,19 @@ class NotificationService {
       token: `${driverDeviceToken}`,
     };
     await this.sendNotification(driverId, payload);
+  }
+
+  async notifyCustomerOnDrivalArrival( customerId: string) {
+    const driverDeviceToken = await redisClient.get(`device-token:${customerId}`);
+    const payload = {
+      notification: {
+        title: "Driver has arrived!",
+        body: "Your driver is now at the pickup location. Please proceed to the vehicle",
+      },
+      
+      token: `${driverDeviceToken}`,
+    };
+    await this.sendNotification(customerId, payload);
   }
 }
 

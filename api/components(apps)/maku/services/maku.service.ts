@@ -75,9 +75,11 @@ class MakuService {
   }
 
   async driverArrivedLocation(tripId: string) {
-    await MakuTrip.findByIdAndUpdate(tripId, {
+    const trip = await MakuTrip.findByIdAndUpdate(tripId, {
       $set: { status: MakuCabStatus.ARRIVED_PICKUP_LOCATION },
-    }).select("status");
+    }).select("status customer");
+
+    return trip
   }
 
   async startTrip(tripId: string) {

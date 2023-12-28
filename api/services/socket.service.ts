@@ -161,11 +161,15 @@ class WebSocket {
 
     socket.on("arrived-pickup-location", async (message) => {
       try {
-        makuService.driverArrivedLocation(message.tripId)
+        const trip: any = await makuService.driverArrivedLocation(
+          message.tripId
+        );
+        console.log(trip.customer)
+        await notificationService.notifyCustomerOnDrivalArrival(trip.customer);
       } catch (error: any) {
-        socket.emit("arrived-pickup-location-error", error.message)
+        socket.emit("arrived-pickup-location-error", error.message);
       }
-    })
+    });
 
     socket.on("start-trip", async (message) => {
       try {
@@ -196,7 +200,7 @@ class WebSocket {
 
     socket.on("create-messenger-service-order", async (message: any) => {
       const { order, searchKMLimit } = message;
-      messengerService.createOrder(order, searchKMLimit)
+      messengerService.createOrder(order, searchKMLimit);
     });
   }
 }
