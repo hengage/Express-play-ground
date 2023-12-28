@@ -105,9 +105,9 @@ class TransportController {
         `${serviceTypeId}`
       );
       res.status(STATUS_CODES.OK).json({
-        message: "Found vehicle types" ,
-        data: {vehicleTypes}
-      })
+        message: "Found vehicle types",
+        data: { vehicleTypes },
+      });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "failed to fetch vehicle types",
@@ -117,16 +117,32 @@ class TransportController {
 
   async getServiceTypes(req: Request, res: Response) {
     try {
-      const serviceTypes = await transportService.getServiceTypes()
+      const serviceTypes = await transportService.getServiceTypes();
       res.status(STATUS_CODES.OK).json({
         message: "Fetched service types",
-        data: {serviceTypes}
+        data: { serviceTypes },
       });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Failed to fetch service types",
-        error: error.message || "Server error"
-      })
+        error: error.message || "Server error",
+      });
+    }
+  }
+
+  async getTransportCompanyDrivers(req: Request, res: Response) {
+    const id = (req as any).user._id;
+    try {
+      const drivers = await transportService.getTransportCompanyDrivers(id);
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched drivers",
+        data: { drivers },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error on fetching drivers",
+        erorr: error.message || "Server error",
+      });
     }
   }
 }

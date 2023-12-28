@@ -14,7 +14,9 @@ class TransportRoutes {
     this.router.route("/create-company").post(transportController.create);
     this.router.route("/login").post(transportController.login);
 
-    this.router.route("/service-types").get(transportController.getServiceTypes)
+    this.router
+      .route("/service-types")
+      .get(transportController.getServiceTypes);
     this.router.use(jwtUtils.verifyTokenMiddleware);
     this.router.route("/add-vehicle").patch(transportController.addVehicle);
     this.router.route("/add-driver").post(transportController.addDriver);
@@ -22,6 +24,9 @@ class TransportRoutes {
     this.router
       .route("/service-types/:serviceTypeId/vehicle-types")
       .get(transportController.getVehiclesByServiceType);
+    this.router
+      .route("/drivers")
+      .get(transportController.getTransportCompanyDrivers);
   }
 }
 

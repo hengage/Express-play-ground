@@ -139,7 +139,17 @@ class TransportService {
       .lean()
       .exec();
 
-    return serviceTypes
+    return serviceTypes;
+  }
+
+  async getTransportCompanyDrivers(transportCompanyId: string) {
+    const drivers = await TransportDriver.find({
+      transportCompany: transportCompanyId,
+    })
+      .select("_id firstName lastName photo phoneNumber")
+      .lean()
+      .exec();
+    return drivers;
   }
 }
 
