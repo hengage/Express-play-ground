@@ -110,7 +110,14 @@ class TransportService {
       transportCompany,
     }).save();
 
-    return driver._id;
+    return {
+      _id: driver._id,
+      firstName: driver.firstName,
+      lastName: driver.lastName,
+      phoneNumber: driver.phoneNumber,
+      licenseNumber: driver.licenseNumber,
+      photo: driver.photo,
+    };
   }
 
   async getMe(_id: string) {
