@@ -185,6 +185,21 @@ class TransportController {
       });
     }
   }
+
+  async deleteDriver(req: Request, res: Response) {
+    const transportCompanyId = (req as any).user._id;
+    try {
+      await transportRepo.deleteDriver(req.params.driverId, transportCompanyId);
+      res
+        .status(STATUS_CODES.OK)
+        .json({ message: "Driver deleted successfully" });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error deleting driver",
+        error: error.message || "Server error",
+      });
+    }
+  }
 }
 
 export const transportController = new TransportController();

@@ -33,6 +33,9 @@ class TransportRoutes {
     this.router
       .route("/drivers/:driverId")
       .patch(transportController.updateDriver);
+    this.router
+      .route("/drivers/:driverId")
+      .delete(transportController.deleteDriver);
   }
 }
 

@@ -26,11 +26,24 @@ class TransportRepository {
       .select(projection)
       .lean();
 
-    if(!driver) {
-        throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found")
+    if (!driver) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
     }
 
     return driver;
+  }
+
+  async deleteDriver(driverId: string, transportCompanyId: string) {
+    const result = await TransportDriver.deleteOne({
+      _id: driverId,
+      transportCompany: transportCompanyId,
+    });
+    if (result.deletedCount === 0) {
+      throw new HandleException(
+        STATUS_CODES.NOT_FOUND,
+        "Could not find driver to delete"
+      );
+    }
   }
 }
 
