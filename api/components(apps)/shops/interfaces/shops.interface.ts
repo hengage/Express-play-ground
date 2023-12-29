@@ -17,7 +17,7 @@ export interface IShop extends Document {
   state: string;
   country: string;
   postalCode: string;
-  location: ILocation & Document['location'];
+  location: ILocation & Document["location"];
   type: string;
   category: string;
   logo: string;
@@ -49,8 +49,9 @@ export interface ICreateShop {
   state: string;
   country: string;
   postalCode: string;
-  latitude: number;
-  longitude: number;
+  location: {
+    coordinates: string;
+  };
   type: string;
   category: string;
   logo: string;

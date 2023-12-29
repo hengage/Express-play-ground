@@ -69,8 +69,9 @@ class ShopServices {
         state: payload.state,
         country: payload.country,
         postalCode: payload.postalCode,
-        latitude: payload.latitude,
-        longitude: payload.longitude,
+        location: {
+          coordinates: payload.location.coordinates
+        },
         type: payload.type,
         category: payload.category,
         logo: logo,
