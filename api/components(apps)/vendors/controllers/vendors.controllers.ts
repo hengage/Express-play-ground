@@ -4,6 +4,7 @@ import { HandleException, jwtUtils } from "../../../utils";
 import { STATUS_CODES } from "../../../constants";
 import { userService } from "../../../services";
 import { shopServices } from "../../shops";
+import { vendorRepo } from "../repository/vendor.repo";
 
 class VendorController {
   public async signup(req: Request, res: Response) {
@@ -98,6 +99,22 @@ class VendorController {
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Failed to get vendor profile",
+        error: error.message,
+      });
+    }
+  }
+
+  async updateProfile(req: Request, res: Response) {
+    const vendorId = (req as any).user._id;
+    try {
+      const vendor = await vendorRepo.updateProfile(vendorId, req.body);
+      res.status(STATUS_CODES.NOT_FOUND).json({
+        message: "Updated profile",
+        data: { vendor },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to update profile",
         error: error.message,
       });
     }
