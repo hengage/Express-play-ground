@@ -15,6 +15,7 @@ class CustomersRoutes {
 
     this.router.use(jwtUtils.verifyTokenMiddleware)
     this.router.route('/me').get(customerController.getMe)
+    this.router.route("/me/update").patch(customerController.updateProfile)
     this.router.route('/orders').get(customerController.getOrders)
     this.router.route('/me/delete').post(customerController.deleteAccount)
     this.router.route("/maku/trip-history").get(customerController.makuTripHistory)

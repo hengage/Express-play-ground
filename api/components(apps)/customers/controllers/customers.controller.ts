@@ -3,6 +3,7 @@ import { customerService } from "../services/customers.services";
 import { userService } from "../../../services";
 import { HandleException, jwtUtils } from "../../../utils";
 import { STATUS_CODES } from "../../../constants";
+import { customerRepo } from "../repository/customers.repo";
 
 class CustomerController {
   async signup(req: Request, res: Response): Promise<void> {
@@ -25,7 +26,7 @@ class CustomerController {
         data: {
           customerId: savedCustomer._id,
           accessToken,
-          refreshToken
+          refreshToken,
         },
       });
     } catch (error: any) {
@@ -49,7 +50,7 @@ class CustomerController {
         data: {
           _id: customer._id,
           accessToken,
-          refreshToken
+          refreshToken,
         },
       });
     } catch (error: any) {
@@ -76,9 +77,24 @@ class CustomerController {
     }
   }
 
+  async updateProfile(req: Request, res: Response) {
+    const customerId = (req as any).user._id;
+    try {
+      const customer = await customerRepo.updateProfile(customerId, req.body);
+      res.status(STATUS_CODES.NOT_FOUND).json({
+        message: "Updated profile",
+        data: { customer },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to update profile",
+        error: error.message,
+      });
+    }
+  }
   async getOrders(req: Request, res: Response) {
     const status = req.query.status as string;
-    const page = parseInt(req.query.page as string) || 1
+    const page = parseInt(req.query.page as string) || 1;
     try {
       const customerId = (req as any).user._id;
       const orders = await customerService.getOrders(customerId, page, status);
@@ -111,19 +127,19 @@ class CustomerController {
   }
 
   async makuTripHistory(req: Request, res: Response) {
-    const page = parseInt(req.query.page as string)  || 1
+    const page = parseInt(req.query.page as string) || 1;
     try {
-      const customerId = (req as any).user._id
-      const trips = await customerService.makuTripHistory(customerId, page)
+      const customerId = (req as any).user._id;
+      const trips = await customerService.makuTripHistory(customerId, page);
       res.status(STATUS_CODES.OK).json({
         message: "Fetched trips",
-        data: {trips}
-      })
+        data: { trips },
+      });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Error getting trips",
-        error: error.message || "Server error"
-      })
+        error: error.message || "Server error",
+      });
     }
   }
 }
