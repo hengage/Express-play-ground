@@ -1,3 +1,4 @@
+import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { IDriverRider } from "../driversRiders.interface";
 import { DriverRider } from "../models/driversRiders.models";
@@ -39,7 +40,7 @@ class DriverRiderRepo {
 
       const driverRider = await query.exec();
       if (!driverRider) {
-        throw new HandleException(404, "Driver or rider not found");
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver or rider not found");
       }
       return driverRider;
     } catch (error: any) {
@@ -58,6 +59,10 @@ class DriverRiderRepo {
     )
       .select(select)
       .lean();
+
+      if (!driverRider) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "Profile not found");
+      }
 
     return driverRider;
   }
