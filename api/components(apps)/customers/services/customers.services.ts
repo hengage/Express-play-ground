@@ -163,6 +163,24 @@ class CustomerService {
     const trips = MakuTrip.paginate(query, options);
     return trips;
   }
+
+  async getMakuTripDetails(customerId: string, tripId: string) {
+    const trip = await MakuTrip.findOne({ _id: tripId, customer: customerId })
+      .select({
+        updatedAt: 0,
+        __v: 0,
+        customer: 0,
+        "destinationCoordinates.locationType": 0,
+        "pickUpCoordinates.locationType": 0,
+      })
+      .populate({
+        path: "driver",
+        select: "firstName lastName photo phoneNumber vehicle",
+      })
+      .lean()
+      .exec();
+    return trip;
+  }
 }
 
 export const customerService = new CustomerService();

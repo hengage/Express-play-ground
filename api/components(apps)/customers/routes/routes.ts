@@ -13,12 +13,17 @@ class CustomersRoutes {
     this.router.post(`/signup`, customerController.signup);
     this.router.post(`/login`, customerController.login);
 
-    this.router.use(jwtUtils.verifyTokenMiddleware)
-    this.router.route('/me').get(customerController.getMe)
-    this.router.route("/me/update").patch(customerController.updateProfile)
-    this.router.route('/orders').get(customerController.getOrders)
-    this.router.route('/me/delete').post(customerController.deleteAccount)
-    this.router.route("/maku/trip-history").get(customerController.makuTripHistory)
+    this.router.use(jwtUtils.verifyTokenMiddleware);
+    this.router.route("/me").get(customerController.getMe);
+    this.router.route("/me/update").patch(customerController.updateProfile);
+    this.router.route("/orders").get(customerController.getOrders);
+    this.router.route("/me/delete").post(customerController.deleteAccount);
+    this.router
+      .route("/maku/trip-history")
+      .get(customerController.makuTripHistory);
+    this.router
+      .route("/maku/trip/:tripId")
+      .get(customerController.getmakuTripDetails);
   }
 }
 

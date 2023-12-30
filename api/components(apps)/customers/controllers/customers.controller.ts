@@ -142,6 +142,25 @@ class CustomerController {
       });
     }
   }
+
+  async getmakuTripDetails(req: Request, res: Response) {
+    const customerId = (req as any).user._id;
+    try {
+      const trip = await customerService.getMakuTripDetails(
+        customerId,
+        req.params.tripId
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched trip details",
+        data: { trip },
+      });
+    } catch (error: any) {
+      res.status(error.message || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to get trip details",
+        error: error.message || "Server error",
+      });
+    }
+  }
 }
 
 export const customerController = new CustomerController();
