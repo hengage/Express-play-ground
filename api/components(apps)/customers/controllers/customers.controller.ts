@@ -81,7 +81,7 @@ class CustomerController {
     const customerId = (req as any).user._id;
     try {
       const customer = await customerRepo.updateProfile(customerId, req.body);
-      res.status(STATUS_CODES.NOT_FOUND).json({
+      res.status(STATUS_CODES.OK).json({
         message: "Updated profile",
         data: { customer },
       });

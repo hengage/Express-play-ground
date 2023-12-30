@@ -108,7 +108,7 @@ class VendorController {
     const vendorId = (req as any).user._id;
     try {
       const vendor = await vendorRepo.updateProfile(vendorId, req.body);
-      res.status(STATUS_CODES.NOT_FOUND).json({
+      res.status(STATUS_CODES.OK).json({
         message: "Updated profile",
         data: { vendor },
       });

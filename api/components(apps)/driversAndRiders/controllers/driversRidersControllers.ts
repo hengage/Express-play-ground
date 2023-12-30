@@ -105,7 +105,7 @@ class DriversRidersController {
     const id = (req as any).user._id;
     try {
       const driverRider= await driverRiderRepo.updateProfile(id, req.body);
-      res.status(STATUS_CODES.NOT_FOUND).json({
+      res.status(STATUS_CODES.OK).json({
         message: "Updated profile",
         data: { driverRider },
       });
