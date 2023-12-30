@@ -1,7 +1,8 @@
 import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
+import { TransportCompany } from "../models/transport.models";
 import { TransportDriver } from "../models/transportDrivers.model";
-import { ITransportDriver } from "../transport.interface";
+import { ITransportCompany, ITransportDriver } from "../transport.interface";
 
 class TransportRepository {
   async updateDriver(
@@ -44,6 +45,25 @@ class TransportRepository {
         "Could not find driver to delete"
       );
     }
+  }
+
+  async updateProfile(id: string, payload: Partial<ITransportCompany>) {
+    const select = Object.keys(payload);
+    select.push("-_id");
+
+    const transportCompany = await TransportCompany.findByIdAndUpdate(
+      id,
+      { $set: payload },
+      { new: true }
+    )
+      .select(select)
+      .lean();
+
+    if (!transportCompany) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Profile not found");
+    }
+
+    return transportCompany;
   }
 }
 

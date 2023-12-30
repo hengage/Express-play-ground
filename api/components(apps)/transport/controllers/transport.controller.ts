@@ -99,6 +99,22 @@ class TransportController {
     }
   }
 
+  async updateProfile(req: Request, res: Response) {
+    const id = (req as any).user._id;
+    try {
+      const transportCompany = await transportRepo.updateProfile(id, req.body);
+      res.status(STATUS_CODES.OK).json({
+        message: "Updated profile",
+        data: { transportCompany },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to update profile",
+        error: error.message,
+      });
+    }
+  }
+
   async getVehiclesByServiceType(req: Request, res: Response) {
     const { serviceTypeId } = req.params;
     try {
