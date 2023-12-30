@@ -163,7 +163,10 @@ class DriverRiderService {
       limit: 10,
       select: "_id pickUpAddress destinationAddress price status createdAt",
       populate: [
-        { path: "customer", select: "firstName lastName phoneNumber profilePhoto" },
+        {
+          path: "customer",
+          select: "firstName lastName phoneNumber profilePhoto",
+        },
       ],
       lean: true,
       leanWithId: false,

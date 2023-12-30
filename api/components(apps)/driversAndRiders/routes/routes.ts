@@ -19,10 +19,15 @@ class DriversRidesrRoutes {
       driversRidersController.rateDriverOrRider
     );
     this.router.route("/me").get(driversRidersController.getMe);
-    this.router.route("/me/update").patch(driversRidersController.updateProfile);
+    this.router
+      .route("/me/update")
+      .patch(driversRidersController.updateProfile);
     this.router
       .route("/maku/trip-history")
       .get(driversRidersController.makuTripHistory);
+    this.router
+      .route("/maku/trip/:tripId")
+      .get(driversRidersController.getmakuTripDetails);
   }
 }
 

@@ -4,6 +4,7 @@ import { HandleException, jwtUtils } from "../../../utils";
 import { STATUS_CODES } from "../../../constants";
 import { userService } from "../../../services";
 import { driverRiderRepo } from "../repository/driverRider.repo";
+import { driversService } from "../services/drivers.service";
 
 class DriversRidersController {
   public async signup(req: Request, res: Response) {
@@ -145,6 +146,25 @@ class DriversRidersController {
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Error fetching trip history",
+        error: error.message || "Server error",
+      });
+    }
+  }
+
+  async getmakuTripDetails(req: Request, res: Response) {
+    const driverId = (req as any).user._id;
+    try {
+      const trip = await driversService.getMakuTripDetails(
+        driverId,
+        req.params.tripId
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched trip details",
+        data: { trip },
+      });
+    } catch (error: any) {
+      res.status(error.message || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to get trip details",
         error: error.message || "Server error",
       });
     }
