@@ -3,7 +3,7 @@ import { Document } from "mongoose";
 export interface ITransportVehicleType extends Document {
   _id: string;
   vehicleType: string;
-  serviceType: ITransportServiceType["_id"]
+  serviceType: ITransportServiceType["_id"];
   feePerKM: string;
   transportCompanyPercentage: string;
 }
@@ -26,7 +26,7 @@ export interface ITransportCompany extends Document {
     type: string;
     coordinates: [number, number];
   };
-  serviceType: ITransportServiceType["_id"]
+  serviceType: ITransportServiceType["_id"];
   vehicles: Array<{
     vehicleType: ITransportVehicleType["_id"];
     regNumber: string;
@@ -44,4 +44,45 @@ export interface ITransportDriver extends Document {
   licenseNumber: string;
   photo: string;
   transportCompany: ITransportCompany["_id"];
+}
+
+export interface ITowingOrder extends Document {
+  _id: string;
+  customer: string;
+  transportCompany: ITransportCompany["_id"];
+  vehicleType: ITransportVehicleType["_id"];
+  pickUpAddress: string;
+  pickUpCoordinates: {
+    type: string,
+    coordinates: [number, number];
+  };
+  destinationAddress: string;
+  destinationCoordinates: {
+    type: string,
+    coordinates: [number, number];
+  }
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ITransportTripOrder extends Document {
+  _id: string;
+  customer: string;
+  transportCompany: ITransportCompany["_id"];
+  serviceType: ITransportServiceType["_id"];
+  vehicleType: ITransportVehicleType["_id"];
+  pickUpAddress: string;
+  pickUpCoordinates: {
+    type: string,
+    coordinates: [number, number];
+  };
+  destinationAddress: string;
+  destinationCoordinates: {
+    type: string,
+    coordinates: [number, number];
+  } 
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
