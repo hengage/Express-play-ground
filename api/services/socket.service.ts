@@ -165,7 +165,10 @@ class WebSocket {
           message.tripId
         );
         console.log(trip.customer);
-        await notificationService.notifyCustomerOnDrivalArrival(trip.customer);
+        await notificationService.notifyCustomerOnDrivalArrival(
+          trip.customer,
+          trip._id
+        );
       } catch (error: any) {
         socket.emit("arrived-pickup-location-error", error.message);
       }
@@ -193,9 +196,17 @@ class WebSocket {
       try {
         const trip: any = await makuService.cancelTrip(message.tripId);
         if (message.driverId) {
-          notificationService.notifyOnCancelledTrip(trip?.customer, "driver");
-        } else if (message.customerId){
-            notificationService.notifyOnCancelledTrip(trip?.driver, "passenger");
+          notificationService.notifyOnCancelledTrip(
+            trip?.customer,
+            "driver",
+            trip._id
+          );
+        } else if (message.customerId) {
+          notificationService.notifyOnCancelledTrip(
+            trip?.driver,
+            "passenger",
+            trip._id
+          );
         }
       } catch (error: any) {
         socket.emit("cancel-trip-error", error.message);
