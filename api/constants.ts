@@ -29,7 +29,16 @@ export enum MakuCabStatus {
   ARRIVED_PICKUP_LOCATION = "arrived pick up location",
   STARTED = "started",
   COMPLETED = "completed",
-  CANCELLED = "cancelled"
+  CANCELLED = "cancelled",
+}
+
+export enum TransportServiceOrderStatus {
+  PENDING = "pending",
+  ENROUTE_PICKUP_LOCATION = "enroute pickup location",
+  ARRIVED_PICKUP_LOCATION = "arrived pick up location",
+  STARTED = "started",
+  COMPLETED = "completed",
+  CANCELLED = "cancelled",
 }
 
 export const URL_LINKS = {

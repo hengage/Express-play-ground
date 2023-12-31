@@ -2,7 +2,12 @@ import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { TransportCompany } from "../models/transport.models";
 import { TransportDriver } from "../models/transportDrivers.model";
-import { ITransportCompany, ITransportDriver } from "../transport.interface";
+import { TowOrder, TransportTripOrder } from "../models/transportOrders.model";
+import {
+  ITowingOrder,
+  ITransportCompany,
+  ITransportDriver,
+} from "../transport.interface";
 
 class TransportRepository {
   async updateDriver(
@@ -64,6 +69,35 @@ class TransportRepository {
     }
 
     return transportCompany;
+  }
+
+  async createTowOrder(payload: any): Promise<ITowingOrder["_id"]> {
+    const towOrder = await TowOrder.create({
+      customer: payload.customer,
+      transportCompany: payload.transportCompany,
+      vehicleType: payload.vehicleType,
+      pickUpAddress: payload.pickUpAddress,
+      pickUpCoordinates: payload.pickUpCoordinates,
+      destinationAddress: payload.destinationAddress,
+      destinationCoordinates: payload.destinationCoordinates,
+    });
+
+    return towOrder._id;
+  }
+
+  async createTransportOrder(payload: any): Promise<ITowingOrder["_id"]> {
+    const transportTripOrder = await TransportTripOrder.create({
+      customer: payload.customer,
+      transportCompany: payload.transportCompany,
+      serviceType: payload.service,
+      vehicleType: payload.vehicleType,
+      pickUpAddress: payload.pickUpAddress,
+      pickUpCoordinates: payload.pickUpCoordinates,
+      destinationAddress: payload.destinationAddress,
+      destinationCoordinates: payload.destinationCoordinates,
+    });
+
+    return transportTripOrder._id;
   }
 }
 

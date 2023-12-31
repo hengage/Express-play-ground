@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { transportController } from "../controllers/transport.controller";
 import { jwtUtils } from "../../../utils";
+import { transportOrdersController } from "../controllers/transportOrders.controller";
 
 class TransportRoutes {
   public router: Router;
@@ -37,6 +38,12 @@ class TransportRoutes {
     this.router
       .route("/drivers/:driverId")
       .delete(transportController.deleteDriver);
+    this.router
+      .route("/tow-order")
+      .post(transportOrdersController.createTowOrder);
+    this.router
+      .route("/trip-order")
+      .post(transportOrdersController.createTransportOrder);
   }
 }
 

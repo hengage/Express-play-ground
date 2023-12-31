@@ -1,8 +1,9 @@
 import { Schema, model } from "mongoose";
 import { stringsUtils } from "../../../utils";
 import { ITowingOrder, ITransportTripOrder } from "../transport.interface";
+import { TransportServiceOrderStatus } from "../../../constants";
 
-const towingOrderSchema = new Schema<ITowingOrder>(
+const towOrderSchema = new Schema<ITowingOrder>(
   {
     _id: {
       type: String,
@@ -38,6 +39,10 @@ const towingOrderSchema = new Schema<ITowingOrder>(
     destinationCoordinates: {
       type: { type: String, default: "Point" },
       coordinates: { type: [Number, Number], required: true },
+    },
+    status: {
+      type: String,
+      default: TransportServiceOrderStatus.PENDING,
     },
   },
   {
@@ -87,16 +92,17 @@ const transportTripOrderSchema = new Schema<ITransportTripOrder>(
       type: { type: String, default: "Point" },
       coordinates: { type: [Number, Number], required: true },
     },
+    status: {
+      type: String,
+      default: TransportServiceOrderStatus.PENDING,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-export const TowingOrder = model<ITowingOrder>(
-  "towingOrder",
-  towingOrderSchema
-);
+export const TowOrder = model<ITowingOrder>("towOrder", towOrderSchema);
 
 export const TransportTripOrder = model<ITransportTripOrder>(
   "transportTripOrder",
