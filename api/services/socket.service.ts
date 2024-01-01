@@ -242,7 +242,7 @@ class WebSocket {
       try {
         const towCompanies = await transportService.findTowingCompanies()
         console.log({towCompanies: JSON.stringify(towCompanies)})
-        socket.emit("found-tow-companie", towCompanies)
+        socket.emit("found-tow-companies", towCompanies)
       } catch (error:any) {
         socket.emit("find-tow-companies-error")
       }
