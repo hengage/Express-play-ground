@@ -9,6 +9,7 @@ import { driverRiderService } from "../components(apps)/driversAndRiders";
 import { findClosestDriverOrRider } from "./geospatial.services";
 import { makuService } from "../components(apps)/maku";
 import { messengerService } from "../components(apps)/messenger";
+import { transportService } from "../components(apps)/transport";
 
 class WebSocket {
   private io: Socket;
@@ -236,6 +237,16 @@ class WebSocket {
       const { order, searchKMLimit } = message;
       messengerService.createOrder(order, searchKMLimit);
     });
+
+    socket.on("find-tow-companies", async (message: any) => {
+      try {
+        const towCompanies = await transportService.findTowingCompanies()
+        console.log({towCompanies: JSON.stringify(towCompanies)})
+        socket.emit("found-tow-companie", towCompanies)
+      } catch (error:any) {
+        socket.emit("find-tow-companies-error")
+      }
+    })
   }
 }
 

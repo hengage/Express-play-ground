@@ -173,6 +173,15 @@ class TransportService {
     }
     return driver;
   }
+
+  async findTowingCompanies() {
+    const towingCompanies = await TransportCompany.find({
+      serviceType: "c6a56821",
+    })
+      .select("_id name location.coordinates phoneNumber")
+      .lean();
+    return towingCompanies;
+  }
 }
 
 export const transportService = new TransportService();
