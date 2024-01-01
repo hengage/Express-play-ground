@@ -1,5 +1,6 @@
 import { OrderStatus, STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
+import { ordersNotificationService } from "../../notifications";
 import { Order } from "../models/orders.models";
 import { IOrder } from "../orders.interface";
 
@@ -84,6 +85,30 @@ class OrdersService {
       order.status = OrderStatus.PROCESSING;
       await order.save();
       console.log("order set to processing", { order });
+    }
+  }
+  
+  public async setStatusToTransit(orderId: string) {
+    const order = await ordersService.getOrderById(orderId, "status customer");
+    if (order) {
+      order.status = OrderStatus.TRANSIT;
+      await order.save();
+      ordersNotificationService.notifyCustomerOfOrderStatus(
+        order, "Order picked up", "Your order is on the way to you"
+        )
+      console.log("Order now in transit", { order });
+    }
+  }
+
+  public async setStatusToDelivered(orderId: string) {
+    const order =  await ordersService.getOrderById(orderId, "status customer");
+    if (order) {
+      order.status = OrderStatus.DELIVERED;
+      await order.save();
+      ordersNotificationService.notifyCustomerOfOrderStatus(
+        order, "Order delivered", "Your order has been delivered"
+        )
+      console.log("Order delivered to customer", { order });
     }
   }
 

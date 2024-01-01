@@ -118,6 +118,25 @@ class WebSocket {
       }
     });
 
+    socket.on("order-in-transit", async (message) => {
+      const { orderId } = message;
+      console.log({orderId})
+      await ordersService.setStatusToTransit(orderId);
+      try {
+      } catch (error: any) {
+        socket.emit("order-in-transit-error", error.message);
+      }
+    });
+
+    socket.on("order-delivered", async (message) => {
+      const { orderId } = message;
+      await ordersService.setStatusToDelivered(orderId);
+      try {
+      } catch (error: any) {
+        socket.emit("order-delivered-error", error.message);
+      }
+    });
+
     socket.on("find-nearest-drivers", async (message) => {
       const {
         pickUpCoordinates,
@@ -174,8 +193,7 @@ class WebSocket {
       }
     });
 
-    socket.on("start-trip", async (message) => {
-      try {
+    socket.on("start-trip", async (message) => {     try {
         await makuService.startTrip(message.tripId);
       } catch (error: any) {
         socket.emit("start-trip-error", error.message);
