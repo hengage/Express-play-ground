@@ -18,7 +18,7 @@ class NotificationService {
       const message = await this.messaging.send(payload);
 
       const { title = "", body = "" } = payload.notification || {};
-      await saveNotification(user, title, body, payload.data);
+      // await saveNotification(user, title, body, payload.data);
 
       console.log("Notification sent", message);
     } catch (error: any) {
@@ -45,6 +45,12 @@ class NotificationService {
     };
 
     await this.sendNotification(vendorId, payload);
+    await saveNotification(
+      vendorId,
+      payload.notification.title,
+      payload.notification.body,
+      payload.data
+    );
     socket.emit("order-notification-sent", message);
   }
 
@@ -65,8 +71,14 @@ class NotificationService {
       },
       token: `${customerDeviceToken}`,
     };
-
+   
     await this.sendNotification(order.customer, payload);
+    await saveNotification(
+      order.customer._id,
+      payload.notification.title,
+      payload.notification.body,
+      payload.data
+    );
   }
 
   public async notifyRiderOfOrder(riderId: string, order: any) {
@@ -83,7 +95,15 @@ class NotificationService {
       },
       token: `${riderDeviceToken}`,
     };
+
+   
     await this.sendNotification(riderId, payload);
+    await saveNotification(
+      riderId,
+      payload.notification.title,
+      payload.notification.body,
+      payload.data
+    );
   }
 
   async noitifyDriversOfMakuRequest(driverId: string, tripDetails: any) {
@@ -119,6 +139,12 @@ class NotificationService {
       token: `${driverDeviceToken}`,
     };
     await this.sendNotification(customerId, payload);
+    await saveNotification(
+      customerId,
+      payload.notification.title,
+      payload.notification.body,
+      payload.data
+    );
   }
 
   async notifyOnCancelledTrip(
