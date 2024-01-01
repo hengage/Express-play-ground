@@ -7,6 +7,7 @@ import {
   ITowingOrder,
   ITransportCompany,
   ITransportDriver,
+  ITransportTripOrder,
 } from "../transport.interface";
 
 class TransportRepository {
@@ -85,16 +86,20 @@ class TransportRepository {
     return towOrder._id;
   }
 
-  async createTransportOrder(payload: any): Promise<ITowingOrder["_id"]> {
+  async createTransportOrder(payload: any): Promise<ITransportTripOrder["_id"]> {
     const transportTripOrder = await TransportTripOrder.create({
       customer: payload.customer,
       transportCompany: payload.transportCompany,
-      serviceType: payload.service,
+      serviceType: payload.serviceType,
       vehicleType: payload.vehicleType,
       pickUpAddress: payload.pickUpAddress,
-      pickUpCoordinates: payload.pickUpCoordinates,
+      pickUpCoordinates: {
+        coordinates: payload.pickUpCoordinates
+      },
       destinationAddress: payload.destinationAddress,
-      destinationCoordinates: payload.destinationCoordinates,
+      destinationCoordinates: {
+        coordinates: payload.destinationCoordinates
+      },
     });
 
     return transportTripOrder._id;

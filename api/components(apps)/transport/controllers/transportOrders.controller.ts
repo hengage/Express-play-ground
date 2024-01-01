@@ -22,7 +22,7 @@ class TransportOrdersController {
     try {
       const tripOrder = await transportRepo.createTransportOrder(req.body);
       res.status(STATUS_CODES.CREATED).json({
-        message: "Created trip order",
+        message: "Created transport trip order",
         data: { tripOrder },
       });
     } catch (error: any) {

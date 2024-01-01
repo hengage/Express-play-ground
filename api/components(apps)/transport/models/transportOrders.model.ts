@@ -76,18 +76,12 @@ const transportTripOrderSchema = new Schema<ITransportTripOrder>(
       required: true,
       ref: "TransportVehicleType",
     },
-    pickUpAddress: {
-      type: String,
-      required: true,
-    },
+    pickUpAddress: { type: String, default: null },
     pickUpCoordinates: {
       type: { type: String, default: "Point" },
       coordinates: [Number, Number],
     },
-    destinationAddress: {
-      type: String,
-      required: true,
-    },
+    destinationAddress: { type: String, default: null },
     destinationCoordinates: {
       type: { type: String, default: "Point" },
       coordinates: { type: [Number, Number], required: true },
