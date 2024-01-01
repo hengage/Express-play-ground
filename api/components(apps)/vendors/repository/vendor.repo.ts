@@ -22,6 +22,13 @@ class VendorRepository {
 
     return vendor;
   }
+
+  async deleteAccount(vendorId: string) {
+    const result = await Vendor.findByIdAndDelete(vendorId).select("_id");
+    if (!result) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Vendor not found");
+    }
+  }
 }
 
 export const vendorRepo = new VendorRepository();

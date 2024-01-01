@@ -56,7 +56,7 @@ class VendorController {
         data: {
           ...vendor,
           accessToken,
-          refreshToken
+          refreshToken,
         },
       });
     } catch (error: any) {
@@ -116,6 +116,21 @@ class VendorController {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Failed to update profile",
         error: error.message,
+      });
+    }
+  }
+
+  async deleteAccount(req: Request, res: Response) {
+    try {
+      const vendorId = (req as any).user._id;
+      await vendorRepo.deleteAccount(vendorId);
+      res.status(STATUS_CODES.OK).json({
+        message: "Account deleted successfully"
+      })
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to delete account",
+        error: error.message || "Server error",
       });
     }
   }

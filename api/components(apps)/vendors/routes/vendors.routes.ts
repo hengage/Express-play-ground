@@ -18,6 +18,7 @@ class VendorsRoutes {
     this.router.route(`/shops`).get(vendorController.getShops);
     this.router.route('/me').get(vendorController.getMe);
     this.router.route('/me/update').patch(vendorController.updateProfile);
+    this.router.route('/me/delete').delete(vendorController.deleteAccount);
   }
 }
 
