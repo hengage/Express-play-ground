@@ -19,6 +19,7 @@ export interface IMessengerOrder extends Document {
   };
   note: string;
   status: string;
+  deliveryCost: number,
   scheduledPickUpTime?: Date;
   createdAt: Date;
   updatedAt: Date;

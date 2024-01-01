@@ -14,6 +14,7 @@ class MessengerRepo {
         coordinates: payload.dropOffCoordinates,
       },
       note: payload.note,
+      deliveryCost: payload.deliveryCost,
       scheduledPickUpTime: payload.scheduledPickUpTime,
     }).save();
 

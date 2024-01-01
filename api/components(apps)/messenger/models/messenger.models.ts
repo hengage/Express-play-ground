@@ -59,6 +59,7 @@ const messengerOrderShema = new Schema<IMessengerOrder>(
       type: String,
       default: "pending",
     },
+    deliveryCost: {type: Number, required: true,},
     scheduledPickUpTime: {
       type: Date,
     },
