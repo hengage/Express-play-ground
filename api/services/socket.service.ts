@@ -76,7 +76,7 @@ class WebSocket {
 
     socket.on("update-driver-rider-location", async (message) => {
       const { driverId, coordinates } = message;
-      console.log({ driverId, coordinates });
+      // console.log({ driverId, coordinates });
       try {
         await driverRiderService.updateLocation(driverId, coordinates);
       } catch (error) {
@@ -85,10 +85,11 @@ class WebSocket {
       }
     });
 
-    socket.on("save-order", async (message) => {
+    socket.on("create-order", async (message) => {
       try {
         const order = await ordersService.createOrder(message);
         await notificationService.vendorHandleOrderRequest(socket, message);
+        socket.emit("created-order", order);
 
         console.log({ savedOrder: order });
       } catch (error) {
@@ -96,30 +97,34 @@ class WebSocket {
       }
     });
 
-    socket.on("process-order", async (message) => {
+    socket.on("order-accepted", async (message) => {
+      console.log({ acceptedOrderId: message.orderId });
       try {
-        const order = await ordersService.getOrder(message.orderId);
-        await ordersService.setStatusToProcessing(message.orderId);
-        await notificationService.sendOrderToCustomer(order);
-
-        const orderData = ordersService.prepareOrderDataForRider(order);
-
-        const shopCoordinates = order.items.reduce((acc: any, item: any) => {
-          acc = item.shop.location.coordinates;
-          return acc;
-        }, {});
-
-        console.log({orderData})
-        const riders = await findClosestDriverOrRider(
-          shopCoordinates,
-          "rider",
-          10.5
+        // const order = await ordersService.getOrder(message.orderId);
+        // console.log({order})
+        const order = await ordersService.setStatusToProcessing(
+          message.orderId
         );
-        console.log({ riders });
+        if (order) {
+          const orderData = ordersService.prepareOrderDataForRider(order);
 
-        riders.forEach((rider) => {
-          notificationService.notifyRiderOfOrder(rider._id, orderData);
-        });
+          const shopCoordinates = order?.items.reduce((acc: any, item: any) => {
+            acc = item.shop.location.coordinates;
+            return acc;
+          }, {});
+  
+          const riders = await findClosestDriverOrRider(
+            shopCoordinates,
+            "rider",
+            10.5
+          );
+          console.log({ riders });
+  
+          riders.forEach((rider) => {
+            notificationService.notifyRiderOfOrder(rider._id, orderData);
+          });
+        }
+      
       } catch (error: any) {
         console.error(error);
       }

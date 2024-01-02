@@ -1,6 +1,9 @@
 import { OrderStatus, STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
-import { ordersNotificationService } from "../../notifications";
+import {
+  notificationService,
+  ordersNotificationService,
+} from "../../notifications";
 import { Order } from "../models/orders.models";
 import { IOrder } from "../orders.interface";
 
@@ -18,7 +21,7 @@ class OrdersService {
         };
       });
 
-      const order = await  new Order({
+      const order = await new Order({
         customer: payload.customer,
         items: orderItems,
         deliveryFee: payload.deliveryFee,
@@ -46,7 +49,10 @@ class OrdersService {
           select:
             "name  phoneNumber location.coordinates street city state country",
         })
-        .populate({ path: "customer", select: "phoneNumber firstName lastName" })
+        .populate({
+          path: "customer",
+          select: "phoneNumber firstName lastName",
+        })
         .lean();
 
       if (!order) {
@@ -79,23 +85,41 @@ class OrdersService {
     }
   }
 
-  public async setStatusToProcessing(id: string) {
-    const order = await Order.findById(id).select("status").exec();
+  public async setStatusToProcessing(orderId: string) {
+    const order = await Order.findById(orderId)
+      .select("-__v -updatedAt -deliveryAddressCord.type")
+      .populate({ path: "items.product", select: "name photos" })
+      .populate({
+        path: "items.shop",
+        select:
+          "name  phoneNumber location.coordinates street city state country",
+      })
+      .populate({
+        path: "customer",
+        select: "phoneNumber firstName lastName",
+      })
+      .exec();
+    // const order = await this.getOrder(orderId);
     if (order) {
       order.status = OrderStatus.PROCESSING;
       await order.save();
-      console.log("order set to processing", { order });
+      await notificationService.orderAccepted(order);
+      // console.log("order set to processing", { order });
+
+      return order;
     }
   }
-  
+
   public async setStatusToTransit(orderId: string) {
     const order = await ordersService.getOrderById(orderId, "status customer");
     if (order) {
       order.status = OrderStatus.TRANSIT;
       await order.save();
       ordersNotificationService.notifyCustomerOfOrderStatus(
-        order, "Order picked up", "Your order is on the way to you"
-        )
+        order,
+        "Order picked up",
+        "Your order is on the way to you"
+      );
       console.log("Order now in transit", { order });
     }
   }
@@ -106,32 +130,38 @@ class OrdersService {
       order.status = OrderStatus.ARRIVED;
       await order.save();
       ordersNotificationService.notifyCustomerOfOrderStatus(
-        order, "Order arrived", "Your order has arrived at your location"
-        )
+        order,
+        "Order arrived",
+        "Your order has arrived at your location"
+      );
     }
-    console.log("order arrived")
+    console.log("order arrived");
   }
 
   public async setStatusToDelivered(orderId: string) {
-    const order =  await ordersService.getOrderById(orderId, "status customer");
+    const order = await ordersService.getOrderById(orderId, "status customer");
     if (order) {
       order.status = OrderStatus.DELIVERED;
       await order.save();
       ordersNotificationService.notifyCustomerOfOrderStatus(
-        order, "Order delivered", "Your order has been delivered"
-        )
+        order,
+        "Order delivered",
+        "Your order has been delivered"
+      );
       console.log("Order delivered to customer", { order });
     }
   }
 
   public async setStatusToRejected(orderId: string) {
-    const order =  await ordersService.getOrderById(orderId, "status customer");
+    const order = await ordersService.getOrderById(orderId, "status customer");
     if (order) {
       order.status = OrderStatus.REJECTED;
       await order.save();
       ordersNotificationService.notifyCustomerOfOrderStatus(
-        order, "Your order was rejected", "View details of your rejected order"
-        )
+        order,
+        "Your order was rejected",
+        "View details of your rejected order"
+      );
     }
   }
 

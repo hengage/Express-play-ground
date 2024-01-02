@@ -54,16 +54,16 @@ class NotificationService {
     socket.emit("order-notification-sent", message);
   }
 
-  public async sendOrderToCustomer(order: any) {
-    console.log({id: order.customer._id})
+  public async orderAccepted(order: any) {
+    console.log({id: order.customer})
     const customerDeviceToken = await redisClient.get(
       `device-token:${order.customer._id}`
     );
     console.log({ customerDeviceToken });
     const payload = {
       notification: {
-        title: "Your order has been accepted",
-        body: "View details of your order",
+        title: "Order accepted",
+        body: "Your order has been accepted and being processed",
       },
       data: {
         type: "order-accepted-by-vendor",
