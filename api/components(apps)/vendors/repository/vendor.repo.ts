@@ -1,5 +1,7 @@
 import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
+import { deleteProductsForAVendor } from "../../products";
+import { shopRepository } from "../../shops/repository/shops.repo";
 import { Vendor } from "../models/vendors.model";
 import { IVendor } from "../vendors.interface";
 
@@ -28,6 +30,8 @@ class VendorRepository {
     if (!result) {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Vendor not found");
     }
+    await shopRepository.deleteShopsForAVendor(vendorId)
+    await deleteProductsForAVendor(vendorId)
   }
 }
 

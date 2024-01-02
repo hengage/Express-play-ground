@@ -10,4 +10,7 @@ async function deleteProduct(shopId: string) {
   }
 }
 
-export { deleteProduct };
+async function deleteProductsForAVendor(vendorId: string) {
+  await Product.deleteMany({ vendor: vendorId });
+}
+export { deleteProduct, deleteProductsForAVendor };

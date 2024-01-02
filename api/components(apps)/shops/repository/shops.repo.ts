@@ -1,3 +1,4 @@
+import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { Shop } from "../models/shops.models";
 
@@ -19,6 +20,10 @@ class ShopRepository {
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }
+  }
+
+  async deleteShopsForAVendor(vendorId: string) {
+    await Shop.deleteMany({ vendor: vendorId });
   }
 }
 
