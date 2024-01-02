@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 import { STATUS_CODES, URL_LINKS } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { Order } from "../../orders";
@@ -281,14 +283,21 @@ class ShopServices {
   }
 
   public async deleteShop(shopId: string) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
       const result = await Shop.deleteOne({ _id: shopId });
       if (result.deletedCount === 0) {
         throw new HandleException(STATUS_CODES.NOT_FOUND, "Shop not found");
       }
       await deleteProduct(shopId);
+      await session.commitTransaction();
     } catch (error: any) {
+      await session.abortTransaction();
       throw new HandleException(error.status, error.message);
+    } finally {
+      session.endSession()
     }
   }
 

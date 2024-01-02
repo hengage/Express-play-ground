@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { deleteProductsForAVendor } from "../../products";
@@ -26,12 +28,23 @@ class VendorRepository {
   }
 
   async deleteAccount(vendorId: string) {
-    const result = await Vendor.findByIdAndDelete(vendorId).select("_id");
-    if (!result) {
-      throw new HandleException(STATUS_CODES.NOT_FOUND, "Vendor not found");
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    try {
+      const result = await Vendor.findByIdAndDelete(vendorId).select("_id");
+      if (!result) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "Vendor not found");
+      }
+      await shopRepository.deleteShopsForAVendor(vendorId);
+      await deleteProductsForAVendor(vendorId);
+
+      await session.commitTransaction();
+    } catch (error: any) {
+      await session.abortTransaction();
+      throw new HandleException(error.status, error.message);
+    } finally {
+      session.endSession();
     }
-    await shopRepository.deleteShopsForAVendor(vendorId)
-    await deleteProductsForAVendor(vendorId)
   }
 }
 
