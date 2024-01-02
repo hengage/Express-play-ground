@@ -52,10 +52,6 @@ class WebSocket {
       }
     });
 
-    socket.on("send-order-notification", async (message) => {
-      await notificationService.handleOrderRequest(socket, message);
-    });
-
     socket.on("fcm-vendor-device-token", async (message) => {
       const { vendor: vendorId, deviceToken } = message;
       await redisClient.set(`device-token:${vendorId}`, deviceToken);
@@ -91,10 +87,20 @@ class WebSocket {
 
     socket.on("save-order", async (message) => {
       try {
-        const orderId = await ordersService.createOrder(message);
-        const order = await ordersService.getOrder(orderId);
-        await ordersService.setStatusToProcessing(orderId);
-        await notificationService.sendSavedOrder(order);
+        const order = await ordersService.createOrder(message);
+        await notificationService.vendorHandleOrderRequest(socket, message);
+
+        console.log({ savedOrder: order });
+      } catch (error) {
+        console.error({ error });
+      }
+    });
+
+    socket.on("process-order", async (message) => {
+      try {
+        const order = await ordersService.getOrder(message.orderId);
+        await ordersService.setStatusToProcessing(message.orderId);
+        await notificationService.sendOrderToCustomer(order);
 
         const orderData = ordersService.prepareOrderDataForRider(order);
 
@@ -114,8 +120,8 @@ class WebSocket {
         riders.forEach((rider) => {
           notificationService.notifyRiderOfOrder(rider._id, orderData);
         });
-      } catch (error) {
-        console.error({ error });
+      } catch (error: any) {
+        console.error(error);
       }
     });
 
