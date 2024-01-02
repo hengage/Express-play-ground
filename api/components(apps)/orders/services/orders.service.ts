@@ -100,6 +100,17 @@ class OrdersService {
     }
   }
 
+  public async setStatusToArrived(orderId: string) {
+    const order = await ordersService.getOrderById(orderId, "status customer");
+    if (order) {
+      order.status = OrderStatus.ARRIVED;
+      await order.save();
+      ordersNotificationService.notifyCustomerOfOrderStatus(
+        order, "Order arrived", "Your order has arrived at your location"
+        )
+    }
+  }
+
   public async setStatusToDelivered(orderId: string) {
     const order =  await ordersService.getOrderById(orderId, "status customer");
     if (order) {

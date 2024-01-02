@@ -145,6 +145,15 @@ class WebSocket {
       }
     });
 
+    socket.on("order-arrived", async (message) => {
+      const { orderId } = message;
+      await ordersService.setStatusToArrived(orderId);
+      try {
+      } catch (error: any) {
+        socket.emit("order-arrived-error", error.message);
+      }
+    });
+
     socket.on("order-delivered", async (message) => {
       const { orderId } = message;
       await ordersService.setStatusToDelivered(orderId);
