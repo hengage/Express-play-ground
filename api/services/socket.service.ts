@@ -103,6 +103,7 @@ class WebSocket {
           return acc;
         }, {});
 
+        console.log({orderData})
         const riders = await findClosestDriverOrRider(
           shopCoordinates,
           "rider",

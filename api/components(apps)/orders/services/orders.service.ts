@@ -46,7 +46,7 @@ class OrdersService {
           select:
             "name  phoneNumber location.coordinates street city state country",
         })
-        .populate({ path: "customer", select: "phoneNumber" })
+        .populate({ path: "customer", select: "phoneNumber firstName lastName" })
         .lean();
 
       if (!order) {
@@ -109,6 +109,7 @@ class OrdersService {
         order, "Order arrived", "Your order has arrived at your location"
         )
     }
+    console.log("order arrived")
   }
 
   public async setStatusToDelivered(orderId: string) {
