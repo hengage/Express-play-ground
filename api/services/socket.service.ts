@@ -35,13 +35,21 @@ class WebSocket {
 
   private listenForEvents(socket: Socket, clientId: string) {
     socket.on("driver-start-working", (message) => {
-      driverRiderService.setAvailablity(message.driverId, true);
-      redisClient.set(`socketId:${clientId}`, message.driverId);
+      try {
+        driverRiderService.setAvailablity(message.id, true);
+        redisClient.set(`socketId:${clientId}`, message.id);
+      } catch (error: any) {
+        socket.emit("driver-start-working-error", error.message);
+      }
     });
 
     socket.on("driver-stop-working", (message) => {
-      driverRiderService.setAvailablity(message.driverId, false);
-      redisClient.delete(`socketId:${clientId}`);
+      try {
+        driverRiderService.setAvailablity(message.id, false);
+        redisClient.delete(`socketId:${clientId}`);
+      } catch (error: any) {
+        socket.emit("driver-stop-working-error", error.message);
+      }
     });
 
     socket.on("send-order-notification", async (message) => {
@@ -110,6 +118,14 @@ class WebSocket {
       }
     });
 
+    socket.on("order-rejected", async (message) => {
+      try {
+        ordersService.setStatusToRejected(message.orderId);
+      } catch (error: any) {
+        socket.emit("order-rejected-error", error.message);
+      }
+    });
+
     socket.on("assign-rider", async (message) => {
       const { orderId, riderId } = message;
       try {
@@ -121,7 +137,7 @@ class WebSocket {
 
     socket.on("order-in-transit", async (message) => {
       const { orderId } = message;
-      console.log({orderId})
+      console.log({ orderId });
       await ordersService.setStatusToTransit(orderId);
       try {
       } catch (error: any) {
@@ -194,7 +210,8 @@ class WebSocket {
       }
     });
 
-    socket.on("start-trip", async (message) => {     try {
+    socket.on("start-trip", async (message) => {
+      try {
         await makuService.startTrip(message.tripId);
       } catch (error: any) {
         socket.emit("start-trip-error", error.message);
@@ -240,13 +257,13 @@ class WebSocket {
 
     socket.on("find-tow-companies", async (message: any) => {
       try {
-        const towCompanies = await transportService.findTowingCompanies()
-        console.log({towCompanies: JSON.stringify(towCompanies)})
-        socket.emit("found-tow-companies", towCompanies)
-      } catch (error:any) {
-        socket.emit("find-tow-companies-error")
+        const towCompanies = await transportService.findTowingCompanies();
+        console.log({ towCompanies: JSON.stringify(towCompanies) });
+        socket.emit("found-tow-companies", towCompanies);
+      } catch (error: any) {
+        socket.emit("find-tow-companies-error");
       }
-    })
+    });
   }
 }
 

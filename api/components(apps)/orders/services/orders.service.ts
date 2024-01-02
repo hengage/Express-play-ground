@@ -112,6 +112,17 @@ class OrdersService {
     }
   }
 
+  public async setStatusToRejected(orderId: string) {
+    const order =  await ordersService.getOrderById(orderId, "status customer");
+    if (order) {
+      order.status = OrderStatus.REJECTED;
+      await order.save();
+      ordersNotificationService.notifyCustomerOfOrderStatus(
+        order, "Your order was rejected", "View details of your rejected order"
+        )
+    }
+  }
+
   public prepareOrderDataForRider(order: IOrder) {
     return {
       orderId: order._id,
