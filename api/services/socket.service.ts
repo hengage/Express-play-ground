@@ -57,6 +57,7 @@ class WebSocket {
 
     socket.on("fcm-vendor-device-token", async (message) => {
       const { vendor: vendorId, deviceToken } = message;
+      console.log({vendorId, deviceToken})
       await redisClient.set(`device-token:${vendorId}`, deviceToken);
     });
 

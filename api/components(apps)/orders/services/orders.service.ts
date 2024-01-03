@@ -103,7 +103,12 @@ class OrdersService {
     if (order) {
       order.status = OrderStatus.PROCESSING;
       await order.save();
-      await notificationService.orderAccepted(order);
+      // await notificationService.orderAccepted(order);
+      await ordersNotificationService.notifyCustomerOfOrderStatus(
+        order,
+        "Order accepted",
+        "Your order has been accepted and being processed"
+      )
       // console.log("order set to processing", { order });
 
       return order;
@@ -182,7 +187,7 @@ class OrdersService {
   }
 
   async assignRider(orderId: string, riderId: string) {
-    const order = await ordersService.getOrderById(orderId, "rider customer");
+    const order = await ordersService.getOrderById(orderId, "rider customer status");
     order.rider = riderId;
     await order.save();
     return order;

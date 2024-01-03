@@ -14,7 +14,7 @@ class OrdersNotificationService {
       },
       data: {
         type: "order-status",
-        data: JSON.stringify(order._id),
+        data: JSON.stringify({ _id: order._id, status: order.status }),
       },
       token: `${customerDeviceToken}`,
     };
