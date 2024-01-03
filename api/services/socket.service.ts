@@ -86,12 +86,18 @@ class WebSocket {
     });
 
     socket.on("create-order", async (message) => {
+      console.log({message})
       try {
         const order = await ordersService.createOrder(message);
+        console.log({order})
+        message = {
+          _id: order,
+          ...message,
+        }
+        console.log({message})
         await notificationService.vendorHandleOrderRequest(socket, message);
         socket.emit("created-order", order);
 
-        console.log({ savedOrder: order });
       } catch (error) {
         console.error({ error });
       }
