@@ -182,9 +182,10 @@ class OrdersService {
   }
 
   async assignRider(orderId: string, riderId: string) {
-    const order = await ordersService.getOrderById(orderId, "rider");
+    const order = await ordersService.getOrderById(orderId, "rider customer");
     order.rider = riderId;
     await order.save();
+    return order;
   }
 }
 

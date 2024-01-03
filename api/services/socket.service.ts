@@ -2,7 +2,10 @@ import { Server } from "http";
 
 const socketIO = require("socket.io");
 import { Socket } from "socket.io";
-import { notificationService } from "../components(apps)/notifications";
+import {
+  notificationService,
+  ordersNotificationService,
+} from "../components(apps)/notifications";
 import { redisClient } from "./redis.service";
 import { ordersService } from "../components(apps)/orders";
 import { driverRiderService } from "../components(apps)/driversAndRiders";
@@ -86,18 +89,17 @@ class WebSocket {
     });
 
     socket.on("create-order", async (message) => {
-      console.log({message})
+      console.log({ message });
       try {
         const order = await ordersService.createOrder(message);
-        console.log({order})
+        console.log({ order });
         message = {
           _id: order,
           ...message,
-        }
-        console.log({message})
+        };
+        console.log({ message });
         await notificationService.vendorHandleOrderRequest(socket, message);
         socket.emit("created-order", order);
-
       } catch (error) {
         console.error({ error });
       }
@@ -118,19 +120,18 @@ class WebSocket {
             acc = item.shop.location.coordinates;
             return acc;
           }, {});
-  
+
           const riders = await findClosestDriverOrRider(
             shopCoordinates,
             "rider",
             10.5
           );
           console.log({ riders });
-  
+
           riders.forEach((rider) => {
             notificationService.notifyRiderOfOrder(rider._id, orderData);
           });
         }
-      
       } catch (error: any) {
         console.error(error);
       }
@@ -147,7 +148,13 @@ class WebSocket {
     socket.on("assign-rider", async (message) => {
       const { orderId, riderId } = message;
       try {
-        ordersService.assignRider(orderId, riderId);
+        const order = await ordersService.assignRider(orderId, riderId);
+        console.log({order})
+        await ordersNotificationService.notifyCustomerOfOrderStatus(
+          order,
+          "Order Assigned",
+          "A rider has accepted and is assigned to your order",
+        );
       } catch (error: any) {
         socket.emit("assign-rider-error", error.message);
       }
