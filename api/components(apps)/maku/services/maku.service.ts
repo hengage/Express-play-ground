@@ -102,7 +102,7 @@ class MakuService {
   async getTripWithCustomerDetails(tripId: string) {
     const trip = MakuTrip.findById(tripId)
       .select(
-        `pickUpAddress pickUpCoordinates.coordinates 
+        `driver pickUpAddress pickUpCoordinates.coordinates 
       destinationAddress destinationCoordinates.coordinates`
       )
       .populate({
