@@ -271,13 +271,13 @@ class WebSocket {
           notificationService.notifyOnCancelledTrip(
             trip?.customer,
             "driver",
-            trip._id
+            {_id:  trip._id, status: trip.status}
           );
         } else if (message.customerId) {
           notificationService.notifyOnCancelledTrip(
             trip?.driver,
             "passenger",
-            trip._id
+            {_id:  trip._id, status: trip.status}
           );
         }
       } catch (error: any) {

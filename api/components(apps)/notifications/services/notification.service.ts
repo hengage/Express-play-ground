@@ -3,6 +3,7 @@ import { Socket } from "socket.io";
 import { redisClient } from "../../../services";
 import { firebaseAdmin } from "../../../config";
 import { saveNotification } from "../repositery/notification.repo";
+import { ITrip } from "../../maku";
 
 class NotificationService {
   private messaging: admin.messaging.Messaging;
@@ -146,11 +147,7 @@ class NotificationService {
     );
   }
 
-  async notifyOnCancelledTrip(
-    userId: string,
-    whoCancelled: string,
-    tripId: string
-  ) {
+  async notifyOnCancelledTrip(userId: string, whoCancelled: string, trip: any) {
     const userDeviceToken = await redisClient.get(`device-token:${userId}`);
     const payload = {
       notification: {
@@ -159,7 +156,7 @@ class NotificationService {
       },
       data: {
         type: "maku-trip",
-        data: tripId,
+        data: JSON.stringify(trip),
       },
 
       token: `${userDeviceToken}`,
