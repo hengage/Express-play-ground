@@ -122,7 +122,7 @@ class NotificationService {
     await this.sendNotification(driverId, payload);
   }
 
-  async notifyCustomerOnDrivalArrival(customerId: string, tripId: string) {
+  async notifyCustomerOnDrivalArrival(customerId: string, trip: any) {
     const driverDeviceToken = await redisClient.get(
       `device-token:${customerId}`
     );
@@ -133,11 +133,13 @@ class NotificationService {
       },
       data: {
         type: "maku-trip",
-        data: tripId,
+        data: JSON.stringify(trip),
       },
 
       token: `${driverDeviceToken}`,
     };
+
+    console.log(payload.data)
     await this.sendNotification(customerId, payload);
     await saveNotification(
       customerId,
@@ -161,6 +163,8 @@ class NotificationService {
 
       token: `${userDeviceToken}`,
     };
+
+    console.log(payload.data)
     await this.sendNotification(userId, payload);
   }
 }

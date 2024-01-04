@@ -57,7 +57,7 @@ class WebSocket {
 
     socket.on("fcm-vendor-device-token", async (message) => {
       const { vendor: vendorId, deviceToken } = message;
-      console.log({vendorId, deviceToken})
+      console.log({ vendorId, deviceToken });
       await redisClient.set(`device-token:${vendorId}`, deviceToken);
     });
 
@@ -150,11 +150,11 @@ class WebSocket {
       const { orderId, riderId } = message;
       try {
         const order = await ordersService.assignRider(orderId, riderId);
-        console.log({order})
+        console.log({ order });
         await ordersNotificationService.notifyCustomerOfOrderStatus(
           order,
           "Order Assigned",
-          "A rider has accepted and is assigned to your order",
+          "A rider has accepted and is assigned to your order"
         );
       } catch (error: any) {
         socket.emit("assign-rider-error", error.message);
@@ -221,7 +221,7 @@ class WebSocket {
     socket.on("create-trip", async (message) => {
       try {
         const trip = await makuService.createTrip(message);
-        const getTrip = await makuService.getTripWithCustomerDetails(trip._id) 
+        const getTrip = await makuService.getTripWithCustomerDetails(trip._id);
         const room = `maku:${trip.customer}`;
         socket.join(room);
         this.io.to(room).emit("created-trip", getTrip);
@@ -237,10 +237,10 @@ class WebSocket {
           message.tripId
         );
         console.log(trip.customer);
-        await notificationService.notifyCustomerOnDrivalArrival(
-          trip.customer,
-          trip._id
-        );
+        await notificationService.notifyCustomerOnDrivalArrival(trip.customer, {
+          _id: trip._id,
+          status: trip.status,
+        });
       } catch (error: any) {
         socket.emit("arrived-pickup-location-error", error.message);
       }
@@ -268,17 +268,15 @@ class WebSocket {
       try {
         const trip: any = await makuService.cancelTrip(message.tripId);
         if (message.driverId) {
-          notificationService.notifyOnCancelledTrip(
-            trip?.customer,
-            "driver",
-            {_id:  trip._id, status: trip.status}
-          );
+          notificationService.notifyOnCancelledTrip(trip?.customer, "driver", {
+            _id: trip._id,
+            status: trip.status,
+          });
         } else if (message.customerId) {
-          notificationService.notifyOnCancelledTrip(
-            trip?.driver,
-            "passenger",
-            {_id:  trip._id, status: trip.status}
-          );
+          notificationService.notifyOnCancelledTrip(trip?.driver, "passenger", {
+            _id: trip._id,
+            status: trip.status,
+          });
         }
       } catch (error: any) {
         socket.emit("cancel-trip-error", error.message);

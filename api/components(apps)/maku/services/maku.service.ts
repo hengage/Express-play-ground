@@ -72,29 +72,45 @@ class MakuService {
   }
 
   async driverArrivedLocation(tripId: string) {
-    const trip = await MakuTrip.findByIdAndUpdate(tripId, {
-      $set: { status: MakuCabStatus.ARRIVED_PICKUP_LOCATION },
-    }).select("status customer");
+    const trip = await MakuTrip.findByIdAndUpdate(
+      tripId,
+      {
+        $set: { status: MakuCabStatus.ARRIVED_PICKUP_LOCATION },
+      },
+      { new: true }
+    ).select("status customer");
 
     return trip;
   }
 
   async startTrip(tripId: string) {
-    await MakuTrip.findByIdAndUpdate(tripId, {
-      $set: { status: MakuCabStatus.STARTED },
-    }).select("status");
+    await MakuTrip.findByIdAndUpdate(
+      tripId,
+      {
+        $set: { status: MakuCabStatus.STARTED },
+      },
+      { new: true }
+    ).select("status");
   }
 
   async completeTrip(tripId: string) {
-    await MakuTrip.findByIdAndUpdate(tripId, {
-      $set: { status: MakuCabStatus.COMPLETED },
-    }).select("status");
+    await MakuTrip.findByIdAndUpdate(
+      tripId,
+      {
+        $set: { status: MakuCabStatus.COMPLETED },
+      },
+      { new: true }
+    ).select("status");
   }
 
   async cancelTrip(tripId: string) {
-    const trip = await MakuTrip.findByIdAndUpdate(tripId, {
-      $set: { status: MakuCabStatus.CANCELLED },
-    }).select("status customer driver");
+    const trip = await MakuTrip.findByIdAndUpdate(
+      tripId,
+      {
+        $set: { status: MakuCabStatus.CANCELLED },
+      },
+      { new: true }
+    ).select("status customer driver");
 
     return trip;
   }
