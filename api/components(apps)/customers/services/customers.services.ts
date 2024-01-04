@@ -150,7 +150,7 @@ class CustomerService {
     const query = { customer: customerId };
     const options = {
       page,
-      limit: 10,
+      limit: 15,
       select: "_id pickUpAddress destinationAddress price status createdAt",
       populate: [
         { path: "driver", select: "firstName lastName phoneNumber photo" },

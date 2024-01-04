@@ -1,6 +1,7 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import { IProduct } from "../products.interface";
 import { stringsUtils } from "../../../utils";
+import paginate  from "mongoose-paginate-v2";
 
 const productSchema = new Schema<IProduct>(
   {
@@ -10,11 +11,15 @@ const productSchema = new Schema<IProduct>(
       default: () => stringsUtils.generateUniqueString(4),
     },
     name: { type: String, required: true, set: stringsUtils.toLowerCaseSetter },
-    description: { type: String, required: true, set: stringsUtils.toLowerCaseSetter },
+    description: {
+      type: String,
+      required: true,
+      set: stringsUtils.toLowerCaseSetter,
+    },
     price: { type: Number, required: true },
     photos: [{ type: String, required: true }],
     shop: { type: String, ref: "Shop", required: true },
-    category: { type: String, required: true},
+    category: { type: String, required: true },
     vendor: { type: String, ref: "Vendor", required: true },
     sizes: [{ type: String }],
     colors: [{ type: String }],
@@ -22,4 +27,8 @@ const productSchema = new Schema<IProduct>(
   { timestamps: true, _id: false }
 );
 
-export const Product = model<IProduct>("Product", productSchema);
+productSchema.plugin(paginate);
+export const Product = model<IProduct, mongoose.PaginateModel<IProduct>>(
+  "Product",
+  productSchema
+);
