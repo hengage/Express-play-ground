@@ -1,4 +1,4 @@
-import { MakuCabStatus } from "../../../constants";
+import { MakuCabStatus, STATUS_CODES } from "../../../constants";
 import { findClosestDriverOrRider } from "../../../services";
 import { HandleException } from "../../../utils";
 import { notificationService } from "../../notifications";
@@ -34,17 +34,14 @@ class MakuService {
         vehicleType
       );
       drivers.forEach((driver) => {
-        notificationService.noitifyDriversOfMakuRequest(
-          driver._id,
-          {
-            pickUpCoordinates,
-            pickUpAddress,
-            destinationAddress, 
-            destinationCoordinates, 
-            customer,
-            vehicleType
-          }
-        );
+        notificationService.noitifyDriversOfMakuRequest(driver._id, {
+          pickUpCoordinates,
+          pickUpAddress,
+          destinationAddress,
+          destinationCoordinates,
+          customer,
+          vehicleType,
+        });
       });
       return drivers;
     } catch (error: any) {
@@ -79,7 +76,7 @@ class MakuService {
       $set: { status: MakuCabStatus.ARRIVED_PICKUP_LOCATION },
     }).select("status customer");
 
-    return trip
+    return trip;
   }
 
   async startTrip(tripId: string) {
@@ -95,11 +92,33 @@ class MakuService {
   }
 
   async cancelTrip(tripId: string) {
-    const trip  = await MakuTrip.findByIdAndUpdate(tripId, {
+    const trip = await MakuTrip.findByIdAndUpdate(tripId, {
       $set: { status: MakuCabStatus.CANCELLED },
     }).select("status customer driver");
 
-    return trip
+    return trip;
+  }
+
+  async getTripWithCustomerDetails(tripId: string) {
+    const trip = MakuTrip.findById(tripId)
+      .select(
+        `pickUpAddress pickUpCoordinates.coordinates 
+      destinationAddress destinationCoordinates.coordinates`
+      )
+      .populate({
+        path: "customer",
+        select: "firstName lastName phoneNumber",
+      })
+      .lean()
+      .exec();
+
+    if (!trip) {
+      throw new HandleException(
+        STATUS_CODES.NOT_FOUND,
+        "The trip was not found and might not exist"
+      );
+    }
+    return trip;
   }
 }
 
