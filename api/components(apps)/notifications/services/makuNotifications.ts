@@ -13,7 +13,7 @@ class MakuNotificationService {
         body,
       },
       data: {
-        type: "order-status",
+        type: "maku-trip",
         data: JSON.stringify({ _id: trip._id, status: trip.status }),
       },
       token: `${customerDeviceToken}`,
