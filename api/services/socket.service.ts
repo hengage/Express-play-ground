@@ -13,6 +13,7 @@ import { findClosestDriverOrRider } from "./geospatial.services";
 import { makuService } from "../components(apps)/maku";
 import { messengerService } from "../components(apps)/messenger";
 import { transportService } from "../components(apps)/transport";
+import { makuNotificationService } from "../components(apps)/notifications/services/makuNotifications";
 
 class WebSocket {
   private io: Socket;
@@ -236,7 +237,6 @@ class WebSocket {
         const trip: any = await makuService.driverArrivedLocation(
           message.tripId
         );
-        console.log(trip.customer);
         await notificationService.notifyCustomerOnDrivalArrival(trip.customer, {
           _id: trip._id,
           status: trip.status,
@@ -248,7 +248,12 @@ class WebSocket {
 
     socket.on("start-trip", async (message) => {
       try {
-        await makuService.startTrip(message.tripId);
+        const trip = await makuService.startTrip(message.tripId);
+        await makuNotificationService.notifyCustomerOfTripStatus(
+          trip, 
+          "Trip started",
+          "We hope you enjoy your ride"
+        )
       } catch (error: any) {
         socket.emit("start-trip-error", error.message);
         console.log("error starting trip", error.message);
@@ -257,10 +262,16 @@ class WebSocket {
 
     socket.on("complete-trip", async (message) => {
       try {
-        await makuService.completeTrip(message.tripId);
+        const trip = await makuService.completeTrip(message.tripId);
+        console.log({trip})
+        await makuNotificationService.notifyCustomerOfTripStatus(
+          trip, 
+          "Trip completed!",
+          "We hope you did enjoy your ride"
+        )
       } catch (error: any) {
         socket.emit("complete-trip-error", error.message);
-        console.log("error starting trip", error.message);
+        console.log("error completing trip", error.message);
       }
     });
 

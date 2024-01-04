@@ -84,23 +84,27 @@ class MakuService {
   }
 
   async startTrip(tripId: string) {
-    await MakuTrip.findByIdAndUpdate(
+    const trip = await MakuTrip.findByIdAndUpdate(
       tripId,
       {
         $set: { status: MakuCabStatus.STARTED },
       },
       { new: true }
-    ).select("status");
+    ).select("status customer");
+
+    return trip
   }
 
   async completeTrip(tripId: string) {
-    await MakuTrip.findByIdAndUpdate(
+    const trip = await MakuTrip.findByIdAndUpdate(
       tripId,
       {
         $set: { status: MakuCabStatus.COMPLETED },
       },
       { new: true }
-    ).select("status");
+    ).select("status customer");
+
+    return trip
   }
 
   async cancelTrip(tripId: string) {
