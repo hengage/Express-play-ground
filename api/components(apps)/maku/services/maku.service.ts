@@ -103,7 +103,8 @@ class MakuService {
     const trip = MakuTrip.findById(tripId)
       .select(
         `driver pickUpAddress pickUpCoordinates.coordinates 
-      destinationAddress destinationCoordinates.coordinates`
+      destinationAddress destinationCoordinates.coordinates 
+      vehicleType status`
       )
       .populate({
         path: "customer",
