@@ -102,15 +102,32 @@ class ProductsController {
   public async deleteProduct(req: Request, res: Response) {
     const vendorId = (req as any).user._id;
     try {
-      await productsService.deleteProduct(req.params.productId, vendorId)
+      await productsService.deleteProduct(req.params.productId, vendorId);
       res.status(STATUS_CODES.OK).json({
         message: "Product deleted",
       });
     } catch (error: any) {
       res.status(error.status).json({
         message: "Failed to delete product",
-        error: error.message
-      })
+        error: error.message,
+      });
+    }
+  }
+
+  async searchProducts(req: Request, res: Response) {
+    const query = req.query.name as string;
+    const page = parseInt(req.query.page as string) || 1;
+    try {
+      const products = await productsService.searchProducts(query, page);
+      res.status(STATUS_CODES.OK).json({
+        message: "Found products",
+        data: products,
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to search for products",
+        error: error.message || "Server error",
+      });
     }
   }
 }

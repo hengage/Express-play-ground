@@ -12,6 +12,8 @@ class ProductsRoutes {
   public initializeRoutes() {
     this.router.use(jwtUtils.verifyTokenMiddleware);
     this.router.route(`/new/:shopId`).post(productsController.addProduct);
+    this.router.route("/search").get(productsController.searchProducts)
+
     this.router.route(`/:productId`).get(productsController.getProductById);
     this.router
       .route(`/category/:categoryId`)
@@ -22,6 +24,7 @@ class ProductsRoutes {
     this.router
       .route("/:productId/delete")
       .post(productsController.deleteProduct);
+
   }
 }
 

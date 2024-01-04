@@ -138,6 +138,21 @@ class ProductsService {
       throw new HandleException(error.status, error.message);
     }
   }
+
+  async searchProducts(term: string, page: number) {
+    const query = { name: { $regex: term, $options: "i" } };
+
+    const options = {
+      page,
+      limit: 20,
+      select: "name price shop photos",
+      populate: [{path: "shop", select: "name"}],
+      leanWithId: false,
+    };
+
+    const products = await Product.paginate(query, options);
+    return products;
+  }
 }
 
 export const productsService = new ProductsService();
