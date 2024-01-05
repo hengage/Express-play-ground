@@ -222,7 +222,7 @@ class WebSocket {
     socket.on("create-trip", async (message) => {
       try {
         const trip = await makuService.createTrip(message);
-        const getTrip = await makuService.getTripWithCustomerDetails(trip._id);
+        const getTrip = await makuService.getTripDetails(trip._id);
         const room = `maku:${trip.customer}`;
         socket.join(room);
         this.io.to(room).emit("created-trip", getTrip);

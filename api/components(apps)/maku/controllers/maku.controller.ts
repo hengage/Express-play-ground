@@ -19,6 +19,22 @@ class MakuController {
       });
     }
   }
+
+  async getTripDetails(req: Request, res: Response) {
+    const { tripId } = req.params;
+    try {
+      const trip = await makuService.getTripDetails(tripId);
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched trip details",
+        data: { trip }
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to get trip details",
+        error: error.message,
+      });
+    }
+  }
 }
 
 export const makuController = new MakuController();

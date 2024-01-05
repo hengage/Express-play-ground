@@ -92,7 +92,7 @@ class MakuService {
       { new: true }
     ).select("status customer");
 
-    return trip
+    return trip;
   }
 
   async completeTrip(tripId: string) {
@@ -104,7 +104,7 @@ class MakuService {
       { new: true }
     ).select("status customer");
 
-    return trip
+    return trip;
   }
 
   async cancelTrip(tripId: string) {
@@ -119,16 +119,24 @@ class MakuService {
     return trip;
   }
 
-  async getTripWithCustomerDetails(tripId: string) {
+  async getTripDetails(tripId: string) {
     const trip = MakuTrip.findById(tripId)
       .select(
-        `driver pickUpAddress pickUpCoordinates.coordinates 
-      destinationAddress destinationCoordinates.coordinates 
-      vehicleType status`
+        `pickUpAddress pickUpCoordinates.coordinates 
+        destinationAddress destinationCoordinates.coordinates 
+        price status`
       )
       .populate({
         path: "customer",
         select: "firstName lastName phoneNumber",
+      })
+      .populate({
+        path: "driver",
+        select: "firstName lastName phoneNumber vehicle",
+      })
+      .populate({
+        path: "vehicleType",
+        select: "vehicleType",
       })
       .lean()
       .exec();
