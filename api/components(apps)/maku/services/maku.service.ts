@@ -63,6 +63,7 @@ class MakuService {
           coordinates: payload.destinationCoordinates,
         },
         vehicleType: payload.vehicleType,
+        price: payload.price
       }).save();
 
       return trip;
