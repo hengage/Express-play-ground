@@ -25,6 +25,20 @@ class ShopRepository {
   async deleteShopsForAVendor(vendorId: string) {
     await Shop.deleteMany({ vendor: vendorId });
   }
+
+  async searchShops(term: string, page: number) {
+    const query = { name: { $regex: term, $options: "i" } };
+
+    const options = {
+      page,
+      limit: 20,
+      select: "name location.coordinates logo ",
+      leanWithId: false,
+    };
+
+    const shops = await Shop.paginate(query, options);
+    return shops;
+  }
 }
 
 export const shopRepository = new ShopRepository();

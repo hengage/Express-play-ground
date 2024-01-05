@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { shopServices } from "../services/shops.services";
 import { STATUS_CODES } from "../../../constants";
 import { vendorService } from "../../vendors";
+import { shopRepository } from "../repository/shops.repo";
+import { HandleException } from "../../../utils";
 
 class ShopController {
   async getShopTypes(req: Request, res: Response) {
@@ -112,7 +114,7 @@ class ShopController {
   }
 
   async getOrders(req: Request, res: Response) {
-    const page = parseInt(req.query.page as string) || 1
+    const page = parseInt(req.query.page as string) || 1;
     try {
       const orders = await shopServices.getOrders(req.params.shopId, page);
       res.status(STATUS_CODES.OK).json({
@@ -142,19 +144,43 @@ class ShopController {
   }
 
   async getFoodAndGroceryShops(req: Request, res: Response) {
-    const page = parseInt((req.query.page as string)) || 1
+    const page = parseInt(req.query.page as string) || 1;
     try {
-      const shops = await shopServices.getFoodAndGroceryShops(page)
+      const shops = await shopServices.getFoodAndGroceryShops(page);
       res.status(STATUS_CODES.OK).json({
         message: "Successful",
-        data: {shops}
-      })
+        data: { shops },
+      });
     } catch (error: any) {
-       res.status(error.status | STATUS_CODES.SERVER_ERROR)
-       .json({
+      res.status(error.status | STATUS_CODES.SERVER_ERROR).json({
         message: "error fetching shops",
-        error: error.message
-       })
+        error: error.message,
+      });
+    }
+  }
+
+  async searchShops(req: Request, res: Response) {
+    const query = req.query.name as string;
+    const page = parseInt(req.query.page as string) || 1;
+
+    try {
+      if (!query) {
+        throw new HandleException(
+          STATUS_CODES.BAD_REQUEST,
+          "Provide a search term"
+        );
+      }
+
+      const shops = await shopRepository.searchShops(query, page);
+      res.status(STATUS_CODES.OK).json({
+        message: "Found shops",
+        data: { shops },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to find shops",
+        error: error.message || "Server error",
+      });
     }
   }
 }
