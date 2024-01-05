@@ -1,6 +1,28 @@
 import { MakuTrip } from "../../maku";
 
 class DriversService {
+  async makuTripHistory(driverId: string, page: number) {
+    const query = { driver: driverId };
+    const options = {
+      page,
+      limit: 10,
+      select: "_id pickUpAddress destinationAddress price status createdAt",
+      populate: [
+        {
+          path: "customer",
+          select: "firstName lastName phoneNumber profilePhoto",
+        },
+      ],
+      lean: true,
+      leanWithId: false,
+      sort: { createdAt: -1 },
+    };
+
+    const trips = MakuTrip.paginate(query, options);
+
+    return trips;
+  }
+  
   async getMakuTripDetails(driverId: string, tripId: string) {
     const trip = await MakuTrip.findOne({ _id: tripId, driver: driverId })
       .select({

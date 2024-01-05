@@ -155,28 +155,6 @@ class DriverRiderService {
     driver.location.coordinates = coordinates;
     await driver.save();
   }
-
-  async makuTripHistory(driverId: string, page: number) {
-    const query = { driver: driverId };
-    const options = {
-      page,
-      limit: 10,
-      select: "_id pickUpAddress destinationAddress price status createdAt",
-      populate: [
-        {
-          path: "customer",
-          select: "firstName lastName phoneNumber profilePhoto",
-        },
-      ],
-      lean: true,
-      leanWithId: false,
-      sort: { createdAt: -1 },
-    };
-
-    const trips = MakuTrip.paginate(query, options);
-
-    return trips;
-  }
 }
 
 export const driverRiderService = new DriverRiderService();
