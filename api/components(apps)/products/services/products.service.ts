@@ -64,16 +64,27 @@ class ProductsService {
     categoryId: string,
     page: number,
     limit: number = 20
-  ): Promise<IProduct[]> {
+  ) {
     const skip = (page - 1) * limit;
 
     try {
-      const products = await Product.find({ category: categoryId })
-        .select("_id name description photos price")
-        .skip(skip)
-        .limit(limit)
-        .lean()
-        .exec();
+      // const products = await Product.find({ category: categoryId })
+      //   .select("_id name description photos price")
+      //   .skip(skip)
+      //   .limit(limit)
+      //   .lean()
+      //   .exec();
+      const query = { category: categoryId };
+
+      const options = {
+        page,
+        limit: 20,
+        select: "name description photos price",
+        leanWithId: false,
+        lean: true,
+      };
+
+      const products = await Product.paginate(query, options);
 
       return products;
     } catch (error: any) {
@@ -146,7 +157,7 @@ class ProductsService {
       page,
       limit: 20,
       select: "name price shop photos",
-      populate: [{path: "shop", select: "name"}],
+      populate: [{ path: "shop", select: "name" }],
       leanWithId: false,
     };
 
