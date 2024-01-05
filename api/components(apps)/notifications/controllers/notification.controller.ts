@@ -4,9 +4,10 @@ import { STATUS_CODES } from "../../../constants";
 
 class NotificationController {
   public async getUserNotifications(req: Request, res: Response) {
+    const page = parseInt(req.query.page as string) || 1;
     const userId = (req as any).user._id;
     try {
-      const notifications = await getUserNotifications(userId);
+      const notifications = await getUserNotifications(userId, page);
       res.status(STATUS_CODES.OK).json({
         message: "Fetched user notifications",
         data: notifications,

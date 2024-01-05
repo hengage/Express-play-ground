@@ -1,5 +1,6 @@
-import { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 import { INotification } from "../notifications.interface";
+import paginate from "mongoose-paginate-v2";
 
 const notificationSchema = new Schema(
   {
@@ -15,7 +16,9 @@ const notificationSchema = new Schema(
   { timestamps: { createdAt: true, updatedAt: false } }
 );
 
-export const Notifications = model<INotification>(
-  "notification",
-  notificationSchema
-);
+notificationSchema.plugin(paginate);
+
+export const Notifications = model<
+  INotification,
+  mongoose.PaginateModel<INotification>
+>("notification", notificationSchema);

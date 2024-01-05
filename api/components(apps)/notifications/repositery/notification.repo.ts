@@ -20,13 +20,22 @@ async function saveNotification(
   }
 }
 
-async function getUserNotifications(userId: string) {
+async function getUserNotifications(userId: string, page: number) {
   try {
-    const notification = await Notifications.find({ user: userId })
-      .select("-__v")
-      .lean()
-      .exec();
-    return notification
+    const query = {user: userId}
+    
+    
+    const options = {
+      page,
+      limit: 20,
+      select: "-__v",
+      leanWithId: false,
+      lean: true,
+      sort: {createdAt: -1}
+    };
+
+    const notifications = Notifications.paginate(query, options)
+    return notifications
   } catch (error: any) {
     throw new HandleException(error.status, error.message)
   }
