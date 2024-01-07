@@ -30,6 +30,7 @@ class DriverRiderService {
         photo: payload.photo,
         accountType,
         vehicleType: payload.vehicleType,
+        vehicle: payload.vehicle,
         vehicleInsurancePhoto: payload.vehicleInsurancePhoto,
         licenseNumber: payload.licenseNumber,
         govtIdPhoto: payload.govtIdPhoto,

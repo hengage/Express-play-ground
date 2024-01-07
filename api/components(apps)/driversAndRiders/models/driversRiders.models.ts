@@ -43,6 +43,7 @@ const driverRiderSchema = new Schema<IDriverRider>(
     postalCode: String,
     licenseNumber: { type: String, required: true },
     vehicleType: { type: String, ref: "VehicleType", required: true },
+    vehicle: { type: String, required: true },
     vehicleInsurancePhoto: { type: String, required: true },
     govtIdPhoto: { type: [String, String], required: true },
     accountType: {
