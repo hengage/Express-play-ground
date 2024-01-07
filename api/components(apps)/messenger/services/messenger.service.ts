@@ -1,3 +1,4 @@
+import { DateTime, Settings } from "luxon";
 import {
   agenda,
   findClosestDriverOrRider,
@@ -49,10 +50,18 @@ class Messengerservice {
     }
   }
 
-  async remindCustomerOfScheduledOrder(customerPhoneNumber: string) {
+  async remindCustomerOfScheduledOrder(
+    customerPhoneNumber: string,
+    scheduledPickUpTime: Date
+  ) {
+    Settings.defaultLocale = "en";
+    const formattedDate = DateTime.fromJSDate(
+      scheduledPickUpTime
+    ).toLocaleString(DateTime.DATETIME_MED);
+
     smsService.sendSms({
       recipientPhoneNumber: customerPhoneNumber,
-      message: "Your scheduled package delivery is in 5 minutes",
+      message: `You have a scheduled package delivery for ${formattedDate}`,
     });
   }
 }

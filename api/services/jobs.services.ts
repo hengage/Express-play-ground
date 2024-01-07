@@ -23,7 +23,10 @@ agenda.define("schedule-messenger-order", async (job: any) => {
     orderData,
     searchKMLimit
   );
-  messengerService.remindCustomerOfScheduledOrder(orderData.customer.phoneNumber);
+  messengerService.remindCustomerOfScheduledOrder(
+    orderData.customer.phoneNumber,
+    orderData.scheduledPickUpTime
+  );
 });
 
 export { agenda };
