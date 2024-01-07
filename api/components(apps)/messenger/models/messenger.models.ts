@@ -19,6 +19,7 @@ const messengerOrderShema = new Schema<IMessengerOrder>(
     },
     packageType: {
       type: String,
+      required: true,
       ref: "PackageType",
     },
     pickUpAddress: {
@@ -85,7 +86,7 @@ const packageTypeSchema = new Schema<IPackageType>(
   }
 );
 
-export const PackageType = model<IPackageType>("packageType", packageTypeSchema);
+export const PackageType = model<IPackageType>("PackageType", packageTypeSchema);
 export const MessengerOrder = model<IMessengerOrder>(
   "messengerOrder",
   messengerOrderShema

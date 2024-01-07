@@ -1,9 +1,10 @@
-import { DateTime } from 'luxon';
+import { DateTime } from "luxon";
 
 import { agenda, findClosestDriverOrRider } from "../../../services";
 import { notificationService } from "../../notifications";
 import { IMessengerOrder } from "../messenger.interface";
 import { messengerRepo } from "../repository/messenger.repo";
+import { MessengerOrder } from "../models/messenger.models";
 class Messengerservice {
   public async notifyNearestRiders(
     pickUpCoordinates: [number, number],
@@ -25,19 +26,19 @@ class Messengerservice {
 
   async createOrder(payload: any, searchKMLimit: number) {
     const order = await messengerRepo.createOrder(payload);
-    console.log({ pickupCoord: payload.pickUpCoordinates });
+    const orderData = await messengerRepo.getOrder(order._id);
     if (order.scheduledPickUpTime) {
-      console.log({scheduledPickUpTime: order.scheduledPickUpTime})
+      console.log({ scheduledPickUpTime: order.scheduledPickUpTime });
       console.log("scheduled pick up");
       agenda.schedule(order.scheduledPickUpTime, "schedule-messenger-order", {
-        order,
+        order: orderData,
         pickUpCoordinates: payload.pickUpCoordinates,
         searchKMLimit,
       });
     } else {
       this.notifyNearestRiders(
         payload.pickUpCoordinates,
-        payload,
+        orderData,
         searchKMLimit
       );
     }
