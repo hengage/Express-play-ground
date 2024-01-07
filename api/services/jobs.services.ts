@@ -9,7 +9,7 @@ const agenda = new Agenda({
     address: `${DB_URL}`,
     collection: "aagendaJobs",
   },
-  processEvery: '30 seconds'
+  processEvery: "30 seconds",
 });
 
 agenda
@@ -20,17 +20,7 @@ agenda.define("schedule-messenger-order", async (job: any) => {
   console.log("Running schedule");
 
   const { order, pickUpCoordinates, searchKMLimit } = job.attrs.data;
-  const riders = await findClosestDriverOrRider(
-    pickUpCoordinates,
-    "rider",
-    searchKMLimit
-  );
-  console.log({ ridersFound: riders });
-  if (riders.length > 0) {
-    riders.forEach((rider) => {
-      notificationService.notifyRiderOfOrder(rider._id, order);
-    });
-  }
+  messengerService.notifyNearestRiders(pickUpCoordinates, order, searchKMLimit);
 });
 
 export { agenda };
