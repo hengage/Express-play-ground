@@ -1,7 +1,5 @@
 import { Agenda } from "agenda";
 import { messengerService } from "../components(apps)/messenger";
-import { findClosestDriverOrRider } from "./geospatial.services";
-import { notificationService } from "../components(apps)/notifications";
 import { DB_URL } from "../config/secrets.config";
 
 const agenda = new Agenda({

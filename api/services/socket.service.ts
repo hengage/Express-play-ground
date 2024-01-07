@@ -2,6 +2,7 @@ import { Server } from "http";
 
 const socketIO = require("socket.io");
 import { Socket } from "socket.io";
+
 import {
   notificationService,
   ordersNotificationService,
@@ -110,8 +111,6 @@ class WebSocket {
     socket.on("order-accepted", async (message) => {
       console.log({ acceptedOrderId: message.orderId });
       try {
-        // const order = await ordersService.getOrder(message.orderId);
-        // console.log({order})
         const order = await ordersService.setStatusToProcessing(
           message.orderId
         );

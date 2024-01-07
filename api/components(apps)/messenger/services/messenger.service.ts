@@ -1,10 +1,7 @@
-import { DateTime } from "luxon";
-
 import { agenda, findClosestDriverOrRider } from "../../../services";
 import { notificationService } from "../../notifications";
 import { IMessengerOrder } from "../messenger.interface";
 import { messengerRepo } from "../repository/messenger.repo";
-import { MessengerOrder } from "../models/messenger.models";
 class Messengerservice {
   public async notifyNearestRiders(
     pickUpCoordinates: [number, number],
