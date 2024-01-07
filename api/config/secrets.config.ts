@@ -30,3 +30,5 @@ export const FIREBASE_CLIENT_X509_CERT_URL =  process.env.FIREBASE_CLIENT_X509_C
 export const FIREBASE_UNIVERSE_DOMAIN =  process.env.FIREBASE_UNIVERSE_DOMAIN
 
 export const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY
+
+export const ADMIN_API_KEY = process.env.ADMIN_API_KEY

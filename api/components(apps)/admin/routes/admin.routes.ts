@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { jwtUtils } from "../../../utils";
 import { adminController } from "../controllers/admin.controller";
 import { adminDriversController } from "../controllers/admin.driversController";
 import { adminRidersController } from "../controllers/admin.RiderController";
+import { apiKeyMiddleware } from "../../../middleware";
 
 class AdminRoutes {
   public router = Router();
@@ -12,7 +12,7 @@ class AdminRoutes {
   }
 
   public initializeRoutes() {
-    // this.router.use(jwtUtils.verifyTokenMiddleware)
+    this.router.use(apiKeyMiddleware)
     this.router.route("/create-shop-type").post(adminController.createShopType);
     this.router
       .route(`/add-shop-category/:shopTypeId`)
