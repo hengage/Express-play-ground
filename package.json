@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@types/twilio": "^3.19.3",
+    "agenda": "^5.0.0",
     "bcrypt": "^5.1.1",
     "big.js": "^6.2.1",
     "cloudinary": "^1.41.0",

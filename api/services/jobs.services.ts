@@ -1,126 +1,36 @@
-import cron from "node-cron";
-import {
-  IMessengerOrder,
-  messengerService,
-} from "../components(apps)/messenger";
-import { redisClient } from "./redis.service";
+import { Agenda } from "agenda";
+import { messengerService } from "../components(apps)/messenger";
+import { findClosestDriverOrRider } from "./geospatial.services";
+import { notificationService } from "../components(apps)/notifications";
+import { DB_URL } from "../config/secrets.config";
 
-class JobScheduler {
-  private static instance: JobScheduler;
-  private job: cron.ScheduledTask | null = null;
+const agenda = new Agenda({
+  db: {
+    address: `${DB_URL}`,
+    collection: "aagendaJobs",
+  },
+  processEvery: '30 seconds'
+});
 
-  private constructor() {
-    // Private constructor to prevent instantiation
+agenda
+  .on("ready", () => console.log("Agenda started!"))
+  .on("error", () => console.log("Agenda connection error!"));
+
+agenda.define("schedule-messenger-order", async (job: any) => {
+  console.log("Running schedule");
+
+  const { order, pickUpCoordinates, searchKMLimit } = job.attrs.data;
+  const riders = await findClosestDriverOrRider(
+    pickUpCoordinates,
+    "rider",
+    searchKMLimit
+  );
+  console.log({ ridersFound: riders });
+  if (riders.length > 0) {
+    riders.forEach((rider) => {
+      notificationService.notifyRiderOfOrder(rider._id, order);
+    });
   }
+});
 
-  public static getInstance(): JobScheduler {
-    if (!JobScheduler.instance) {
-      JobScheduler.instance = new JobScheduler();
-    }
-
-    return JobScheduler.instance;
-  }
-
-  public start() {
-    console.log("Started job from start method");
-    this.loadAndScheduleJobs();
-  }
-
-  private async loadAndScheduleJobs(): Promise<void> {
-    console.log("Loading jobs....");
-
-    try {
-      // Load job data from Redis
-      const rawData = await redisClient.get("jobData");
-
-      if (rawData) {
-        const jobData = JSON.parse(rawData);
-
-        // Schedule jobs based on the loaded data
-        this.scheduleJobs(jobData);
-      }
-    } catch (error: any) {
-      console.error("Error loading job data from Redis:", error.message);
-    }
-  }
-
-  private async saveJobData(jobData: any): Promise<void> {
-    try {
-      // Save job data to Redis
-      await redisClient.set("jobData", JSON.stringify(jobData));
-    } catch (error: any) {
-      console.error("Error saving job data to Redis:", error.message);
-    }
-  }
-
-  private scheduleJobs(jobData: any): void {
-    // Iterate through job data and schedule jobs
-    for (const jobInfo of jobData) {
-      this.scheduleMessengerPickUp(
-        jobInfo.order,
-        jobInfo.payload,
-        jobInfo.searchKMLimit
-      );
-    }
-  }
-
-  public async scheduleMessengerPickUp(
-    order: IMessengerOrder,
-    payload: any,
-    searchKMLimit: number
-  ): Promise<void> {
-    if (order.scheduledPickUpTime) {
-      const expression = dateToCronExpression(
-        new Date(order.scheduledPickUpTime)
-      );
-      console.log({ expression });
-
-      const job = cron.schedule(
-        expression,
-        async () => {
-          console.log("Cron job running!");
-
-          messengerService.notifyNearestRiders(
-            payload.pickUpCoordinates,
-            payload,
-            searchKMLimit
-          );
-
-          console.log("Finished messenger job");
-        },
-        {
-          timezone: "Africa/Accra",
-        }
-      );
-
-      // Optionally start the job immediately upon scheduling
-      job.start();
-
-      const existingJobData = await redisClient.get("jobData");
-      const parsedExistingJobData = existingJobData
-        ? JSON.parse(existingJobData)
-        : [];
-      const updatedJobData = [
-        ...parsedExistingJobData,
-        { order, payload, searchKMLimit },
-      ];
-
-      // Save the updated job data to Redis
-      await this.saveJobData(updatedJobData);
-    }
-  }
-}
-
-function dateToCronExpression(date: Date): string {
-  const minute = date.getMinutes();
-  const hour = date.getHours();
-  const dayOfMonth = date.getDate();
-  const month = date.getMonth() + 1;
-  const dayOfWeek = date.getDay();
-
-  return `${minute} ${hour} ${dayOfMonth} ${month} *`;
-}
-
-// export { scheduleMessengerPickUp };
-
-export const jobScheduler = JobScheduler.getInstance();
+export { agenda };
