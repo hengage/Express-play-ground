@@ -54,7 +54,6 @@ class Messengerservice {
     customerPhoneNumber: string,
     scheduledPickUpTime: Date
   ) {
-    Settings.defaultLocale = "en";
     const formattedDate = DateTime.fromJSDate(
       scheduledPickUpTime
     ).toLocaleString(DateTime.DATETIME_MED);
