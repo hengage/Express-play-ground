@@ -4,9 +4,9 @@ import { IDriverRider } from "../driversAndRiders";
 
 export interface IMessengerOrder extends Document {
   _id: string;
-  customer: ICustomer["_id"];
-  rider: IDriverRider["_id"];
-  packageType: IPackageType["_id"];
+  customer: ICustomer;
+  rider: IDriverRider;
+  packageType: IPackageType;
   pickUpAddress: string;
   pickUpLocation: {
     type: string;

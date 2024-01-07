@@ -1,4 +1,8 @@
-import { agenda, findClosestDriverOrRider } from "../../../services";
+import {
+  agenda,
+  findClosestDriverOrRider,
+  smsService,
+} from "../../../services";
 import { notificationService } from "../../notifications";
 import { IMessengerOrder } from "../messenger.interface";
 import { messengerRepo } from "../repository/messenger.repo";
@@ -27,8 +31,12 @@ class Messengerservice {
     if (order.scheduledPickUpTime) {
       console.log({ scheduledPickUpTime: order.scheduledPickUpTime });
       console.log("scheduled pick up");
-      agenda.schedule(order.scheduledPickUpTime, "schedule-messenger-order", {
-        order: orderData,
+
+      const fiveMinutesBefore = new Date(
+        order.scheduledPickUpTime.getTime() - 5 * 60000
+      );
+      await agenda.schedule(fiveMinutesBefore, "schedule-messenger-order", {
+        orderData,
         pickUpCoordinates: payload.pickUpCoordinates,
         searchKMLimit,
       });
@@ -39,6 +47,13 @@ class Messengerservice {
         searchKMLimit
       );
     }
+  }
+
+  async remindCustomerOfScheduledOrder(customerPhoneNumber: string) {
+    smsService.sendSms({
+      recipientPhoneNumber: customerPhoneNumber,
+      message: "Your scheduled package delivery is in 5 minutes",
+    });
   }
 }
 

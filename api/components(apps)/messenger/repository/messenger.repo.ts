@@ -29,7 +29,8 @@ class MessengerRepo {
     const order = await MessengerOrder.findById(orderId)
       .select("-__v -updatedAt")
       .populate({ path: "customer", select: "firstName lastName phoneNumber" })
-      .populate({ path: "packageType", select: "packageType" });
+      .populate({ path: "packageType", select: "packageType" })
+      .lean();
     if (order) {
       return order;
     }

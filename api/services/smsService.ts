@@ -18,7 +18,7 @@ class SmsService {
       const response = await this.twilioClient.messages.create({
         body: payload.message,
         from: `${TWILIO_PHONE_NUMBER}`,
-        to: payload.recipientPhoneNumber,
+        to: `+${payload.recipientPhoneNumber}`,
       });
       return response;
     } catch (error) {

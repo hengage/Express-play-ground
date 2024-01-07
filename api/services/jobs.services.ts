@@ -17,8 +17,13 @@ agenda
 agenda.define("schedule-messenger-order", async (job: any) => {
   console.log("Running schedule");
 
-  const { order, pickUpCoordinates, searchKMLimit } = job.attrs.data;
-  messengerService.notifyNearestRiders(pickUpCoordinates, order, searchKMLimit);
+  const { orderData, pickUpCoordinates, searchKMLimit } = job.attrs.data;
+  messengerService.notifyNearestRiders(
+    pickUpCoordinates,
+    orderData,
+    searchKMLimit
+  );
+  messengerService.remindCustomerOfScheduledOrder(orderData.customer.phoneNumber);
 });
 
 export { agenda };
