@@ -249,10 +249,10 @@ class WebSocket {
       try {
         const trip = await makuService.startTrip(message.tripId);
         await makuNotificationService.notifyCustomerOfTripStatus(
-          trip, 
+          trip,
           "Trip started",
           "We hope you enjoy your ride"
-        )
+        );
       } catch (error: any) {
         socket.emit("start-trip-error", error.message);
         console.log("error starting trip", error.message);
@@ -262,12 +262,12 @@ class WebSocket {
     socket.on("complete-trip", async (message) => {
       try {
         const trip = await makuService.completeTrip(message.tripId);
-        console.log({trip})
+        console.log({ trip });
         await makuNotificationService.notifyCustomerOfTripStatus(
-          trip, 
+          trip,
           "Trip completed!",
           "We hope you did enjoy your ride"
-        )
+        );
       } catch (error: any) {
         socket.emit("complete-trip-error", error.message);
         console.log("error completing trip", error.message);
@@ -300,12 +300,24 @@ class WebSocket {
     });
 
     socket.on("find-tow-companies", async (message: any) => {
+      const { pickUpCoordinates } = message;
       try {
         const towCompanies = await transportService.findTowingCompanies();
         console.log({ towCompanies: JSON.stringify(towCompanies) });
         socket.emit("found-tow-companies", towCompanies);
       } catch (error: any) {
         socket.emit("find-tow-companies-error");
+      }
+    });
+
+    socket.on("find-transport-companies", async (message: any) => {
+      const { pickUpCoordinates, serviceTypeId } = message;
+      try {
+        const transportCompanies =
+          await transportService.findTransportCompanies(serviceTypeId);
+        socket.emit("found-transport-companies", transportCompanies);
+      } catch (error: any) {
+        socket.emit("find-transport-companies-error");
       }
     });
   }

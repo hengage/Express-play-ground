@@ -182,6 +182,15 @@ class TransportService {
       .lean();
     return towingCompanies;
   }
+
+  async findTransportCompanies(serviceTypeId: string) {
+    const transportCompanies = await TransportCompany.find({
+      serviceType: serviceTypeId,
+    })
+      .select("_id name location.coordinates phoneNumber")
+      .lean();
+    return transportCompanies;
+  }
 }
 
 export const transportService = new TransportService();
