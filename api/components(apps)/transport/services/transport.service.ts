@@ -140,6 +140,17 @@ class TransportService {
     return vehicleTypes;
   }
 
+  async getTowingServiceVehicleTypes() {
+    const vehicleTypes = TransportVehicleType.find({
+      serviceType: "c6a56821",
+    })
+      .select("vehicleType feePerKM transportCompanyPercentage photo")
+      .lean()
+      .exec();
+
+    return vehicleTypes;
+  }
+  
   async getServiceTypes() {
     const serviceTypes = await TransportServiceType.find()
       .select("name")

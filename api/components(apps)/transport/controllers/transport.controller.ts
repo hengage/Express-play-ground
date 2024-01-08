@@ -132,6 +132,21 @@ class TransportController {
     }
   }
 
+  async getTowingServiceVehicleTypes(req: Request, res: Response) {
+    try {
+      const vehicleTypes =
+        await transportService.getTowingServiceVehicleTypes();
+      res.status(STATUS_CODES.OK).json({
+        message: "Found vehicle types",
+        data: { vehicleTypes },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "failed to fetch vehicle types",
+      });
+    }
+  }
+
   async getServiceTypes(req: Request, res: Response) {
     try {
       const serviceTypes = await transportService.getServiceTypes();

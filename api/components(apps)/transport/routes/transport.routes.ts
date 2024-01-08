@@ -27,6 +27,9 @@ class TransportRoutes {
       .route("/service-types/:serviceTypeId/vehicle-types")
       .get(transportController.getVehiclesByServiceType);
     this.router
+      .route("/towing/vehicle-types")
+      .get(transportController.getTowingServiceVehicleTypes);
+    this.router
       .route("/drivers")
       .get(transportController.getTransportCompanyDrivers);
     this.router
