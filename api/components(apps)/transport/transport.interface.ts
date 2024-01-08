@@ -4,6 +4,7 @@ export interface ITransportVehicleType extends Document {
   _id: string;
   vehicleType: string;
   serviceType: ITransportServiceType["_id"];
+  photo: string;
   feePerKM: string;
   transportCompanyPercentage: string;
 }
@@ -53,14 +54,14 @@ export interface ITowingOrder extends Document {
   vehicleType: ITransportVehicleType["_id"];
   pickUpAddress: string;
   pickUpCoordinates: {
-    type: string,
+    type: string;
     coordinates: [number, number];
   };
   destinationAddress: string;
   destinationCoordinates: {
-    type: string,
+    type: string;
     coordinates: [number, number];
-  }
+  };
   status: string;
   createdAt: Date;
   updatedAt: Date;
@@ -74,14 +75,14 @@ export interface ITransportTripOrder extends Document {
   vehicleType: ITransportVehicleType["_id"];
   pickUpAddress: string;
   pickUpCoordinates: {
-    type: string,
+    type: string;
     coordinates: [number, number];
   };
   destinationAddress: string;
   destinationCoordinates: {
-    type: string,
+    type: string;
     coordinates: [number, number];
-  } 
+  };
   status: string;
   createdAt: Date;
   updatedAt: Date;

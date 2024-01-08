@@ -133,7 +133,7 @@ class TransportService {
 
   async getVehiclesByServiceType(serviceType: string) {
     const vehicleTypes = TransportVehicleType.find({ serviceType })
-      .select("vehicleType")
+      .select("vehicleType feePerKM transportCompanyPercentage photo")
       .lean()
       .exec();
 

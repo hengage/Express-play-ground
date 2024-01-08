@@ -6,6 +6,7 @@ class AdminTransportService {
     const transportVehicleType = await new TransportVehicleType({
       vehicleType: payload.vehicleType,
       serviceType: payload.serviceType,
+      photo: payload.photo,
       feePerKM: payload.feePerKM,
       transportCompanyPercentage: payload.transportCompanyPercentage,
     }).save();
