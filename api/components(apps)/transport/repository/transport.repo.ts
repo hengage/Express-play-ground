@@ -86,8 +86,8 @@ class TransportRepository {
     return towOrder._id;
   }
 
-  async createTransportOrder(payload: any): Promise<ITransportTripOrder["_id"]> {
-    const transportTripOrder = await TransportTripOrder.create({
+  async createTransportOrder(payload: any): Promise<Partial<ITransportTripOrder>> {
+    const tripOrder = await TransportTripOrder.create({
       customer: payload.customer,
       transportCompany: payload.transportCompany,
       serviceType: payload.serviceType,
@@ -102,7 +102,7 @@ class TransportRepository {
       },
     });
 
-    return transportTripOrder._id;
+    return tripOrder
   }
 }
 
