@@ -17,6 +17,24 @@ class AdminTransportServiceController {
       });
     }
   }
+
+  async getVehiclesByServiceType(req: Request, res: Response) {
+    const { serviceTypeId } = req.params;
+    try {
+      const vehicleTypes = await adminTransportService.getVehiclesByServiceType(
+        `${serviceTypeId}`
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Found vehicle types",
+        data: { vehicleTypes },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Operation failed",
+        error: error.message || "Server error",
+      });
+    }
+  }
 }
 
 export const adminTransportServiceController = new AdminTransportServiceController()

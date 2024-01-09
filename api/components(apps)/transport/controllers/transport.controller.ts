@@ -128,6 +128,7 @@ class TransportController {
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "failed to fetch vehicle types",
+        error: error.message || "Server error",
       });
     }
   }

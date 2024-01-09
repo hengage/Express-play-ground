@@ -33,6 +33,15 @@ class AdminTransportService {
 
     return serviceTypes;
   }
+
+  async getVehiclesByServiceType(serviceType: string) {
+    const vehicleTypes = TransportVehicleType.find({ serviceType })
+      .select("vehicleType feePerKM transportCompanyPercentage photo")
+      .lean()
+      .exec();
+
+    return vehicleTypes;
+  }
 }
 
 export const adminTransportService = new AdminTransportService();
