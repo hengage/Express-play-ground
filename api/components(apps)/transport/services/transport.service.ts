@@ -6,6 +6,7 @@ import {
   TransportVehicleType,
 } from "../models/transport.models";
 import { TransportDriver } from "../models/transportDrivers.model";
+import { TransportTripOrder } from "../models/transportOrders.model";
 
 class TransportService {
   async create(payload: any) {
@@ -201,6 +202,25 @@ class TransportService {
       .select("_id name location.coordinates phoneNumber serviceType")
       .lean();
     return transportCompanies;
+  }
+
+  async getTransportTripOrders(transportCompanyId: string, page: number) {
+    const query = { transportCompany: transportCompanyId };
+
+    const options = {
+      page,
+      limit: 20,
+      select: "createdAt status",
+      populate: [
+        { path: "customer", select: "firstName lastName" },
+        { path: "serviceType", select: "name" },
+      ],
+      lean: true,
+      leanWithId: false,
+    };
+
+    const transportTripOrders = TransportTripOrder.paginate(query, options);
+    return transportTripOrders;
   }
 }
 

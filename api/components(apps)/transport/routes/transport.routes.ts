@@ -47,6 +47,9 @@ class TransportRoutes {
     this.router
       .route("/trip-order")
       .post(transportOrdersController.createTransportOrder);
+    this.router
+      .route("/company/trip-orders")
+      .get(transportController.getTransportTripOrders);
   }
 }
 

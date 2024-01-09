@@ -232,6 +232,26 @@ class TransportController {
       });
     }
   }
+
+  async getTransportTripOrders(req: Request, res: Response) {
+    const page = parseInt(req.params.page as string) || 1;
+    const id = (req as any).user._id;
+    try {
+      const tripOrders = await transportService.getTransportTripOrders(
+        id,
+        page
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched trip orders",
+        data: { tripOrders },
+      });
+    } catch (error: any) {
+      res.status(error.message || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to get trip orders",
+        error: error.message || "Server error",
+      });
+    }
+  }
 }
 
 export const transportController = new TransportController();
