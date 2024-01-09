@@ -43,6 +43,10 @@ class AdminRoutes {
     this.router
       .route("/transport/service-types/:serviceTypeId/vehicle-types")
       .get(adminTransportServiceController.getVehiclesByServiceType);
+      this.router
+      .route("/transport/companies")
+      .get(adminTransportServiceController.getCompanies);
+    
 
     //Drivers
     this.router.route("/drivers").get(adminDriversController.getDrivers);

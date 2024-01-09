@@ -1,4 +1,8 @@
-import { TransportVehicleType, TransportServiceType } from "../../transport";
+import {
+  TransportVehicleType,
+  TransportServiceType,
+  TransportCompany,
+} from "../../transport";
 
 class AdminTransportService {
   async createVehicleType(payload: any) {
@@ -41,6 +45,20 @@ class AdminTransportService {
       .exec();
 
     return vehicleTypes;
+  }
+
+  async getTransportCompanies(page: number) {
+    const query = {};
+    const options = {
+      page,
+      limit: 20,
+      select: "name email address",
+      lean: true,
+      leanWithId: false,
+    };
+    
+    const transportCompanies = await TransportCompany.paginate(query, options);
+    return transportCompanies;
   }
 }
 

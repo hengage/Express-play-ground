@@ -1,4 +1,6 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
+import paginate from "mongoose-paginate-v2";
+
 import { encryption, stringsUtils } from "../../../utils";
 import {
   ITransportCompany,
@@ -76,6 +78,8 @@ const transportCompanySchema = new Schema<ITransportCompany>(
   }
 );
 
+transportCompanySchema.plugin(paginate)
+
 transportCompanySchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     try {
@@ -95,7 +99,7 @@ export const TransportVehicleType = model<ITransportVehicleType>(
   "TransportVehicleType",
   transportVehicleTypeSchema
 );
-export const TransportCompany = model<ITransportCompany>(
+export const TransportCompany = model<ITransportCompany, mongoose.PaginateModel<ITransportCompany>>(
   "TransportCompany",
   transportCompanySchema
 );
