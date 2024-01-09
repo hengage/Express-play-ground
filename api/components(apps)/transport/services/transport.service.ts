@@ -189,7 +189,7 @@ class TransportService {
     const towingCompanies = await TransportCompany.find({
       serviceType: "c6a56821",
     })
-      .select("_id name location.coordinates phoneNumber")
+      .select("_id name location.coordinates phoneNumber serviceType")
       .lean();
     return towingCompanies;
   }
@@ -198,7 +198,7 @@ class TransportService {
     const transportCompanies = await TransportCompany.find({
       serviceType: serviceTypeId,
     })
-      .select("_id name location.coordinates phoneNumber")
+      .select("_id name location.coordinates phoneNumber serviceType")
       .lean();
     return transportCompanies;
   }
