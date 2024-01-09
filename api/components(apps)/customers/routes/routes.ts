@@ -24,6 +24,9 @@ class CustomersRoutes {
     this.router
       .route("/maku/trip/:tripId")
       .get(customerController.getmakuTripDetails);
+    this.router
+      .route("/transport/trip-orders")
+      .get(customerController.getTransportTripOrders);
   }
 }
 

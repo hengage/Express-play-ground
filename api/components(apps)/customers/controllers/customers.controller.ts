@@ -161,6 +161,26 @@ class CustomerController {
       });
     }
   }
+
+  async getTransportTripOrders(req: Request, res: Response) {
+    const page = parseInt(req.params.page as string) || 1;
+    const customerId = (req as any).user._id;
+    try {
+      const tripOrders = await customerService.getTransportTripOrders(
+        customerId,
+        page
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched trip orders",
+        data: { tripOrders },
+      });
+    } catch (error: any) {
+      res.status(error.message || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to get trip orders",
+        error: error.message || "Server error",
+      });
+    }
+  }
 }
 
 export const customerController = new CustomerController();

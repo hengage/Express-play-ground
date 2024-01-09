@@ -1,7 +1,8 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import { stringsUtils } from "../../../utils";
 import { ITowingOrder, ITransportTripOrder } from "../transport.interface";
 import { TransportServiceOrderStatus } from "../../../constants";
+import paginate from "mongoose-paginate-v2";
 
 const towOrderSchema = new Schema<ITowingOrder>(
   {
@@ -96,9 +97,11 @@ const transportTripOrderSchema = new Schema<ITransportTripOrder>(
   }
 );
 
+transportTripOrderSchema.plugin(paginate);
+
 export const TowOrder = model<ITowingOrder>("towOrder", towOrderSchema);
 
-export const TransportTripOrder = model<ITransportTripOrder>(
-  "transportTripOrder",
-  transportTripOrderSchema
-);
+export const TransportTripOrder = model<
+  ITransportTripOrder,
+  mongoose.PaginateModel<ITransportTripOrder>
+>("transportTripOrder", transportTripOrderSchema);

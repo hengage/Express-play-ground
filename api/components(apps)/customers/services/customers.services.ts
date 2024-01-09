@@ -7,6 +7,7 @@ import { ILoginCustomer } from "../customers.interface";
 import { STATUS_CODES } from "../../../constants";
 import { IOrder, Order } from "../../orders";
 import { MakuTrip } from "../../maku";
+import { TransportTripOrder } from "../../transport";
 
 class CustomerService {
   async signup(payload: ISignupCustomer): Promise<any> {
@@ -180,6 +181,25 @@ class CustomerService {
       .lean()
       .exec();
     return trip;
+  }
+
+  async getTransportTripOrders(customerId: string, page: number) {
+    const query = { customer: customerId };
+
+    const options = {
+      page,
+      limit: 20,
+      select: "createdAt status",
+      populate: [
+        { path: "transportCompany", select: "name" },
+        { path: "serviceType", select: "name" },
+      ],
+      lean: true,
+      leanWithId: false,
+    };
+
+    const transportTripOrders = TransportTripOrder.paginate(query, options);
+    return transportTripOrders;
   }
 }
 
