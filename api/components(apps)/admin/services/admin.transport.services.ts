@@ -2,7 +2,7 @@ import { TransportVehicleType, TransportServiceType } from "../../transport";
 
 class AdminTransportService {
   async createVehicleType(payload: any) {
-    console.log(payload)
+    console.log(payload);
     const transportVehicleType = await new TransportVehicleType({
       vehicleType: payload.vehicleType,
       serviceType: payload.serviceType,
@@ -11,19 +11,28 @@ class AdminTransportService {
       transportCompanyPercentage: payload.transportCompanyPercentage,
     }).save();
 
-    return  {
+    return {
       _id: transportVehicleType._id,
-      vehicleType: transportVehicleType.vehicleType
-    }
+      vehicleType: transportVehicleType.vehicleType,
+    };
   }
 
   async createServiceType(payload: any) {
-    const serviceType = await new TransportServiceType ({
+    const serviceType = await new TransportServiceType({
       name: payload.name,
-    }).save()
+    }).save();
 
-    return serviceType._id
+    return serviceType._id;
+  }
+
+  async getServiceTypes() {
+    const serviceTypes = await TransportServiceType.find()
+      .select("name")
+      .lean()
+      .exec();
+
+    return serviceTypes;
   }
 }
 
-export const adminTransportService = new AdminTransportService()
+export const adminTransportService = new AdminTransportService();

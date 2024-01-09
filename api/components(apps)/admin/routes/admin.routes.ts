@@ -3,6 +3,7 @@ import { adminController } from "../controllers/admin.controller";
 import { adminDriversController } from "../controllers/admin.driversController";
 import { adminRidersController } from "../controllers/admin.RiderController";
 import { apiKeyMiddleware } from "../../../middleware";
+import { adminTransportServiceController } from "../controllers/admin.transportController";
 
 class AdminRoutes {
   public router = Router();
@@ -12,7 +13,7 @@ class AdminRoutes {
   }
 
   public initializeRoutes() {
-    this.router.use(apiKeyMiddleware)
+    this.router.use(apiKeyMiddleware);
     this.router.route("/create-shop-type").post(adminController.createShopType);
     this.router
       .route(`/add-shop-category/:shopTypeId`)
@@ -28,18 +29,29 @@ class AdminRoutes {
     this.router
       .route("/vehicle-type/:vehicleTypeId")
       .patch(adminController.updateVehicleType);
+
+    //Transport services
     this.router
       .route("/transport/create-vehicle-type")
       .post(adminController.createTransportVehicleType);
     this.router
       .route("/transport/create-service-type")
       .post(adminController.createTransportServiceType);
+    this.router
+      .route("/transport/service-types")
+      .get(adminTransportServiceController.getServiceTypes);
 
+    //Drivers
     this.router.route("/drivers").get(adminDriversController.getDrivers);
-    this.router.route("/drivers/:driverId").get(adminDriversController.getDriverById);
+    this.router
+      .route("/drivers/:driverId")
+      .get(adminDriversController.getDriverById);
 
+    //Riders
     this.router.route("/riders").get(adminRidersController.getRiders);
-    this.router.route("/riders/:riderId").get(adminRidersController.getRiderById);
+    this.router
+      .route("/riders/:riderId")
+      .get(adminRidersController.getRiderById);
   }
 }
 
