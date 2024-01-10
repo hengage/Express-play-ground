@@ -50,6 +50,9 @@ class AdminRoutes {
 
     //Vendors
     this.router.route("/vendors").get(adminOpsForVendorsController.getVendors);
+    this.router
+      .route("/vendors/:vendorId")
+      .get(adminOpsForVendorsController.getVendorDetails);
 
     //Drivers
     this.router.route("/drivers").get(adminDriversController.getDrivers);
