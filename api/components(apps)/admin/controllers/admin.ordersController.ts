@@ -1,0 +1,41 @@
+import { Request, Response } from "express";
+import { STATUS_CODES } from "../../../constants";
+import { adminOpsForOrdersService } from "../services/admin.orderssServices";
+
+class AdminOpsForOrdersController {
+  async getOrders(req: Request, res: Response) {
+    const page = parseInt(req.query.page as string) || 1;
+    try {
+      const orders = await adminOpsForOrdersService.getOrders(page);
+      res.status(STATUS_CODES.OK).json({
+        messsge: "Found orders",
+        data: { orders },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Operation failed",
+        error: error.message || "Server error",
+      });
+    }
+  }
+
+  async getOrderDetails(req: Request, res: Response) {
+    try {
+      const order = await adminOpsForOrdersService.getOrderDetails(
+        req.params.orderId
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched order",
+        data: { order },
+      });
+    } catch (error: any) {
+        res.status(error.status || STATUS_CODES.SERVER_ERROR)
+        .json({
+            message: "Failed to get order",
+            error: error.message || "Server error"
+        })
+    }
+  }
+}
+
+export const adminOpsForOrdersController = new AdminOpsForOrdersController();
