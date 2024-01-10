@@ -6,22 +6,28 @@ class AdminOpsForOrdersService {
   async getOrders(page: number, status?: string) {
     const query: { status?: string } = {};
 
-      if (status) {
-        query.status = status;
-      }
+    if (status) {
+      query.status = status;
+    }
 
+    const limit = 15;
     const options = {
-        skip: (page - 1) * 10,
-        limit: 15,
-        select: "-_id items.shop totalAmount status",
-        populate: [
-          { path: "rider", select: "firstName lastName" },
-          { path: "customer", select: "firstName lastName" },
-        ],
-        sort: { createdAt: -1 },
-      };
+      skip: (page - 1) * limit,
+      limit,
+      select: "-_id items.shop totalAmount status",
+      populate: [
+        { path: "rider", select: "firstName lastName" },
+        { path: "customer", select: "firstName lastName" },
+      ],
+      sort: { createdAt: -1 },
+    };
 
-      const orders = await Order.find(query)
+    const totalDocs = await Order.countDocuments();
+    const totalPages = Math.ceil(totalDocs / limit);
+    const hasNextPage = page < totalPages;
+    const hasPrevPage = page > 1;
+
+    var docs = await Order.find(query)
       .sort({ createdAt: -1 })
       .skip(options.skip)
       .limit(options.limit)
@@ -30,15 +36,30 @@ class AdminOpsForOrdersService {
       .lean()
       .exec();
 
-      return orders;
+    const orders = {
+      docs,
+      totalDocs,
+      limit,
+      totalPages,
+      page,
+      hasNextPage,
+      hasPrevPage
+    };
+    return orders;
   }
 
   async getOrderDetails(orderId: string) {
     const order = await Order.findById(orderId)
-    .select("-__v -updatedAt")
-    .populate({path: "customer", select: "firstName lastName phoneNumber profilePhoto"})
-    .populate({path: "rider", select: "firstName lastName phoneNumber photo"})
-    .lean();
+      .select("-__v -updatedAt")
+      .populate({
+        path: "customer",
+        select: "firstName lastName phoneNumber profilePhoto",
+      })
+      .populate({
+        path: "rider",
+        select: "firstName lastName phoneNumber photo",
+      })
+      .lean();
 
     if (!order) {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Order not found");
