@@ -4,6 +4,7 @@ import { adminDriversController } from "../controllers/admin.driversController";
 import { adminRidersController } from "../controllers/admin.RiderController";
 import { apiKeyMiddleware } from "../../../middleware";
 import { adminTransportServiceController } from "../controllers/admin.transportController";
+import { adminOpsForVendorsController } from "../controllers/admin.vendorsController";
 
 class AdminRoutes {
   public router = Router();
@@ -43,10 +44,12 @@ class AdminRoutes {
     this.router
       .route("/transport/service-types/:serviceTypeId/vehicle-types")
       .get(adminTransportServiceController.getVehiclesByServiceType);
-      this.router
+    this.router
       .route("/transport/companies")
       .get(adminTransportServiceController.getCompanies);
-    
+
+    //Vendors
+    this.router.route("/vendors").get(adminOpsForVendorsController.getVendors);
 
     //Drivers
     this.router.route("/drivers").get(adminDriversController.getDrivers);
