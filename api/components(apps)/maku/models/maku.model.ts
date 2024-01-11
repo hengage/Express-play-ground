@@ -48,7 +48,7 @@ const tripSchema = new Schema<IMakuTrip>(
         required: true,
       },
     },
-    vehicleType: { type: String, required: true, ref: "VehicleType" },
+    vehicleType: { type: String, required: true, ref: "MakuVehicleType" },
     price: { type: String },
     status: { type: String, default: MakuCabStatus.PENDING },
   },
