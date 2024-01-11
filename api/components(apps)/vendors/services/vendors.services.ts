@@ -7,47 +7,20 @@ import { ISignupVendor, IVendor } from "../vendors.interface";
 import { IShop, Shop } from "../../shops";
 
 class VendorService {
-  async getVendorByPhoneNumber(
-    phoneNumber: string,
-    selectFields?: string
-  ): Promise<IVendor> {
-    try {
-      const query = Vendor.findOne({
-        phoneNumber: { $eq: phoneNumber },
-      });
+  async checkPhoneNumberIsTaken(phoneNumber: string) {
+    const vendor = await Vendor.findOne({ phoneNumber })
+      .select("phoneNumber")
+      .lean();
 
-      if (selectFields) {
-        query.select(selectFields);
-      }
-
-      const vendor = await query.exec();
-      if (!vendor) {
-        throw new HandleException(404, "Vendor not found");
-      }
-      return vendor;
-    } catch (error: any) {
-      throw new HandleException(error.status, error.message);
+    if (vendor) {
+      throw new HandleException(
+        STATUS_CODES.CONFLICT,
+        "Phone number exists for a registered vendor"
+      );
     }
+
+    return;
   }
-
-  async getVendorById(id: string, selectFields?: string): Promise<IVendor> {
-    try {
-      const query = Vendor.findById(id);
-
-      if (selectFields) {
-        query.select(selectFields);
-      }
-
-      const vendor = await query.exec();
-      if (!vendor) {
-        throw new HandleException(STATUS_CODES.NOT_FOUND, "Vendor not found");
-      }
-      return vendor;
-    } catch (error: any) {
-      throw new HandleException(error.status, error.message);
-    }
-  }
-
   async signup(payload: ISignupVendor) {
     let middleName;
     if (payload.middleName) {
@@ -76,6 +49,30 @@ class VendorService {
     }
   }
 
+  async getVendorByPhoneNumber(
+    phoneNumber: string,
+    selectFields?: string
+  ): Promise<IVendor> {
+    try {
+      const query = Vendor.findOne({
+        phoneNumber: { $eq: phoneNumber },
+      });
+
+      if (selectFields) {
+        query.select(selectFields);
+      }
+
+      const vendor = await query.exec();
+      if (!vendor) {
+        throw new HandleException(404, "Vendor not found");
+      }
+      return vendor;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  
   async login(payload: any): Promise<any> {
     try {
       const vendor = await this.getVendorByPhoneNumber(
@@ -99,6 +96,24 @@ class VendorService {
       };
 
       return loggedInVendor;
+    } catch (error: any) {
+      throw new HandleException(error.status, error.message);
+    }
+  }
+
+  async getVendorById(id: string, selectFields?: string): Promise<IVendor> {
+    try {
+      const query = Vendor.findById(id);
+
+      if (selectFields) {
+        query.select(selectFields);
+      }
+
+      const vendor = await query.exec();
+      if (!vendor) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "Vendor not found");
+      }
+      return vendor;
     } catch (error: any) {
       throw new HandleException(error.status, error.message);
     }

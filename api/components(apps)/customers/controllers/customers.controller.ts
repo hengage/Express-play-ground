@@ -9,7 +9,7 @@ class CustomerController {
   async signup(req: Request, res: Response): Promise<void> {
     try {
       await userService.isEmailTaken(req.body.email);
-      await userService.isPhoneNumberTaken(req.body.phoneNumber);
+      await customerService.checkPhoneNumberIsTaken(req.body.phoneNumber);
 
       const customerData = req.body;
       const savedCustomer = await customerService.signup(customerData);

@@ -12,6 +12,18 @@ import { driverRiderRepo } from "../repository/driverRider.repo";
 import { MakuTrip } from "../../maku";
 
 class DriverRiderService {
+  async checkPhoneNumberIsTaken(phoneNumber: string, accountType: string) {
+    const driverRider = DriverRider.findOne({ phoneNumber })
+      .select("phoneNumber")
+      .lean();
+
+    if (!driverRider) {
+      throw new HandleException(
+        STATUS_CODES.CONFLICT,
+        `Phone number exists for a registered ${accountType}`
+      );
+    }
+  }
   public async signup(payload: ISignupDriverAndRider, accountType: string) {
     let middleName;
     if (payload.middleName) {

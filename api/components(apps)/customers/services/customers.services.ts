@@ -10,6 +10,21 @@ import { MakuTrip } from "../../maku";
 import { TransportTripOrder } from "../../transport";
 
 class CustomerService {
+  async checkPhoneNumberIsTaken(phoneNumber: string) {
+    const customer = await Customer.findOne({ phoneNumber })
+      .select("phoneNumber")
+      .lean();
+
+    if (customer) {
+      throw new HandleException(
+        STATUS_CODES.CONFLICT,
+        "Phone number exists for a registered customer"
+      );
+    }
+
+    return;
+  }
+
   async signup(payload: ISignupCustomer): Promise<any> {
     try {
       const newCustomer = new Customer({

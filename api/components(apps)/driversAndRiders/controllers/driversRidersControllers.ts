@@ -17,7 +17,10 @@ class DriversRidersController {
       }
 
       await userService.isEmailTaken(req.body.email);
-      await userService.isPhoneNumberTaken(req.body.phoneNumber);
+      await driverRiderService.checkPhoneNumberIsTaken(
+        req.body.phoneNumber,
+        accountType
+      );
 
       const driverRider = await driverRiderService.signup(
         req.body,
@@ -104,7 +107,7 @@ class DriversRidersController {
   async updateProfile(req: Request, res: Response) {
     const id = (req as any).user._id;
     try {
-      const driverRider= await driverRiderRepo.updateProfile(id, req.body);
+      const driverRider = await driverRiderRepo.updateProfile(id, req.body);
       res.status(STATUS_CODES.OK).json({
         message: "Updated profile",
         data: { driverRider },
@@ -136,7 +139,7 @@ class DriversRidersController {
 
   async makuTripHistory(req: Request, res: Response) {
     const driverId = (req as any).user._id;
-    const page = parseInt(req.query.page as string) || 1
+    const page = parseInt(req.query.page as string) || 1;
     try {
       const trips = await driversService.makuTripHistory(driverId, page);
       res.status(STATUS_CODES.OK).json({

@@ -10,8 +10,7 @@ class VendorController {
   public async signup(req: Request, res: Response) {
     try {
       await userService.isEmailTaken(req.body.email);
-
-      await userService.isPhoneNumberTaken(req.body.phoneNumber);
+      await vendorService.checkPhoneNumberIsTaken(req.body.phoneNumber);
 
       const vendor = await vendorService.signup(req.body);
       const payload = {
