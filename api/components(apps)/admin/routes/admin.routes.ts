@@ -6,6 +6,7 @@ import { apiKeyMiddleware } from "../../../middleware";
 import { adminTransportServiceController } from "../controllers/admin.transportController";
 import { adminOpsForVendorsController } from "../controllers/admin.vendorsController";
 import { adminOpsForOrdersController } from "../controllers/admin.ordersController";
+import { adminOpsForCustomersController } from "../controllers/admin.customersController";
 
 class AdminRoutes {
   public router = Router();
@@ -48,6 +49,14 @@ class AdminRoutes {
     this.router
       .route("/transport/companies")
       .get(adminTransportServiceController.getCompanies);
+
+    // CUSTOMERS
+    this.router
+      .route("/customers")
+      .get(adminOpsForCustomersController.getCustomers);
+    this.router
+      .route("/customers/:customerId")
+      .get(adminOpsForCustomersController.getCustomerDetails);
 
     //Vendors
     this.router.route("/vendors").get(adminOpsForVendorsController.getVendors);
