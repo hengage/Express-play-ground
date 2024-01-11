@@ -1,7 +1,7 @@
 import { DriverRiderType, STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { DriverRider, IDriverRider } from "../../driversAndRiders";
-import { IVehicleType, VehicleType } from "../../maku";
+import { IMakuVehicleType, MakuVehicleType } from "../../maku";
 import { DeliveryRate, IDeliveryRate } from "../../orders";
 import { Category, ShopType } from "../../shops";
 import { IAddCategory, ICreateVehicleType } from "../admin.interfacee";
@@ -133,7 +133,7 @@ class AdminService {
 
   public async createVehicleType(payload: ICreateVehicleType) {
     try {
-      const vehicleType: IVehicleType = new VehicleType({
+      const vehicleType: IMakuVehicleType = new MakuVehicleType({
         vehicleType: payload.vehicleType,
         baseFee: payload.baseFee,
         feePerKM: payload.feePerKM,
@@ -147,9 +147,9 @@ class AdminService {
     }
   }
 
-  public async updateVehicleType(id: string, payload: Partial<IVehicleType>) {
+  public async updateVehicleType(id: string, payload: Partial<IMakuVehicleType>) {
     try {
-      const vehicleType = await VehicleType.findByIdAndUpdate(
+      const vehicleType = await MakuVehicleType.findByIdAndUpdate(
         id,
         { $set: payload },
         { new: true }

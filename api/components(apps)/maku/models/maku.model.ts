@@ -1,11 +1,11 @@
 import mongoose, { model, Schema } from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
-import { ITrip as IMakuTrip, IVehicleType } from "../maku.interfaces";
+import { ITrip as IMakuTrip, IMakuVehicleType } from "../maku.interfaces";
 import { stringsUtils } from "../../../utils";
 import { MakuCabStatus } from "../../../constants";
 
-const vehicleTypeSchema = new Schema<IVehicleType>({
+const makuVehicleTypeSchema = new Schema<IMakuVehicleType>({
   _id: {
     type: String,
     required: true,
@@ -60,7 +60,7 @@ tripSchema.plugin(paginate)
 
 export const MakuTrip = model<IMakuTrip, mongoose.PaginateModel<IMakuTrip>>("makuTrip", tripSchema);
 
-export const VehicleType = model<IVehicleType>(
-  "VehicleType",
-  vehicleTypeSchema
+export const MakuVehicleType = model<IMakuVehicleType>(
+  "MakuVehicleType",
+  makuVehicleTypeSchema
 );

@@ -1,6 +1,6 @@
 import { Document } from "mongoose";
 
-export interface IVehicleType extends Document {
+export interface IMakuVehicleType extends Document {
     _id: string;
     vehicleType: string;
     baseFee: string;

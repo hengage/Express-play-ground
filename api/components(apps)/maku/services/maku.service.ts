@@ -2,12 +2,12 @@ import { MakuCabStatus, STATUS_CODES } from "../../../constants";
 import { findClosestDriverOrRider } from "../../../services";
 import { HandleException } from "../../../utils";
 import { notificationService } from "../../notifications";
-import { MakuTrip, VehicleType } from "../models/maku.model";
+import { MakuTrip, MakuVehicleType } from "../models/maku.model";
 
 class MakuService {
   public async getVehicleTypes() {
     try {
-      const vehicleTypes = await VehicleType.find({})
+      const vehicleTypes = await MakuVehicleType.find({})
         .select("-__v")
         .lean()
         .exec();
