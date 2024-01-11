@@ -14,7 +14,7 @@ class AdminOpsForOrdersService {
     const options = {
       skip: (page - 1) * limit,
       limit,
-      select: "-_id items.shop totalAmount status",
+      select: "_id items.shop totalAmount status",
       populate: [
         { path: "rider", select: "firstName lastName" },
         { path: "customer", select: "firstName lastName" },
@@ -22,7 +22,7 @@ class AdminOpsForOrdersService {
       sort: { createdAt: -1 },
     };
 
-    const totalDocs = await Order.countDocuments();
+    const totalDocs = await Order.countDocuments(query);
     const totalPages = Math.ceil(totalDocs / limit);
     const hasNextPage = page < totalPages;
     const hasPrevPage = page > 1;

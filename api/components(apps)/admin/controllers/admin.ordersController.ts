@@ -5,8 +5,9 @@ import { adminOpsForOrdersService } from "../services/admin.orderssServices";
 class AdminOpsForOrdersController {
   async getOrders(req: Request, res: Response) {
     const page = parseInt(req.query.page as string) || 1;
+    const status = req.query.status as string
     try {
-      const orders = await adminOpsForOrdersService.getOrders(page);
+      const orders = await adminOpsForOrdersService.getOrders(page, status);
       res.status(STATUS_CODES.OK).json({
         messsge: "Found orders",
         data: { orders },
