@@ -34,6 +34,7 @@ const transportDriverSchema = new Schema<ITransportDriver>({
   transportCompany: {
     type: String,
     required: true,
+    ref: "TransportCompany"
   }
 });
 
