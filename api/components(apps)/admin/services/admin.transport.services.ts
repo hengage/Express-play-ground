@@ -1,3 +1,5 @@
+import { STATUS_CODES } from "../../../constants";
+import { HandleException } from "../../../utils";
 import {
   TransportVehicleType,
   TransportServiceType,
@@ -59,6 +61,18 @@ class AdminTransportService {
     
     const transportCompanies = await TransportCompany.paginate(query, options);
     return transportCompanies;
+  }
+
+  async getCompanyDetails(companyId: string) {
+    const transportCompany = await TransportCompany.findById(companyId)
+    .select("-__v -location")
+    .populate({path: "vehicles.vehicleType", select: "vehicleType"})
+
+    if(!transportCompany) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Company not found")
+    }
+
+    return transportCompany;
   }
 }
 

@@ -33,23 +33,6 @@ class AdminRoutes {
       .route("/vehicle-type/:vehicleTypeId")
       .patch(adminController.updateVehicleType);
 
-    //Transport services
-    this.router
-      .route("/transport/create-vehicle-type")
-      .post(adminController.createTransportVehicleType);
-    this.router
-      .route("/transport/create-service-type")
-      .post(adminController.createTransportServiceType);
-    this.router
-      .route("/transport/service-types")
-      .get(adminTransportServiceController.getServiceTypes);
-    this.router
-      .route("/transport/service-types/:serviceTypeId/vehicle-types")
-      .get(adminTransportServiceController.getVehiclesByServiceType);
-    this.router
-      .route("/transport/companies")
-      .get(adminTransportServiceController.getCompanies);
-
     // CUSTOMERS
     this.router
       .route("/customers")
@@ -81,6 +64,27 @@ class AdminRoutes {
     this.router
       .route("/riders/:riderId")
       .get(adminRidersController.getRiderById);
+
+    //Transport services
+    this.router
+      .route("/transport/create-vehicle-type")
+      .post(adminController.createTransportVehicleType);
+    this.router
+      .route("/transport/create-service-type")
+      .post(adminController.createTransportServiceType);
+    this.router
+      .route("/transport/service-types")
+      .get(adminTransportServiceController.getServiceTypes);
+    this.router
+      .route("/transport/service-types/:serviceTypeId/vehicle-types")
+      .get(adminTransportServiceController.getVehiclesByServiceType);
+    this.router
+      .route("/transport/companies")
+      .get(adminTransportServiceController.getCompanies);
+
+    this.router
+      .route("/transport/companies/:companyId")
+      .get(adminTransportServiceController.getCompanyDetails);
   }
 }
 

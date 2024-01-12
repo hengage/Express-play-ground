@@ -42,10 +42,27 @@ class AdminTransportServiceController {
     try {
       const transportCompanies =
         await adminTransportService.getTransportCompanies(page);
-        res.status(STATUS_CODES.OK).json({
-            message: "Found companies",
-            data: { transportCompanies },
-          });
+      res.status(STATUS_CODES.OK).json({
+        message: "Found companies",
+        data: { transportCompanies },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Operation failed",
+        error: error.message || "Server error",
+      });
+    }
+  }
+
+  async getCompanyDetails(req: Request, res: Response) {
+    try {
+      const company = await adminTransportService.getCompanyDetails(
+        req.params.companyId
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched company details",
+        data: { company },
+      });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Operation failed",
