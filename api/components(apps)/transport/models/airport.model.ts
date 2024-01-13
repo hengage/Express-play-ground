@@ -5,7 +5,7 @@ import { IAirport } from "../transport.interface";
 const airportSchema = new Schema<IAirport>({
   _id: {
     type: String,
-    default: stringsUtils.generateUniqueString(4),
+    default: () => stringsUtils.generateUniqueString(4),
   },
   name: { type: String, required: true, unique: true },
   address: { type: String, required: true, unique: true },
