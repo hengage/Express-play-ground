@@ -104,7 +104,7 @@ class DriverRiderService {
     try {
       const driverRider = await driverRiderRepo.getById(
         id,
-        `firstName lastName middleName email phoneNumber 
+        `firstName lastName middleName email phoneNumber photo 
         vehicleType licenseNumber rating street city state`
       );
 
