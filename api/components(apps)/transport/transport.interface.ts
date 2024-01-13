@@ -87,3 +87,13 @@ export interface ITransportTripOrder extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IAirport extends Document {
+  _id: string;
+  name: string;
+  address: string;
+  location: {
+    type: string;
+    coordinates: [number, number];
+  };
+}

@@ -4,7 +4,9 @@ import {
   TransportVehicleType,
   TransportServiceType,
   TransportCompany,
+  Airport,
 } from "../../transport";
+// import { Airport } from "../../transport/models/airport.model";
 
 class AdminTransportService {
   async createVehicleType(payload: any) {
@@ -58,21 +60,47 @@ class AdminTransportService {
       lean: true,
       leanWithId: false,
     };
-    
+
     const transportCompanies = await TransportCompany.paginate(query, options);
     return transportCompanies;
   }
 
   async getCompanyDetails(companyId: string) {
     const transportCompany = await TransportCompany.findById(companyId)
-    .select("-__v -location")
-    .populate({path: "vehicles.vehicleType", select: "vehicleType"})
+      .select("-__v -location")
+      .populate({ path: "vehicles.vehicleType", select: "vehicleType" });
 
-    if(!transportCompany) {
-      throw new HandleException(STATUS_CODES.NOT_FOUND, "Company not found")
+    if (!transportCompany) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Company not found");
     }
 
     return transportCompany;
+  }
+
+  async addAirport(payload: any) {
+    const airportExists = await Airport.findOne({ name: payload.name })
+    .select("name")
+    .lean();
+    if (airportExists) {
+      throw new HandleException(
+        STATUS_CODES.CONFLICT,
+        "Airport already exists"
+      );
+    }
+    const airport = await Airport.create({
+      name: payload.name,
+      address: payload.address,
+      location: {
+        coordinates: payload.location,
+      },
+    });
+
+    return {
+      _id: airport._id,
+      name: airport.name,
+      address: airport.address,
+
+    };
   }
 }
 

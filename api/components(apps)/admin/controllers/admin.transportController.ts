@@ -70,6 +70,21 @@ class AdminTransportServiceController {
       });
     }
   }
+
+  async addAirport(req: Request, res: Response) {
+    try {
+      const airport = await adminTransportService.addAirport(req.body);
+      res.status(STATUS_CODES.OK).json({
+        message: "Airport added",
+        data: { airport },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to add airport",
+        error: error.message || "Server error",
+      });
+    }
+  }
 }
 
 export const adminTransportServiceController =

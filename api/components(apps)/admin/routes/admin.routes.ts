@@ -85,6 +85,10 @@ class AdminRoutes {
     this.router
       .route("/transport/companies/:companyId")
       .get(adminTransportServiceController.getCompanyDetails);
+
+    this.router
+      .route("/transport/airport")
+      .post(adminTransportServiceController.addAirport);
   }
 }
 
