@@ -18,8 +18,8 @@ class AdminRidersService {
     return riders;
   }
 
-  async getRiderById(riderId: string) {
-    const rider = await DriverRider.findById(riderId)
+  async getRiderDetails(riderId: string) {
+    const rider = await DriverRider.findOne({_id: riderId, accountType: "rider"})
       .select("-middleName -__v -updatedAt -location -accountType -password")
       .lean();
 

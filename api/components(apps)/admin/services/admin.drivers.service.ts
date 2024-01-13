@@ -18,8 +18,11 @@ class AdminDriversService {
     return drivers;
   }
 
-  async getDriverById(driverId: string) {
-    const driver = await DriverRider.findById(driverId)
+  async getDriverDetails(driverId: string) {
+    const driver = await DriverRider.findOne({
+      _id: driverId,
+      accountType: "driver",
+    })
       .select("-middleName -__v -updatedAt -location -accountType -password")
       .lean();
 

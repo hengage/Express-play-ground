@@ -57,7 +57,7 @@ class AdminRoutes {
     this.router.route("/drivers").get(adminDriversController.getDrivers);
     this.router
       .route("/drivers/:driverId")
-      .get(adminDriversController.getDriverById);
+      .get(adminDriversController.getDriverDetails);
     this.router
       .route("/drivers/:driverId")
       .patch(adminDriversController.updateDriver);
@@ -69,7 +69,7 @@ class AdminRoutes {
     this.router.route("/riders").get(adminRidersController.getRiders);
     this.router
       .route("/riders/:riderId")
-      .get(adminRidersController.getRiderById);
+      .get(adminRidersController.getRiderDetails);
 
     this.router
       .route("/riders/:riderId")

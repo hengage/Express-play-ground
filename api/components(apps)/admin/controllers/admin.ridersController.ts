@@ -19,9 +19,9 @@ class AdminRidersController {
       }
     }
   
-    async getRiderById(req: Request, res: Response) {
+    async getRiderDetails(req: Request, res: Response) {
       try {
-        const rider = await adminRidersService.getRiderById(req.params.riderId);
+        const rider = await adminRidersService.getRiderDetails(req.params.riderId);
         res.status(STATUS_CODES.OK).json({
           message: "Fetched rider",
           data: { rider },

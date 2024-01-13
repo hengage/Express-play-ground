@@ -19,9 +19,9 @@ class AdminDriversController {
     }
   }
 
-  async getDriverById(req: Request, res: Response) {
+  async getDriverDetails(req: Request, res: Response) {
     try {
-      const driver = await adminDriversService.getDriverById(
+      const driver = await adminDriversService.getDriverDetails(
         req.params.driverId
       );
       res.status(STATUS_CODES.OK).json({
@@ -59,7 +59,7 @@ class AdminDriversController {
       await adminDriversService.deleteDriver(req.params.driverId);
       res.status(STATUS_CODES.OK).json({
         message: "Driver deleted successfully",
-      })
+      });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Error deleting driver",
