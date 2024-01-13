@@ -102,11 +102,13 @@ class DriverRiderService {
 
   async getMe(id: string) {
     try {
-      const driverRider = await driverRiderRepo.getById(
-        id,
-        `firstName lastName middleName email phoneNumber photo 
-        vehicle vehicleType licenseNumber rating street city state`
-      );
+      const driverRider = await DriverRider.findById(id)
+        .select(
+          `firstName lastName middleName email phoneNumber photo 
+      vehicle licenseNumber rating street city state`
+        )
+        .populate({ path: "vehicleType", select: "vehicleType" })
+        .lean();
 
       if (driverRider) {
         return driverRider;
