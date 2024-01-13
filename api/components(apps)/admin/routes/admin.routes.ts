@@ -61,6 +61,9 @@ class AdminRoutes {
     this.router
       .route("/drivers/:driverId")
       .patch(adminDriversController.updateDriver);
+    this.router
+      .route("/drivers/:driverId")
+      .delete(adminDriversController.deleteDriver);
 
     //Riders
     this.router.route("/riders").get(adminRidersController.getRiders);

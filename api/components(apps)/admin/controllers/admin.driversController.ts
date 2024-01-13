@@ -53,6 +53,20 @@ class AdminDriversController {
       });
     }
   }
+
+  async deleteDriver(req: Request, res: Response) {
+    try {
+      await adminDriversService.deleteDriver(req.params.driverId);
+      res.status(STATUS_CODES.OK).json({
+        message: "Driver deleted successfully",
+      })
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error deleting driver",
+        error: error.message || "Server error",
+      });
+    }
+  }
 }
 
 export const adminDriversController = new AdminDriversController();

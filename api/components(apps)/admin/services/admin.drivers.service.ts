@@ -47,6 +47,17 @@ class AdminDriversService {
 
     return driverRider;
   }
+
+  async deleteDriver(driverId: string) {
+    const result = await DriverRider.deleteOne({
+      _id: driverId,
+      accountType: "driver",
+    });
+
+    if (result.deletedCount === 0) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
+    }
+  }
 }
 
 export const adminDriversService = new AdminDriversService();
