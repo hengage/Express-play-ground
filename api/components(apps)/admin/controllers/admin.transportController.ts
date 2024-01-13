@@ -85,6 +85,21 @@ class AdminTransportServiceController {
       });
     }
   }
+
+  async getAllAirports(req: Request, res: Response) {
+    try {
+      const airports = await adminTransportService.getAllAirports();
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched airports",
+        data: { airports },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed fetch airports",
+        error: error.message || "Server error",
+      });
+    }
+  }
 }
 
 export const adminTransportServiceController =

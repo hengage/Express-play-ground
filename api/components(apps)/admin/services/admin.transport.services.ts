@@ -79,8 +79,8 @@ class AdminTransportService {
 
   async addAirport(payload: any) {
     const airportExists = await Airport.findOne({ name: payload.name })
-    .select("name")
-    .lean();
+      .select("name")
+      .lean();
     if (airportExists) {
       throw new HandleException(
         STATUS_CODES.CONFLICT,
@@ -99,8 +99,15 @@ class AdminTransportService {
       _id: airport._id,
       name: airport.name,
       address: airport.address,
-
     };
+  }
+
+  async getAllAirports() {
+    const airports = await Airport.find()
+      .select("name location.coordinates")
+      .lean();
+
+    return airports;
   }
 }
 

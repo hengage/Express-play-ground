@@ -89,6 +89,9 @@ class AdminRoutes {
     this.router
       .route("/transport/airport")
       .post(adminTransportServiceController.addAirport);
+    this.router
+      .route("/transport/airport")
+      .get(adminTransportServiceController.getAllAirports);
   }
 }
 
