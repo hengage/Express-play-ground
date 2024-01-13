@@ -21,7 +21,9 @@ class AdminDriversController {
 
   async getDriverById(req: Request, res: Response) {
     try {
-      const driver = await adminDriversService.getDriverById(req.params.driverId);
+      const driver = await adminDriversService.getDriverById(
+        req.params.driverId
+      );
       res.status(STATUS_CODES.OK).json({
         message: "Fetched driver",
         data: { driver },
@@ -29,6 +31,24 @@ class AdminDriversController {
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Error getting driver",
+        error: error.message || "Server error",
+      });
+    }
+  }
+
+  async updateDriver(req: Request, res: Response) {
+    try {
+      const driver = await adminDriversService.updateDriver(
+        req.params.driverId,
+        req.body
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Updated driver",
+        data: { driver },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error updating driver",
         error: error.message || "Server error",
       });
     }

@@ -1,6 +1,6 @@
 import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
-import { DriverRider } from "../../driversAndRiders";
+import { DriverRider, IDriverRider } from "../../driversAndRiders";
 
 class AdminDriversService {
   async getDrivers(page: number) {
@@ -23,10 +23,29 @@ class AdminDriversService {
       .select("-middleName -__v -updatedAt -location -accountType -password")
       .lean();
 
-    if(!driver) {
-        throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
+    if (!driver) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
     }
     return driver;
+  }
+
+  async updateDriver(driverId: string, payload: Partial<IDriverRider>) {
+    const select = Object.keys(payload);
+    select.push("-_id");
+
+    const driverRider = await DriverRider.findByIdAndUpdate(
+      driverId,
+      { $set: payload },
+      { new: true }
+    )
+      .select(select)
+      .lean();
+
+    if (!driverRider) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
+    }
+
+    return driverRider;
   }
 }
 

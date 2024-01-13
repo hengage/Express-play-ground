@@ -58,6 +58,9 @@ class AdminRoutes {
     this.router
       .route("/drivers/:driverId")
       .get(adminDriversController.getDriverById);
+    this.router
+      .route("/drivers/:driverId")
+      .patch(adminDriversController.updateDriver);
 
     //Riders
     this.router.route("/riders").get(adminRidersController.getRiders);
