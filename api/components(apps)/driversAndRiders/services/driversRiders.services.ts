@@ -105,7 +105,7 @@ class DriverRiderService {
       const driverRider = await driverRiderRepo.getById(
         id,
         `firstName lastName middleName email phoneNumber photo 
-        vehicleType licenseNumber rating street city state`
+        vehicle vehicleType licenseNumber rating street city state`
       );
 
       if (driverRider) {
