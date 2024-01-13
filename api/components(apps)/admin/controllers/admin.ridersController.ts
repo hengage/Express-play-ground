@@ -33,6 +33,39 @@ class AdminRidersController {
         });
       }
     }
+
+    
+  async updateRider(req: Request, res: Response) {
+    try {
+      const rider = await adminRidersService.updateRider(
+        req.params.riderId,
+        req.body
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Updated rider",
+        data: { rider },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error updating rider",
+        error: error.message || "Server error",
+      });
+    }
+  }
+
+  async deleteRider(req: Request, res: Response) {
+    try {
+      await adminRidersService.deleteRider(req.params.riderId);
+      res.status(STATUS_CODES.OK).json({
+        message: "Rider deleted successfully",
+      })
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error deleting rider",
+        error: error.message || "Server error",
+      });
+    }
+  }
   }
   
   export const adminRidersController = new AdminRidersController();

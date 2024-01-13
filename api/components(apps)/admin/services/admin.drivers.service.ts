@@ -33,7 +33,7 @@ class AdminDriversService {
     const select = Object.keys(payload);
     select.push("-_id");
 
-    const driverRider = await DriverRider.findByIdAndUpdate(
+    const rider = await DriverRider.findByIdAndUpdate(
       driverId,
       { $set: payload },
       { new: true }
@@ -41,11 +41,11 @@ class AdminDriversService {
       .select(select)
       .lean();
 
-    if (!driverRider) {
+    if (!rider) {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
     }
 
-    return driverRider;
+    return rider;
   }
 
   async deleteDriver(driverId: string) {

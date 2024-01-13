@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { adminController } from "../controllers/admin.controller";
 import { adminDriversController } from "../controllers/admin.driversController";
-import { adminRidersController } from "../controllers/admin.RiderController";
+import { adminRidersController } from "../controllers/admin.ridersController";
 import { apiKeyMiddleware } from "../../../middleware";
 import { adminTransportServiceController } from "../controllers/admin.transportController";
 import { adminOpsForVendorsController } from "../controllers/admin.vendorsController";
@@ -70,6 +70,13 @@ class AdminRoutes {
     this.router
       .route("/riders/:riderId")
       .get(adminRidersController.getRiderById);
+
+    this.router
+      .route("/riders/:riderId")
+      .patch(adminRidersController.updateRider);
+    this.router
+      .route("/riders/:riderId")
+      .delete(adminRidersController.deleteRider);
 
     //Transport services
     this.router
