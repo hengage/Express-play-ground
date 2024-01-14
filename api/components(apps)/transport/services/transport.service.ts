@@ -10,6 +10,18 @@ import { TransportTripOrder } from "../models/transportOrders.model";
 
 class TransportService {
   async create(payload: any) {
+    const companyExist = await TransportCompany.findOne({
+      name: payload.name,
+    })
+      .select("name")
+      .lean();
+    if (companyExist) {
+      throw new HandleException(
+        STATUS_CODES.CONFLICT,
+        "Company already exists. Contact admin if this company belongs to you"
+      );
+    }
+
     const transportCompany = await new TransportCompany({
       name: payload.name,
       phoneNumber: payload.phoneNumber,
@@ -151,7 +163,7 @@ class TransportService {
 
     return vehicleTypes;
   }
-  
+
   async getServiceTypes() {
     const serviceTypes = await TransportServiceType.find()
       .select("name")
