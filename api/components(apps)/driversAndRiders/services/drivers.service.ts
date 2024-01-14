@@ -1,8 +1,19 @@
+import { MakuCabStatus } from "../../../constants";
 import { MakuTrip } from "../../maku";
 
 class DriversService {
   async makuTripHistory(driverId: string, page: number) {
-    const query = { driver: driverId };
+    const query = {
+      driver: driverId,
+      status: {
+        $nin: [
+          MakuCabStatus.PENDING,
+          MakuCabStatus.STARTED,
+          MakuCabStatus.ENROUTE_PICKUP_LOCATION,
+          MakuCabStatus.ARRIVED_PICKUP_LOCATION,
+        ],
+      },
+    };
     const options = {
       page,
       limit: 10,
@@ -22,7 +33,7 @@ class DriversService {
 
     return trips;
   }
-  
+
   async getMakuTripDetails(driverId: string, tripId: string) {
     const trip = await MakuTrip.findOne({ _id: tripId, driver: driverId })
       .select({

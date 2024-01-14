@@ -4,7 +4,7 @@ import { Customer } from "../models/customers.models";
 import { HandleException } from "../../../utils";
 import { ICustomer, ISignupCustomer } from "../customers.interface";
 import { ILoginCustomer } from "../customers.interface";
-import { STATUS_CODES } from "../../../constants";
+import { MakuCabStatus, STATUS_CODES } from "../../../constants";
 import { IOrder, Order } from "../../orders";
 import { MakuTrip } from "../../maku";
 import { TransportTripOrder } from "../../transport";
@@ -163,7 +163,17 @@ class CustomerService {
   }
 
   async makuTripHistory(customerId: string, page: number) {
-    const query = { customer: customerId };
+    const query = { 
+      customer: customerId,
+      status: {
+        $nin: [
+          MakuCabStatus.PENDING,
+          MakuCabStatus.STARTED,
+          MakuCabStatus.ENROUTE_PICKUP_LOCATION,
+          MakuCabStatus.ARRIVED_PICKUP_LOCATION,
+        ],
+      },
+    };
     const options = {
       page,
       limit: 15,
