@@ -109,9 +109,13 @@ class TransportRepository {
       transportCompany: payload.transportCompany,
       vehicleType: payload.vehicleType,
       pickUpAddress: payload.pickUpAddress,
-      pickUpCoordinates: payload.pickUpCoordinates,
+      pickUpCoordinates: {
+        coordinates: payload.pickUpCoordinates,
+      },
       destinationAddress: payload.destinationAddress,
-      destinationCoordinates: payload.destinationCoordinates,
+      destinationCoordinates: {
+        coordinates: payload.destinationCoordinates,
+      } 
     });
 
     return towOrder._id;
