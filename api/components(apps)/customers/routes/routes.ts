@@ -27,6 +27,7 @@ class CustomersRoutes {
     this.router
       .route("/transport/trip-orders")
       .get(customerController.getTransportTripOrders);
+    this.router.route("/towing-orders-history").get(customerController.getTowingOrdersHistory);
   }
 }
 

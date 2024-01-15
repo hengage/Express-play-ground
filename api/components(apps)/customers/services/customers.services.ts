@@ -223,8 +223,26 @@ class CustomerService {
       leanWithId: false,
     };
 
-    const transportTripOrders = TransportTripOrder.paginate(query, options);
+    const transportTripOrders = await TransportTripOrder.paginate(query, options);
     return transportTripOrders;
+  }
+
+  async getTowingOrdersHistory(customerId: string, page: number) {
+    const query = { customer: customerId, serviceType: "c6a56821" };
+
+    const options = {
+      page,
+      limit: 20,
+      select: "createdAt status",
+      populate: [
+        { path: "transportCompany", select: "name" },
+      ],
+      lean: true,
+      leanWithId: false,
+    };
+
+    const towingOrders = await TransportTripOrder.paginate(query, options);
+    return towingOrders;
   }
 }
 

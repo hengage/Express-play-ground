@@ -181,6 +181,26 @@ class CustomerController {
       });
     }
   }
+
+  async getTowingOrdersHistory(req: Request, res: Response) {
+    const page = parseInt(req.query.page as string) || 1;
+    try {
+      const customerId = (req as any).user._id;
+      const towingHistory = await customerService.getTowingOrdersHistory(
+        customerId,
+        page
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched towing history",
+        data: { towingHistory },
+      });
+    } catch (error: any) {
+      res.status(error.message || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to get towing order history",
+        error: error.message || "Server error",
+      });
+    }
+  }
 }
 
 export const customerController = new CustomerController();
