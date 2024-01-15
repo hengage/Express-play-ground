@@ -1,3 +1,5 @@
+import { STATUS_CODES } from "../../../constants";
+import { HandleException } from "../../../utils";
 import { TowOrder } from "../models/transportOrders.model";
 import { ITowingOrder } from "../transport.interface";
 
@@ -37,6 +39,21 @@ class TowingRepo {
 
     const towOrders = TowOrder.paginate(query, options);
     return towOrders;
+  }
+
+  async getOrderDetails(orderId: string) {
+    const towOrder = await TowOrder.findById(orderId)
+    .select("pickUpAddress destinationAddress fee status createdAt")
+    .populate({path: "customer", select: "firstName lastName phoneNumber"})
+    .populate({path: "transportCompany", select: "name phoneNumber address"})
+    .populate({path: "vehicleType", select: "vehicleType"})
+    .lean()
+    .exec()
+
+    if (!towOrder) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Tow order not found");
+    }
+    return towOrder;
   }
 }
 

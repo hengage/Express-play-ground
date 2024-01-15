@@ -41,20 +41,20 @@ class TransportRoutes {
     this.router
       .route("/drivers/:driverId")
       .delete(transportController.deleteDriver);
-    this.router
-      .route("/tow-order")
-      .post(towingController.createTowOrder);
+    this.router.route("/tow-order").post(towingController.createTowOrder);
     this.router
       .route("/trip-order")
       .post(transportController.createTransportOrder);
     this.router
       .route("/company/trip-orders")
       .get(transportController.getTransportTripOrders);
-    
+
     this.router
       .route("/company/tow-orders")
       .get(towingController.getOrdersHistoryForCompany);
-    
+    this.router
+      .route("/tow-orders/:orderId")
+      .get(towingController.getOrderdetails);
   }
 }
 
