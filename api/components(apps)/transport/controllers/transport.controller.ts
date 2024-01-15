@@ -233,6 +233,21 @@ class TransportController {
     }
   }
 
+  async createTransportOrder(req: Request, res: Response) {
+    try {
+      const tripOrder = await transportRepo.createTransportOrder(req.body);
+      res.status(STATUS_CODES.CREATED).json({
+        message: "Created transport trip order",
+        data: { tripOrder },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to create trip order",
+        error: error.message || "Server error",
+      });
+    }
+  }
+
   async getTransportTripOrders(req: Request, res: Response) {
     const page = parseInt(req.params.page as string) || 1;
     const id = (req as any).user._id;

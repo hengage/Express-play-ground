@@ -103,24 +103,6 @@ class TransportRepository {
     return transportCompany;
   }
 
-  async createTowOrder(payload: any): Promise<ITowingOrder["_id"]> {
-    const towOrder = await TowOrder.create({
-      customer: payload.customer,
-      transportCompany: payload.transportCompany,
-      vehicleType: payload.vehicleType,
-      pickUpAddress: payload.pickUpAddress,
-      pickUpCoordinates: {
-        coordinates: payload.pickUpCoordinates,
-      },
-      destinationAddress: payload.destinationAddress,
-      destinationCoordinates: {
-        coordinates: payload.destinationCoordinates,
-      } 
-    });
-
-    return towOrder._id;
-  }
-
   async createTransportOrder(payload: any): Promise<Partial<ITransportTripOrder>> {
     const tripOrder = await TransportTripOrder.create({
       customer: payload.customer,
