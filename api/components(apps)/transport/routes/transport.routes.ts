@@ -50,6 +50,11 @@ class TransportRoutes {
     this.router
       .route("/company/trip-orders")
       .get(transportController.getTransportTripOrders);
+    
+    this.router
+      .route("/company/tow-orders")
+      .get(towingController.getOrdersHistoryForCompany);
+    
   }
 }
 

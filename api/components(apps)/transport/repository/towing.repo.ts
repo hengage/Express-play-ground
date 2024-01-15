@@ -2,23 +2,42 @@ import { TowOrder } from "../models/transportOrders.model";
 import { ITowingOrder } from "../transport.interface";
 
 class TowingRepo {
-    async createOrder(payload: any): Promise<ITowingOrder["_id"]> {
-        const towOrder = await TowOrder.create({
-          customer: payload.customer,
-          transportCompany: payload.transportCompany,
-          vehicleType: payload.vehicleType,
-          pickUpAddress: payload.pickUpAddress,
-          pickUpCoordinates: {
-            coordinates: payload.pickUpCoordinates,
-          },
-          destinationAddress: payload.destinationAddress,
-          destinationCoordinates: {
-            coordinates: payload.destinationCoordinates,
-          } 
-        });
-    
-        return towOrder._id;
-      }
+  async createOrder(payload: any): Promise<ITowingOrder["_id"]> {
+    const towOrder = await TowOrder.create({
+      customer: payload.customer,
+      transportCompany: payload.transportCompany,
+      vehicleType: payload.vehicleType,
+      pickUpAddress: payload.pickUpAddress,
+      pickUpCoordinates: {
+        coordinates: payload.pickUpCoordinates,
+      },
+      destinationAddress: payload.destinationAddress,
+      destinationCoordinates: {
+        coordinates: payload.destinationCoordinates,
+      },
+    });
+
+    return towOrder._id;
+  }
+
+  async getOrdersHistoryForCompany(companyId: string, page: number) {
+    const query = { transportCompany: companyId };
+
+    const options = {
+      page,
+      limit: 20,
+      select: "createdAt status",
+      populate: [
+        { path: "customer", select: "firstName lastName" },
+        { path: "vehicleType", select: "vehicleType" },
+      ],
+      lean: true,
+      leanWithId: false,
+    };
+
+    const towOrders = TowOrder.paginate(query, options);
+    return towOrders;
+  }
 }
 
 export const towingRepo = new TowingRepo();
