@@ -163,7 +163,7 @@ class CustomerService {
   }
 
   async makuTripHistory(customerId: string, page: number) {
-    const query = { 
+    const query = {
       customer: customerId,
       status: {
         $nin: [
@@ -209,7 +209,7 @@ class CustomerService {
   }
 
   async getTransportTripOrders(customerId: string, page: number) {
-    const query = { customer: customerId };
+    const query = { customer: customerId, serviceType: { $nin: ["c6a56821"] } };
 
     const options = {
       page,
