@@ -7,7 +7,7 @@ import { ILoginCustomer } from "../customers.interface";
 import { MakuCabStatus, STATUS_CODES } from "../../../constants";
 import { IOrder, Order } from "../../orders";
 import { MakuTrip } from "../../maku";
-import { TransportTripOrder } from "../../transport";
+import { TransportTripOrder, TowOrder } from "../../transport";
 
 class CustomerService {
   async checkPhoneNumberIsTaken(phoneNumber: string) {
@@ -228,7 +228,7 @@ class CustomerService {
   }
 
   async getTowingOrdersHistory(customerId: string, page: number) {
-    const query = { customer: customerId, serviceType: "c6a56821" };
+    const query = { customer: customerId };
 
     const options = {
       page,
@@ -241,7 +241,7 @@ class CustomerService {
       leanWithId: false,
     };
 
-    const towingOrders = await TransportTripOrder.paginate(query, options);
+    const towingOrders = await TowOrder.paginate(query, options);
     return towingOrders;
   }
 }

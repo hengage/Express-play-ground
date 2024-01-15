@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from "mongoose";
+import mongoose, { Schema, model, PaginateModel } from "mongoose";
 import { stringsUtils } from "../../../utils";
 import { ITowingOrder, ITransportTripOrder } from "../transport.interface";
 import { TransportServiceOrderStatus } from "../../../constants";
@@ -41,7 +41,7 @@ const towOrderSchema = new Schema<ITowingOrder>(
       type: { type: String, default: "Point" },
       coordinates: { type: [Number, Number], required: true },
     },
-    fee: { type: String},
+    fee: { type: String },
     status: {
       type: String,
       default: TransportServiceOrderStatus.PENDING,
@@ -88,7 +88,7 @@ const transportTripOrderSchema = new Schema<ITransportTripOrder>(
       type: { type: String, default: "Point" },
       coordinates: { type: [Number, Number], required: true },
     },
-    fee: { type: String},
+    fee: { type: String },
     status: {
       type: String,
       default: TransportServiceOrderStatus.PENDING,
@@ -99,11 +99,15 @@ const transportTripOrderSchema = new Schema<ITransportTripOrder>(
   }
 );
 
+towOrderSchema.plugin(paginate);
 transportTripOrderSchema.plugin(paginate);
 
-export const TowOrder = model<ITowingOrder>("towOrder", towOrderSchema);
+export const TowOrder = model<ITowingOrder, PaginateModel<ITowingOrder>>(
+  "towOrder",
+  towOrderSchema
+);
 
 export const TransportTripOrder = model<
   ITransportTripOrder,
-  mongoose.PaginateModel<ITransportTripOrder>
+  PaginateModel<ITransportTripOrder>
 >("transportTripOrder", transportTripOrderSchema);
