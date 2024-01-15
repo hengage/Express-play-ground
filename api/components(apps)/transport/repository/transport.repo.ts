@@ -11,6 +11,37 @@ import {
 } from "../transport.interface";
 
 class TransportRepository {
+  async createCompany(payload: any) {
+    const companyExist = await TransportCompany.findOne({
+      name: payload.name,
+    })
+      .select("name")
+      .lean();
+    if (companyExist) {
+      throw new HandleException(
+        STATUS_CODES.CONFLICT,
+        "Company already exists. Contact admin if this company belongs to you"
+      );
+    }
+
+    const transportCompany = await new TransportCompany({
+      name: payload.name,
+      phoneNumber: payload.phoneNumber,
+      email: payload.email,
+      password: payload.password,
+      address: payload.address,
+      location: {
+        coordinates: payload.coordinates,
+      },
+      serviceType: payload.serviceType,
+    }).save();
+
+    return {
+      _id: transportCompany._id,
+      name: transportCompany.name,
+    };
+  }
+
   async updateDriver(
     driverId: string,
     transportCompanyId: string,

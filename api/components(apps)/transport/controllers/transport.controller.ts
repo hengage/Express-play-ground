@@ -7,7 +7,7 @@ import { transportRepo } from "../repository/transport.repo";
 class TransportController {
   async create(req: Request, res: Response) {
     try {
-      const transportCompany = await transportService.create(req.body);
+      const transportCompany = await transportRepo.createCompany(req.body);
       res.status(STATUS_CODES.OK).json({
         message: "Created towing company",
         data: { transportCompany },
