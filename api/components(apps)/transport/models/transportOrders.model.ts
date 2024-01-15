@@ -41,6 +41,7 @@ const towOrderSchema = new Schema<ITowingOrder>(
       type: { type: String, default: "Point" },
       coordinates: { type: [Number, Number], required: true },
     },
+    fee: { type: String},
     status: {
       type: String,
       default: TransportServiceOrderStatus.PENDING,
@@ -87,6 +88,7 @@ const transportTripOrderSchema = new Schema<ITransportTripOrder>(
       type: { type: String, default: "Point" },
       coordinates: { type: [Number, Number], required: true },
     },
+    fee: { type: String},
     status: {
       type: String,
       default: TransportServiceOrderStatus.PENDING,

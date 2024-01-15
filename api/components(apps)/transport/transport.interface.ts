@@ -62,6 +62,7 @@ export interface ITowingOrder extends Document {
     type: string;
     coordinates: [number, number];
   };
+  fee: string;
   status: string;
   createdAt: Date;
   updatedAt: Date;
@@ -83,6 +84,7 @@ export interface ITransportTripOrder extends Document {
     type: string;
     coordinates: [number, number];
   };
+  fee: string;
   status: string;
   createdAt: Date;
   updatedAt: Date;

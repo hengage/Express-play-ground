@@ -214,7 +214,7 @@ class CustomerService {
     const options = {
       page,
       limit: 20,
-      select: "createdAt status",
+      select: "createdAt status fee",
       populate: [
         { path: "transportCompany", select: "name" },
         { path: "serviceType", select: "name" },
@@ -233,7 +233,7 @@ class CustomerService {
     const options = {
       page,
       limit: 20,
-      select: "createdAt status",
+      select: "createdAt status fee",
       populate: [
         { path: "transportCompany", select: "name" },
       ],
