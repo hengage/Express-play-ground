@@ -303,6 +303,16 @@ class WebSocket {
       socket.emit("created-messenger-service-order", messengerOrder);
     });
 
+    socket.on("messenger-order-picked-up", async (message) => {
+      const { orderId } = message;
+      messengerService.setStatusToPickedUp(orderId);
+    });
+
+    socket.on("messenger-order-delivered", async (message) => {
+      const { orderId } = message;
+      messengerService.setStatusToPickedUp(orderId);
+    });
+
     socket.on("find-tow-companies", async (message: any) => {
       const { pickUpCoordinates } = message;
       try {

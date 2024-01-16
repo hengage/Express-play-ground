@@ -65,6 +65,14 @@ class Messengerservice {
       message: `You have a scheduled package delivery for ${formattedDate}`,
     });
   }
+
+  async setStatusToPickedUp(orderId: string) {
+    await messengerRepo.setStatusToPickedUp(orderId);
+  }
+
+  async setStatusToDelivered(orderId: string) {
+    await messengerRepo.setStatusToPickedUp(orderId);
+  }
 }
 
 export const messengerService = new Messengerservice();

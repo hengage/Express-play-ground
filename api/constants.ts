@@ -25,6 +25,12 @@ export enum OrderStatus {
   CANCELLED = "cancelled",
 }
 
+export enum MessengerOrderStatus {
+  PENDING = "pending",
+  PICKED_UP = "picked up",
+  DELIVERED = "delivered",
+}
+
 export enum MakuCabStatus {
   PENDING = "pending",
   ENROUTE_PICKUP_LOCATION = "enroute pickup location",

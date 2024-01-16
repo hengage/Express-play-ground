@@ -1,4 +1,4 @@
-import { STATUS_CODES } from "../../../constants";
+import { MessengerOrderStatus, STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { IMessengerOrder } from "../messenger.interface";
 import { MessengerOrder } from "../models/messenger.models";
@@ -35,6 +35,22 @@ class MessengerRepo {
       return order;
     }
     throw new HandleException(STATUS_CODES.NOT_FOUND, "Order not found");
+  }
+
+  async setStatusToPickedUp(orderId: string) {
+    const order = await MessengerOrder.findById(orderId).select("status");
+    if (order) {
+      order.status = MessengerOrderStatus.PICKED_UP;
+      await order.save();
+    }
+  }
+
+  async setStatusToDelivered(orderId: string) {
+    const order = await MessengerOrder.findById(orderId).select("status");
+    if (order) {
+      order.status = MessengerOrderStatus.DELIVERED;
+      await order.save();
+    }
   }
 }
 
