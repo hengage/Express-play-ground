@@ -1,4 +1,4 @@
-import { MessengerOrderStatus, STATUS_CODES } from "../../../constants";
+import { MessengerOrderStatus, OrderStatus, STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { IMessengerOrder } from "../messenger.interface";
 import { MessengerOrder } from "../models/messenger.models";
@@ -38,19 +38,22 @@ class MessengerRepo {
   }
 
   async setStatusToPickedUp(orderId: string) {
-    const order = await MessengerOrder.findById(orderId).select("status");
+    const order = await MessengerOrder.findById(orderId).select("status customer");
     if (order) {
       order.status = MessengerOrderStatus.PICKED_UP;
       await order.save();
     }
+    return order
   }
 
   async setStatusToDelivered(orderId: string) {
-    const order = await MessengerOrder.findById(orderId).select("status");
+    const order = await MessengerOrder.findById(orderId).select("status customer");
     if (order) {
       order.status = MessengerOrderStatus.DELIVERED;
       await order.save();
     }
+
+    return order
   }
 }
 

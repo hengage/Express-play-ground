@@ -4,7 +4,10 @@ import {
   findClosestDriverOrRider,
   smsService,
 } from "../../../services";
-import { notificationService } from "../../notifications";
+import {
+  messengerNotificationService,
+  notificationService,
+} from "../../notifications";
 import { IMessengerOrder } from "../messenger.interface";
 import { messengerRepo } from "../repository/messenger.repo";
 class Messengerservice {
@@ -67,11 +70,21 @@ class Messengerservice {
   }
 
   async setStatusToPickedUp(orderId: string) {
-    await messengerRepo.setStatusToPickedUp(orderId);
+    const order = await messengerRepo.setStatusToPickedUp(orderId);
+    messengerNotificationService.notifyCustomerOfOrderStatus(
+      order,
+      "Parcel picked up",
+      "Your parcel has been picked up and is on the way to you"
+    );
   }
 
   async setStatusToDelivered(orderId: string) {
-    await messengerRepo.setStatusToPickedUp(orderId);
+    const order = await messengerRepo.setStatusToPickedUp(orderId);
+    messengerNotificationService.notifyCustomerOfOrderStatus(
+      order,
+      "Parcel delivered",
+      "Your parcel has been delivered to you"
+    );
   }
 }
 
