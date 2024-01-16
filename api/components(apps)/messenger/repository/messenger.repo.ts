@@ -46,6 +46,15 @@ class MessengerRepo {
     return order
   }
 
+  async setStatusToArrived(orderId: string) {
+    const order = await MessengerOrder.findById(orderId).select("status customer");
+    if (order) {
+      order.status = MessengerOrderStatus.ARRIVED;
+      await order.save();
+    }
+    return order
+  }
+
   async setStatusToDelivered(orderId: string) {
     const order = await MessengerOrder.findById(orderId).select("status customer");
     if (order) {

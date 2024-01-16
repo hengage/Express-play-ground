@@ -28,6 +28,7 @@ export enum OrderStatus {
 export enum MessengerOrderStatus {
   PENDING = "pending",
   PICKED_UP = "picked up",
+  ARRIVED = "arrived",
   DELIVERED = "delivered",
 }
 

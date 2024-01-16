@@ -78,6 +78,15 @@ class Messengerservice {
     );
   }
 
+  async setStatusToArrived(orderId: string) {
+    const order = await messengerRepo.setStatusToArrived(orderId);
+    messengerNotificationService.notifyCustomerOfOrderStatus(
+      order,
+      "Parcel has arrived",
+      "Your parcel has arrived the drop off location. Please go pick it up"
+    );
+  }
+
   async setStatusToDelivered(orderId: string) {
     const order = await messengerRepo.setStatusToPickedUp(orderId);
     messengerNotificationService.notifyCustomerOfOrderStatus(

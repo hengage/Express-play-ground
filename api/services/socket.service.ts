@@ -308,6 +308,11 @@ class WebSocket {
       messengerService.setStatusToPickedUp(orderId);
     });
 
+    socket.on("messenger-order-arrived", async (message) => {
+      const { orderId } = message;
+      messengerService.setStatusToPickedUp(orderId);
+    });
+
     socket.on("messenger-order-delivered", async (message) => {
       const { orderId } = message;
       messengerService.setStatusToPickedUp(orderId);
