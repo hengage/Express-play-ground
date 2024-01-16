@@ -1,6 +1,7 @@
-import { Schema, model } from "mongoose";
+import { PaginateModel, Schema, model } from "mongoose";
 import { stringsUtils } from "../../../utils";
 import { IMessengerOrder, IPackageType } from "../messenger.interface";
+import paginate from "mongoose-paginate-v2";
 
 const messengerOrderShema = new Schema<IMessengerOrder>(
   {
@@ -54,13 +55,13 @@ const messengerOrderShema = new Schema<IMessengerOrder>(
     },
     note: {
       type: String,
-      default: null
+      default: null,
     },
     status: {
       type: String,
       default: "pending",
     },
-    deliveryCost: {type: Number, required: true,},
+    deliveryCost: { type: Number, required: true },
     scheduledPickUpTime: {
       type: Date,
     },
@@ -69,6 +70,8 @@ const messengerOrderShema = new Schema<IMessengerOrder>(
     timestamps: true,
   }
 );
+
+messengerOrderShema.plugin(paginate);
 
 const packageTypeSchema = new Schema<IPackageType>(
   {
@@ -86,8 +89,11 @@ const packageTypeSchema = new Schema<IPackageType>(
   }
 );
 
-export const PackageType = model<IPackageType>("PackageType", packageTypeSchema);
-export const MessengerOrder = model<IMessengerOrder>(
-  "messengerOrder",
-  messengerOrderShema
+export const PackageType = model<IPackageType>(
+  "PackageType",
+  packageTypeSchema
 );
+export const MessengerOrder = model<
+  IMessengerOrder,
+  PaginateModel<IMessengerOrder>
+>("messengerOrder", messengerOrderShema);

@@ -27,7 +27,12 @@ class CustomersRoutes {
     this.router
       .route("/transport/trip-orders")
       .get(customerController.getTransportTripOrders);
-    this.router.route("/towing-orders-history").get(customerController.getTowingOrdersHistory);
+    this.router
+      .route("/towing-orders-history")
+      .get(customerController.getTowingOrdersHistory);
+    this.router
+      .route("/messenger-service-history")
+      .get(customerController.messengerOrderHistory);
   }
 }
 

@@ -201,6 +201,25 @@ class CustomerController {
       });
     }
   }
+
+  async messengerOrderHistory(req: Request, res: Response) {
+    const page  = parseInt(req.query.page as string) || 1
+    try {
+      const customerId = (req as any).user._id;
+      const messengerOrders = await customerService.messengerOrderHistory(
+        customerId, page
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Success",
+         messengerOrders ,
+      });
+    } catch (error: any) {
+      res.status(error.message || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed",
+        error: error.message || "Server error",
+      });
+    }
+  }
 }
 
 export const customerController = new CustomerController();
