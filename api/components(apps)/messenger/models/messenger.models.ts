@@ -54,7 +54,7 @@ const messengerOrderShema = new Schema<IMessengerOrder>(
     },
     note: {
       type: String,
-      required: true,
+      default: null
     },
     status: {
       type: String,
