@@ -48,6 +48,8 @@ class Messengerservice {
         searchKMLimit
       );
     }
+
+    return order;
   }
 
   async remindCustomerOfScheduledOrder(

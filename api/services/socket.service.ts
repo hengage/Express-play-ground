@@ -296,7 +296,11 @@ class WebSocket {
 
     socket.on("create-messenger-service-order", async (message: any) => {
       const { order, searchKMLimit } = message;
-      messengerService.createOrder(order, searchKMLimit);
+      const messengerOrder = await messengerService.createOrder(
+        order,
+        searchKMLimit
+      );
+      socket.emit("created-messenger-service-order", messengerOrder);
     });
 
     socket.on("find-tow-companies", async (message: any) => {
