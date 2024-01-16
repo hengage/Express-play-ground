@@ -165,7 +165,7 @@ class DriverRiderService {
     const driver = await DriverRider.findById(id).select("location");
 
     if (!driver) {
-      throw new HandleException(STATUS_CODES.NOT_FOUND, "Cannot find driver");
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Cannot find driver/rider");
     }
     driver.location.coordinates = coordinates;
     await driver.save();
