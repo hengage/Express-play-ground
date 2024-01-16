@@ -310,7 +310,7 @@ class WebSocket {
 
     socket.on("messenger-order-arrived", async (message) => {
       const { orderId } = message;
-      messengerService.setStatusToPickedUp(orderId);
+      messengerService.setStatusToArrived(orderId);
     });
 
     socket.on("messenger-order-delivered", async (message) => {
