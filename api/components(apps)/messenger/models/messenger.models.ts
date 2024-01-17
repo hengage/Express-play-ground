@@ -17,6 +17,7 @@ const messengerOrderShema = new Schema<IMessengerOrder>(
     rider: {
       type: String,
       ref: "DriverRider",
+      default: null,
     },
     packageType: {
       type: String,
