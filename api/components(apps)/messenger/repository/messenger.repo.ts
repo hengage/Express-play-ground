@@ -35,7 +35,6 @@ class MessengerRepo {
       .select("-__v -updatedAt")
       .populate({ path: "customer", select: "firstName lastName phoneNumber" })
       .populate({ path: "rider", select: "firstName lastName phoneNumber" })
-      .populate({ path: "packageType", select: "packageType" })
       .lean()
       .exec();
 
