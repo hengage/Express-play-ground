@@ -278,7 +278,7 @@ class WebSocket {
       try {
         const trip: any = await makuService.cancelTrip(message.tripId);
         if (message.driverId) {
-          notificationService.notifyOnCancelledTrip(trip?.customer, "driver", {
+          await notificationService.notifyOnCancelledTrip(trip?.customer, "driver", {
             _id: trip._id,
             status: trip.status,
           });
@@ -296,16 +296,19 @@ class WebSocket {
 
     socket.on("create-messenger-service-order", async (message: any) => {
       const { order, searchKMLimit } = message;
-      const messengerOrder = await messengerService.createOrder(
-        order,
-        searchKMLimit
-      );
-      socket.emit("created-messenger-service-order", messengerOrder);
+      try {
+        const messengerOrder = await messengerService.createOrder(
+          order,
+          searchKMLimit
+        );
+        socket.emit("created-messenger-service-order", messengerOrder);
+      } catch (error: any) {
+        socket.emit("create-messenger-service-order-error", error.message);
+      }
     });
 
     socket.on("assign-rider-to-messenger-order", async function (message: any) {
       const { orderId, riderId } = message;
-
       try {
         await messengerService.assignRider(orderId, riderId);
       } catch (error: any) {
@@ -314,8 +317,12 @@ class WebSocket {
     });
 
     socket.on("messenger-order-picked-up", async (message) => {
-      const { orderId } = message;
-      messengerService.setStatusToPickedUp(orderId);
+      try {
+        const { orderId } = message;
+        await messengerService.setStatusToPickedUp(orderId);
+      } catch (error: any) {
+        socket.emit("messenger-order-picked-up-error", error.message);
+      }
     });
 
     socket.on("messenger-order-arrived", async (message) => {

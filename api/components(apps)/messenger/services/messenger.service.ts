@@ -10,6 +10,8 @@ import {
 } from "../../notifications";
 import { IMessengerOrder } from "../messenger.interface";
 import { messengerRepo } from "../repository/messenger.repo";
+import { HandleException } from "../../../utils";
+import { STATUS_CODES } from "../../../constants";
 class Messengerservice {
   public async notifyNearestRiders(
     pickUpCoordinates: [number, number],
@@ -24,7 +26,7 @@ class Messengerservice {
     console.log({ ridersFound: riders });
     if (riders.length > 0) {
       riders.forEach((rider) => {
-        messengerNotificationService.notifyRiderOfOrder(rider._id, order)
+        messengerNotificationService.notifyRiderOfOrder(rider._id, order);
       });
     }
   }
@@ -70,22 +72,22 @@ class Messengerservice {
   }
 
   async assignRider(orderId: string, riderId: string) {
-    const order = await messengerRepo.assignRider(orderId, riderId)
+    const order = await messengerRepo.assignRider(orderId, riderId);
     messengerNotificationService.notifyCustomerOfOrderStatus(
       order,
       "Rider assigned",
       "A rider has been assigned to pick up and deliver your parcel"
     );
-    return order
+    return order;
   }
 
   async setStatusToPickedUp(orderId: string) {
-    const order = await messengerRepo.setStatusToPickedUp(orderId);
-    messengerNotificationService.notifyCustomerOfOrderStatus(
-      order,
-      "Parcel picked up",
-      "Your parcel has been picked up and is on the way to you"
-    );
+      const order = await messengerRepo.setStatusToPickedUp(orderId);
+      await messengerNotificationService.notifyCustomerOfOrderStatus(
+        order,
+        "Parcel picked up",
+        "Your parcel has been picked up and is on the way to you"
+      );
   }
 
   async setStatusToArrived(orderId: string) {
