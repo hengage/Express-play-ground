@@ -9,7 +9,7 @@ class AdminOpsForMessengerController {
         req.body
       );
       res.status(STATUS_CODES.CREATED).json({
-        message: "Operation failed",
+        message: "Success",
         data: { packageType },
       });
     } catch (error: any) {

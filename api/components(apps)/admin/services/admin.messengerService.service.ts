@@ -24,7 +24,7 @@ class AdminOpsForMessengerService {
 
     return {
       id: packageType._id,
-      name: packageType.packageType,
+      packageType: packageType.packageType,
       photo: packageType.photo,
     };
   }
