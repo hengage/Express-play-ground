@@ -73,7 +73,7 @@ class Messengerservice {
 
   async assignRider(orderId: string, riderId: string) {
     const order = await messengerRepo.assignRider(orderId, riderId);
-    messengerNotificationService.notifyCustomerOfOrderStatus(
+    await messengerNotificationService.notifyCustomerOfOrderStatus(
       order,
       "Rider assigned",
       "A rider has been assigned to pick up and deliver your parcel"
@@ -92,7 +92,7 @@ class Messengerservice {
 
   async setStatusToArrived(orderId: string) {
     const order = await messengerRepo.setStatusToArrived(orderId);
-    messengerNotificationService.notifyCustomerOfOrderStatus(
+    await messengerNotificationService.notifyCustomerOfOrderStatus(
       order,
       "Parcel has arrived",
       "Your parcel has arrived the drop off location. Please go pick it up"
@@ -101,7 +101,7 @@ class Messengerservice {
 
   async setStatusToDelivered(orderId: string) {
     const order = await messengerRepo.setStatusToPickedUp(orderId);
-    messengerNotificationService.notifyCustomerOfOrderStatus(
+    await messengerNotificationService.notifyCustomerOfOrderStatus(
       order,
       "Parcel delivered",
       "Your parcel has been delivered to you"

@@ -278,10 +278,14 @@ class WebSocket {
       try {
         const trip: any = await makuService.cancelTrip(message.tripId);
         if (message.driverId) {
-          await notificationService.notifyOnCancelledTrip(trip?.customer, "driver", {
-            _id: trip._id,
-            status: trip.status,
-          });
+          await notificationService.notifyOnCancelledTrip(
+            trip?.customer,
+            "driver",
+            {
+              _id: trip._id,
+              status: trip.status,
+            }
+          );
         } else if (message.customerId) {
           notificationService.notifyOnCancelledTrip(trip?.driver, "passenger", {
             _id: trip._id,
@@ -327,12 +331,20 @@ class WebSocket {
 
     socket.on("messenger-order-arrived", async (message) => {
       const { orderId } = message;
-      messengerService.setStatusToArrived(orderId);
+      try {
+        await messengerService.setStatusToArrived(orderId);
+      } catch (error: any) {
+        socket.emit("messenger-order-arrived-error", error.message);
+      }
     });
 
     socket.on("messenger-order-delivered", async (message) => {
       const { orderId } = message;
-      messengerService.setStatusToPickedUp(orderId);
+      try {
+      await messengerService.setStatusToPickedUp(orderId);
+      } catch (error: any) {
+        socket.emit("messenger-order-delivered-error", error.message);
+      }
     });
 
     socket.on("find-tow-companies", async (message: any) => {
