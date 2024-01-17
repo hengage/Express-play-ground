@@ -11,6 +11,7 @@ import { adminRoutes } from "./components(apps)/admin";
 import { notificationsRoutes } from "./components(apps)/notifications";
 import { makuRoutes } from "./components(apps)/maku";
 import { transportRoutes } from "./components(apps)/transport";
+import { messengerServiceRoutes } from "./components(apps)/messenger";
 
 class Routes {
   /*
@@ -36,8 +37,9 @@ class Routes {
     this.router.use("/orders", ordersRoutes.router);
     this.router.use("/admin", adminRoutes.router);
     this.router.use("/notifications", notificationsRoutes.router);
-    this.router.use("/maku-cab", makuRoutes.router)
-    this.router.use("/transport", transportRoutes.router)
+    this.router.use("/maku-cab", makuRoutes.router);
+    this.router.use("/transport", transportRoutes.router);
+    this.router.use("/messenger-service", messengerServiceRoutes.router);
   }
 }
 

@@ -1,4 +1,8 @@
-import { MessengerOrderStatus, OrderStatus, STATUS_CODES } from "../../../constants";
+import {
+  MessengerOrderStatus,
+  OrderStatus,
+  STATUS_CODES,
+} from "../../../constants";
 import { HandleException } from "../../../utils";
 import { IMessengerOrder } from "../messenger.interface";
 import { MessengerOrder } from "../models/messenger.models";
@@ -29,8 +33,11 @@ class MessengerRepo {
     const order = await MessengerOrder.findById(orderId)
       .select("-__v -updatedAt")
       .populate({ path: "customer", select: "firstName lastName phoneNumber" })
+      .populate({ path: "rider", select: "firstName lastName phoneNumber" })
       .populate({ path: "packageType", select: "packageType" })
-      .lean();
+      .lean()
+      .exec();
+
     if (order) {
       return order;
     }
@@ -38,31 +45,37 @@ class MessengerRepo {
   }
 
   async setStatusToPickedUp(orderId: string) {
-    const order = await MessengerOrder.findById(orderId).select("status customer");
+    const order = await MessengerOrder.findById(orderId).select(
+      "status customer"
+    );
     if (order) {
       order.status = MessengerOrderStatus.PICKED_UP;
       await order.save();
     }
-    return order
+    return order;
   }
 
   async setStatusToArrived(orderId: string) {
-    const order = await MessengerOrder.findById(orderId).select("status customer");
+    const order = await MessengerOrder.findById(orderId).select(
+      "status customer"
+    );
     if (order) {
       order.status = MessengerOrderStatus.ARRIVED;
       await order.save();
     }
-    return order
+    return order;
   }
 
   async setStatusToDelivered(orderId: string) {
-    const order = await MessengerOrder.findById(orderId).select("status customer");
+    const order = await MessengerOrder.findById(orderId).select(
+      "status customer"
+    );
     if (order) {
       order.status = MessengerOrderStatus.DELIVERED;
       await order.save();
     }
 
-    return order
+    return order;
   }
 }
 
