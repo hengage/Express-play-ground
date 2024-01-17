@@ -24,7 +24,7 @@ class Messengerservice {
     console.log({ ridersFound: riders });
     if (riders.length > 0) {
       riders.forEach((rider) => {
-        notificationService.notifyRiderOfOrder(rider._id, order);
+        messengerNotificationService.notifyRiderOfOrder(rider._id, order)
       });
     }
   }

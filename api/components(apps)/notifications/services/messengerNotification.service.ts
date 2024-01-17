@@ -2,6 +2,24 @@ import { redisClient } from "../../../services";
 import { notificationService } from "./notification.service";
 
 class MessengerNotificationService {
+  public async notifyRiderOfOrder(riderId: string, order: any) {
+    const riderDeviceToken = await redisClient.get(`device-token:${riderId}`);
+    console.log({ riderDeviceToken });
+    const payload = {
+      notification: {
+        title: "You have an order to attend to",
+        body: "You can choose to accept or ignore this order",
+      },
+      data: {
+        type: "accept-messenger-order-delivery",
+        data: JSON.stringify(order),
+      },
+      token: `${riderDeviceToken}`,
+    };
+
+    await notificationService.sendNotification(riderId, payload);
+  }
+
   async notifyCustomerOfOrderStatus(order: any, title: string, body: string) {
     const customerDeviceToken = await redisClient.get(
       `device-token:${order.customer}`
