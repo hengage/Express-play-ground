@@ -4,7 +4,7 @@ import {
   STATUS_CODES,
 } from "../../../constants";
 import { HandleException } from "../../../utils";
-import { DriverRider } from "../../driversAndRiders";
+import { DriverRider, ridersService } from "../../driversAndRiders";
 import { IMessengerOrder } from "../messenger.interface";
 import { MessengerOrder } from "../models/messenger.models";
 
@@ -49,21 +49,15 @@ class MessengerRepo {
     const messengerOrder = await MessengerOrder.findById(orderId).select(
       "rider customer"
     );
-    if(!messengerOrder) {
-      throw new HandleException(STATUS_CODES.NOT_FOUND, "order not found")
+    if (!messengerOrder) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "order not found");
     }
-    const rider = await DriverRider.findById(riderId).select("_id").lean();
+    const rider = await ridersService.getRiderById(riderId, "_id");
 
-    if(!rider) {
-      throw new HandleException(STATUS_CODES.NOT_FOUND, "rider not found")
-    }
+    messengerOrder.rider = rider._id;
+    await messengerOrder.save();
 
-    // if (messengerOrder && rider) {
-      messengerOrder.rider = rider._id;
-      await messengerOrder.save();
-    // }
-
-    return messengerOrder
+    return messengerOrder;
   }
 
   async setStatusToPickedUp(orderId: string) {
