@@ -303,6 +303,11 @@ class WebSocket {
       socket.emit("created-messenger-service-order", messengerOrder);
     });
 
+    socket.on("assign-rider-to-messenger-order", async function (message: any) {
+      const { orderId, riderId } = message;
+      await messengerService.assignRider(orderId, riderId);
+    });
+
     socket.on("messenger-order-picked-up", async (message) => {
       const { orderId } = message;
       messengerService.setStatusToPickedUp(orderId);

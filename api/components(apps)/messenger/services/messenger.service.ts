@@ -69,6 +69,16 @@ class Messengerservice {
     });
   }
 
+  async assignRider(orderId: string, riderId: string) {
+    const order = await messengerRepo.assignRider(orderId, riderId)
+    messengerNotificationService.notifyCustomerOfOrderStatus(
+      order,
+      "Rider assigned",
+      "A rider has been assigned to pick up and deliver your parcel"
+    );
+    return order
+  }
+
   async setStatusToPickedUp(orderId: string) {
     const order = await messengerRepo.setStatusToPickedUp(orderId);
     messengerNotificationService.notifyCustomerOfOrderStatus(
