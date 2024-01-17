@@ -7,6 +7,7 @@ import { adminTransportServiceController } from "../controllers/admin.transportC
 import { adminOpsForVendorsController } from "../controllers/admin.vendorsController";
 import { adminOpsForOrdersController } from "../controllers/admin.ordersController";
 import { adminOpsForCustomersController } from "../controllers/admin.customersController";
+import { adminOpsForMessengerController } from "../controllers/admin.messengerService.controller";
 
 class AdminRoutes {
   public router = Router();
@@ -105,6 +106,11 @@ class AdminRoutes {
     this.router
       .route("/transport/airport")
       .get(adminTransportServiceController.getAllAirports);
+
+    // Messenger service
+    this.router
+      .route("/messenger-service/create-package-type")
+      .post(adminOpsForMessengerController.createPackageType);
   }
 }
 

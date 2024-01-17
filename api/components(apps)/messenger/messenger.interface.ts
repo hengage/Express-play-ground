@@ -28,6 +28,7 @@ export interface IMessengerOrder extends Document {
 export interface IPackageType extends Document {
   _id: string;
   packageType: string;
+  photo: string;
   createdAt: string;
   updatedAt: string;
 }

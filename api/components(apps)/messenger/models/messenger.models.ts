@@ -84,6 +84,10 @@ const packageTypeSchema = new Schema<IPackageType>(
       type: String,
       required: true,
     },
+    photo: {
+      type: String,
+      required: true,
+    }
   },
   {
     timestamps: true,
