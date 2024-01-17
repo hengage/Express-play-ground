@@ -49,12 +49,19 @@ class MessengerRepo {
     const messengerOrder = await MessengerOrder.findById(orderId).select(
       "rider customer"
     );
+    if(!messengerOrder) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "order not found")
+    }
     const rider = await DriverRider.findById(riderId).select("_id").lean();
 
-    if (messengerOrder && rider) {
+    if(!rider) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "rider not found")
+    }
+
+    // if (messengerOrder && rider) {
       messengerOrder.rider = rider._id;
       await messengerOrder.save();
-    }
+    // }
 
     return messengerOrder
   }

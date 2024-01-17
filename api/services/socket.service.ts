@@ -305,7 +305,12 @@ class WebSocket {
 
     socket.on("assign-rider-to-messenger-order", async function (message: any) {
       const { orderId, riderId } = message;
-      await messengerService.assignRider(orderId, riderId);
+
+      try {
+        await messengerService.assignRider(orderId, riderId);
+      } catch (error: any) {
+        socket.emit("assign-rider-to-messenger-order-error", error.message);
+      }
     });
 
     socket.on("messenger-order-picked-up", async (message) => {
