@@ -60,7 +60,7 @@ export enum Currency {
   GHANA_CEDIS = "ghs",
 }
 
-export enum PaymentMethod {
+export enum WithdrawalMethod {
   MTN = "mtn",
   AIRTEL_TIGO = "airtel tigo",
   VODAFONE = "vodafone",

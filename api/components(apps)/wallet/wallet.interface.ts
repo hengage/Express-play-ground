@@ -1,7 +1,7 @@
 import { Document } from "mongoose";
 import {
   Currency,
-  PaymentMethod,
+  WithdrawalMethod,
   WIthdrawalFrequency,
   WalletStatus,
   WithdrawalRequestStatus,
@@ -14,7 +14,7 @@ export interface IWalletDocument extends Document {
   transactionCount: number;
   totalEarnings: number;
   currency: Currency;
-  paymentMethod: PaymentMethod;
+  withdrawalMethod: WithdrawalMethod;
   withdrawalFrequency: WIthdrawalFrequency;
   status: WalletStatus;
 }
@@ -24,7 +24,7 @@ export interface IEarningsDocument extends Document {
   user: string;
   wallet: IWalletDocument;
   amount: string;
-  refernce: string;
+  reference: string;
   date: Date;
 }
 
