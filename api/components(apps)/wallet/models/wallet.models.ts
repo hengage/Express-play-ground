@@ -1,27 +1,32 @@
 import { Schema, model } from "mongoose";
 import { IEarningsDocument, IWalletDocument } from "../wallet.interface";
-import { stringsUtils } from "../../../utils";
-import { Currency, WalletStatus, WithdrawalMethod } from "../../../constants";
+import { HandleException, stringsUtils } from "../../../utils";
+import {
+  Currency,
+  STATUS_CODES,
+  WalletStatus,
+  WithdrawalMethod,
+} from "../../../constants";
 
 const walletSchema = new Schema<IWalletDocument>(
   {
     _id: {
       type: String,
-      default: stringsUtils.generateUniqueString(4),
+      default: () => stringsUtils.generateUniqueString(4),
     },
     user: { type: String, required: true },
-    balance: { type: String, required: true },
-    transactionCount: { type: Number, required: true },
-    totalEarnings: { type: Number, required: true },
+    balance: { type: String, default: "0" },
+    transactionCount: { type: Number, default: 0 },
+    totalEarnings: { type: String, default: "0" },
     currency: {
       type: String,
       enum: Object.values(Currency),
       default: Currency.GHANA_CEDIS,
     },
-    withdrawalMethod: {
+    withdrawalMethod: [{
       type: String,
       enum: Object.values(WithdrawalMethod),
-    },
+    }],
     status: {
       type: String,
       enum: Object.values(WalletStatus),
@@ -32,6 +37,11 @@ const walletSchema = new Schema<IWalletDocument>(
     timestamps: true,
   }
 );
+
+
+
+
+
 
 const earningsSchema = new Schema<IEarningsDocument>(
   {

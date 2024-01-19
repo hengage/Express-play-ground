@@ -12,7 +12,7 @@ export interface IWalletDocument extends Document {
   user: string;
   balance: string;
   transactionCount: number;
-  totalEarnings: number;
+  totalEarnings: string;
   currency: Currency;
   withdrawalMethod: WithdrawalMethod;
   withdrawalFrequency: WIthdrawalFrequency;
