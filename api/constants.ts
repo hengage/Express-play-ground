@@ -50,6 +50,37 @@ export enum TransportServiceOrderStatus {
   CANCELLED = "cancelled",
 }
 
+export enum WalletStatus {
+  ACTIVE = "active",
+  SUSPENDED = "suspended",
+  CLOSED = "closed",
+}
+
+export enum Currency {
+  GHANA_CEDIS = "ghs",
+}
+
+export enum PaymentMethod {
+  MTN = "mtn",
+  AIRTEL_TIGO = "airtel tigo",
+  VODAFONE = "vodafone",
+  CARD = "card",
+}
+
+export enum WIthdrawalFrequency {
+  CLOSE_OF_DAY = "Close of day",
+  EVERY_2_DAYS = "Every 2 Days",
+  WEEKLY = "Weekly",
+  EVERY_2_WEEKS = "Every 2 Weeks",
+  MONTHLY = "Monthly",
+}
+
+export enum WithdrawalRequestStatus {
+  PENDING = "Pending",
+  APPROVED = "approved",
+  REJECTED = "rejected",
+}
+
 export const URL_LINKS = {
   DEFAULT_SHOP_LOGO: "DEFAULT_SHOP_LOGO",
   DEFAULT_ACCOUNT_PHOTO:
