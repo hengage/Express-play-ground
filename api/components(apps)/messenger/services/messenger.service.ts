@@ -100,7 +100,7 @@ class Messengerservice {
   }
 
   async setStatusToDelivered(orderId: string) {
-    const order = await messengerRepo.setStatusToPickedUp(orderId);
+    const order = await messengerRepo.setStatusToDelivered(orderId);
     await messengerNotificationService.notifyCustomerOfOrderStatus(
       order,
       "Parcel delivered",

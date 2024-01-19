@@ -341,7 +341,7 @@ class WebSocket {
     socket.on("messenger-order-delivered", async (message) => {
       const { orderId } = message;
       try {
-      await messengerService.setStatusToPickedUp(orderId);
+      await messengerService.setStatusToDelivered(orderId);
       } catch (error: any) {
         socket.emit("messenger-order-delivered-error", error.message);
       }
