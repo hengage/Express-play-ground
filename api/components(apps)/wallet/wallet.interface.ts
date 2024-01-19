@@ -28,15 +28,6 @@ export interface IEarningsDocument extends Document {
   date: Date;
 }
 
-export interface TransactionDocument extends Document {
-  _id: string;
-  wallet: IWalletDocument;
-  date: Date;
-  amount: number;
-  description: string;
-  reference: string;
-}
-
 export interface WithdrawalRequestDocument extends Document {
   _id: string;
   user: string;

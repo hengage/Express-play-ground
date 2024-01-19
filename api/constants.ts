@@ -81,6 +81,19 @@ export enum WithdrawalRequestStatus {
   REJECTED = "rejected",
 }
 
+export enum TransactionType {
+  INFLOW = "inflow",
+  OUTFLOW = "outflow",
+}
+
+export enum TransactionDescription {
+  SALES = "sale",
+  WITHDRAWAL = "withdrawal",
+  MAKU = "maku",
+  ORDER_DELIVERY = "order_delivery",
+  MESSENGER_SERVICE_DELIEVERY = "messenger_service_delivery",
+}
+
 export const URL_LINKS = {
   DEFAULT_SHOP_LOGO: "DEFAULT_SHOP_LOGO",
   DEFAULT_ACCOUNT_PHOTO:
