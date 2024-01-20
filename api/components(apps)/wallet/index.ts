@@ -1,3 +1,4 @@
+export { earningsRoutes } from "./routes/earnings.routes"
 export { walletService } from "./services/wallet.service"
 export { walletRepo } from "./repository/wallet.repo"
 export { Wallet } from "./models/wallet.models"

@@ -1,7 +1,12 @@
-import { Schema, model } from "mongoose";
+import { PaginateModel, Schema, model } from "mongoose";
 import Big from "big.js";
+import paginate from "mongoose-paginate-v2";
 
-import { IEarningsDocument, IWalletDocument, IWalletMethodsDocument } from "../wallet.interface";
+import {
+  IEarningsDocument,
+  IWalletDocument,
+  IWalletMethodsDocument,
+} from "../wallet.interface";
 import { HandleException, stringsUtils } from "../../../utils";
 import {
   Currency,
@@ -44,31 +49,37 @@ const walletSchema = new Schema<IWalletDocument>(
   }
 );
 
-walletSchema.statics.creditWallet = async function name(walletId:string, amount: string) {
-    const wallet = await this.findById(walletId).select("balance");
+walletSchema.statics.creditWallet = async function name(
+  walletId: string,
+  amount: string
+) {
+  const wallet = await this.findById(walletId).select("balance");
 
-    if (!wallet) {
-        throw new HandleException(STATUS_CODES.NOT_FOUND, "wallet not found")
-    }
+  if (!wallet) {
+    throw new HandleException(STATUS_CODES.NOT_FOUND, "wallet not found");
+  }
 
-    wallet.balance = Big(wallet.balance).plus(amount);
-    await wallet.save();
+  wallet.balance = Big(wallet.balance).plus(amount);
+  await wallet.save();
 
-    return wallet;
-}
+  return wallet;
+};
 
-walletSchema.statics.debitWallet = async function name(walletId:string, amount: string) {
-    const wallet = await this.findById(walletId).select("balance");
+walletSchema.statics.debitWallet = async function name(
+  walletId: string,
+  amount: string
+) {
+  const wallet = await this.findById(walletId).select("balance");
 
-    if (!wallet) {
-        throw new HandleException(STATUS_CODES.NOT_FOUND, "wallet not found")
-    }
+  if (!wallet) {
+    throw new HandleException(STATUS_CODES.NOT_FOUND, "wallet not found");
+  }
 
-    wallet.balance = Big(wallet.balance).minus(amount);
-    await wallet.save();
+  wallet.balance = Big(wallet.balance).minus(amount);
+  await wallet.save();
 
-    return wallet;
-}
+  return wallet;
+};
 
 const earningsSchema = new Schema<IEarningsDocument>(
   {
@@ -88,5 +99,13 @@ const earningsSchema = new Schema<IEarningsDocument>(
   }
 );
 
-export const Wallet = model<IWalletDocument, IWalletMethodsDocument>("Wallet", walletSchema);
-export const Earnings = model<IEarningsDocument>("Earnings", earningsSchema);
+earningsSchema.plugin(paginate);
+
+export const Wallet = model<IWalletDocument, IWalletMethodsDocument>(
+  "Wallet",
+  walletSchema
+);
+export const Earnings = model<
+  IEarningsDocument,
+  PaginateModel<IEarningsDocument>
+>("Earnings", earningsSchema);
