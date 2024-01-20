@@ -1,5 +1,7 @@
 import { Schema, model } from "mongoose";
-import { IEarningsDocument, IWalletDocument } from "../wallet.interface";
+import Big from "big.js";
+
+import { IEarningsDocument, IWalletDocument, IWalletMethodsDocument } from "../wallet.interface";
 import { HandleException, stringsUtils } from "../../../utils";
 import {
   Currency,
@@ -42,6 +44,32 @@ const walletSchema = new Schema<IWalletDocument>(
   }
 );
 
+walletSchema.statics.creditWallet = async function name(walletId:string, amount: string) {
+    const wallet = await this.findById(walletId).select("balance");
+
+    if (!wallet) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "wallet not found")
+    }
+
+    wallet.balance = Big(wallet.balance).plus(amount);
+    await wallet.save();
+
+    return wallet;
+}
+
+walletSchema.statics.debitWallet = async function name(walletId:string, amount: string) {
+    const wallet = await this.findById(walletId).select("balance");
+
+    if (!wallet) {
+        throw new HandleException(STATUS_CODES.NOT_FOUND, "wallet not found")
+    }
+
+    wallet.balance = Big(wallet.balance).minus(amount);
+    await wallet.save();
+
+    return wallet;
+}
+
 const earningsSchema = new Schema<IEarningsDocument>(
   {
     _id: {
@@ -60,5 +88,5 @@ const earningsSchema = new Schema<IEarningsDocument>(
   }
 );
 
-export const Wallet = model<IWalletDocument>("Wallet", walletSchema);
-export const Earnings = model<IWalletDocument>("Earnings", earningsSchema);
+export const Wallet = model<IWalletDocument, IWalletMethodsDocument>("Wallet", walletSchema);
+export const Earnings = model<IEarningsDocument>("Earnings", earningsSchema);

@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, Model } from "mongoose";
 import {
   Currency,
   WithdrawalMethod,
@@ -18,6 +18,11 @@ export interface IWalletDocument extends Document {
   withdrawalMethod: WithdrawalMethod;
   withdrawalFrequency: WIthdrawalFrequency;
   status: WalletStatus;
+}
+
+export interface IWalletMethodsDocument extends Model<IWalletDocument>{
+    creditWallet(walletId: string, amount: string): Promise<IWalletDocument>
+    debitWallet(walletId: string, amount: string): Promise<IWalletDocument>
 }
 
 export interface IEarningsDocument extends Document {
