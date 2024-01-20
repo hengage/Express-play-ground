@@ -15,6 +15,7 @@ import { makuService } from "../components(apps)/maku";
 import { messengerService } from "../components(apps)/messenger";
 import { transportService } from "../components(apps)/transport";
 import { makuNotificationService } from "../components(apps)/notifications/services/makuNotifications";
+import { walletService } from "../components(apps)/wallet";
 
 class WebSocket {
   private io: Socket;
@@ -341,7 +342,7 @@ class WebSocket {
     socket.on("messenger-order-delivered", async (message) => {
       const { orderId } = message;
       try {
-      await messengerService.setStatusToDelivered(orderId);
+        await messengerService.setStatusToDelivered(orderId);
       } catch (error: any) {
         socket.emit("messenger-order-delivered-error", error.message);
       }
@@ -366,6 +367,15 @@ class WebSocket {
         socket.emit("found-transport-companies", transportCompanies);
       } catch (error: any) {
         socket.emit("find-transport-companies-error");
+      }
+    });
+
+    socket.on("get-wallet-balance", async (message: any) => {
+      try {
+        const wallet = await walletService.getWalletByUserId(message.userId);
+        socket.emit("wallet-balance", wallet)
+      } catch (error: any) {
+        socket.emit("get-wallet-balance-error", error.message);
       }
     });
   }
