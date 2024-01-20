@@ -15,6 +15,7 @@ const walletSchema = new Schema<IWalletDocument>(
       default: () => stringsUtils.generateUniqueString(4),
     },
     user: { type: String, required: true },
+    userAccountType: { type: String, required: true },
     balance: { type: String, default: "0" },
     transactionCount: { type: Number, default: 0 },
     totalEarnings: { type: String, default: "0" },
@@ -23,10 +24,12 @@ const walletSchema = new Schema<IWalletDocument>(
       enum: Object.values(Currency),
       default: Currency.GHANA_CEDIS,
     },
-    withdrawalMethod: [{
-      type: String,
-      enum: Object.values(WithdrawalMethod),
-    }],
+    withdrawalMethod: [
+      {
+        type: String,
+        enum: Object.values(WithdrawalMethod),
+      },
+    ],
     status: {
       type: String,
       enum: Object.values(WalletStatus),
@@ -37,11 +40,6 @@ const walletSchema = new Schema<IWalletDocument>(
     timestamps: true,
   }
 );
-
-
-
-
-
 
 const earningsSchema = new Schema<IEarningsDocument>(
   {

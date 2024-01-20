@@ -10,6 +10,7 @@ import {
 export interface IWalletDocument extends Document {
   _id: string;
   user: string;
+  userAccountType: string;
   balance: string;
   transactionCount: number;
   totalEarnings: string;

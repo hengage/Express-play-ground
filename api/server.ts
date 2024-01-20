@@ -18,10 +18,6 @@ redisClient.connect();
 const server = app.listenToPort(PORT, NODE_ENV);
 
 (async () => {
-  await walletRepo.createWalletForVendors();
-})();
-
-(async () => {
   await agenda.start();
 })();
 
