@@ -3,6 +3,7 @@ import { IEarningsDocument, IWalletDocument } from "../wallet.interface";
 import { HandleException, stringsUtils } from "../../../utils";
 import {
   Currency,
+  EarningsDescription,
   STATUS_CODES,
   WalletStatus,
   WithdrawalMethod,
@@ -50,6 +51,7 @@ const earningsSchema = new Schema<IEarningsDocument>(
     user: { type: String, required: true },
     wallet: { type: String, required: true, ref: "Wallet" },
     amount: { type: String, required: true },
+    description: { type: String, enum: EarningsDescription },
     reference: { type: String },
     date: { type: Date, required: true, default: Date.now() },
   },

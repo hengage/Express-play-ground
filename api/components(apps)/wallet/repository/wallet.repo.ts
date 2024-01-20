@@ -1,4 +1,4 @@
-import { Wallet } from "../models/wallet.models";
+import { Earnings, Wallet } from "../models/wallet.models";
 
 class WalletRepository {
   async create(payload: { user: string; accountType: string }) {
@@ -8,6 +8,18 @@ class WalletRepository {
     });
 
     return wallet;
+  }
+
+  async recordEarnings(payload: any) {
+    const earning = await Earnings.create({
+      user: payload.userId,
+      wallet: payload.walletId,
+      amount: payload.amount,
+      description: payload.description,
+      reference: payload.reference,
+    });
+
+    console.log("Recorded earnings for user", earning)
   }
 }
 

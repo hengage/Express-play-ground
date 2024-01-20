@@ -25,6 +25,7 @@ export interface IEarningsDocument extends Document {
   user: string;
   wallet: IWalletDocument;
   amount: string;
+  description: string;
   reference: string;
   date: Date;
 }
