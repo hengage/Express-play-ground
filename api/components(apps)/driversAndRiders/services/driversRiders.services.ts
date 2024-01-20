@@ -10,6 +10,7 @@ import {
 import { STATUS_CODES } from "../../../constants";
 import { driverRiderRepo } from "../repository/driverRider.repo";
 import { MakuTrip } from "../../maku";
+import { emitEvent } from "../../../services";
 
 class DriverRiderService {
   async checkPhoneNumberIsTaken(phoneNumber: string, accountType: string) {
@@ -52,8 +53,12 @@ class DriverRiderService {
         country: payload.country,
         postalCode: payload.postalCode,
       });
-      const savedDriverrider = newDriverRider.save();
-      return savedDriverrider;
+      const savedDriverRider = await newDriverRider.save();
+      emitEvent("create-wallet", {
+        userId: savedDriverRider._id,
+        accountType
+      });
+      return savedDriverRider;
     } catch (error: any) {
       throw new HandleException(500, error.message);
     }

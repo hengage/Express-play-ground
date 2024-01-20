@@ -5,6 +5,7 @@ import { HandleException } from "../../../utils";
 import { Vendor } from "../models/vendors.model";
 import { ISignupVendor, IVendor } from "../vendors.interface";
 import { IShop, Shop } from "../../shops";
+import { emitEvent } from "../../../services";
 
 class VendorService {
   async checkPhoneNumberIsTaken(phoneNumber: string) {
@@ -43,6 +44,10 @@ class VendorService {
         country: payload.country,
       });
       const savedVendor = await newVendor.save();
+      emitEvent("create-wallet", {
+        userId: savedVendor._id,
+        accountType: "vendor",
+      });
       return savedVendor;
     } catch (error: any) {
       throw new HandleException(STATUS_CODES.SERVER_ERROR, error.message);
@@ -72,7 +77,6 @@ class VendorService {
     }
   }
 
-  
   async login(payload: any): Promise<any> {
     try {
       const vendor = await this.getVendorByPhoneNumber(

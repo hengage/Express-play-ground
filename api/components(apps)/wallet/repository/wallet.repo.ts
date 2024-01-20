@@ -1,9 +1,9 @@
 import { Earnings, Wallet } from "../models/wallet.models";
 
 class WalletRepository {
-  async create(payload: { user: string; accountType: string }) {
+  async create(payload: { userId: string; accountType: string }) {
     const wallet = await Wallet.create({
-      user: payload.user,
+      user: payload.userId,
       userAccountType: payload.accountType,
     });
 

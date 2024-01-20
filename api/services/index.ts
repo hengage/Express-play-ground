@@ -1,3 +1,4 @@
+export { emitEvent } from "./events.service";
 export { agenda } from "./jobs.services";
 export { findClosestDriverOrRider } from "./geospatial.services";
 export { WebSocket } from "./socket.service";
