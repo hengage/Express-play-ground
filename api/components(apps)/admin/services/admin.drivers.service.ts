@@ -61,6 +61,22 @@ class AdminDriversService {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
     }
   }
+
+  async getUnapprovedDrivers(page: number) {
+    const query = { accountType: "driver", approved: false };
+    const options = {
+      page,
+      limit: 15,
+      select:
+        "firstName lastName email phoneNumber accountStatus approved createdAt",
+      lean: true,
+      leanWithId: false,
+      sort: { createdAt: 1 },
+    };
+
+    const drivers = await DriverRider.paginate(query, options);
+    return drivers;
+  }
 }
 
 export const adminDriversService = new AdminDriversService();

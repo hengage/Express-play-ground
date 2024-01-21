@@ -39,9 +39,9 @@ class AdminOpsForVendorsController {
   async getUnapprovedVendors(req: Request, res: Response) {
     const page = parseInt(req.query.page as string) || 1;
     try {
-      const vendors = adminOpsForVendorsService.getUnapprovedVendors(page);
+      const vendors = await adminOpsForVendorsService.getUnapprovedVendors(page);
       res.status(STATUS_CODES.OK).json({
-        message: "Fetched driver",
+        message: "Fetched vendors",
         data: { vendors },
       });
     } catch (error: any) {
