@@ -15,12 +15,17 @@ const transactionSchema = new Schema<ITransactionDocument>(
       required: true,
       ref: "Wallet",
     },
+    user: {
+      type: String,
+      required: true,
+    },
     type: {
       type: String,
       enum: Object.values(TransactionType),
       required: true,
     },
     amount: { type: String, required: true },
+    status: { type: String, required: true},
     reference: { type: String },
     description: { type: String, required: true },
   },
