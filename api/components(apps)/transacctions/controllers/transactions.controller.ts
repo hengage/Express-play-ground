@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { STATUS_CODES } from "../../../constants";
 import { transactionsRepo } from "../repository/transactions.repo";
+import { handleErrorResponse } from "../../../utils";
 
 class TransactionsController {
   async getTransactionsForUser(req: Request, res: Response) {
@@ -16,10 +17,7 @@ class TransactionsController {
         data: {transactions}
       })
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        mesage: "Failed",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 }

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { driverRiderService } from "../services/driversRiders.services";
-import { HandleException, jwtUtils } from "../../../utils";
+import { HandleException, handleErrorResponse, jwtUtils } from "../../../utils";
 import { STATUS_CODES } from "../../../constants";
 import { userService } from "../../../services";
 import { driverRiderRepo } from "../repository/driverRider.repo";
@@ -45,10 +45,7 @@ class DriversRidersController {
         },
       });
     } catch (error: any) {
-      return res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to create acount",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -81,10 +78,7 @@ class DriversRidersController {
         },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to login",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -97,10 +91,7 @@ class DriversRidersController {
         data: { driverRider },
       });
     } catch (error: any) {
-      res.status(error.status | STATUS_CODES.SERVER_ERROR).json({
-        message: "Error getting details",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -113,10 +104,7 @@ class DriversRidersController {
         data: { driverRider },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to update profile",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -130,10 +118,7 @@ class DriversRidersController {
       );
       res.status(STATUS_CODES.OK).json({ message: `${accountType} rated` });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: `Error rating ${accountType}`,
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -147,10 +132,7 @@ class DriversRidersController {
         data: { trips },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error fetching trip history",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -166,10 +148,7 @@ class DriversRidersController {
         data: { trip },
       });
     } catch (error: any) {
-      res.status(error.message || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to get trip details",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 }

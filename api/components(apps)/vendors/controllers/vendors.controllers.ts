@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { vendorService } from "../services/vendors.services";
-import { HandleException, jwtUtils } from "../../../utils";
+import { HandleException, handleErrorResponse, jwtUtils } from "../../../utils";
 import { STATUS_CODES } from "../../../constants";
 import { userService } from "../../../services";
 import { shopServices } from "../../shops";
@@ -33,10 +33,7 @@ class VendorController {
         },
       });
     } catch (error: any) {
-      return res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to create acount",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -59,10 +56,7 @@ class VendorController {
         },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to login",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -80,10 +74,7 @@ class VendorController {
         data: shops,
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to fetch shops",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -96,10 +87,7 @@ class VendorController {
         data: { vendor },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to get vendor profile",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -112,10 +100,7 @@ class VendorController {
         data: { vendor },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to update profile",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -127,10 +112,7 @@ class VendorController {
         message: "Account deleted successfully"
       })
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to delete account",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 }

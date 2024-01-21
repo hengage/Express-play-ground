@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { STATUS_CODES } from "../../../constants";
 import { makuService } from "../services/maku.service";
+import { handleErrorResponse } from "../../../utils";
 
 class MakuController {
   public async getVehicleTypes(req: Request, res: Response) {
@@ -13,10 +14,7 @@ class MakuController {
         },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to fecth cab types",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -26,13 +24,10 @@ class MakuController {
       const trip = await makuService.getTripDetails(tripId);
       res.status(STATUS_CODES.OK).json({
         message: "Fetched trip details",
-        data: { trip }
+        data: { trip },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to get trip details",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 }

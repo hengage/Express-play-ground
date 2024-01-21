@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { STATUS_CODES } from "../../../constants";
 import { earningsRepo } from "../repository/earnings.repo";
+import { handleErrorResponse } from "../../../utils";
 
 class EarningsController {
   async getEarnings(req: Request, res: Response) {
@@ -13,10 +14,7 @@ class EarningsController {
         data: earnings,
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed",
-        error: error.message || "Server errror",
-      });
+      handleErrorResponse(res, error);
     }
   }
 }

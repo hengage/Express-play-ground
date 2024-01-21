@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { STATUS_CODES } from "../../../constants";
 import { productsService } from "../services/products.service";
 import { Shop } from "../../shops";
-import { jwtUtils } from "../../../utils";
+import { handleErrorResponse } from "../../../utils";
 
 class ProductsController {
   public async addProduct(req: Request, res: Response) {
@@ -15,7 +15,7 @@ class ProductsController {
 
       if (!vendorShop) {
         return res.status(STATUS_CODES.UNAUTHORIZED).json({
-          message: "Failed to create shop",
+          message: "Failed",
           error: "Unauthorized access. You do not own this shop",
         });
       }
@@ -30,10 +30,7 @@ class ProductsController {
         data: product,
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to add product",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -49,10 +46,7 @@ class ProductsController {
         },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to fetch product",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -70,10 +64,7 @@ class ProductsController {
         },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to fetch product",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -92,10 +83,7 @@ class ProductsController {
         data: product,
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Product update failed",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -107,10 +95,7 @@ class ProductsController {
         message: "Product deleted",
       });
     } catch (error: any) {
-      res.status(error.status).json({
-        message: "Failed to delete product",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -124,10 +109,7 @@ class ProductsController {
         data: products,
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to search for products",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 }

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { customerService } from "../services/customers.services";
 import { userService } from "../../../services";
-import { HandleException, jwtUtils } from "../../../utils";
+import { HandleException, handleErrorResponse, jwtUtils } from "../../../utils";
 import { STATUS_CODES } from "../../../constants";
 import { customerRepo } from "../repository/customers.repo";
 
@@ -30,9 +30,7 @@ class CustomerController {
         },
       });
     } catch (error: any) {
-      res
-        .status(error.status || STATUS_CODES.SERVER_ERROR)
-        .json({ message: "Error creating customer", error: error.message });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -54,10 +52,7 @@ class CustomerController {
         },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to login",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -70,10 +65,7 @@ class CustomerController {
         data: { customer },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to get customer profile",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -86,10 +78,7 @@ class CustomerController {
         data: { customer },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to update profile",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
   async getOrders(req: Request, res: Response) {
@@ -104,10 +93,7 @@ class CustomerController {
         data: { orders },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error fetching orders",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -119,10 +105,7 @@ class CustomerController {
         message: "Customer deleted successfully",
       });
     } catch (error: any) {
-      res.status(error.status).json({
-        message: "Error deleting customer",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -136,10 +119,7 @@ class CustomerController {
         data: { trips },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error getting trips",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -155,10 +135,7 @@ class CustomerController {
         data: { trip },
       });
     } catch (error: any) {
-      res.status(error.message || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to get trip details",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -175,10 +152,7 @@ class CustomerController {
         data: { tripOrders },
       });
     } catch (error: any) {
-      res.status(error.message || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to get trip orders",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -195,29 +169,24 @@ class CustomerController {
         data: { towingHistory },
       });
     } catch (error: any) {
-      res.status(error.message || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to get towing order history",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 
   async messengerOrderHistory(req: Request, res: Response) {
-    const page  = parseInt(req.query.page as string) || 1
+    const page = parseInt(req.query.page as string) || 1;
     try {
       const customerId = (req as any).user._id;
       const messengerOrders = await customerService.messengerOrderHistory(
-        customerId, page
+        customerId,
+        page
       );
       res.status(STATUS_CODES.OK).json({
         message: "Success",
         data: { messengerOrders },
       });
     } catch (error: any) {
-      res.status(error.message || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 }

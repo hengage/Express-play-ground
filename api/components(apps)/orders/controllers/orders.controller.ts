@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ordersService } from "../services/orders.service";
 import { STATUS_CODES } from "../../../constants";
+import { handleErrorResponse } from "../../../utils";
 
 class OrdersController {
   async createOrder(req: Request, res: Response) {
@@ -14,10 +15,7 @@ class OrdersController {
         },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to create order",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -31,10 +29,7 @@ class OrdersController {
         },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error fetching order",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 }

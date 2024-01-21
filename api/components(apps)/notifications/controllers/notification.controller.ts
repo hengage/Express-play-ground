@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getUserNotifications } from "../repositery/notification.repo";
 import { STATUS_CODES } from "../../../constants";
+import { handleErrorResponse } from "../../../utils";
 
 class NotificationController {
   public async getUserNotifications(req: Request, res: Response) {
@@ -13,10 +14,7 @@ class NotificationController {
         data: notifications,
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error fetching user notifications",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 }

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { STATUS_CODES } from "../../../constants";
 import { transportRepo } from "../repository/transport.repo";
 import { towingRepo } from "../repository/towing.repo";
+import { handleErrorResponse } from "../../../utils";
 
 class TowingController {
   async createTowOrder(req: Request, res: Response) {
@@ -12,10 +13,7 @@ class TowingController {
         data: { towOrder },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to create tow order",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -33,10 +31,7 @@ class TowingController {
         data: { towOrders },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -48,10 +43,7 @@ class TowingController {
         data: { towOrder },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 }

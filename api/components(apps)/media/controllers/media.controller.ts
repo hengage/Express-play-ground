@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import { STATUS_CODES } from "../../../constants";
-import { HandleException } from "../../../utils";
+import { HandleException, handleErrorResponse } from "../../../utils";
 import { mediaService } from "../services/media.service";
 
 class MediaController {
@@ -24,10 +24,7 @@ class MediaController {
         data: fileUrls,
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error uploading file",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   };
 }

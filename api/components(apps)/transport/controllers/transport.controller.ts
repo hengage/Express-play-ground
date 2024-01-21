@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { transportService } from "../services/transport.service";
 import { STATUS_CODES } from "../../../constants";
-import { jwtUtils } from "../../../utils";
+import { handleErrorResponse, jwtUtils } from "../../../utils";
 import { transportRepo } from "../repository/transport.repo";
 
 class TransportController {
@@ -13,10 +13,7 @@ class TransportController {
         data: { transportCompany },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error creating towing company",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -39,10 +36,7 @@ class TransportController {
         },
       });
     } catch (error: any) {
-      res.status(error.status || 500).json({
-        message: "Failed to login",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -55,10 +49,7 @@ class TransportController {
         message: "Added vehicle type",
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error adding vehicle type",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -74,10 +65,7 @@ class TransportController {
         data: { driver },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error adding driver",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -92,10 +80,7 @@ class TransportController {
         },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error fetching profile",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -108,10 +93,7 @@ class TransportController {
         data: { transportCompany },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to update profile",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -126,10 +108,7 @@ class TransportController {
         data: { vehicleTypes },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "failed to fetch vehicle types",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -142,9 +121,7 @@ class TransportController {
         data: { vehicleTypes },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "failed to fetch vehicle types",
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -156,10 +133,7 @@ class TransportController {
         data: { serviceTypes },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to fetch service types",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -172,10 +146,7 @@ class TransportController {
         data: { drivers },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error on fetching drivers",
-        erorr: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -191,10 +162,7 @@ class TransportController {
         data: { driver },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error on getting driver",
-        erorr: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -211,10 +179,7 @@ class TransportController {
         data: { driver },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error updating driver",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -226,10 +191,7 @@ class TransportController {
         .status(STATUS_CODES.OK)
         .json({ message: "Driver deleted successfully" });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error deleting driver",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -241,10 +203,7 @@ class TransportController {
         data: { tripOrder },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to create trip order",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -261,10 +220,7 @@ class TransportController {
         data: { tripOrders },
       });
     } catch (error: any) {
-      res.status(error.message || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to get trip orders",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 }

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { STATUS_CODES } from "../../../constants";
 import { messengerRepo } from "../repository/messenger.repo";
+import { handleErrorResponse } from "../../../utils";
 
 class MessengerConteoller {
   async getOrderDetails(req: Request, res: Response) {
@@ -11,10 +12,7 @@ class MessengerConteoller {
         data: messengerOrder,
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 }

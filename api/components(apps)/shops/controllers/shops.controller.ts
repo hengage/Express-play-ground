@@ -3,7 +3,7 @@ import { shopServices } from "../services/shops.services";
 import { STATUS_CODES } from "../../../constants";
 import { vendorService } from "../../vendors";
 import { shopRepository } from "../repository/shops.repo";
-import { HandleException } from "../../../utils";
+import { HandleException, handleErrorResponse } from "../../../utils";
 
 class ShopController {
   async getShopTypes(req: Request, res: Response) {
@@ -14,10 +14,7 @@ class ShopController {
         data: shopTypes,
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to fetch shop types",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -29,7 +26,9 @@ class ShopController {
         message: "Fetched categories for shop type: " + shopTypeId,
         data: categories,
       });
-    } catch (error) {}
+    } catch (error) {
+      handleErrorResponse(res, error);
+    }
   }
 
   public async getAllCategories(req: Request, res: Response) {
@@ -40,10 +39,7 @@ class ShopController {
         data: categories,
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "error fetching categories",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -66,10 +62,7 @@ class ShopController {
         },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error creating shop",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -86,10 +79,7 @@ class ShopController {
         data: shop,
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error updating shop",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -106,10 +96,7 @@ class ShopController {
         },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to fetch products",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -122,10 +109,7 @@ class ShopController {
         data: orders,
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error getting orders",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -136,10 +120,7 @@ class ShopController {
         message: "Shop deleted successfully",
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error deleting shop",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -152,10 +133,7 @@ class ShopController {
         data: { shops },
       });
     } catch (error: any) {
-      res.status(error.status | STATUS_CODES.SERVER_ERROR).json({
-        message: "error fetching shops",
-        error: error.message,
-      });
+      handleErrorResponse(res, error);
     }
   }
 
@@ -177,10 +155,7 @@ class ShopController {
         data: { shops },
       });
     } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Failed to find shops",
-        error: error.message || "Server error",
-      });
+      handleErrorResponse(res, error);
     }
   }
 }
