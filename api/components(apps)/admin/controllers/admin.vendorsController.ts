@@ -29,11 +29,26 @@ class AdminOpsForVendorsController {
         data: { vendor },
       });
     } catch (error: any) {
-        res.status(error.status || STATUS_CODES.SERVER_ERROR)
-        .json({
-            message: "Failed to get vendor",
-            error: error.message || "Server error"
-        })
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Failed to get vendor",
+        error: error.message || "Server error",
+      });
+    }
+  }
+
+  async getUnapprovedVendors(req: Request, res: Response) {
+    const page = parseInt(req.query.page as string) || 1;
+    try {
+      const vendors = adminOpsForVendorsService.getUnapprovedVendors(page);
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched driver",
+        data: { vendors },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Operation Failed",
+        error: error.message || "Server error",
+      });
     }
   }
 }

@@ -47,6 +47,9 @@ class AdminRoutes {
     this.router
       .route("/vendors/:vendorId")
       .get(adminOpsForVendorsController.getVendorDetails);
+    this.router
+      .route("/vendors/unapproved")
+      .get(adminOpsForVendorsController.getUnapprovedVendors);
 
     // Orders
     this.router.route("/orders").get(adminOpsForOrdersController.getOrders);
