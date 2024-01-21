@@ -5,10 +5,12 @@ import { STATUS_CODES } from "../../../constants";
 import { userService } from "../../../services";
 import { shopServices } from "../../shops";
 import { vendorRepo } from "../repository/vendor.repo";
+import { validateVendors } from "../validators/vendors.validation";
 
 class VendorController {
   public async signup(req: Request, res: Response) {
     try {
+      await validateVendors.signup(req.body);
       await userService.isEmailTaken(req.body.email);
       await vendorService.checkPhoneNumberIsTaken(req.body.phoneNumber);
 
@@ -42,6 +44,7 @@ class VendorController {
     const password = req.body.password;
 
     try {
+      await validateVendors.login(req.body);
       const vendor = await vendorService.login({ phoneNumber, password });
       const payload = { phoneNumber: vendor.phoneNumber, _id: vendor._id };
       const accessToken = jwtUtils.generateToken(payload, "1h");
@@ -94,6 +97,7 @@ class VendorController {
   async updateProfile(req: Request, res: Response) {
     const vendorId = (req as any).user._id;
     try {
+      await validateVendors.updateProfile(req.body);
       const vendor = await vendorRepo.updateProfile(vendorId, req.body);
       res.status(STATUS_CODES.OK).json({
         message: "Updated profile",
@@ -109,8 +113,8 @@ class VendorController {
       const vendorId = (req as any).user._id;
       await vendorRepo.deleteAccount(vendorId);
       res.status(STATUS_CODES.OK).json({
-        message: "Account deleted successfully"
-      })
+        message: "Account deleted successfully",
+      });
     } catch (error: any) {
       handleErrorResponse(res, error);
     }

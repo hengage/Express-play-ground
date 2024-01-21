@@ -1,25 +1,19 @@
 import Joi from "joi";
-import { HandleException } from "../../../utils";
-import { STATUS_CODES } from "../../../constants";
 
-class ValidateDriversAndRiders {
+import { STATUS_CODES } from "../../../constants";
+import { HandleException } from "../../../utils";
+
+class ValidateVendors {
   signup = async (payload: any) => {
     const signUpSchema = Joi.object({
-      firstName: Joi.string().required().label("First name"),
-      middleName: Joi.string().required().label("Middle name"),
-      lastName: Joi.string().required().label("Last name"),
+      firstName: Joi.string().required().label("First Name"),
+      lastName: Joi.string().required().label("Last Name"),
+      middleName: Joi.string().required().label("MJiddle Name"),
       email: Joi.string().required().label("Email"),
       phoneNumber: Joi.string().required().label("Phone number"),
       password: Joi.string().required().label("Password"),
       photo: Joi.string().required().label("Photo"),
-      vehicleType: Joi.string().required().label("Vehicle type"),
-      vehicle: Joi.string().required().label("Vehicle"),
-      vehicleInsurancePhoto: Joi.string()
-        .required()
-        .label("vehicle insurance photo"),
-      licenseNumber: Joi.string().required().label("License number"),
       govtIdPhoto: Joi.string().required().label("Government ID photo"),
-      street: Joi.string().required().label("Street"),
       city: Joi.string().required().label("City"),
       state: Joi.string().required().label("State"),
       country: Joi.string().required().label("Country"),
@@ -38,12 +32,12 @@ class ValidateDriversAndRiders {
   };
 
   login = async (payload: any) => {
-    const loginSchema = Joi.object({
+    const signUpSchema = Joi.object({
       phoneNumber: Joi.string().required().label("Phone number"),
       password: Joi.string().required().label("Password"),
     });
 
-    const { error } = loginSchema.validate(payload, {
+    const { error } = signUpSchema.validate(payload, {
       abortEarly: false,
       allowUnknown: false,
     });
@@ -55,15 +49,10 @@ class ValidateDriversAndRiders {
     return;
   };
 
+  
   updateProfile = async (payload: any) => {
     const loginSchema = Joi.object({
       phoneNumber: Joi.string().label("Phone number"),
-      vehicleType: Joi.string().label("Vehicle type"),
-      vehicle: Joi.string().label("Vehicle"),
-      vehicleInsurancePhoto: Joi.string()
-        .required()
-        .label("vehicle insurance photo"),
-
       govtIdphoto: Joi.string().label("Government ID photo"),
       street: Joi.string().label("Street"),
       city: Joi.string().label("City"),
@@ -84,4 +73,4 @@ class ValidateDriversAndRiders {
   };
 }
 
-export const validateDriversAndRiders = new ValidateDriversAndRiders();
+export const validateVendors = new ValidateVendors();
