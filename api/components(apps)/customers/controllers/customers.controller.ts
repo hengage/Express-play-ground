@@ -4,10 +4,12 @@ import { userService } from "../../../services";
 import { HandleException, handleErrorResponse, jwtUtils } from "../../../utils";
 import { STATUS_CODES } from "../../../constants";
 import { customerRepo } from "../repository/customers.repo";
+import { validateCustomers } from "../validators/customers.validation";
 
 class CustomerController {
   async signup(req: Request, res: Response): Promise<void> {
     try {
+      await validateCustomers.signup(req.body);
       await userService.isEmailTaken(req.body.email);
       await customerService.checkPhoneNumberIsTaken(req.body.phoneNumber);
 
@@ -39,6 +41,7 @@ class CustomerController {
     const password = req.body.password;
 
     try {
+      await validateCustomers.login(req.body);
       const customer = await customerService.login({ phoneNumber, password });
       const payload = { phoneNumber: customer.phoneNumber, _id: customer._id };
       const accessToken = jwtUtils.generateToken(payload, "1h");
@@ -72,6 +75,8 @@ class CustomerController {
   async updateProfile(req: Request, res: Response) {
     const customerId = (req as any).user._id;
     try {
+      await validateCustomers.updateProile(req.body);
+
       const customer = await customerRepo.updateProfile(customerId, req.body);
       res.status(STATUS_CODES.OK).json({
         message: "Updated profile",
@@ -81,6 +86,7 @@ class CustomerController {
       handleErrorResponse(res, error);
     }
   }
+
   async getOrders(req: Request, res: Response) {
     const status = req.query.status as string;
     const page = parseInt(req.query.page as string) || 1;
