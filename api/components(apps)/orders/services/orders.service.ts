@@ -1,9 +1,6 @@
 import { OrderStatus, STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
-import {
-  notificationService,
-  ordersNotificationService,
-} from "../../notifications";
+import { ordersNotificationService } from "../../notifications";
 import { Order } from "../models/orders.models";
 import { IOrder } from "../orders.interface";
 
@@ -108,7 +105,7 @@ class OrdersService {
         order,
         "Order accepted",
         "Your order has been accepted and being processed"
-      )
+      );
       // console.log("order set to processing", { order });
 
       return order;
@@ -187,7 +184,10 @@ class OrdersService {
   }
 
   async assignRider(orderId: string, riderId: string) {
-    const order = await ordersService.getOrderById(orderId, "rider customer status");
+    const order = await ordersService.getOrderById(
+      orderId,
+      "rider customer status"
+    );
     order.rider = riderId;
     await order.save();
     return order;

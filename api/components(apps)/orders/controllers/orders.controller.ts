@@ -2,11 +2,13 @@ import { Request, Response } from "express";
 import { ordersService } from "../services/orders.service";
 import { STATUS_CODES } from "../../../constants";
 import { handleErrorResponse } from "../../../utils";
+import { validateOrders } from "../validators/orders.validation";
 
 class OrdersController {
   async createOrder(req: Request, res: Response) {
     try {
       const customerId = (req as any).user._id;
+      await validateOrders.createOrder(req.body);
       const order = await ordersService.createOrder(req.body);
       res.status(STATUS_CODES.OK).json({
         message: "Created order",
