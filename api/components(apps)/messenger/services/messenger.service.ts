@@ -4,14 +4,9 @@ import {
   findClosestDriverOrRider,
   smsService,
 } from "../../../services";
-import {
-  messengerNotificationService,
-  notificationService,
-} from "../../notifications";
+import { messengerNotificationService } from "../../notifications";
 import { IMessengerOrder } from "../messenger.interface";
 import { messengerRepo } from "../repository/messenger.repo";
-import { HandleException } from "../../../utils";
-import { STATUS_CODES } from "../../../constants";
 class Messengerservice {
   public async notifyNearestRiders(
     pickUpCoordinates: [number, number],
@@ -35,9 +30,6 @@ class Messengerservice {
     const order = await messengerRepo.createOrder(payload);
     const orderData = await messengerRepo.getOrder(order._id);
     if (order.scheduledPickUpTime) {
-      console.log({ scheduledPickUpTime: order.scheduledPickUpTime });
-      console.log("scheduled pick up");
-
       const fiveMinutesBefore = new Date(
         order.scheduledPickUpTime.getTime() - 5 * 60000
       );
@@ -82,12 +74,12 @@ class Messengerservice {
   }
 
   async setStatusToPickedUp(orderId: string) {
-      const order = await messengerRepo.setStatusToPickedUp(orderId);
-      await messengerNotificationService.notifyCustomerOfOrderStatus(
-        order,
-        "Parcel picked up",
-        "Your parcel has been picked up and is on the way to you"
-      );
+    const order = await messengerRepo.setStatusToPickedUp(orderId);
+    await messengerNotificationService.notifyCustomerOfOrderStatus(
+      order,
+      "Parcel picked up",
+      "Your parcel has been picked up and is on the way to you"
+    );
   }
 
   async setStatusToArrived(orderId: string) {

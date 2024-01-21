@@ -24,6 +24,7 @@ const messengerOrderShema = new Schema<IMessengerOrder>(
       required: true,
       ref: "PackageType",
     },
+    type: { type: String, required: true },
     pickUpAddress: {
       type: String,
       required: true,
@@ -87,7 +88,7 @@ const packageTypeSchema = new Schema<IPackageType>(
     photo: {
       type: String,
       required: true,
-    }
+    },
   },
   {
     timestamps: true,

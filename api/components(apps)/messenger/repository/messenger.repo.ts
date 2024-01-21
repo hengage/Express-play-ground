@@ -13,6 +13,7 @@ class MessengerRepo {
     const order = await new MessengerOrder({
       customer: payload.customer,
       packageType: payload.packageType,
+      type: payload.type,
       pickUpAddress: payload.pickUpAddress,
       pickUpLocation: {
         coordinates: payload.pickUpCoordinates,

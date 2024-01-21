@@ -7,6 +7,7 @@ export interface IMessengerOrder extends Document {
   customer: ICustomer;
   rider: IDriverRider["_id"];
   packageType: IPackageType;
+  type: "instant" | "scheduled";
   pickUpAddress: string;
   pickUpLocation: {
     type: string;
@@ -19,7 +20,7 @@ export interface IMessengerOrder extends Document {
   };
   note: string;
   status: string;
-  deliveryCost: number,
+  deliveryCost: number;
   scheduledPickUpTime?: Date;
   createdAt: Date;
   updatedAt: Date;
