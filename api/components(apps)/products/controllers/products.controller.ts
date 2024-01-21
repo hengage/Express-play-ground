@@ -3,11 +3,13 @@ import { STATUS_CODES } from "../../../constants";
 import { productsService } from "../services/products.service";
 import { Shop } from "../../shops";
 import { handleErrorResponse } from "../../../utils";
+import { validateProducts } from "../validators/products.validation";
 
 class ProductsController {
   public async addProduct(req: Request, res: Response) {
     try {
       const userId = (req as any).user._id;
+      await validateProducts.addProduct(req.body);
 
       const product = await productsService.addProduct(
         req.body,
@@ -61,6 +63,7 @@ class ProductsController {
     const vendorId = (req as any).user._id;
 
     try {
+      await validateProducts.updateProduct(req.body);
       const product = await productsService.updateProduct(
         req.params.productId,
         vendorId,
