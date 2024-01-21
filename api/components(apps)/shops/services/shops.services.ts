@@ -60,6 +60,7 @@ class ShopServices {
     vendor: string
   ): Promise<IShop> {
     const logo = payload.logo || URL_LINKS.DEFAULT_SHOP_LOGO;
+    
     try {
       const newShop = new Shop({
         name: payload.name,
@@ -72,12 +73,13 @@ class ShopServices {
         country: payload.country,
         postalCode: payload.postalCode,
         location: {
-          coordinates: payload.location.coordinates
+          coordinates: payload.location.coordinates,
         },
         type: payload.type,
         category: payload.category,
         logo: logo,
       });
+
       const savedShop = await newShop.save();
       return savedShop;
     } catch (error: any) {
@@ -152,7 +154,7 @@ class ShopServices {
 
   public async isNameTaken(name: string): Promise<boolean> {
     try {
-      const shop = await Shop.findOne({ name }).select("name");
+      const shop = await Shop.findOne({ name }).select("name").lean().exec();
       if (shop) {
         throw new HandleException(
           STATUS_CODES.CONFLICT,
@@ -180,7 +182,7 @@ class ShopServices {
     const options = {
       page,
       limit: 10,
-      sort:  {createdAt: -1}
+      sort: { createdAt: -1 },
     };
     try {
       const aggregation = [
@@ -297,7 +299,7 @@ class ShopServices {
       await session.abortTransaction();
       throw new HandleException(error.status, error.message);
     } finally {
-      session.endSession()
+      session.endSession();
     }
   }
 

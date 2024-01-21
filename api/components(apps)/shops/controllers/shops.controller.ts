@@ -4,6 +4,7 @@ import { STATUS_CODES } from "../../../constants";
 import { vendorService } from "../../vendors";
 import { shopRepository } from "../repository/shops.repo";
 import { HandleException, handleErrorResponse } from "../../../utils";
+import { validateShops } from "../validators/shops.validation";
 
 class ShopController {
   async getShopTypes(req: Request, res: Response) {
@@ -46,6 +47,7 @@ class ShopController {
   public async createShop(req: Request, res: Response) {
     try {
       const vendorId = (req as any).user._id;
+      await validateShops.createShop(req.body);
       await vendorService.getVendorById(vendorId, "_id");
       await shopServices.isNameTaken(req.body.name);
       await shopServices.isValidCategoryID(req.body.category);
@@ -69,6 +71,7 @@ class ShopController {
   public async updateShop(req: Request, res: Response) {
     const vendorId = (req as any).user._id;
     try {
+      await validateShops.updateShop(req.body);
       const shop = await shopServices.updateShop(
         req.params.shopId,
         vendorId,
