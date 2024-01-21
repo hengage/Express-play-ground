@@ -8,17 +8,6 @@ class ProductsController {
   public async addProduct(req: Request, res: Response) {
     try {
       const userId = (req as any).user._id;
-      const vendorShop = await Shop.findOne({
-        _id: req.params.shopId,
-        vendor: userId,
-      });
-
-      if (!vendorShop) {
-        return res.status(STATUS_CODES.UNAUTHORIZED).json({
-          message: "Failed",
-          error: "Unauthorized access. You do not own this shop",
-        });
-      }
 
       const product = await productsService.addProduct(
         req.body,

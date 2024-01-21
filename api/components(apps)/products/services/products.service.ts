@@ -11,7 +11,10 @@ class ProductsService {
     shopId: string
   ) {
     try {
-      const shop = await Shop.findById(shopId).select("category").lean().exec();
+      const shop = await Shop.findOne({ _id: shopId, vendor: vendorId })
+        .select("category")
+        .lean()
+        .exec();
 
       if (!shop) {
         throw new HandleException(STATUS_CODES.NOT_FOUND, "Shop not found");
