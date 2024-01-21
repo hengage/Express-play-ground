@@ -51,6 +51,17 @@ class AdminOpsForVendorsController {
       });
     }
   }
+
+  async approveVendor(req: Request, res: Response) {
+    try {
+      await adminOpsForVendorsService.approveVendor(req.params.vendorId);
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Operation Failed",
+        error: error.message || "Server error",
+      });
+    }
+  }
 }
 
 export const adminOpsForVendorsController = new AdminOpsForVendorsController();

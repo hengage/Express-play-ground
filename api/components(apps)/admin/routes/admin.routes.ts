@@ -50,6 +50,9 @@ class AdminRoutes {
     this.router
       .route("/vendors/unapproved")
       .get(adminOpsForVendorsController.getUnapprovedVendors);
+    this.router
+      .route("/vendors/approve-vendor")
+      .patch(adminOpsForVendorsController.approveVendor);
 
     // Orders
     this.router.route("/orders").get(adminOpsForOrdersController.getOrders);

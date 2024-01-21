@@ -47,6 +47,15 @@ class AdminOpsForVendorsService {
     const vendors = await Vendor.paginate(query, options);
     return vendors;
   }
+
+  async approveVendor(vendorId: string) {
+    const vendor = await Vendor.findById(vendorId).select("approved");
+    if (!vendor) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Vendor not found");
+    }
+    vendor.approved = true;
+    await vendor.save();
+  }
 }
 
 export const adminOpsForVendorsService = new AdminOpsForVendorsService();
