@@ -3,38 +3,39 @@ import { adminRidersService } from "../services/admin.ridersService";
 import { STATUS_CODES } from "../../../constants";
 
 class AdminRidersController {
-    async getRiders(req: Request, res: Response) {
-      const page = parseInt(req.query.page as string) || 1;
-      try {
-        const riders = await adminRidersService.getRiders(page);
-        res.status(STATUS_CODES.OK).json({
-          message: "Fetched riders",
-          data: { riders },
-        });
-      } catch (error: any) {
-        res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-          message: "Error getting riders",
-          error: error.message || "Server error",
-        });
-      }
+  async getRiders(req: Request, res: Response) {
+    const page = parseInt(req.query.page as string) || 1;
+    try {
+      const riders = await adminRidersService.getRiders(page);
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched riders",
+        data: { riders },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error getting riders",
+        error: error.message || "Server error",
+      });
     }
-  
-    async getRiderDetails(req: Request, res: Response) {
-      try {
-        const rider = await adminRidersService.getRiderDetails(req.params.riderId);
-        res.status(STATUS_CODES.OK).json({
-          message: "Fetched rider",
-          data: { rider },
-        });
-      } catch (error: any) {
-        res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-          message: "Error getting rider",
-          error: error.message || "Server error",
-        });
-      }
-    }
+  }
 
-    
+  async getRiderDetails(req: Request, res: Response) {
+    try {
+      const rider = await adminRidersService.getRiderDetails(
+        req.params.riderId
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched rider",
+        data: { rider },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Error getting rider",
+        error: error.message || "Server error",
+      });
+    }
+  }
+
   async updateRider(req: Request, res: Response) {
     try {
       const rider = await adminRidersService.updateRider(
@@ -58,7 +59,7 @@ class AdminRidersController {
       await adminRidersService.deleteRider(req.params.riderId);
       res.status(STATUS_CODES.OK).json({
         message: "Rider deleted successfully",
-      })
+      });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Error deleting rider",
@@ -66,6 +67,38 @@ class AdminRidersController {
       });
     }
   }
-  }
+
   
-  export const adminRidersController = new AdminRidersController();
+  async getUnapprovedRiders(req: Request, res: Response) {
+    const page = parseInt(req.query.page as string) || 1;
+    try {
+      const riders = adminRidersService.getUnapprovedRiders(page);
+      res.status(STATUS_CODES.OK).json({
+        message: "Success",
+        data: { riders },
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Operation failed",
+        error: error.message || "Server error",
+      });
+    }
+  }
+
+  async approveRider(req: Request, res: Response) {
+    try {
+      await adminRidersService.approveRider(req.params.riderId);
+      res.status(STATUS_CODES.OK).json({
+        message: "Success",
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Operation failed",
+        error: error.message || "Server error",
+      });
+    }
+  }
+
+}
+
+export const adminRidersController = new AdminRidersController();

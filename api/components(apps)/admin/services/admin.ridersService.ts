@@ -58,6 +58,36 @@ class AdminRidersService {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Rider not found");
     }
   }
+
+  async getUnapprovedRiders(page: number) {
+    const query = { accountType: "rider", approved: false };
+    const options = {
+      page,
+      limit: 15,
+      select:
+        "firstName lastName email phoneNumber accountStatus approved createdAt",
+      lean: true,
+      leanWithId: false,
+      sort: { createdAt: 1 },
+    };
+
+    const riders = await DriverRider.paginate(query, options);
+    return riders;
+  }
+
+  async approveRider(riderId: string) {
+    const rider = await DriverRider.findOne({
+      _id: riderId,
+      accountType: "rider",
+    }).select("approved");
+
+    if (!rider) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Rider not found");
+    }
+
+    rider.approved = true;
+    await rider.save();
+  }
 }
 
 export const adminRidersService = new AdminRidersService();

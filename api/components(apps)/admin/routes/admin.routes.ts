@@ -71,7 +71,12 @@ class AdminRoutes {
     this.router
       .route("/drivers/:driverId")
       .delete(adminDriversController.deleteDriver);
-    this.router.route("/drivers/:driverId/approve");
+    this.router
+      .route("/drivers/approved")
+      .get(adminDriversController.getUnapprovedDrivers);
+    this.router
+      .route("/drivers/:driverId/approve")
+      .get(adminDriversController.approveDriver);
 
     //Riders
     this.router.route("/riders").get(adminRidersController.getRiders);
@@ -85,6 +90,12 @@ class AdminRoutes {
     this.router
       .route("/riders/:riderId")
       .delete(adminRidersController.deleteRider);
+      this.router
+      .route("/riders/approved")
+      .get(adminRidersController.getUnapprovedRiders);
+    this.router
+      .route("/riders/:riderId/approve")
+      .get(adminRidersController.approveRider);
 
     //Transport services
     this.router
