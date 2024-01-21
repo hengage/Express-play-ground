@@ -5,6 +5,7 @@ import { STATUS_CODES } from "../../../constants";
 import { userService } from "../../../services";
 import { driverRiderRepo } from "../repository/driverRider.repo";
 import { driversService } from "../services/drivers.service";
+import { validateDriversAndRiders } from "../validators/driversAndRiders.validate";
 
 class DriversRidersController {
   public async signup(req: Request, res: Response) {
@@ -16,6 +17,7 @@ class DriversRidersController {
         });
       }
 
+      await validateDriversAndRiders.signup(req.body);
       await userService.isEmailTaken(req.body.email);
       await driverRiderService.checkPhoneNumberIsTaken(
         req.body.phoneNumber,
@@ -54,6 +56,7 @@ class DriversRidersController {
     const { phoneNumber, password } = req.body;
 
     try {
+      await validateDriversAndRiders.login(req.body);
       const driverRider = await driverRiderService.login(
         {
           phoneNumber,
@@ -98,6 +101,7 @@ class DriversRidersController {
   async updateProfile(req: Request, res: Response) {
     const id = (req as any).user._id;
     try {
+      await validateDriversAndRiders.updateProfile(req.body);
       const driverRider = await driverRiderRepo.updateProfile(id, req.body);
       res.status(STATUS_CODES.OK).json({
         message: "Updated profile",

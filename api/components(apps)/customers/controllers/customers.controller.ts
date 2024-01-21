@@ -75,7 +75,7 @@ class CustomerController {
   async updateProfile(req: Request, res: Response) {
     const customerId = (req as any).user._id;
     try {
-      await validateCustomers.updateProile(req.body);
+      await validateCustomers.updateProfile(req.body);
 
       const customer = await customerRepo.updateProfile(customerId, req.body);
       res.status(STATUS_CODES.OK).json({

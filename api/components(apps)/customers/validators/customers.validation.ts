@@ -43,7 +43,7 @@ class ValidateCustomers {
     return;
   };
 
-  updateProile = async (payload: any) => {
+  updateProfile = async (payload: any) => {
     const signUpSchema = Joi.object({
       phoneNumber: Joi.string().label("Phone number"),
       firstName: Joi.string().label("First name"),

@@ -54,10 +54,12 @@ class DriverRiderService {
         postalCode: payload.postalCode,
       });
       const savedDriverRider = await newDriverRider.save();
+
       emitEvent("create-wallet", {
         userId: savedDriverRider._id,
-        accountType
+        accountType,
       });
+
       return savedDriverRider;
     } catch (error: any) {
       throw new HandleException(500, error.message);
@@ -170,7 +172,10 @@ class DriverRiderService {
     const driver = await DriverRider.findById(id).select("location");
 
     if (!driver) {
-      throw new HandleException(STATUS_CODES.NOT_FOUND, "Cannot find driver/rider");
+      throw new HandleException(
+        STATUS_CODES.NOT_FOUND,
+        "Cannot find driver/rider"
+      );
     }
     driver.location.coordinates = coordinates;
     await driver.save();
