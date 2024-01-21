@@ -79,14 +79,17 @@ class AdminDriversService {
   }
 
   async approveDriver(driverId: string) {
-    const driver = await DriverRider.findById(driverId).select("approved");
+    const driver = await DriverRider.findOne({
+      _id: driverId,
+      accountType: "driver",
+    }).select("approved");
 
     if (!driver) {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
     }
 
     driver.approved = true;
-    await driver?.save();
+    await driver.save();
   }
 }
 
