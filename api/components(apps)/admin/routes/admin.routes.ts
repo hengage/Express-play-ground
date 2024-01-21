@@ -51,7 +51,7 @@ class AdminRoutes {
       .route("/vendors/unapproved")
       .get(adminOpsForVendorsController.getUnapprovedVendors);
     this.router
-      .route("/vendors/approve-vendor")
+      .route("/vendors/:vendorId/approve")
       .patch(adminOpsForVendorsController.approveVendor);
 
     // Orders
@@ -71,6 +71,7 @@ class AdminRoutes {
     this.router
       .route("/drivers/:driverId")
       .delete(adminDriversController.deleteDriver);
+    this.router.route("/drivers/:driverId/approve");
 
     //Riders
     this.router.route("/riders").get(adminRidersController.getRiders);

@@ -39,7 +39,9 @@ class AdminOpsForVendorsController {
   async getUnapprovedVendors(req: Request, res: Response) {
     const page = parseInt(req.query.page as string) || 1;
     try {
-      const vendors = await adminOpsForVendorsService.getUnapprovedVendors(page);
+      const vendors = await adminOpsForVendorsService.getUnapprovedVendors(
+        page
+      );
       res.status(STATUS_CODES.OK).json({
         message: "Fetched vendors",
         data: { vendors },
@@ -55,6 +57,9 @@ class AdminOpsForVendorsController {
   async approveVendor(req: Request, res: Response) {
     try {
       await adminOpsForVendorsService.approveVendor(req.params.vendorId);
+      res.status(STATUS_CODES.OK).json({
+        message: "Success",
+      });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Operation Failed",
