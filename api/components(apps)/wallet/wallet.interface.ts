@@ -9,8 +9,8 @@ import {
 
 export interface IWalletDocument extends Document {
   _id: string;
-  user: string;
-  userAccountType: string;
+  owner: string;
+  ownerAccountType: string;
   balance: string;
   transactionCount: number;
   totalEarnings: string;
@@ -27,7 +27,7 @@ export interface IWalletMethodsDocument extends Model<IWalletDocument>{
 
 export interface IEarningsDocument extends Document {
   _id: string;
-  user: string;
+  owner: string;
   wallet: IWalletDocument;
   amount: string;
   description: string;

@@ -4,8 +4,8 @@ import { Wallet } from "../models/wallet.models";
 import { IWalletDocument } from "../wallet.interface";
 
 class WalletService {
-  async getWalletByUserId(userId: string): Promise<IWalletDocument> {
-    const wallet = await Wallet.findOne({ user: userId })
+  async getWalletBalanceByOwnerId(ownerId: string): Promise<IWalletDocument> {
+    const wallet = await Wallet.findOne({ owner: ownerId })
       .select("balance")
       .lean()
       .exec();

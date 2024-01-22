@@ -3,8 +3,8 @@ import { Earnings, Wallet } from "../models/wallet.models";
 class WalletRepository {
   async create(payload: { userId: string; accountType: string }) {
     const wallet = await Wallet.create({
-      user: payload.userId,
-      userAccountType: payload.accountType,
+      owner: payload.userId,
+      ownerAccountType: payload.accountType,
     });
 
     return wallet;
@@ -12,7 +12,7 @@ class WalletRepository {
 
   async recordEarnings(payload: any) {
     const earning = await Earnings.create({
-      user: payload.userId,
+      owner: payload.userId,
       wallet: payload.walletId,
       amount: payload.amount,
       description: payload.description,

@@ -372,8 +372,10 @@ class WebSocket {
 
     socket.on("get-wallet-balance", async (message: any) => {
       try {
-        const wallet = await walletService.getWalletByUserId(message.userId);
-        socket.emit("wallet-balance", wallet)
+        const walletBalance = await walletService.getWalletBalanceByOwnerId(
+          message.ownerId
+        );
+        socket.emit("wallet-balance", walletBalance);
       } catch (error: any) {
         socket.emit("get-wallet-balance-error", error.message);
       }
