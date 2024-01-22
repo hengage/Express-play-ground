@@ -57,7 +57,7 @@ export enum WalletStatus {
 }
 
 export enum Currency {
-  GHANA_CEDIS = "ghs",
+  GHANA_CEDIS = "GHS",
 }
 
 export enum WithdrawalMethod {
