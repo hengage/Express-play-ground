@@ -49,12 +49,12 @@ class ValidateCustomers {
       firstName: Joi.string().label("First name"),
       lastName: Joi.string().label("Last name"),
       profilePhoto: Joi.string().label("Photo"),
-      email: Joi.string.label("Email"),
-      street: Joi.string.label("street"),
-      city: Joi.string.label("City"),
-      state: Joi.string.label("State"),
-      country: Joi.string.label("Country"),
-      dateOfBirth: Joi.string.label("Date of Birth"),
+      email: Joi.string().label("Email"),
+      street: Joi.string().label("street"),
+      city: Joi.string().label("City"),
+      state: Joi.string().label("State"),
+      country: Joi.string().label("Country"),
+      dateOfBirth: Joi.string().label("Date of Birth"),
     });
 
     const { error } = signUpSchema.validate(payload, {
