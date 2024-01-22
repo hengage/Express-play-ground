@@ -32,3 +32,5 @@ export const FIREBASE_UNIVERSE_DOMAIN =  process.env.FIREBASE_UNIVERSE_DOMAIN
 export const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY
 
 export const ADMIN_API_KEY = process.env.ADMIN_API_KEY
+
+export const PAYSTACK_API_KEY = process.env.PAYSTACK_API_KEY

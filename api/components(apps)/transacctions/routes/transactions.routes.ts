@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { transactionsController } from "../controllers/transactions.controller";
+import { jwtUtils } from "../../../utils";
 
 class TransactionsRoutes {
   public router: Router;
@@ -10,6 +11,11 @@ class TransactionsRoutes {
   }
 
   initializeRoutes() {
+    this.router
+      .route("/verify-payment")
+      .get(transactionsController.verifyPayment);
+
+    this.router.use(jwtUtils.verifyTokenMiddleware);
     this.router.route("/").get(transactionsController.getTransactionsForUser);
   }
 }

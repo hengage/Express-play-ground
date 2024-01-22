@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { STATUS_CODES } from "../../../constants";
 import { transactionsRepo } from "../repository/transactions.repo";
 import { handleErrorResponse } from "../../../utils";
+import { transactionService } from "../services/transactions.service";
 
 class TransactionsController {
   async getTransactionsForUser(req: Request, res: Response) {
@@ -14,8 +15,17 @@ class TransactionsController {
       );
       res.status(STATUS_CODES.OK).json({
         message: "Success",
-        data: {transactions}
-      })
+        data: { transactions },
+      });
+    } catch (error: any) {
+      handleErrorResponse(res, error);
+    }
+  }
+
+  async verifyPayment(req: Request, res: Response) {
+    try {
+      await transactionService.verifyPayment(req.body);
+      res.sendStatus(STATUS_CODES.NO_CONTENT);
     } catch (error: any) {
       handleErrorResponse(res, error);
     }
