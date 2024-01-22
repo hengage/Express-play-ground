@@ -88,6 +88,7 @@ const earningsSchema = new Schema<IEarningsDocument>(
       default: stringsUtils.generateUniqueString(4),
     },
     owner: { type: String, required: true },
+    paidBy: { type: String, required: true, ref: "Customer"},
     wallet: { type: String, required: true, ref: "Wallet" },
     amount: { type: String, required: true },
     description: { type: String, enum: EarningsDescription },

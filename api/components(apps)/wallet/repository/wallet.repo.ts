@@ -13,6 +13,7 @@ class WalletRepository {
   async recordEarnings(payload: any) {
     const earning = await Earnings.create({
       owner: payload.userId,
+      paidBy: payload.customerId,
       wallet: payload.walletId,
       amount: payload.amount,
       description: payload.description,

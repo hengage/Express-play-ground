@@ -20,14 +20,15 @@ export interface IWalletDocument extends Document {
   status: WalletStatus;
 }
 
-export interface IWalletMethodsDocument extends Model<IWalletDocument>{
-    creditWallet(walletId: string, amount: string): Promise<IWalletDocument>
-    debitWallet(walletId: string, amount: string): Promise<IWalletDocument>
+export interface IWalletMethodsDocument extends Model<IWalletDocument> {
+  creditWallet(walletId: string, amount: string): Promise<IWalletDocument>;
+  debitWallet(walletId: string, amount: string): Promise<IWalletDocument>;
 }
 
 export interface IEarningsDocument extends Document {
   _id: string;
   owner: string;
+  paidBy: string;
   wallet: IWalletDocument;
   amount: string;
   description: string;
