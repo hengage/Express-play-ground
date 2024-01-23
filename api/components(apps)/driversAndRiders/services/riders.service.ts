@@ -5,10 +5,10 @@ import { DriverRider } from "../models/driversRiders.models";
 
 class RidersService {
   async messengerOrderHistory(riderId: string, page: number) {
-    const query = { customer: riderId };
+    const query = { rider: riderId };
     const options = {
       page,
-      limit: 20,
+      limit: 14,
       select: "_id pickUpAddress dropOffAddress deliveryCost status createdAt",
       lean: true,
       leanWithId: false,
