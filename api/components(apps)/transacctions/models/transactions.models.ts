@@ -8,7 +8,7 @@ const transactionSchema = new Schema<ITransactionDocument>(
   {
     _id: {
       type: String,
-      default: stringsUtils.generateUniqueString(4),
+      default: () => stringsUtils.generateUniqueString(4),
     },
     sender: {
       type: String,
@@ -26,9 +26,9 @@ const transactionSchema = new Schema<ITransactionDocument>(
       type: String,
       required: true,
     },
-    bank: {type: String, default: null},
-    cardType: {type: String, default: null},
-    mobileMoneyNumber: {type: String, default: null},
+    bank: { type: String, default: null },
+    cardType: { type: String, default: null },
+    mobileMoneyNumber: { type: String, default: null },
     type: {
       type: String,
       enum: Object.values(TransactionType),
@@ -36,7 +36,7 @@ const transactionSchema = new Schema<ITransactionDocument>(
     },
 
     amount: { type: String, required: true },
-    status: { type: String, required: true},
+    status: { type: String, required: true },
     reference: { type: String },
     description: { type: String, required: true },
   },
