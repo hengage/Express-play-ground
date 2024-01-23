@@ -10,15 +10,15 @@ class WalletRepository {
     return wallet;
   }
 
-  async recordEarnings(payload: any) {
-    const earning = await Earnings.create({
-      owner: payload.userId,
+  async recordEarnings(payload: any, session: any) {
+    const earning = await Earnings.create([{
+      owner: payload.receiverId,
       paidBy: payload.customerId,
-      wallet: payload.walletId,
+      // wallet: payload.walletId,
       amount: payload.amount,
       description: payload.description,
       reference: payload.reference,
-    });
+    }], {session});
 
     console.log("Recorded earnings for user", earning)
   }

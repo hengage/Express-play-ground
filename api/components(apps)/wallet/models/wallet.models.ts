@@ -1,4 +1,4 @@
-import { PaginateModel, Schema, model } from "mongoose";
+import { PaginateModel, Schema, model, ClientSession } from "mongoose";
 import Big from "big.js";
 import paginate from "mongoose-paginate-v2";
 
@@ -50,17 +50,18 @@ const walletSchema = new Schema<IWalletDocument>(
 );
 
 walletSchema.statics.creditWallet = async function name(
-  walletId: string,
-  amount: string
+  ownerId: string,
+  amount: string,
+  session?: ClientSession
 ) {
-  const wallet = await this.findById(walletId).select("balance");
+  const wallet = await this.findOne({ owner: ownerId }).select("balance").session(session);
 
   if (!wallet) {
     throw new HandleException(STATUS_CODES.NOT_FOUND, "wallet not found");
   }
 
   wallet.balance = Big(wallet.balance).plus(amount);
-  await wallet.save();
+  await wallet.save({session});
 
   return wallet;
 };
@@ -88,11 +89,11 @@ const earningsSchema = new Schema<IEarningsDocument>(
       default: stringsUtils.generateUniqueString(4),
     },
     owner: { type: String, required: true },
-    paidBy: { type: String, required: true, ref: "Customer"},
-    wallet: { type: String, required: true, ref: "Wallet" },
+    paidBy: { type: String, required: true, ref: "Customer" },
+    // wallet: { type: String, required: true, ref: "Wallet" },
     amount: { type: String, required: true },
     description: { type: String, enum: EarningsDescription },
-    reference: { type: String },
+    reference: { type: String, required: true },
     date: { type: Date, required: true, default: Date.now() },
   },
   {

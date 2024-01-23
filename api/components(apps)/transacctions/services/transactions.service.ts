@@ -1,6 +1,7 @@
 import axios from "axios";
 import { PAYSTACK_API_KEY } from "../../../config";
 import { HandleException } from "../../../utils";
+import { walletService } from "../../wallet";
 
 class TransactionService {
   private paystackAPIKey: string;
@@ -23,10 +24,25 @@ class TransactionService {
         }
       );
 
+      //   console.log({responseData: response.data})
       if (response.data.data.status === "success") {
-        console.log("Verified transaction", response.data);
+        // console.log("Verified transaction", response.data);
+        const responseData = response.data.data;
+        console.log({ responseData });
+        var { amount } = responseData;
+        amount = amount / 100;
+        const { receiverId, customerId, description } = responseData.metadata;
+
+        walletService.recordEarningsAndCreditWallet({
+          receiverId,
+          customerId,
+          reference,
+          description,
+          amount,
+        });
+        console.log({ receiverId, customerId, description, amount, reference });
       } else {
-        console.log(`Payment failed. Status: ${response}`);
+        console.log(`Payment failed. Status: ${response.data}`);
       }
     } catch (error: any) {
       const errorResponse = error.response;

@@ -95,7 +95,7 @@ export enum TransactionDescription {
 }
 
 export enum EarningsDescription {
-  SALES = "sale",
+  SALES = "sales",
   WITHDRAWAL = "withdrawal",
   MAKU = "maku",
   ORDER_DELIVERY = "order_delivery",
