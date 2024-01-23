@@ -21,8 +21,16 @@ export interface IWalletDocument extends Document {
 }
 
 export interface IWalletMethodsDocument extends Model<IWalletDocument> {
-  creditWallet(ownerId: string, amount: string, session?: ClientSession): Promise<IWalletDocument>;
-  debitWallet(ownerId: string, amount: string, session?: ClientSession): Promise<IWalletDocument>;
+  creditWallet(
+    ownerId: string,
+    amount: string,
+    session?: ClientSession
+  ): Promise<IWalletDocument>;
+  debitWallet(
+    ownerId: string,
+    amount: string,
+    session?: ClientSession
+  ): Promise<IWalletDocument>;
 }
 
 export interface IEarningsDocument extends Document {
@@ -43,4 +51,12 @@ export interface WithdrawalRequestDocument extends Document {
   status: WithdrawalRequestStatus;
   amount: number;
   date: Date;
+}
+
+export interface IRecordEarnings {
+  owner: string;
+  paidBy: string;
+  amount: string;
+  description: string;
+  reference: string;
 }

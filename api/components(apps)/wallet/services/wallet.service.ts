@@ -24,14 +24,17 @@ class WalletService {
     try {
       session.startTransaction();
 
-      await walletRepo.recordEarnings(payload, session);
       await Wallet.creditWallet(payload.owner, payload.amount, session);
+      await walletRepo.recordEarnings(payload, session);
 
       await session.commitTransaction();
-      console.log("Operation done")
+      console.log("Operation done");
     } catch (error: any) {
       await session.abortTransaction();
-      throw new HandleException(error.status, error.message);
+      // throw new HandleException(error.status, error.message);
+      console.error({
+        error: { status: error.status, message: error.message },
+      });
     } finally {
       session.endSession();
     }
