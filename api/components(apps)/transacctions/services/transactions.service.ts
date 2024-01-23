@@ -2,6 +2,7 @@ import axios from "axios";
 import { PAYSTACK_API_KEY } from "../../../config";
 import { HandleException } from "../../../utils";
 import { walletService } from "../../wallet";
+import { transactionsRepo } from "../repository/transactions.repo";
 
 class TransactionService {
   private paystackAPIKey: string;
@@ -26,9 +27,12 @@ class TransactionService {
 
       if (response.data.data.status === "success") {
         const responseData = response.data.data;
-        var { amount } = responseData;
+        var { amount, status } = responseData;
+        console.log({amount, status})
         amount = amount / 100;
         const { receiverId: owner, customerId: paidBy, description } = responseData.metadata;
+        const {channel, bank, card_type: cardType, mobile_money_number: mobileMoneyNumber} = responseData.authorization
+        const senderEmail = responseData.customer.email
 
         walletService.recordEarningsAndCreditWallet({
           owner,
@@ -37,6 +41,11 @@ class TransactionService {
           description,
           amount,
         });
+
+        await transactionsRepo.recordTransaction({
+            paidBy, status, owner, amount, description, 
+            reference, channel, bank, cardType, mobileMoneyNumber, senderEmail
+        })
         // console.log({ owner, customerId, description, amount, reference });
       } else {
         console.log(`Payment failed. Status: ${response.data}`);

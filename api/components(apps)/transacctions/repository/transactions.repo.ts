@@ -1,12 +1,17 @@
-import { Transaction } from "../models/transactions.moels";
+import { Transaction } from "../models/transactions.models";
 
 class TransactionsRepository {
   async recordTransaction(payload: any) {
     const transaction = await Transaction.create({
-      walletId: payload.walletId,
-      user: payload.userId,
+      sender: payload.paidBy,
+      senderEmail: payload.senderEmail,
+      receiver: payload.owner,
       amount: payload.amount,
       status: payload.status,
+      channel: payload.channel,
+      bank: payload.bank,
+      cardType: payload.cardType,
+      mobileMoneyNumber: payload.mobileMoneyNumber,
       reference: payload.reference,
       description: payload.description,
     });
