@@ -15,11 +15,7 @@ const towOrderSchema = new Schema<ITowingOrder>(
       required: true,
       ref: "Customer",
     },
-    transportCompany: {
-      type: String,
-      required: true,
-      ref: "TransportCompany",
-    },
+    vehicleRegNumber: { type: String, required: true },
     vehicleType: {
       type: String,
       required: true,
@@ -63,11 +59,7 @@ const transportTripOrderSchema = new Schema<ITransportTripOrder>(
       required: true,
       ref: "Customer",
     },
-    transportCompany: {
-      type: String,
-      required: true,
-      ref: "TransportCompany",
-    },
+    vehicleRegNumber: { type: String, required: true },
     serviceType: {
       type: String,
       required: true,

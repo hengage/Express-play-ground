@@ -48,7 +48,7 @@ export interface ITransportDriver extends Document {
 export interface ITowingOrder extends Document {
   _id: string;
   customer: string;
-  transportCompany: ITransportCompany["_id"];
+  vehicleRegNumber: string;
   vehicleType: ITransportVehicleType["_id"];
   pickUpAddress: string;
   pickUpCoordinates: {
@@ -69,7 +69,7 @@ export interface ITowingOrder extends Document {
 export interface ITransportTripOrder extends Document {
   _id: string;
   customer: string;
-  transportCompany: ITransportCompany["_id"];
+  vehicleRegNumber: string;
   serviceType: ITransportServiceType["_id"];
   vehicleType: ITransportVehicleType["_id"];
   pickUpAddress: string;
