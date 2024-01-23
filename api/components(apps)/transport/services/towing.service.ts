@@ -1,4 +1,4 @@
-import { TransportCompany } from "../models/transport.models";
+import { TransportCompany, TransportVehicleType } from "../models/transport.models";
 
 class TowingService {
   async findTowingCompanies() {
@@ -8,6 +8,17 @@ class TowingService {
       .select("_id name location.coordinates phoneNumber serviceType vehicleRegNumber")
       .lean();
     return towingCompanies;
+  }
+
+  async getTowingServiceVehicleTypes() {
+    const vehicleTypes = TransportVehicleType.find({
+      serviceType: "c6a56821",
+    })
+      .select("vehicleType feePerKM transportCompanyPercentage photo")
+      .lean()
+      .exec();
+
+    return vehicleTypes;
   }
 }
 

@@ -107,7 +107,7 @@ class TransportService {
 
   async getMe(_id: string) {
     const transportCompany = await TransportCompany.findById(_id).select(
-      "name phoneNumber email address vehicles serviceType"
+      "name phoneNumber email address vehicleType vehicleRegNumber serviceType"
     );
 
     if (!transportCompany) {
@@ -118,17 +118,6 @@ class TransportService {
 
   async getVehiclesByServiceType(serviceType: string) {
     const vehicleTypes = TransportVehicleType.find({ serviceType })
-      .select("vehicleType feePerKM transportCompanyPercentage photo")
-      .lean()
-      .exec();
-
-    return vehicleTypes;
-  }
-
-  async getTowingServiceVehicleTypes() {
-    const vehicleTypes = TransportVehicleType.find({
-      serviceType: "c6a56821",
-    })
       .select("vehicleType feePerKM transportCompanyPercentage photo")
       .lean()
       .exec();

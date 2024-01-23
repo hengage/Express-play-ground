@@ -3,6 +3,7 @@ import { STATUS_CODES } from "../../../constants";
 import { transportRepo } from "../repository/transport.repo";
 import { towingRepo } from "../repository/towing.repo";
 import { handleErrorResponse } from "../../../utils";
+import { towingService } from "../services/towing.service";
 
 class TowingController {
   async createTowOrder(req: Request, res: Response) {
@@ -16,6 +17,20 @@ class TowingController {
       handleErrorResponse(res, error);
     }
   }
+
+  async getTowingServiceVehicleTypes(req: Request, res: Response) {
+    try {
+      const vehicleTypes =
+        await towingService.getTowingServiceVehicleTypes();
+      res.status(STATUS_CODES.OK).json({
+        message: "Found vehicle types",
+        data: { vehicleTypes },
+      });
+    } catch (error: any) {
+      handleErrorResponse(res, error);
+    }
+  }
+
 
   async getOrdersHistoryForCompany(req: Request, res: Response) {
     const page = parseInt(req.query.page as string) || 1;

@@ -20,7 +20,7 @@ class TransportController {
   async login(req: Request, res: Response) {
     try {
       const transportCompany = await transportService.login(req.body);
-      console.log({body: req.body})
+      console.log({ body: req.body });
       const payload = {
         _id: transportCompany._id,
         phoneNumber: transportCompany.phoneNumber,
@@ -104,19 +104,6 @@ class TransportController {
       const vehicleTypes = await transportService.getVehiclesByServiceType(
         `${serviceTypeId}`
       );
-      res.status(STATUS_CODES.OK).json({
-        message: "Found vehicle types",
-        data: { vehicleTypes },
-      });
-    } catch (error: any) {
-      handleErrorResponse(res, error);
-    }
-  }
-
-  async getTowingServiceVehicleTypes(req: Request, res: Response) {
-    try {
-      const vehicleTypes =
-        await transportService.getTowingServiceVehicleTypes();
       res.status(STATUS_CODES.OK).json({
         message: "Found vehicle types",
         data: { vehicleTypes },
