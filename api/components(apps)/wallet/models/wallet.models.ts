@@ -54,14 +54,16 @@ walletSchema.statics.creditWallet = async function name(
   amount: string,
   session?: ClientSession
 ) {
-  const wallet = await this.findOne({ owner: ownerId }).select("balance").session(session);
+  const wallet = await this.findOne({ owner: ownerId })
+    .select("balance")
+    .session(session);
 
   if (!wallet) {
     throw new HandleException(STATUS_CODES.NOT_FOUND, "wallet not found");
   }
 
   wallet.balance = Big(wallet.balance).plus(amount);
-  await wallet.save({session});
+  await wallet.save({ session });
 
   return wallet;
 };
@@ -86,7 +88,7 @@ const earningsSchema = new Schema<IEarningsDocument>(
   {
     _id: {
       type: String,
-      default: stringsUtils.generateUniqueString(4),
+      default: () => stringsUtils.generateUniqueString(4),
     },
     owner: { type: String, required: true },
     paidBy: { type: String, required: true, ref: "Customer" },

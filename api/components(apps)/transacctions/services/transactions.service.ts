@@ -24,23 +24,20 @@ class TransactionService {
         }
       );
 
-      //   console.log({responseData: response.data})
       if (response.data.data.status === "success") {
-        // console.log("Verified transaction", response.data);
         const responseData = response.data.data;
-        console.log({ responseData });
         var { amount } = responseData;
         amount = amount / 100;
-        const { receiverId, customerId, description } = responseData.metadata;
+        const { receiverId: owner, customerId: paidBy, description } = responseData.metadata;
 
         walletService.recordEarningsAndCreditWallet({
-          receiverId,
-          customerId,
+          owner,
+          paidBy,
           reference,
           description,
           amount,
         });
-        console.log({ receiverId, customerId, description, amount, reference });
+        // console.log({ owner, customerId, description, amount, reference });
       } else {
         console.log(`Payment failed. Status: ${response.data}`);
       }

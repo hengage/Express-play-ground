@@ -24,9 +24,8 @@ class WalletService {
     try {
       session.startTransaction();
 
-      await Wallet.creditWallet(payload.receiverId, payload.amount, session);
-
       await walletRepo.recordEarnings(payload, session);
+      await Wallet.creditWallet(payload.owner, payload.amount, session);
 
       await session.commitTransaction();
       console.log("Operation done")

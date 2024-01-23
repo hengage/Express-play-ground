@@ -10,17 +10,22 @@ class WalletRepository {
     return wallet;
   }
 
-  async recordEarnings(payload: any, session: any) {
-    const earning = await Earnings.create([{
-      owner: payload.receiverId,
-      paidBy: payload.customerId,
-      // wallet: payload.walletId,
-      amount: payload.amount,
-      description: payload.description,
-      reference: payload.reference,
-    }], {session});
+  async recordEarnings(payload: any, session?: any) {
+    // const earning = await Earnings.create([{
+    //   owner: payload.receiverId,
+    //   paidBy: payload.customerId,
+    //   amount: payload.amount,
+    //   description: payload.description,
+    //   reference: payload.reference,
+    // }], {session});
 
-    console.log("Recorded earnings for user", earning)
+    // console.log("Recorded earnings for user", earning)
+
+    if (session) {
+      await Earnings.create([payload], { session });
+    } else {
+      await Earnings.create(payload);
+    }
   }
 }
 

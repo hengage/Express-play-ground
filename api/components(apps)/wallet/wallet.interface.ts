@@ -21,8 +21,8 @@ export interface IWalletDocument extends Document {
 }
 
 export interface IWalletMethodsDocument extends Model<IWalletDocument> {
-  creditWallet(walletId: string, amount: string, session?: ClientSession): Promise<IWalletDocument>;
-  debitWallet(walletId: string, amount: string): Promise<IWalletDocument>;
+  creditWallet(ownerId: string, amount: string, session?: ClientSession): Promise<IWalletDocument>;
+  debitWallet(ownerId: string, amount: string, session?: ClientSession): Promise<IWalletDocument>;
 }
 
 export interface IEarningsDocument extends Document {
