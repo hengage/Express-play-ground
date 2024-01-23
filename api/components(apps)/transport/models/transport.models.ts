@@ -22,8 +22,8 @@ const transportVehicleTypeSchema = new Schema<ITransportVehicleType>(
       unique: true,
       ref: "TransportServiceType",
     },
-    photo: { type: String, required: true,},
-    feePerKM: { type: String, },
+    photo: { type: String, required: true },
+    feePerKM: { type: String },
     transportCompanyPercentage: { type: String, required: true },
   },
   {
@@ -51,34 +51,26 @@ const transportCompanySchema = new Schema<ITransportCompany>(
       type: String,
       default: () => stringsUtils.generateUniqueString(4),
     },
-    name: { type: String, required: true, unique: true },
+    name: { type: String, default: null },
     phoneNumber: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     address: { type: String, required: true },
     location: {
       type: { type: String, default: "Point" },
-      coordinates: { type: [Number, Number], required: true },
+      coordinates: { type: [Number, Number], default: [0, 0] },
     },
     serviceType: { type: String, required: true, ref: "TransportServiceType" },
-    vehicles: [
-      {
-        vehicleType: {
-          type: String,
-          required: true,
-          ref: "TransportVehicleType",
-        },
-        regNumber: { type: String, required: true },
-        photos: [{ type: String, required: true }],
-      },
-    ],
+    vehicleType: { type: String, required: true, ref: "TransportVehicleType" },
+    vehicleRegNumber: { type: String, required: true },
+    vehiclePhotos: [{ type: String, required: true }],
   },
   {
     timestamps: true,
   }
 );
 
-transportCompanySchema.plugin(paginate)
+transportCompanySchema.plugin(paginate);
 
 transportCompanySchema.pre("save", async function (next) {
   if (this.isModified("password")) {
@@ -99,7 +91,7 @@ export const TransportVehicleType = model<ITransportVehicleType>(
   "TransportVehicleType",
   transportVehicleTypeSchema
 );
-export const TransportCompany = model<ITransportCompany, mongoose.PaginateModel<ITransportCompany>>(
-  "TransportCompany",
-  transportCompanySchema
-);
+export const TransportCompany = model<
+  ITransportCompany,
+  mongoose.PaginateModel<ITransportCompany>
+>("TransportCompany", transportCompanySchema);

@@ -28,11 +28,9 @@ export interface ITransportCompany extends Document {
     coordinates: [number, number];
   };
   serviceType: ITransportServiceType["_id"];
-  vehicles: Array<{
-    vehicleType: ITransportVehicleType["_id"];
-    regNumber: string;
-    photos: string[];
-  }>;
+  vehicleType: ITransportVehicleType["_id"];
+  vehicleRegNumber: string;
+  vehiclePhotos: string[];
   createdAt: Date;
   updatedAt: Date;
 }

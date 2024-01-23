@@ -12,28 +12,16 @@ import {
 
 class TransportRepository {
   async createCompany(payload: any) {
-    const companyExist = await TransportCompany.findOne({
-      name: payload.name,
-    })
-      .select("name")
-      .lean();
-    if (companyExist) {
-      throw new HandleException(
-        STATUS_CODES.CONFLICT,
-        "Company already exists. Contact admin if this company belongs to you"
-      );
-    }
-
     const transportCompany = await new TransportCompany({
       name: payload.name,
       phoneNumber: payload.phoneNumber,
       email: payload.email,
       password: payload.password,
       address: payload.address,
-      location: {
-        coordinates: payload.coordinates,
-      },
       serviceType: payload.serviceType,
+      vehicleType: payload.vehicleType,
+      vehicleRegNumber: payload.vehicleRegNumber,
+      vehiclePhotos: payload.vehiclePhotos,
     }).save();
 
     return {
@@ -103,7 +91,9 @@ class TransportRepository {
     return transportCompany;
   }
 
-  async createTransportOrder(payload: any): Promise<Partial<ITransportTripOrder>> {
+  async createTransportOrder(
+    payload: any
+  ): Promise<Partial<ITransportTripOrder>> {
     const tripOrder = await TransportTripOrder.create({
       customer: payload.customer,
       transportCompany: payload.transportCompany,
@@ -111,15 +101,15 @@ class TransportRepository {
       vehicleType: payload.vehicleType,
       pickUpAddress: payload.pickUpAddress,
       pickUpCoordinates: {
-        coordinates: payload.pickUpCoordinates
+        coordinates: payload.pickUpCoordinates,
       },
       destinationAddress: payload.destinationAddress,
       destinationCoordinates: {
-        coordinates: payload.destinationCoordinates
+        coordinates: payload.destinationCoordinates,
       },
     });
 
-    return tripOrder
+    return tripOrder;
   }
 }
 

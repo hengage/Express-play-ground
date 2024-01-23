@@ -20,6 +20,7 @@ class TransportController {
   async login(req: Request, res: Response) {
     try {
       const transportCompany = await transportService.login(req.body);
+      console.log({body: req.body})
       const payload = {
         _id: transportCompany._id,
         phoneNumber: transportCompany.phoneNumber,
@@ -40,18 +41,18 @@ class TransportController {
     }
   }
 
-  async addVehicle(req: Request, res: Response) {
-    const { vehicle } = req.body;
-    const towingCompanyId = (req as any).user._id;
-    try {
-      await transportService.addVehicle({ vehicle }, towingCompanyId);
-      res.status(STATUS_CODES.OK).json({
-        message: "Added vehicle type",
-      });
-    } catch (error: any) {
-      handleErrorResponse(res, error);
-    }
-  }
+  // async addVehicle(req: Request, res: Response) {
+  //   const { vehicle } = req.body;
+  //   const towingCompanyId = (req as any).user._id;
+  //   try {
+  //     await transportService.addVehicle({ vehicle }, towingCompanyId);
+  //     res.status(STATUS_CODES.OK).json({
+  //       message: "Added vehicle type",
+  //     });
+  //   } catch (error: any) {
+  //     handleErrorResponse(res, error);
+  //   }
+  // }
 
   async addDriver(req: Request, res: Response) {
     const transportCompanyId = (req as any).user._id;

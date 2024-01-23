@@ -19,7 +19,7 @@ class TransportRoutes {
       .route("/service-types")
       .get(transportController.getServiceTypes);
     this.router.use(jwtUtils.verifyTokenMiddleware);
-    this.router.route("/add-vehicle").patch(transportController.addVehicle);
+    // this.router.route("/add-vehicle").patch(transportController.addVehicle);
     this.router.route("/add-driver").post(transportController.addDriver);
     this.router.route("/me").get(transportController.getMe);
     this.router.route("/me/update").patch(transportController.updateProfile);

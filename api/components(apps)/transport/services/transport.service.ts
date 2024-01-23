@@ -9,19 +9,21 @@ import { TransportDriver } from "../models/transportDrivers.model";
 import { TransportTripOrder } from "../models/transportOrders.model";
 
 class TransportService {
-
   async login(payload: any) {
     const transportCompany = await TransportCompany.findOne({
-      phoneNumber: payload.phoneNumber,
+      vehicleRegNumber: payload.vehicleRegNumber,
     })
       .select("phoneNumber password")
       .lean()
       .exec();
+      console.log({payload});
+      
+    console.log({ transportCompany });
 
     if (!transportCompany) {
       throw new HandleException(
         STATUS_CODES.NOT_FOUND,
-        "Company account not found"
+        "Transport account not found"
       );
     }
 
@@ -42,32 +44,32 @@ class TransportService {
     };
   }
 
-  async addVehicle(payload: any, transportCompanyId: string) {
-    const { vehicle } = payload;
-    const transportCompany = await TransportCompany.findById(
-      transportCompanyId
-    ).select("vehicles");
+  // async addVehicle(payload: any, transportCompanyId: string) {
+  //   const { vehicle } = payload;
+  //   const transportCompany = await TransportCompany.findById(
+  //     transportCompanyId
+  //   ).select("vehicles");
 
-    if (!transportCompany) {
-      throw new HandleException(
-        STATUS_CODES.NOT_FOUND,
-        "Towing company not found"
-      );
-    }
+  //   if (!transportCompany) {
+  //     throw new HandleException(
+  //       STATUS_CODES.NOT_FOUND,
+  //       "Towing company not found"
+  //     );
+  //   }
 
-    if (
-      transportCompany.vehicles.some((vt) => vt.regNumber === vehicle.regNumber)
-    ) {
-      throw new HandleException(
-        STATUS_CODES.CONFLICT,
-        "A vehicle with the same registration number already exists for this business"
-      );
-    }
+  //   if (
+  //     transportCompany.vehicles.some((vt) => vt.regNumber === vehicle.regNumber)
+  //   ) {
+  //     throw new HandleException(
+  //       STATUS_CODES.CONFLICT,
+  //       "A vehicle with the same registration number already exists for this business"
+  //     );
+  //   }
 
-    transportCompany.vehicles.push(vehicle);
-    await transportCompany.save();
-    return;
-  }
+  //   transportCompany.vehicles.push(vehicle);
+  //   await transportCompany.save();
+  //   return;
+  // }
 
   async addDriver(payload: any, transportCompany: string) {
     const licenseNumberExists = await TransportDriver.findOne({
