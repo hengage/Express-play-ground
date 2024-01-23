@@ -13,7 +13,7 @@ import { driverRiderService } from "../components(apps)/driversAndRiders";
 import { findClosestDriverOrRider } from "./geospatial.services";
 import { makuService } from "../components(apps)/maku";
 import { messengerService } from "../components(apps)/messenger";
-import { transportService } from "../components(apps)/transport";
+import { towingService, transportService } from "../components(apps)/transport";
 import { makuNotificationService } from "../components(apps)/notifications/services/makuNotifications";
 import { walletService } from "../components(apps)/wallet";
 
@@ -351,7 +351,7 @@ class WebSocket {
     socket.on("find-tow-companies", async (message: any) => {
       const { pickUpCoordinates } = message;
       try {
-        const towCompanies = await transportService.findTowingCompanies();
+        const towCompanies = await towingService.findTowingCompanies();
         console.log({ towCompanies: JSON.stringify(towCompanies) });
         socket.emit("found-tow-companies", towCompanies);
       } catch (error: any) {

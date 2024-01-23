@@ -16,8 +16,8 @@ class TransportService {
       .select("phoneNumber password")
       .lean()
       .exec();
-      console.log({payload});
-      
+    console.log({ payload });
+
     console.log({ transportCompany });
 
     if (!transportCompany) {
@@ -170,20 +170,13 @@ class TransportService {
     return driver;
   }
 
-  async findTowingCompanies() {
-    const towingCompanies = await TransportCompany.find({
-      serviceType: "c6a56821",
-    })
-      .select("_id name location.coordinates phoneNumber serviceType")
-      .lean();
-    return towingCompanies;
-  }
-
   async findTransportCompanies(serviceTypeId: string) {
     const transportCompanies = await TransportCompany.find({
       serviceType: serviceTypeId,
     })
-      .select("_id name location.coordinates phoneNumber serviceType")
+      .select(
+        "_id name location.coordinates phoneNumber serviceType vehicleRegNumber"
+      )
       .lean();
     return transportCompanies;
   }
