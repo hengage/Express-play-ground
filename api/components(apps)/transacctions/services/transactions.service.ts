@@ -43,7 +43,7 @@ class TransactionService {
         });
 
         await transactionsRepo.recordTransaction({
-            paidBy, status, owner, amount, description, 
+            paidBy, status, owner, amount, 
             reference, channel, bank, cardType, mobileMoneyNumber, senderEmail
         })
         // console.log({ owner, customerId, description, amount, reference });
@@ -51,6 +51,7 @@ class TransactionService {
         console.log(`Payment failed. Status: ${response.data}`);
       }
     } catch (error: any) {
+        console.log({error})
       const errorResponse = error.response;
       throw new HandleException(errorResponse.status, errorResponse.data);
     }
