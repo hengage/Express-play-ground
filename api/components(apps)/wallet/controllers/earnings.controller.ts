@@ -11,7 +11,7 @@ class EarningsController {
       const earnings = await earningsRepo.getEarnings(user, page);
       res.status(STATUS_CODES.OK).json({
         message: "Success",
-        data: earnings,
+        data: { earnings },
       });
     } catch (error: any) {
       handleErrorResponse(res, error);
