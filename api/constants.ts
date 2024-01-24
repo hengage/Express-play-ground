@@ -62,10 +62,8 @@ export enum Currency {
 }
 
 export enum WithdrawalMethod {
-  MTN = "mtn",
-  AIRTEL_TIGO = "airtel tigo",
-  VODAFONE = "vodafone",
-  CARD = "card",
+  BANK_TRANSFER = "bank transfer",
+  MOBILE_MONEY = "amobile money",
 }
 
 export enum WIthdrawalFrequency {

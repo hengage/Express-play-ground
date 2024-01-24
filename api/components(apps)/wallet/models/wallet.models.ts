@@ -32,10 +32,14 @@ const walletSchema = new Schema<IWalletDocument>(
       enum: Object.values(Currency),
       default: Currency.GHANA_CEDIS,
     },
-    withdrawalMethod: [
+    withdrawalDetails: [
       {
-        type: String,
-        enum: Object.values(WithdrawalMethod),
+        channel: {
+          type: String,
+          enum: Object.values(WithdrawalMethod),
+        },
+        bank: String, // For bank names or mobile money service providers
+        accountNumber: String, // Account number for both bank and mobile money
       },
     ],
     status: {

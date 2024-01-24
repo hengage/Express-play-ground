@@ -15,7 +15,11 @@ export interface IWalletDocument extends Document {
   transactionCount: number;
   totalEarnings: string;
   currency: Currency;
-  withdrawalMethod: WithdrawalMethod;
+  withdrawalDetails: [{
+    channel: string,
+    bank: string
+    accountNumber: string
+  }];
   withdrawalFrequency: WIthdrawalFrequency;
   status: WalletStatus;
 }
