@@ -14,13 +14,13 @@ class EarningsRepo {
   }
 
   async getEarnings(userId: string, page: number) {
-    const query = { user: userId };
+    const query = { owner: userId };
 
     const options = {
       page,
-      limit: 15,
+      limit: 14,
       lean: true,
-      select: "user amount date decription reference",
+      select: "user amount date description reference",
       leanWithId: false,
       sort: { date: -1 },
     };
