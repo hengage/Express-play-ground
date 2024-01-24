@@ -100,10 +100,20 @@ class Messengerservice {
     );
   }
 
-  async cancelOrder(orderId: string) {
-    const order = await messengerRepo.cancelOrder(orderId);
+  async cancelOrder(payload: {orderId: string, customerId?: string, riderId?: string}) {
+    const order = await messengerRepo.cancelOrder(payload.orderId);
 
-    console.log("cancelled messenger order", order)
+    if (payload.riderId) {
+      await messengerNotificationService.notifyCustomerOfOrderStatus(
+        order,
+        "Order cancelled",
+        "We are sorry for any inconvenience, please place another order while we look into this"
+      );
+    } else if (payload.customerId && order.rider) {
+      await messengerNotificationService.notifyRiderOfCancelledOrder(order)
+    }
+
+    console.log("cancelled messenger order", order);
   }
 }
 

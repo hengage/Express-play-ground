@@ -38,6 +38,26 @@ class MessengerNotificationService {
     };
     await notificationService.sendNotification(order.customer, payload);
   }
+
+  async notifyRiderOfCancelledOrder(order: any) {
+    const riderDeviceToken = await redisClient.get(
+      `device-token:${order.rider}`
+    )
+    console.log({ riderDeviceToken });
+    const payload = {
+      notification: {
+        title: "Order cancelled by customer",
+        body: "We are sorry for any incovenience.",
+      },
+      data: {
+        type: "messenger-order-cancelled",
+        data: JSON.stringify({ _id: order._id, status: order.status }),
+      },
+      token: `${riderDeviceToken}`,
+    };
+
+    await notificationService.sendNotification(order.rider, payload);
+  }
 }
 
 export const messengerNotificationService = new MessengerNotificationService();

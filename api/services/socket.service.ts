@@ -349,9 +349,9 @@ class WebSocket {
     });
 
     socket.on("cancel-messenger-order", async (message) => {
-      const { orderId } = message;
+      const { orderId, customerId, riderId } = message;
       try {
-        await messengerService.cancelOrder(orderId);
+        await messengerService.cancelOrder({orderId, customerId, riderId});
         console.log("Order cancelled")
       } catch (error: any) {
         socket.emit("cancel-messenger-order-error", error.message);
