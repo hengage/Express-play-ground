@@ -63,7 +63,7 @@ export enum Currency {
 
 export enum WithdrawalMethod {
   BANK_TRANSFER = "bank transfer",
-  MOBILE_MONEY = "amobile money",
+  MOBILE_MONEY = "mobile money",
 }
 
 export enum WIthdrawalFrequency {

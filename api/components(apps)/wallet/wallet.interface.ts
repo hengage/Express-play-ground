@@ -15,11 +15,13 @@ export interface IWalletDocument extends Document {
   transactionCount: number;
   totalEarnings: string;
   currency: Currency;
-  withdrawalDetails: [{
-    channel: string,
-    bank: string
-    accountNumber: string
-  }];
+  withdrawalDetails: [
+    {
+      channel: string;
+      bank: string;
+      accountNumber: string;
+    }
+  ];
   withdrawalFrequency: WIthdrawalFrequency;
   status: WalletStatus;
 }
@@ -63,4 +65,10 @@ export interface IRecordEarnings {
   amount: string;
   description: string;
   reference: string;
+}
+
+export interface IWithdrawalDetails {
+  channel: string;
+  bank: string;
+  accountNumber: string;
 }
