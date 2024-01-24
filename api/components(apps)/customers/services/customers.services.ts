@@ -9,6 +9,7 @@ import { IOrder, Order } from "../../orders";
 import { MakuTrip } from "../../maku";
 import { TransportTripOrder, TowOrder } from "../../transport";
 import { MessengerOrder } from "../../messenger";
+import { redisClient } from "../../../services";
 
 class CustomerService {
   async checkPhoneNumberIsTaken(phoneNumber: string) {
@@ -164,6 +165,12 @@ class CustomerService {
   }
 
   async makuTripHistory(customerId: string, page: number) {
+    const cacheKey = `maku-trip-history:${customerId}:${page}`;
+    const cachedData = await redisClient.get(cacheKey);
+    if (cachedData) {
+      return JSON.parse(cachedData);
+    }
+
     const query = {
       customer: customerId,
       status: {
@@ -187,7 +194,8 @@ class CustomerService {
       sort: { createdAt: -1 },
     };
 
-    const trips = MakuTrip.paginate(query, options);
+    const trips = await MakuTrip.paginate(query, options);
+    await redisClient.setWithExpiry(cacheKey,  JSON.stringify(trips), 350);
     return trips;
   }
 
