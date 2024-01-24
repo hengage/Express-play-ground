@@ -43,7 +43,7 @@ class TransactionService {
         });
 
         await transactionsRepo.recordTransaction({
-            paidBy, status, owner, amount, 
+            paidBy, status, owner, amount, description,
             reference, channel, bank, cardType, mobileMoneyNumber, senderEmail
         })
         // console.log({ owner, customerId, description, amount, reference });
