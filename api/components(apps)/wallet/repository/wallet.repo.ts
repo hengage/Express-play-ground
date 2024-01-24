@@ -10,14 +10,6 @@ class WalletRepository {
 
     return wallet;
   }
-
-  async recordEarnings(payload: IRecordEarnings, session?: any) {
-    if (session) {
-      await Earnings.create([payload], { session });
-    } else {
-      await Earnings.create(payload);
-    }
-  }
 }
 
 export const walletRepo = new WalletRepository();

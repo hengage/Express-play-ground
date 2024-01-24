@@ -1,16 +1,13 @@
 import { Earnings } from "../models/wallet.models";
+import { IRecordEarnings } from "../wallet.interface";
 
 class EarningsRepo {
-  async recordEarning(payload: any) {
-    const earning = await Earnings.create({
-      user: payload.user,
-      wallet: payload.wallet,
-      amount: payload.amount,
-      description: payload.description,
-      reference: payload.reference,
-    });
-
-    return earning;
+  async recordEarnings(payload: IRecordEarnings, session?: any) {
+    if (session) {
+      await Earnings.create([payload], { session });
+    } else {
+      await Earnings.create(payload);
+    }
   }
 
   async getEarnings(userId: string, page: number) {

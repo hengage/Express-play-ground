@@ -5,6 +5,7 @@ import { HandleException } from "../../../utils";
 import { Wallet } from "../models/wallet.models";
 import { walletRepo } from "../repository/wallet.repo";
 import { IWalletDocument } from "../wallet.interface";
+import { earningsRepo } from "../repository/earnings.repo";
 
 class WalletService {
   async getWalletBalanceByOwnerId(ownerId: string): Promise<IWalletDocument> {
@@ -25,7 +26,7 @@ class WalletService {
       session.startTransaction();
 
       await Wallet.creditWallet(payload.owner, payload.amount, session);
-      await walletRepo.recordEarnings(payload, session);
+      await earningsRepo.recordEarnings(payload, session);
 
       await session.commitTransaction();
       console.log("Operation done");
