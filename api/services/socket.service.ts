@@ -348,6 +348,16 @@ class WebSocket {
       }
     });
 
+    socket.on("cancel-messenger-order", async (message) => {
+      const { orderId } = message;
+      try {
+        await messengerService.cancelOrder(orderId);
+        console.log("Order cancelled")
+      } catch (error: any) {
+        socket.emit("cancel-messenger-order-error", error.message);
+      }
+    });
+
     socket.on("find-tow-companies", async (message: any) => {
       const { pickUpCoordinates } = message;
       try {

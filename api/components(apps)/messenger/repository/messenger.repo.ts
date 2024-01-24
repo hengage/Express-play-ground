@@ -93,6 +93,20 @@ class MessengerRepo {
 
     return order;
   }
+
+  async cancelOrder(orderId: string) {
+    const order = await MessengerOrder.findById(orderId).select(
+      "status customer rider"
+    );
+
+    if (!order) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Order not found");
+    }
+    order.status = MessengerOrderStatus.CANCELLED;
+    await order.save();
+
+    return order;
+  }
 }
 
 export const messengerRepo = new MessengerRepo();

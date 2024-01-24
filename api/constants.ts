@@ -30,6 +30,7 @@ export enum MessengerOrderStatus {
   PICKED_UP = "picked up",
   ARRIVED = "arrived",
   DELIVERED = "delivered",
+  CANCELLED = "cancelled",
 }
 
 export enum MakuCabStatus {

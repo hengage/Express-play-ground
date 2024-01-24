@@ -99,6 +99,12 @@ class Messengerservice {
       "Your parcel has been delivered to you"
     );
   }
+
+  async cancelOrder(orderId: string) {
+    const order = await messengerRepo.cancelOrder(orderId);
+
+    console.log("cancelled messenger order", order)
+  }
 }
 
 export const messengerService = new Messengerservice();
