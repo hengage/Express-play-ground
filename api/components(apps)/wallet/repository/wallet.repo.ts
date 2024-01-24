@@ -17,9 +17,11 @@ class WalletRepository {
     ownerId: string,
     withdrawalDetails: IWithdrawalDetails
   ) {
-    console.log({ ownerId})
+    console.log({ ownerId });
     try {
-      const wallet = await Wallet.findOne({owner: ownerId });
+      const wallet = await Wallet.findOne({ owner: ownerId }).select(
+        "-__v -updatedAt -createdat"
+      );
 
       if (!wallet) {
         throw new Error("Wallet not found");
