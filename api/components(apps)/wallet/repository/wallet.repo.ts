@@ -17,19 +17,13 @@ class WalletRepository {
     ownerId: string,
     withdrawalDetails: IWithdrawalDetails
   ) {
-    console.log({ ownerId });
     try {
-      const wallet = await Wallet.findOne({ owner: ownerId }).select(
-        "-__v -updatedAt -createdat"
-      );
+      const wallet = await Wallet.findOneAndUpdate(
+        { owner: ownerId },
+        { $push: { withdrawalDetails: withdrawalDetails } },
+        { new: true, select: "-__v -updatedAt -createdAt" }
+      ).lean();
 
-      if (!wallet) {
-        throw new Error("Wallet not found");
-      }
-
-      wallet.withdrawalDetails.push(withdrawalDetails);
-
-      await wallet.save();
 
       return wallet;
     } catch (error: any) {

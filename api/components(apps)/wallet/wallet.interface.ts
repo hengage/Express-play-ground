@@ -63,6 +63,7 @@ export interface IRecordEarnings {
 
 export interface IWithdrawalDetails {
   channel: string;
+  type: string;
   bankName: string;
   bankCode: string;
   accountNumber: string;

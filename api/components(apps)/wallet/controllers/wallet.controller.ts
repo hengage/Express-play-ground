@@ -8,7 +8,7 @@ class WalletController {
   async addWithDrawalDetails(req: Request, res: Response) {
     try {
       const user = (req as any).user._id;
-      const wallet = await walletService.createRecipient(user, req.body)
+      const wallet = await walletService.createTransferRecipient(user, req.body)
       res.status(STATUS_CODES.OK).json({
         message: "Success",
         data: { wallet },

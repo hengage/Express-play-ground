@@ -4,7 +4,7 @@ import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { Wallet } from "../models/wallet.models";
 import { walletRepo } from "../repository/wallet.repo";
-import { IWalletDocument } from "../wallet.interface";
+import { IWalletDocument, IWithdrawalDetails } from "../wallet.interface";
 import { earningsRepo } from "../repository/earnings.repo";
 import { PAYSTACK_API_KEY } from "../../../config";
 import axios from "axios";
@@ -52,7 +52,7 @@ class WalletService {
     }
   }
 
-  async createRecipient(user: string, payload: any) {
+  async createTransferRecipient(user: string, payload: any) {
     try {
       const response = await axios.post(
         `https://api.paystack.co/transferrecipient/`,
@@ -61,8 +61,36 @@ class WalletService {
           headers: this.headers,
         }
       );
-      return response.data;
+
+      const {
+        currency,
+        type,
+        recipient_code: recipientCode,
+        metadata: { channel },
+        details: {
+          account_number: accountNumber,
+          account_name: accountName,
+          bank_code: bankCode,
+          bank_name: bankName,
+        },
+      } = response.data.data;
+
+      const withdrawalDetails = ({
+        channel,
+        currency,
+        type,
+        accountName,
+        accountNumber,
+        bankCode,
+        bankName,
+        recipientCode
+      });
+
+      const wallet =  await walletRepo.addWithdrawalDetails(user, withdrawalDetails)
+
+      return wallet;
     } catch (error: any) {
+      console.log({error})
       const errorResponse = error.response;
       throw new HandleException(errorResponse.status, errorResponse.data);
     }
