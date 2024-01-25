@@ -1,21 +1,15 @@
 import { Router } from "express";
-import { adminController } from "../controllers/admin.controller";
-import { adminDriversController } from "../controllers/admin.driversController";
-import { adminRidersController } from "../controllers/admin.ridersController";
 import { apiKeyMiddleware } from "../../../middleware";
-import { adminTransportServiceController } from "../controllers/admin.transportController";
-import { adminOpsForVendorsController } from "../controllers/admin.vendorsController";
-import { adminOpsForOrdersController } from "../controllers/admin.ordersController";
-import { adminOpsForCustomersController } from "../controllers/admin.customersController";
+
 import { adminOpsForMessengerController } from "../controllers/admin.messengerService.controller";
 import { adminOpsCustomersRoutes } from "./customers.routes";
+import { adminOpsMakuRoutes } from "./maku.routes";
+import { adminOpsShopsRoutes } from "./shops.routes";
 import { adminOpsVendorsRoutes } from "./vendors.routes";
 import { adminOpsOrdersRoutes } from "./orders.routes";
 import { adminOpsDriversRoutes } from "./drivers.routes";
 import { adminOpsRidersRoutes } from "./riders.routes";
 import { adminOpsTransportServiceRoutes } from "./transport.routes";
-import { adminOpsShopsRoutes } from "./shops.routes";
-import { adminOpsMakuRoutes } from "./maku.routes";
 
 class AdminRoutes {
   public router = Router();
