@@ -38,8 +38,13 @@ const walletSchema = new Schema<IWalletDocument>(
           type: String,
           enum: Object.values(WithdrawalMethod),
         },
-        bank: String, // For bank names or mobile money service providers
+        type: String,
+        bankName: String, // For bank names or mobile money service providers
+        bankCode: String,
+        accountName: String,
         accountNumber: String, // Account number for both bank and mobile money
+        currency: String,
+        recipientCode: String
       },
     ],
     status: {
