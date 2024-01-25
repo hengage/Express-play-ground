@@ -2,12 +2,13 @@ import { Request, Response } from "express";
 import { walletRepo } from "../repository/wallet.repo";
 import { STATUS_CODES } from "../../../constants";
 import { handleErrorResponse } from "../../../utils";
+import { walletService } from "../services/wallet.service";
 
 class WalletController {
   async addWithDrawalDetails(req: Request, res: Response) {
     try {
       const user = (req as any).user._id;
-      const wallet = await walletRepo.addWithdrawalDetails(user, req.body);
+      const wallet = await walletService.createRecipient(user, req.body)
       res.status(STATUS_CODES.OK).json({
         message: "Success",
         data: { wallet },
