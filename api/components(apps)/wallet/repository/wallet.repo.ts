@@ -36,6 +36,15 @@ class WalletRepository {
       throw new HandleException(STATUS_CODES.NOT_FOUND, error.message);
     }
   }
+
+  async getWithdrawalDetails(userId: string) {
+    const withdrawalDetails = await Wallet.findOne({ owner: userId })
+      .select("withdrawalDetails -_id")
+      .lean()
+      .exec();
+
+    return withdrawalDetails;
+  }
 }
 
 export const walletRepo = new WalletRepository();

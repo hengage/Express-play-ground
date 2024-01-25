@@ -14,6 +14,9 @@ class WalletRoutes {
     this.router
       .route("/add-withdrawal-details")
       .patch(walletController.addWithDrawalDetails);
+    this.router
+      .route("/withdrawal-details")
+      .get(walletController.getWithdrawaldetails);
   }
 }
 
