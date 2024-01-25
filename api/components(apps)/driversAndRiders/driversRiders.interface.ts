@@ -1,4 +1,8 @@
-import { AccountStatus, DriverRiderType } from "../../constants";
+import {
+  AccountApprovalStatus,
+  AccountStatus,
+  DriverRiderType,
+} from "../../constants";
 
 interface Location {
   type: string;
@@ -15,7 +19,7 @@ export interface IDriverRider extends Document {
   photo: string;
   accountType: DriverRiderType;
   vehicleType: string;
-  vehicle: string
+  vehicle: string;
   vehicleInsurancePhoto: string;
   licenseNumber: string;
   govtIdPhoto: [string];
@@ -30,8 +34,8 @@ export interface IDriverRider extends Document {
     ratingCount: number;
     averageRating: number;
   };
-  location: Location & Document['location']
-  approved: boolean;
+  location: Location & Document["location"];
+  approvalStatus: AccountApprovalStatus;
   lastLoggedIn: Date;
   available: boolean;
   createdAt: Date;

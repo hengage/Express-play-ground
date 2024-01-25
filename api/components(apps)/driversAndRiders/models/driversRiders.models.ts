@@ -3,7 +3,7 @@ import paginate from "mongoose-paginate-v2";
 
 import { IDriverRider } from "../driversRiders.interface";
 import { encryption, stringsUtils } from "../../../utils";
-import { AccountStatus, DriverRiderType } from "../../../constants";
+import { AccountApprovalStatus, AccountStatus, DriverRiderType } from "../../../constants";
 
 const driverRiderSchema = new Schema<IDriverRider>(
   {
@@ -75,7 +75,11 @@ const driverRiderSchema = new Schema<IDriverRider>(
       coordinates: { type: [Number, Number], default: [0, 0] },
     },
     lastLoggedIn: { type: Date },
-    approved: { type: Boolean, default: false },
+    approvalStatus: {
+      type: String,
+      enum: Object.values(AccountApprovalStatus),
+      default: AccountApprovalStatus.PENDING,
+    },
     available: { type: Boolean, default: false },
   },
   { timestamps: true, _id: false }

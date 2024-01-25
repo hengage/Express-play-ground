@@ -68,10 +68,10 @@ class AdminDriversController {
     }
   }
 
-  async getUnapprovedDrivers(req: Request, res: Response) {
+  async getRejectedDrivers(req: Request, res: Response) {
     const page = parseInt(req.query.page as string) || 1;
     try {
-      const drivers = adminDriversService.getUnapprovedDrivers(page);
+      const drivers = adminDriversService.getRejectedDrivers(page);
       res.status(STATUS_CODES.OK).json({
         message: "Success",
         data: { drivers },

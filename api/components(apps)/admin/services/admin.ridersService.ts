@@ -1,4 +1,4 @@
-import { STATUS_CODES } from "../../../constants";
+import { AccountApprovalStatus, STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { DriverRider, IDriverRider } from "../../driversAndRiders";
 
@@ -19,7 +19,10 @@ class AdminRidersService {
   }
 
   async getRiderDetails(riderId: string) {
-    const rider = await DriverRider.findOne({_id: riderId, accountType: "rider"})
+    const rider = await DriverRider.findOne({
+      _id: riderId,
+      accountType: "rider",
+    })
       .select("-middleName -__v -updatedAt -location -accountType -password")
       .lean();
 
@@ -59,8 +62,11 @@ class AdminRidersService {
     }
   }
 
-  async getUnapprovedRiders(page: number) {
-    const query = { accountType: "rider", approved: false };
+  async getRejectedRiders(page: number) {
+    const query = {
+      accountType: "rider",
+      approvalStatus: AccountApprovalStatus.REJECTED,
+    };
     const options = {
       page,
       limit: 15,
@@ -85,7 +91,7 @@ class AdminRidersService {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Rider not found");
     }
 
-    rider.approved = true;
+    rider.approvalStatus = AccountApprovalStatus.APPROVED;
     await rider.save();
   }
 }

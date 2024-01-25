@@ -1,4 +1,4 @@
-import { STATUS_CODES } from "../../../constants";
+import { AccountApprovalStatus, STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { DriverRider, IDriverRider } from "../../driversAndRiders";
 
@@ -62,8 +62,11 @@ class AdminDriversService {
     }
   }
 
-  async getUnapprovedDrivers(page: number) {
-    const query = { accountType: "driver", approved: false };
+  async getRejectedDrivers(page: number) {
+    const query = {
+      accountType: "driver",
+      approvalStatus: AccountApprovalStatus.REJECTED,
+    };
     const options = {
       page,
       limit: 15,
@@ -88,7 +91,7 @@ class AdminDriversService {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
     }
 
-    driver.approved = true;
+    driver.approvalStatus = AccountApprovalStatus.APPROVED;
     await driver.save();
   }
 }

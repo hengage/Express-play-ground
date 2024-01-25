@@ -7,7 +7,7 @@ import {
   ILoginDriverAndRider,
   ISignupDriverAndRider,
 } from "../driversRiders.interface";
-import { STATUS_CODES } from "../../../constants";
+import { AccountApprovalStatus, STATUS_CODES } from "../../../constants";
 import { driverRiderRepo } from "../repository/driverRider.repo";
 import { MakuTrip } from "../../maku";
 import { emitEvent } from "../../../services";

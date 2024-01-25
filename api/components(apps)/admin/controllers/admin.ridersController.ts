@@ -69,10 +69,10 @@ class AdminRidersController {
   }
 
   
-  async getUnapprovedRiders(req: Request, res: Response) {
+  async getRejectedRiders(req: Request, res: Response) {
     const page = parseInt(req.query.page as string) || 1;
     try {
-      const riders = adminRidersService.getUnapprovedRiders(page);
+      const riders = adminRidersService.getRejectedRiders(page);
       res.status(STATUS_CODES.OK).json({
         message: "Success",
         data: { riders },
