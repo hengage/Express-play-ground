@@ -52,8 +52,8 @@ const transportCompanySchema = new Schema<ITransportCompany>(
       default: () => stringsUtils.generateUniqueString(4),
     },
     name: { type: String, default: null },
-    phoneNumber: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
+    phoneNumber: { type: String, required: true },
+    email: { type: String, required: true, },
     password: { type: String, required: true },
     address: { type: String, required: true },
     location: {
@@ -62,7 +62,7 @@ const transportCompanySchema = new Schema<ITransportCompany>(
     },
     serviceType: { type: String, required: true, ref: "TransportServiceType" },
     vehicleType: { type: String, required: true, ref: "TransportVehicleType" },
-    vehicleRegNumber: { type: String, required: true },
+    vehicleRegNumber: { type: String, required: true, unique: true },
     vehiclePhotos: [{ type: String, required: true }],
   },
   {
