@@ -80,20 +80,6 @@ class AdminController {
     }
   }
 
-  public async deliveryRate(req: Request, res: Response) {
-    try {
-      const deliveryRate = await adminService.deliveryRate(req.body);
-      res.status(STATUS_CODES.CREATED).json({
-        message: "Operation succesful",
-        data: deliveryRate,
-      });
-    } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Operation failed",
-        error: error.message,
-      });
-    }
-  }
 
   public async createVehicleType(req: Request, res: Response) {
     try {
@@ -119,40 +105,6 @@ class AdminController {
       res.status(STATUS_CODES.OK).json({
         message: "Operation successful",
         data: vehicleType,
-      });
-    } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Operation failed",
-        error: error.message,
-      });
-    }
-  }
-
-  async createTransportVehicleType(req: Request, res: Response) {
-    console.log({ body: req.body });
-    try {
-      const transportVehicleType =
-        await adminTransportService.createVehicleType(req.body);
-      res.status(STATUS_CODES.CREATED).json({
-        message: "Created transport vehicle type",
-        data: { transportVehicleType },
-      });
-    } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Error creating transport vehicle type",
-        error: error.message,
-      });
-    }
-  }
-
-  async createTransportServiceType(req: Request, res: Response) {
-    console.log({ body: req.body });
-    try {
-      const transportServiceType =
-        await adminTransportService.createServiceType(req.body);
-      res.status(STATUS_CODES.CREATED).json({
-        message: "Operation successful",
-        data: { transportServiceType },
       });
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({

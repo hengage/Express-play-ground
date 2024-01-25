@@ -8,6 +8,14 @@ import { adminOpsForVendorsController } from "../controllers/admin.vendorsContro
 import { adminOpsForOrdersController } from "../controllers/admin.ordersController";
 import { adminOpsForCustomersController } from "../controllers/admin.customersController";
 import { adminOpsForMessengerController } from "../controllers/admin.messengerService.controller";
+import { adminOpsCustomersRoutes } from "./customers.routes";
+import { adminOpsVendorsRoutes } from "./vendors.routes";
+import { adminOpsOrdersRoutes } from "./orders.routes";
+import { adminOpsDriversRoutes } from "./drivers.routes";
+import { adminOpsRidersRoutes } from "./riders.routes";
+import { adminOpsTransportServiceRoutes } from "./transport.routes";
+import { adminOpsShopsRoutes } from "./shops.routes";
+import { adminOpsMakuRoutes } from "./maku.routes";
 
 class AdminRoutes {
   public router = Router();
@@ -18,112 +26,15 @@ class AdminRoutes {
 
   public initializeRoutes() {
     this.router.use(apiKeyMiddleware);
-    this.router.route("/create-shop-type").post(adminController.createShopType);
-    this.router
-      .route(`/add-shop-category/:shopTypeId`)
-      .post(adminController.addcategory);
-    this.router
-      .route("/update-shop-type/:shopTypeId")
-      .patch(adminController.updateShopType);
-    this.router
-      .route("/update-shop-category/:categoryId")
-      .patch(adminController.updateCategory);
-    this.router.route("/delivery-rate").post(adminController.deliveryRate);
-    this.router.route("/vehicle-type").post(adminController.createVehicleType);
-    this.router
-      .route("/vehicle-type/:vehicleTypeId")
-      .patch(adminController.updateVehicleType);
 
-    // CUSTOMERS
-    this.router
-      .route("/customers")
-      .get(adminOpsForCustomersController.getCustomers);
-    this.router
-      .route("/customers/:customerId")
-      .get(adminOpsForCustomersController.getCustomerDetails);
-
-    //Vendors
-    this.router.route("/vendors").get(adminOpsForVendorsController.getVendors);
-    this.router
-      .route("/vendors/:vendorId")
-      .get(adminOpsForVendorsController.getVendorDetails);
-    this.router
-      .route("/vendors/unapproved")
-      .get(adminOpsForVendorsController.getUnapprovedVendors);
-    this.router
-      .route("/vendors/:vendorId/approve")
-      .patch(adminOpsForVendorsController.approveVendor);
-
-    // Orders
-    this.router.route("/orders").get(adminOpsForOrdersController.getOrders);
-    this.router
-      .route("/orders/:orderId")
-      .get(adminOpsForOrdersController.getOrderDetails);
-
-    //Drivers
-    this.router.route("/drivers").get(adminDriversController.getDrivers);
-    this.router
-      .route("/drivers/:driverId")
-      .get(adminDriversController.getDriverDetails);
-    this.router
-      .route("/drivers/:driverId")
-      .patch(adminDriversController.updateDriver);
-    this.router
-      .route("/drivers/:driverId")
-      .delete(adminDriversController.deleteDriver);
-    this.router
-      .route("/drivers/approved")
-      .get(adminDriversController.getUnapprovedDrivers);
-    this.router
-      .route("/drivers/:driverId/approve")
-      .get(adminDriversController.approveDriver);
-
-    //Riders
-    this.router.route("/riders").get(adminRidersController.getRiders);
-    this.router
-      .route("/riders/:riderId")
-      .get(adminRidersController.getRiderDetails);
-
-    this.router
-      .route("/riders/:riderId")
-      .patch(adminRidersController.updateRider);
-    this.router
-      .route("/riders/:riderId")
-      .delete(adminRidersController.deleteRider);
-      this.router
-      .route("/riders/approved")
-      .get(adminRidersController.getUnapprovedRiders);
-    this.router
-      .route("/riders/:riderId/approve")
-      .get(adminRidersController.approveRider);
-
-    //Transport services
-    this.router
-      .route("/transport/create-vehicle-type")
-      .post(adminController.createTransportVehicleType);
-    this.router
-      .route("/transport/create-service-type")
-      .post(adminController.createTransportServiceType);
-    this.router
-      .route("/transport/service-types")
-      .get(adminTransportServiceController.getServiceTypes);
-    this.router
-      .route("/transport/service-types/:serviceTypeId/vehicle-types")
-      .get(adminTransportServiceController.getVehiclesByServiceType);
-    this.router
-      .route("/transport/companies")
-      .get(adminTransportServiceController.getCompanies);
-
-    this.router
-      .route("/transport/companies/:companyId")
-      .get(adminTransportServiceController.getCompanyDetails);
-
-    this.router
-      .route("/transport/airport")
-      .post(adminTransportServiceController.addAirport);
-    this.router
-      .route("/transport/airport")
-      .get(adminTransportServiceController.getAllAirports);
+    this.router.use("/maku", adminOpsMakuRoutes.router);
+    this.router.use("/shops", adminOpsShopsRoutes.router);
+    this.router.use("/customers", adminOpsCustomersRoutes.router);
+    this.router.use("/vendors", adminOpsVendorsRoutes.router);
+    this.router.use("/orders", adminOpsOrdersRoutes.router);
+    this.router.use("/drivers", adminOpsDriversRoutes.router);
+    this.router.use("/riders", adminOpsRidersRoutes.router);
+    this.router.use("/transport", adminOpsTransportServiceRoutes.router);
 
     // Messenger service
     this.router
