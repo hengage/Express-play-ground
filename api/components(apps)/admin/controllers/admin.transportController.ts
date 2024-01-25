@@ -30,6 +30,7 @@ class AdminTransportServiceController {
         data: { transportVehicleType },
       });
     } catch (error: any) {
+      console.log({error})
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Error creating transport vehicle type",
         error: error.message,
