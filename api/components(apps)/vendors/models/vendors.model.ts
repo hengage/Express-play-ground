@@ -4,7 +4,7 @@ import paginate from "mongoose-paginate-v2";
 
 import { IVendor } from "../vendors.interface";
 import { encryption, stringsUtils } from "../../../utils";
-import { AccountStatus } from "../../../constants";
+import { AccountApprovalStatus, AccountStatus } from "../../../constants";
 
 const vendorSchema = new Schema<IVendor>(
   {
@@ -43,7 +43,11 @@ const vendorSchema = new Schema<IVendor>(
     },
     postalCode: String,
     govtIdPhoto: { type: String, required: true },
-    approved: { type: Boolean, default: true },
+    approvalStatus: {
+      type: String,
+      enum: Object.values(AccountApprovalStatus),
+      default: AccountApprovalStatus.PENDING,
+    },
     accountStatus: {
       type: String,
       enum: Object.values(AccountStatus),
@@ -54,10 +58,9 @@ const vendorSchema = new Schema<IVendor>(
   { timestamps: true, _id: false }
 );
 
-vendorSchema.plugin(paginate)
+vendorSchema.plugin(paginate);
 
 vendorSchema.pre("save", async function (next) {
-
   if (this.isModified("password")) {
     try {
       this.password = await encryption.encryptValue(this.password);
@@ -68,4 +71,7 @@ vendorSchema.pre("save", async function (next) {
   next();
 });
 
-export const Vendor = model<IVendor, PaginateModel<IVendor>>("Vendor", vendorSchema);
+export const Vendor = model<IVendor, PaginateModel<IVendor>>(
+  "Vendor",
+  vendorSchema
+);

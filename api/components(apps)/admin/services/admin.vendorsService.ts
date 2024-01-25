@@ -1,4 +1,4 @@
-import { STATUS_CODES } from "../../../constants";
+import { AccountApprovalStatus, STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { Vendor } from "../../vendors";
 
@@ -32,7 +32,7 @@ class AdminOpsForVendorsService {
   }
 
   async getUnapprovedVendors(page: number) {
-    const query = { approved: false };
+    const query = { approvalStatus: AccountApprovalStatus.PENDING };
 
     const options = {
       page,
@@ -53,7 +53,7 @@ class AdminOpsForVendorsService {
     if (!vendor) {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Vendor not found");
     }
-    vendor.approved = true;
+    vendor.approvalStatus = AccountApprovalStatus.APPROVED;
     await vendor.save();
   }
 }

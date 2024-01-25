@@ -10,6 +10,11 @@ export enum AccountStatus {
   SUSPENDED = "suspended",
 }
 
+export enum AccountApprovalStatus {
+  PENDING = "pending",
+  REJECTED = "rejected",
+  APPROVED = "approved",
+}
 export enum DriverRiderType {
   DRIVER = "driver",
   RIDER = "rider",

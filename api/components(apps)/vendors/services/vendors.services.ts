@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 
-import { STATUS_CODES } from "../../../constants";
+import { AccountApprovalStatus, STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { Vendor } from "../models/vendors.model";
 import { ISignupVendor, IVendor } from "../vendors.interface";

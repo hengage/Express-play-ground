@@ -1,4 +1,4 @@
-import { AccountStatus } from "../../constants";
+import { AccountApprovalStatus, AccountStatus } from "../../constants";
 
 export interface IVendor extends Document {
   _id: string;
@@ -17,7 +17,7 @@ export interface IVendor extends Document {
   postalCode: string;
   profilephoto: string;
   accountStatus: AccountStatus;
-  approved: boolean;
+  approvalStatus: AccountApprovalStatus;
   lastLoggedIn: Date;
   createdAt: Date;
   updatedAt: Date;
