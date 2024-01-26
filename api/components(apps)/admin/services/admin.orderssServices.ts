@@ -53,11 +53,20 @@ class AdminOpsForOrdersService {
       .select("-__v -updatedAt")
       .populate({
         path: "customer",
-        select: "firstName lastName phoneNumber profilePhoto",
+        select: "firstName lastName phoneNumber email profilePhoto",
       })
       .populate({
         path: "rider",
         select: "firstName lastName phoneNumber photo",
+      })
+      .populate({
+        path: "items.shop",
+        select: "name email phoneNumber",
+      })
+
+      .populate({
+        path: "items.product",
+        select: "name photos",
       })
       .lean();
 
