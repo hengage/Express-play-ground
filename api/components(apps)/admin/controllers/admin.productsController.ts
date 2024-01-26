@@ -31,6 +31,17 @@ class AdminOpsForProductsController {
       handleErrorResponse(res, error);
     }
   }
+
+  async deleteProduct(req: Request, res: Response) {
+    try {
+      await adminOpsForProductsService.deleteProduct(req.params.productId);
+      res.status(STATUS_CODES.OK).json({
+        message: "Success",
+      });
+    } catch (error: any) {
+      handleErrorResponse(res, error);
+    }
+  }
 }
 
 export const adminOpsForProductsController =

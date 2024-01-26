@@ -13,6 +13,9 @@ class AdminOpsProductsRoute {
     this.router
       .route("/:productId")
       .get(adminOpsForProductsController.getProductDetails);
+    this.router
+      .route("/:productId")
+      .delete(adminOpsForProductsController.deleteProduct);
   }
 }
 

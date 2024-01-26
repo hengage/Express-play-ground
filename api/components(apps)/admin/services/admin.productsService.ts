@@ -1,3 +1,5 @@
+import { STATUS_CODES } from "../../../constants";
+import { HandleException } from "../../../utils";
 import { Product } from "../../products";
 
 class AdminOpsForProductsService {
@@ -20,14 +22,22 @@ class AdminOpsForProductsService {
 
   async getProductDetails(productId: string) {
     const product = await Product.findById(productId)
-    .select("-__v")
-    .populate({path:"shop", select: "name email phoneNumber"})
-    .populate({path:"category", select: "name"})
-    .populate({path:"vendor", select: "firstName lastName phoneNumber"})
-    .lean()
-    .exec();
+      .select("-__v")
+      .populate({ path: "shop", select: "name email phoneNumber" })
+      .populate({ path: "category", select: "name" })
+      .populate({ path: "vendor", select: "firstName lastName phoneNumber" })
+      .lean()
+      .exec();
 
-    return product
+    return product;
+  }
+
+  async deleteProduct(productId: string) {
+    const result = await Product.deleteOne({ _id: productId });
+
+    if (result.deletedCount === 0) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Product not found");
+    }
   }
 }
 
