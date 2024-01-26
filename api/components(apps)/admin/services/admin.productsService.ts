@@ -17,6 +17,18 @@ class AdminOpsForProductsService {
     const products = await Product.paginate(query, options);
     return products;
   }
+
+  async getProductDetails(productId: string) {
+    const product = await Product.findById(productId)
+    .select("-__v")
+    .populate({path:"shop", select: "name email phoneNumber"})
+    .populate({path:"category", select: "name"})
+    .populate({path:"vendor", select: "firstName lastName phoneNumber"})
+    .lean()
+    .exec();
+
+    return product
+  }
 }
 
 export const adminOpsForProductsService = new AdminOpsForProductsService();

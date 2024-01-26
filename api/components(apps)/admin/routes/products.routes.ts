@@ -10,6 +10,9 @@ class AdminOpsProductsRoute {
 
   private async initializeRoutes() {
     this.router.route("/").get(adminOpsForProductsController.getProducts);
+    this.router
+      .route("/:productId")
+      .get(adminOpsForProductsController.getProductDetails);
   }
 }
 
