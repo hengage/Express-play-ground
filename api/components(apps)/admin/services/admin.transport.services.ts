@@ -68,7 +68,10 @@ class AdminTransportService {
   async getCompanyDetails(companyId: string) {
     const transportCompany = await TransportCompany.findById(companyId)
       .select("-__v -location")
-      .populate({ path: "vehicles.vehicleType", select: "vehicleType" });
+      .populate({ path: "vehicleType", select: "vehicleType" })
+      .populate({ path: "serviceType", select: "name" })
+      .lean()
+      .exec();
 
     if (!transportCompany) {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Company not found");
