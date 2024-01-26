@@ -37,7 +37,6 @@ class Routes {
     this.router.use("/auth", authRoutes.router);
     this.router.use("/products", productsRoutes.router);
     this.router.use("/orders", ordersRoutes.router);
-    this.router.use("/admin", adminRoutes.router);
     this.router.use("/notifications", notificationsRoutes.router);
     this.router.use("/maku-cab", makuRoutes.router);
     this.router.use("/transport", transportRoutes.router);
@@ -45,6 +44,9 @@ class Routes {
     this.router.use("/wallet", walletRoutes.router);
     this.router.use("/earnings", earningsRoutes.router);
     this.router.use("/transactions", transactionsRoutes.router);
+
+    this.router.use("/admin", adminRoutes.router);
+
   }
 }
 

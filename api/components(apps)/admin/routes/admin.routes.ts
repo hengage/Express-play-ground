@@ -10,6 +10,7 @@ import { adminOpsOrdersRoutes } from "./orders.routes";
 import { adminOpsDriversRoutes } from "./drivers.routes";
 import { adminOpsRidersRoutes } from "./riders.routes";
 import { adminOpsTransportServiceRoutes } from "./transport.routes";
+import { adminOpsProductsRoute } from "./products.routes";
 
 class AdminRoutes {
   public router = Router();
@@ -29,6 +30,7 @@ class AdminRoutes {
     this.router.use("/drivers", adminOpsDriversRoutes.router);
     this.router.use("/riders", adminOpsRidersRoutes.router);
     this.router.use("/transport", adminOpsTransportServiceRoutes.router);
+    this.router.use("/products", adminOpsProductsRoute.router);
 
     // Messenger service
     this.router
