@@ -4,16 +4,17 @@ import { Vendor } from "../../vendors";
 
 class AdminOpsForVendorsService {
   async getVendors(page: number, approvalStatus?: string) {
-    const query: {approvalStatus?: string} = {};
+    const query: { approvalStatus?: string } = {};
 
-    if(approvalStatus) {
-      query.approvalStatus = approvalStatus
+    if (approvalStatus) {
+      query.approvalStatus = approvalStatus;
     }
 
     const options = {
       page,
       limit: 15,
-      select: "firstName lastName email phoneNumber accountStatus approvalStatus createdAt",
+      select:
+        "firstName lastName email phoneNumber accountStatus approvalStatus createdAt",
       lean: true,
       leanWithId: false,
       sort: { createdAt: -1 },
@@ -21,6 +22,21 @@ class AdminOpsForVendorsService {
 
     const vendors = await Vendor.paginate(query, options);
     return vendors;
+  }
+
+  
+  async rejectVendor(vendorId: string) {
+    const vendor = await Vendor.findByIdAndUpdate(
+      vendorId,
+      {
+        $set: { approvalStatus: AccountApprovalStatus.REJECTED },
+      },
+      { new: true }
+    ).select("approvalStatus");
+
+    if (!vendor) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Vendor not found");
+    }
   }
 
   async getVendorDetails(vendorId: string) {
@@ -36,7 +52,7 @@ class AdminOpsForVendorsService {
   }
 
   async approveVendor(vendorId: string) {
-    const vendor = await Vendor.findById(vendorId).select("approved");
+    const vendor = await Vendor.findById(vendorId).select("approvalStatus");
     if (!vendor) {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Vendor not found");
     }

@@ -16,6 +16,9 @@ class AdminOpsVendorsRoutes {
     this.router
       .route("/:vendorId/approve")
       .patch(adminOpsForVendorsController.approveVendor);
+    this.router
+      .route("/:vendorId/reject")
+      .patch(adminOpsForVendorsController.rejectVendor);
   }
 }
 
