@@ -16,6 +16,20 @@ class AdminRidersController {
       });
     }
   }
+
+  async rejectRider(req: Request, res: Response) {
+    try {
+      await adminRidersService.rejectRider(req.params.riderId);
+      res.status(STATUS_CODES.OK).json({
+        message: "Success",
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Operation failed",
+        error: error.message || "Server error",
+      });
+    }
+  }
   
   async getRiders(req: Request, res: Response) {
     const page = parseInt(req.query.page as string) || 1;

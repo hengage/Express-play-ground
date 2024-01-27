@@ -16,6 +16,20 @@ class AdminRidersService {
     rider.approvalStatus = AccountApprovalStatus.APPROVED;
     await rider.save();
   }
+
+  async rejectRider(riderId: string) {
+    const rider = await DriverRider.findOne({
+      _id: riderId,
+      accountType: "rider",
+    }).select("approved");
+
+    if (!rider) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Rider not found");
+    }
+
+    rider.approvalStatus = AccountApprovalStatus.REJECTED;
+    await rider.save();
+  }
   
   async getRiders(page: number, approvalStatus?: string) {
     const query: { accountType: "rider"; approvalStatus?: string } = {

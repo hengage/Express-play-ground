@@ -15,6 +15,10 @@ class AdminOpsRidersRoutes {
       .route("/:riderId/approve")
       .patch(adminRidersController.approveRider);
 
+    this.router
+      .route("/:riderId/reject")
+      .patch(adminRidersController.rejectRider);
+
     this.router.route("/").get(adminRidersController.getRiders);
 
     this.router.route("/:riderId").get(adminRidersController.getRiderDetails);
