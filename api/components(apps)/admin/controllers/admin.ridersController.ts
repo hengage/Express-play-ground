@@ -5,8 +5,10 @@ import { STATUS_CODES } from "../../../constants";
 class AdminRidersController {
   async getRiders(req: Request, res: Response) {
     const page = parseInt(req.query.page as string) || 1;
+    const approvalStatus = req.query.approval_status as string;
+
     try {
-      const riders = await adminRidersService.getRiders(page);
+      const riders = await adminRidersService.getRiders(page, approvalStatus);
       res.status(STATUS_CODES.OK).json({
         message: "Fetched riders",
         data: { riders },
@@ -68,7 +70,6 @@ class AdminRidersController {
     }
   }
 
-  
   async getRejectedRiders(req: Request, res: Response) {
     const page = parseInt(req.query.page as string) || 1;
     try {
@@ -98,7 +99,6 @@ class AdminRidersController {
       });
     }
   }
-
 }
 
 export const adminRidersController = new AdminRidersController();

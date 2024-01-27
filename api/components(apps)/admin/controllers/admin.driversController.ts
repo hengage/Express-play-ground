@@ -5,8 +5,13 @@ import { adminDriversService } from "../services/admin.drivers.service";
 class AdminDriversController {
   async getDrivers(req: Request, res: Response) {
     const page = parseInt(req.query.page as string) || 1;
+    const approvalStatus = req.query.approval_status as string;
+
     try {
-      const drivers = await adminDriversService.getDrivers(page);
+      const drivers = await adminDriversService.getDrivers(
+        page,
+        approvalStatus
+      );
       res.status(STATUS_CODES.OK).json({
         message: "Fetched drivers",
         data: { drivers },

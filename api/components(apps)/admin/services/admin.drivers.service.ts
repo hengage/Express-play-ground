@@ -3,8 +3,15 @@ import { HandleException } from "../../../utils";
 import { DriverRider, IDriverRider } from "../../driversAndRiders";
 
 class AdminDriversService {
-  async getDrivers(page: number) {
-    const query = { accountType: "driver" };
+  async getDrivers(page: number, approvalStatus?: string) {
+    const query: { accountType: "driver"; approvalStatus?: string } = {
+      accountType: "driver",
+    };
+
+    if (approvalStatus) {
+      query.approvalStatus = approvalStatus;
+    }
+
     const options = {
       page,
       limit: 15,
