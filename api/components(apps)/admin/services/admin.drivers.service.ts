@@ -69,25 +69,6 @@ class AdminDriversService {
     }
   }
 
-  async getRejectedDrivers(page: number) {
-    const query = {
-      accountType: "driver",
-      approvalStatus: AccountApprovalStatus.REJECTED,
-    };
-    const options = {
-      page,
-      limit: 15,
-      select:
-        "firstName lastName email phoneNumber accountStatus approved createdAt",
-      lean: true,
-      leanWithId: false,
-      sort: { createdAt: 1 },
-    };
-
-    const drivers = await DriverRider.paginate(query, options);
-    return drivers;
-  }
-
   async approveDriver(driverId: string) {
     const driver = await DriverRider.findOne({
       _id: driverId,

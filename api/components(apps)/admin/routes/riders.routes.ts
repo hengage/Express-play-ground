@@ -23,9 +23,6 @@ class AdminOpsRidersRoutes {
       .route("/:riderId")
       .delete(adminRidersController.deleteRider);
     this.router
-      .route("/rejected")
-      .get(adminRidersController.getRejectedRiders);
-    this.router
       .route("/:riderId/approve")
       .get(adminRidersController.approveRider);
 

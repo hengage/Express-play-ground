@@ -21,9 +21,6 @@ class AdminOpsDriversRoutes {
       .route("/:driverId")
       .delete(adminDriversController.deleteDriver);
     this.router
-      .route("/rejected")
-      .get(adminDriversController.getRejectedDrivers);
-    this.router
       .route("/:driverId/approve")
       .get(adminDriversController.approveDriver);
   }

@@ -70,22 +70,6 @@ class AdminRidersController {
     }
   }
 
-  async getRejectedRiders(req: Request, res: Response) {
-    const page = parseInt(req.query.page as string) || 1;
-    try {
-      const riders = adminRidersService.getRejectedRiders(page);
-      res.status(STATUS_CODES.OK).json({
-        message: "Success",
-        data: { riders },
-      });
-    } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Operation failed",
-        error: error.message || "Server error",
-      });
-    }
-  }
-
   async approveRider(req: Request, res: Response) {
     try {
       await adminRidersService.approveRider(req.params.riderId);

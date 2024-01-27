@@ -14,9 +14,6 @@ class AdminOpsVendorsRoutes {
       .route("/:vendorId")
       .get(adminOpsForVendorsController.getVendorDetails);
     this.router
-      .route("/unapproved")
-      .get(adminOpsForVendorsController.getUnapprovedVendors);
-    this.router
       .route("/:vendorId/approve")
       .patch(adminOpsForVendorsController.approveVendor);
   }

@@ -35,23 +35,6 @@ class AdminOpsForVendorsService {
     return vendor;
   }
 
-  async getUnapprovedVendors(page: number) {
-    const query = { approvalStatus: AccountApprovalStatus.PENDING };
-
-    const options = {
-      page,
-      limit: 15,
-      select:
-        "firstName lastName email phoneNumber accountStatus approved createdAt",
-      lean: true,
-      leanWithId: false,
-      sort: { createdAt: -1 },
-    };
-
-    const vendors = await Vendor.paginate(query, options);
-    return vendors;
-  }
-
   async approveVendor(vendorId: string) {
     const vendor = await Vendor.findById(vendorId).select("approved");
     if (!vendor) {
