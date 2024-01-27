@@ -5,8 +5,13 @@ import { adminOpsForVendorsService } from "../services/admin.vendorsService";
 class AdminOpsForVendorsController {
   async getVendors(req: Request, res: Response) {
     const page = parseInt(req.query.page as string) || 1;
+    const approvalStatus = req.query.approval_status as string
+
     try {
-      const vendors = await adminOpsForVendorsService.getVendors(page);
+      const vendors = await adminOpsForVendorsService.getVendors(
+        page,
+        approvalStatus
+      );
       res.status(STATUS_CODES.OK).json({
         messsge: "Found vendors",
         data: { vendors },

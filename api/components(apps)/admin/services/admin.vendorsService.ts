@@ -3,13 +3,17 @@ import { HandleException } from "../../../utils";
 import { Vendor } from "../../vendors";
 
 class AdminOpsForVendorsService {
-  async getVendors(page: number) {
-    const query = {};
+  async getVendors(page: number, approvalStatus?: string) {
+    const query: {approvalStatus?: string} = {};
+
+    if(approvalStatus) {
+      query.approvalStatus = approvalStatus
+    }
 
     const options = {
       page,
       limit: 15,
-      select: "firstName lastName email phoneNumber accountStatus createdAt",
+      select: "firstName lastName email phoneNumber accountStatus approvalStatus createdAt",
       lean: true,
       leanWithId: false,
       sort: { createdAt: -1 },
