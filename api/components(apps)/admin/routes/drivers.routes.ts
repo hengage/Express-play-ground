@@ -13,6 +13,9 @@ class AdminOpsDriversRoutes {
     this.router
       .route("/:driverId/approve")
       .patch(adminDriversController.approveDriver);
+    this.router
+      .route("/:driverId/reject")
+      .patch(adminDriversController.reject);
 
     this.router.route("/").get(adminDriversController.getDrivers);
 

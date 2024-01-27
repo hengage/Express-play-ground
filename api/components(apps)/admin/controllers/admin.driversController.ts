@@ -17,6 +17,21 @@ class AdminDriversController {
     }
   }
   
+  async reject(req: Request, res: Response) {
+    try {
+      await adminDriversService.rejectDriver(req.params.driverId);
+      res.status(STATUS_CODES.OK).json({
+        message: "Success",
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Operation failed",
+        error: error.message || "Server error",
+      });
+    }
+  }
+  
+
   async getDrivers(req: Request, res: Response) {
     const page = parseInt(req.query.page as string) || 1;
     const approvalStatus = req.query.approval_status as string;

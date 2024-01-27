@@ -3,6 +3,35 @@ import { HandleException } from "../../../utils";
 import { DriverRider, IDriverRider } from "../../driversAndRiders";
 
 class AdminDriversService {
+  async approveDriver(driverId: string) {
+    const driver = await DriverRider.findOne({
+      _id: driverId,
+      accountType: "driver",
+    }).select("approved");
+
+    if (!driver) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
+    }
+
+    driver.approvalStatus = AccountApprovalStatus.APPROVED;
+    await driver.save();
+  }
+  
+  async rejectDriver(driverId: string) {
+    const driver = await DriverRider.findOne({
+      _id: driverId,
+      accountType: "driver",
+    }).select("approved");
+
+    if (!driver) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
+    }
+
+    driver.approvalStatus = AccountApprovalStatus.REJECTED;
+    await driver.save();
+  }
+
+
   async getDrivers(page: number, approvalStatus?: string) {
     const query: { accountType: "driver"; approvalStatus?: string } = {
       accountType: "driver",
@@ -67,20 +96,6 @@ class AdminDriversService {
     if (result.deletedCount === 0) {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
     }
-  }
-
-  async approveDriver(driverId: string) {
-    const driver = await DriverRider.findOne({
-      _id: driverId,
-      accountType: "driver",
-    }).select("approved");
-
-    if (!driver) {
-      throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
-    }
-
-    driver.approvalStatus = AccountApprovalStatus.APPROVED;
-    await driver.save();
   }
 }
 
