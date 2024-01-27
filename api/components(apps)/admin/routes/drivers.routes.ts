@@ -22,7 +22,7 @@ class AdminOpsDriversRoutes {
       .delete(adminDriversController.deleteDriver);
     this.router
       .route("/:driverId/approve")
-      .get(adminDriversController.approveDriver);
+      .patch(adminDriversController.approveDriver);
   }
 }
 
