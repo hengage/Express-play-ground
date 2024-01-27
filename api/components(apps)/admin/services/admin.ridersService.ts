@@ -3,6 +3,20 @@ import { HandleException } from "../../../utils";
 import { DriverRider, IDriverRider } from "../../driversAndRiders";
 
 class AdminRidersService {
+  async approveRider(riderId: string) {
+    const rider = await DriverRider.findOne({
+      _id: riderId,
+      accountType: "rider",
+    }).select("approved");
+
+    if (!rider) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Rider not found");
+    }
+
+    rider.approvalStatus = AccountApprovalStatus.APPROVED;
+    await rider.save();
+  }
+  
   async getRiders(page: number, approvalStatus?: string) {
     const query: { accountType: "rider"; approvalStatus?: string } = {
       accountType: "rider",
@@ -66,20 +80,6 @@ class AdminRidersService {
     if (result.deletedCount === 0) {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Rider not found");
     }
-  }
-
-  async approveRider(riderId: string) {
-    const rider = await DriverRider.findOne({
-      _id: riderId,
-      accountType: "rider",
-    }).select("approved");
-
-    if (!rider) {
-      throw new HandleException(STATUS_CODES.NOT_FOUND, "Rider not found");
-    }
-
-    rider.approvalStatus = AccountApprovalStatus.APPROVED;
-    await rider.save();
   }
 }
 

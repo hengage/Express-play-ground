@@ -3,6 +3,20 @@ import { adminRidersService } from "../services/admin.ridersService";
 import { STATUS_CODES } from "../../../constants";
 
 class AdminRidersController {
+  async approveRider(req: Request, res: Response) {
+    try {
+      await adminRidersService.approveRider(req.params.riderId);
+      res.status(STATUS_CODES.OK).json({
+        message: "Success",
+      });
+    } catch (error: any) {
+      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
+        message: "Operation failed",
+        error: error.message || "Server error",
+      });
+    }
+  }
+  
   async getRiders(req: Request, res: Response) {
     const page = parseInt(req.query.page as string) || 1;
     const approvalStatus = req.query.approval_status as string;
@@ -65,20 +79,6 @@ class AdminRidersController {
     } catch (error: any) {
       res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
         message: "Error deleting rider",
-        error: error.message || "Server error",
-      });
-    }
-  }
-
-  async approveRider(req: Request, res: Response) {
-    try {
-      await adminRidersService.approveRider(req.params.riderId);
-      res.status(STATUS_CODES.OK).json({
-        message: "Success",
-      });
-    } catch (error: any) {
-      res.status(error.status || STATUS_CODES.SERVER_ERROR).json({
-        message: "Operation failed",
         error: error.message || "Server error",
       });
     }

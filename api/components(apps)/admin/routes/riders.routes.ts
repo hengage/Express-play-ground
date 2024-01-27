@@ -11,21 +11,17 @@ class AdminOpsRidersRoutes {
   }
 
   private async initializeRoutes() {
-    this.router.route("/").get(adminRidersController.getRiders);
-    this.router
-      .route("/:riderId")
-      .get(adminRidersController.getRiderDetails);
-
-    this.router
-      .route("/:riderId")
-      .patch(adminRidersController.updateRider);
-    this.router
-      .route("/:riderId")
-      .delete(adminRidersController.deleteRider);
     this.router
       .route("/:riderId/approve")
-      .get(adminRidersController.approveRider);
+      .patch(adminRidersController.approveRider);
 
+    this.router.route("/").get(adminRidersController.getRiders);
+
+    this.router.route("/:riderId").get(adminRidersController.getRiderDetails);
+
+    this.router.route("/:riderId").patch(adminRidersController.updateRider);
+
+    this.router.route("/:riderId").delete(adminRidersController.deleteRider);
   }
 }
 
