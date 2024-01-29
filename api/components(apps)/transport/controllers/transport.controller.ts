@@ -211,6 +211,18 @@ class TransportController {
       handleErrorResponse(res, error);
     }
   }
+
+  async getAirports(req: Request, res: Response) {
+    try {
+      const airports = await transportRepo.getAirports();
+      res.status(STATUS_CODES.OK).json({
+        message: "success",
+        data: { airports },
+      });
+    } catch (error: any) {
+      handleErrorResponse(res, error);
+    }
+  }
 }
 
 export const transportController = new TransportController();

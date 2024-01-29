@@ -1,5 +1,6 @@
 import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
+import { Airport } from "../models/airport.model";
 import { TransportCompany } from "../models/transport.models";
 import { TransportDriver } from "../models/transportDrivers.model";
 import { TowOrder, TransportTripOrder } from "../models/transportOrders.model";
@@ -110,6 +111,12 @@ class TransportRepository {
     });
 
     return tripOrder;
+  }
+
+  async getAirports() {
+    const airports = await Airport.find({})
+    .select("name address location.coordinates").lean()
+    return airports
   }
 }
 

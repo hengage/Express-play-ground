@@ -58,6 +58,8 @@ class TransportRoutes {
     this.router
       .route("/tow-orders/:orderId")
       .get(towingController.getOrderdetails);
+
+    this.router.route("/airports").get(transportController.getAirports);
   }
 }
 
