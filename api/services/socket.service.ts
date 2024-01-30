@@ -81,6 +81,16 @@ class WebSocket {
       await redisClient.set(`device-token:${driverId}`, deviceToken);
     });
 
+    socket.on("fcm-transport-company-device-token", async (message) => {
+      const { transportCompanyId, deviceToken } = message;
+      await redisClient.set(`device-token:${transportCompanyId}`, deviceToken);
+    });
+
+    socket.on("fcm-towing-company-device-token", async (message) => {
+      const { towingCompanyId, deviceToken } = message;
+      await redisClient.set(`device-token:${towingCompanyId}`, deviceToken);
+    });
+
     socket.on("update-driver-rider-location", async (message) => {
       const { driverId, coordinates } = message;
       // console.log({ driverId, coordinates });
