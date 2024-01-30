@@ -2,10 +2,35 @@ import { Request, Response } from "express";
 import { STATUS_CODES } from "../../../constants";
 import { transportRepo } from "../repository/transport.repo";
 import { towingRepo } from "../repository/towing.repo";
-import { handleErrorResponse } from "../../../utils";
+import { handleErrorResponse, jwtUtils } from "../../../utils";
 import { towingService } from "../services/towing.service";
 
 class TowingController {
+  
+  async login(req: Request, res: Response) {
+    try {
+      const towingCompany = await towingService.login(req.body);
+      console.log({ body: req.body });
+      const payload = {
+        _id: towingCompany._id,
+        phoneNumber: towingCompany.phoneNumber,
+      };
+      const accessToken = jwtUtils.generateToken(payload, "1h");
+      const refreshToken = jwtUtils.generateToken(payload, "14d");
+
+      res.status(STATUS_CODES.OK).json({
+        message: "Logged in",
+        data: {
+          _id: towingCompany._id,
+          accessToken,
+          refreshToken,
+        },
+      });
+    } catch (error: any) {
+      handleErrorResponse(res, error);
+    }
+  }
+
   async createTowOrder(req: Request, res: Response) {
     try {
       const towOrder = await towingRepo.createOrder(req.body);
