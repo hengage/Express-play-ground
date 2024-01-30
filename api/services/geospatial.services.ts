@@ -48,6 +48,7 @@ async function findClosestDriverOrRider(
         lastName: 1,
         vehicleType: 1,
         phoneNumber: 1,
+        distance: 1
       },
     },
     {

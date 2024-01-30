@@ -9,6 +9,7 @@ import { WebSocket, agenda, redisClient } from "./services";
 import { dateTimeSettings } from "./config";
 import { vendorService } from "./components(apps)/vendors";
 import { driverRiderService } from "./components(apps)/driversAndRiders";
+import { transportService } from "./components(apps)/transport";
 
 const now = DateTime.now().setLocale(dateTimeSettings.defaultLocale);
 const formattedDate = now.toLocaleString(DateTime.DATETIME_MED);
@@ -20,6 +21,10 @@ const server = app.listenToPort(PORT, NODE_ENV);
 
 (async () => {
   await agenda.start();
+})();
+
+(async () => {
+  await transportService.findTowingCompanies([-0.0759934, 5.6536667])
 })();
 
 

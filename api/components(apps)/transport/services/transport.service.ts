@@ -188,6 +188,24 @@ class TransportService {
     const transportTripOrders = TransportTripOrder.paginate(query, options);
     return transportTripOrders;
   }
+
+  async findTowingCompanies(coordinates: [number, number]) {
+    const towingCompanies = await TransportCompany.find({
+      location: {
+        $near: {
+          $geometry: { type: "point", coordinates },
+          $maxDistance: 9000,
+        },
+      },
+      serviceType: "c6a56821",
+    })
+      .select("name phoneNumber vehicleType vehicleRegNumber")
+      .lean()
+      .exec();
+
+    console.log({ towingCompanies });
+    return towingCompanies;
+  }
 }
 
 export const transportService = new TransportService();

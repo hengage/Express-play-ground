@@ -70,6 +70,7 @@ const transportCompanySchema = new Schema<ITransportCompany>(
 );
 
 transportCompanySchema.plugin(paginate);
+transportCompanySchema.index({location: "2dsphere"})
 
 transportCompanySchema.pre("save", async function (next) {
   if (this.isModified("password")) {
