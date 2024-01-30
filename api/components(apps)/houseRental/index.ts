@@ -1,0 +1,1 @@
+export { landlordRoutes } from "./routes/landlord.routes";

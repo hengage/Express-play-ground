@@ -6,7 +6,7 @@ const landlordSchema = new Schema<ILandlordDocument>(
   {
     _id: {
       type: String,
-      default: stringsUtils.generateUniqueString(4),
+      default: () => stringsUtils.generateUniqueString(4),
     },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
