@@ -351,8 +351,8 @@ class WebSocket {
     socket.on("cancel-messenger-order", async (message) => {
       const { orderId, customerId, riderId } = message;
       try {
-        await messengerService.cancelOrder({orderId, customerId, riderId});
-        console.log("Order cancelled")
+        await messengerService.cancelOrder({ orderId, customerId, riderId });
+        console.log("Order cancelled");
       } catch (error: any) {
         socket.emit("cancel-messenger-order-error", error.message);
       }
@@ -361,7 +361,9 @@ class WebSocket {
     socket.on("find-tow-companies", async (message: any) => {
       const { pickUpCoordinates } = message;
       try {
-        const towCompanies = await towingService.findTowingCompanies();
+        const towCompanies = await towingService.findTowingCompanies(
+          pickUpCoordinates
+        );
         console.log({ towCompanies: JSON.stringify(towCompanies) });
         socket.emit("found-tow-companies", towCompanies);
       } catch (error: any) {
@@ -373,7 +375,10 @@ class WebSocket {
       const { pickUpCoordinates, serviceTypeId } = message;
       try {
         const transportCompanies =
-          await transportService.findTransportCompanies(serviceTypeId);
+          await transportService.findTransportCompanies({
+            pickUpCoordinates,
+            serviceTypeId,
+          });
         socket.emit("found-transport-companies", transportCompanies);
       } catch (error: any) {
         socket.emit("find-transport-companies-error");

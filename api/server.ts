@@ -23,10 +23,6 @@ const server = app.listenToPort(PORT, NODE_ENV);
   await agenda.start();
 })();
 
-(async () => {
-  await transportService.findTowingCompanies([-0.0759934, 5.6536667])
-})();
-
 
 const InitializeWebSocket = new WebSocket(server);
 InitializeWebSocket.connectSocket();

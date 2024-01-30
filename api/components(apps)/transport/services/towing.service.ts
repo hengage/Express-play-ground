@@ -1,12 +1,25 @@
-import { TransportCompany, TransportVehicleType } from "../models/transport.models";
+import {
+  TransportCompany,
+  TransportVehicleType,
+} from "../models/transport.models";
 
 class TowingService {
-  async findTowingCompanies() {
+  async findTowingCompanies(coordinates: [number, number]) {
     const towingCompanies = await TransportCompany.find({
+      location: {
+        $near: {
+          $geometry: { type: "point", coordinates },
+          $maxDistance: 9000,
+        },
+      },
       serviceType: "c6a56821",
     })
-      .select("_id name location.coordinates phoneNumber serviceType vehicleRegNumber")
-      .lean();
+      .select(
+        "name phoneNumber location.coordinates vehicleType vehicleRegNumber"
+      )
+      .lean()
+      .exec();
+
     return towingCompanies;
   }
 

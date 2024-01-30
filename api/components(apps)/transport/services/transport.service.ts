@@ -159,14 +159,29 @@ class TransportService {
     return driver;
   }
 
-  async findTransportCompanies(serviceTypeId: string) {
+  async findTransportCompanies(payload: {
+    pickUpCoordinates: [number, number];
+    serviceTypeId: string;
+  }) {
     const transportCompanies = await TransportCompany.find({
-      serviceType: serviceTypeId,
+      location: {
+        $near: {
+          $geometry: { type: "point", coordinates: payload.pickUpCoordinates },
+          $maxDistance: 9000,
+        },
+      },
+      serviceType: payload.serviceTypeId,
     })
-      .select(
-        "_id name location.coordinates phoneNumber serviceType vehicleRegNumber"
-      )
-      .lean();
+      .select({
+        name: 1,
+        phoneNumber: 1,
+        vehicleType: 1,
+        vehicleRegNumber: 1,
+        location: { coordinates: 1 },
+      })
+      .lean()
+      .exec();
+
     return transportCompanies;
   }
 
@@ -187,24 +202,6 @@ class TransportService {
 
     const transportTripOrders = TransportTripOrder.paginate(query, options);
     return transportTripOrders;
-  }
-
-  async findTowingCompanies(coordinates: [number, number]) {
-    const towingCompanies = await TransportCompany.find({
-      location: {
-        $near: {
-          $geometry: { type: "point", coordinates },
-          $maxDistance: 9000,
-        },
-      },
-      serviceType: "c6a56821",
-    })
-      .select("name phoneNumber vehicleType vehicleRegNumber")
-      .lean()
-      .exec();
-
-    console.log({ towingCompanies });
-    return towingCompanies;
   }
 }
 
