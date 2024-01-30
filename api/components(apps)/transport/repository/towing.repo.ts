@@ -1,5 +1,6 @@
 import { STATUS_CODES } from "../../../constants";
 import { HandleException } from "../../../utils";
+import { TransportCompany } from "../models/transport.models";
 import { TowOrder } from "../models/transportOrders.model";
 import { ITowingOrder } from "../transport.interface";
 
@@ -54,6 +55,25 @@ class TowingRepo {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Tow order not found");
     }
     return towOrder;
+  }
+
+  async findTowingCompanies(coordinates: [number, number]) {
+    const towingCompanies = await TransportCompany.find({
+      location: {
+        $near: {
+          $geometry: { type: "point", coordinates },
+          $maxDistance: 9000,
+        },
+      },
+      serviceType: "c6a56821",
+    })
+      .select(
+        "name phoneNumber location.coordinates vehicleType vehicleRegNumber"
+      )
+      .lean()
+      .exec();
+
+    return towingCompanies;
   }
 }
 

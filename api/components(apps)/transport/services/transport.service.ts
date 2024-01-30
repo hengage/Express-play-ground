@@ -7,6 +7,7 @@ import {
 } from "../models/transport.models";
 import { TransportDriver } from "../models/transportDrivers.model";
 import { TransportTripOrder } from "../models/transportOrders.model";
+import { transportRepo } from "../repository/transport.repo";
 
 class TransportService {
   async login(payload: any) {
@@ -163,24 +164,12 @@ class TransportService {
     pickUpCoordinates: [number, number];
     serviceTypeId: string;
   }) {
-    const transportCompanies = await TransportCompany.find({
-      location: {
-        $near: {
-          $geometry: { type: "point", coordinates: payload.pickUpCoordinates },
-          $maxDistance: 9000,
-        },
-      },
-      serviceType: payload.serviceTypeId,
-    })
-      .select({
-        name: 1,
-        phoneNumber: 1,
-        vehicleType: 1,
-        vehicleRegNumber: 1,
-        location: { coordinates: 1 },
-      })
-      .lean()
-      .exec();
+    const { pickUpCoordinates, serviceTypeId } = payload;
+    
+    const transportCompanies = await transportRepo.findTransportCompanies({
+      pickUpCoordinates,
+      serviceTypeId,
+    });
 
     return transportCompanies;
   }

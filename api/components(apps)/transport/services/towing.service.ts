@@ -2,24 +2,11 @@ import {
   TransportCompany,
   TransportVehicleType,
 } from "../models/transport.models";
+import { towingRepo } from "../repository/towing.repo";
 
 class TowingService {
   async findTowingCompanies(coordinates: [number, number]) {
-    const towingCompanies = await TransportCompany.find({
-      location: {
-        $near: {
-          $geometry: { type: "point", coordinates },
-          $maxDistance: 9000,
-        },
-      },
-      serviceType: "c6a56821",
-    })
-      .select(
-        "name phoneNumber location.coordinates vehicleType vehicleRegNumber"
-      )
-      .lean()
-      .exec();
-
+    const towingCompanies = await towingRepo.findTowingCompanies(coordinates);
     return towingCompanies;
   }
 
