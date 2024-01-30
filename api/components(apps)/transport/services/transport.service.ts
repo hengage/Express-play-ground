@@ -13,6 +13,7 @@ class TransportService {
   async login(payload: any) {
     const transportCompany = await TransportCompany.findOne({
       vehicleRegNumber: payload.vehicleRegNumber,
+      serviceType: { $ne: "c6a56821" },
     })
       .select("phoneNumber password")
       .lean()
@@ -165,7 +166,7 @@ class TransportService {
     serviceTypeId: string;
   }) {
     const { pickUpCoordinates, serviceTypeId } = payload;
-    
+
     const transportCompanies = await transportRepo.findTransportCompanies({
       pickUpCoordinates,
       serviceTypeId,
