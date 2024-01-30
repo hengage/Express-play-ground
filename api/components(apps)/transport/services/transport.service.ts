@@ -1,5 +1,6 @@
 import { STATUS_CODES } from "../../../constants";
 import { HandleException, encryption } from "../../../utils";
+import { transportNotificationService } from "../../notifications";
 import {
   TransportCompany,
   TransportServiceType,
@@ -161,15 +162,19 @@ class TransportService {
     return driver;
   }
 
-  async findTransportCompanies(payload: {
-    pickUpCoordinates: [number, number];
-    serviceTypeId: string;
-  }) {
-    const { pickUpCoordinates, serviceTypeId } = payload;
+  async findTransportCompanies(payload: { tripOrder: any }) {
+    const { pickUpCoordinates, serviceType } = payload.tripOrder;
 
     const transportCompanies = await transportRepo.findTransportCompanies({
       pickUpCoordinates,
-      serviceTypeId,
+      serviceType,
+    });
+
+    transportCompanies.forEach(async (transportCompany) => {
+      await transportNotificationService.notifyCompanyOfOrderRequest(
+        payload.tripOrder,
+        transportCompany._id
+      );
     });
 
     return transportCompanies;

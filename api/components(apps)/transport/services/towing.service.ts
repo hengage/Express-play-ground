@@ -1,5 +1,6 @@
 import { STATUS_CODES } from "../../../constants";
 import { HandleException, encryption } from "../../../utils";
+import { towingNotificationService } from "../../notifications";
 import {
   TransportCompany,
   TransportVehicleType,
@@ -38,13 +39,25 @@ class TowingService {
     }
 
     return {
-      _id:  towingCompany._id,
+      _id: towingCompany._id,
       phoneNumber: towingCompany.phoneNumber,
     };
   }
 
-  async findTowingCompanies(coordinates: [number, number]) {
-    const towingCompanies = await towingRepo.findTowingCompanies(coordinates);
+  async findTowingCompanies(payload: { tripOrder: any }) {
+    const { tripOrder } = payload;
+
+    const towingCompanies = await towingRepo.findTowingCompanies(
+      tripOrder.pickUpCoordinates
+    );
+
+    towingCompanies.forEach(async (towingCompany) => {
+      await towingNotificationService.notifyCompanyOfOrderRequest(
+        tripOrder,
+        towingCompany._id
+      );
+    });
+
     return towingCompanies;
   }
 

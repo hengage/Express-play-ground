@@ -88,6 +88,8 @@ class WebSocket {
 
     socket.on("fcm-towing-company-device-token", async (message) => {
       const { towingCompanyId, deviceToken } = message;
+      console.log({ towingCompanyId, deviceToken });
+
       await redisClient.set(`device-token:${towingCompanyId}`, deviceToken);
     });
 
@@ -369,11 +371,11 @@ class WebSocket {
     });
 
     socket.on("find-tow-companies", async (message: any) => {
-      const { pickUpCoordinates } = message;
+      const {  tripOrder } = message;
       try {
-        const towCompanies = await towingService.findTowingCompanies(
-          pickUpCoordinates
-        );
+        const towCompanies = await towingService.findTowingCompanies({
+          tripOrder
+        });
         console.log({ towCompanies: JSON.stringify(towCompanies) });
         socket.emit("found-tow-companies", towCompanies);
       } catch (error: any) {
@@ -382,12 +384,11 @@ class WebSocket {
     });
 
     socket.on("find-transport-companies", async (message: any) => {
-      const { pickUpCoordinates, serviceTypeId } = message;
+      const {   tripOrder } = message;
       try {
         const transportCompanies =
           await transportService.findTransportCompanies({
-            pickUpCoordinates,
-            serviceTypeId,
+            tripOrder
           });
         socket.emit("found-transport-companies", transportCompanies);
       } catch (error: any) {

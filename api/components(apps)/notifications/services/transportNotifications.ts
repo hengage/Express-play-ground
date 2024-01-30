@@ -2,23 +2,24 @@ import { redisClient } from "../../../services";
 import { notificationService } from "./notification.service";
 
 class TransportNotificationService {
-    async notifyCompanyOfOrderRequest(trip: any, title: string, body: string) {
+    async notifyCompanyOfOrderRequest(tripOrder: any, transportCompanyId: string) {
         const transportCompanyDeviceToken = await redisClient.get(
-          `device-token:${trip.customer}`
+          `device-token:${transportCompanyId}`
         );
         console.log({ transportCompanyDeviceToken });
+        
         const payload = {
           notification: {
-            title,
-            body,
+            title: "Trip request",
+            body: "You have a trip order to accept",
           },
           data: {
-            type: "transport-trip",
-            data: JSON.stringify({ _id: trip._id, status: trip.status }),
+            type: "transport-trip-request",
+            data: JSON.stringify(tripOrder),
           },
           token: `${transportCompanyDeviceToken}`,
         };
-        await notificationService.sendNotification(trip.customer, payload);
+        await notificationService.sendNotification(transportCompanyId, payload);
       }
 }
 

@@ -94,7 +94,7 @@ class TransportRepository {
 
   async findTransportCompanies(payload: {
     pickUpCoordinates: [number, number];
-    serviceTypeId: string;
+    serviceType: string;
   }) {
     const transportCompanies = await TransportCompany.find({
       location: {
@@ -103,7 +103,7 @@ class TransportRepository {
           $maxDistance: 9000,
         },
       },
-      serviceType: payload.serviceTypeId,
+      serviceType: payload.serviceType,
     })
       .select({
         name: 1,
