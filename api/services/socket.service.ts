@@ -397,7 +397,18 @@ class WebSocket {
           });
         socket.emit("found-transport-companies", transportCompanies);
       } catch (error: any) {
-        socket.emit("find-transport-companies-error");
+        socket.emit("find-transport-companies-error", error.message);
+      }
+    });
+
+    socket.on("update-transport-company-location", async (message: any) => {
+      // This function upates all transport company location, INLCUDING
+      // towing companies.
+      try {
+        const { transportCompanyId, coordinates } = message;
+        transportRepo.updateLocation({ transportCompanyId, coordinates });
+      } catch (error: any) {
+        socket.emit("update-transport-company-location-error", error.message);
       }
     });
 

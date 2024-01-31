@@ -139,10 +139,30 @@ class TransportRepository {
     return tripOrder;
   }
 
+  async updateLocation(payload: {
+    transportCompanyId: string;
+    coordinates: [number, number];
+  }) {
+    const transportCompany = await TransportCompany.findById(
+      payload.transportCompanyId
+    ).select("location");
+
+    if (!transportCompany) {
+      throw new HandleException(
+        STATUS_CODES.NOT_FOUND,
+        "Cannot find transportCompany"
+      );
+    }
+    transportCompany.location.coordinates = payload.coordinates;
+    await transportCompany.save();
+    console.log("updated location for transportCompany", transportCompany);
+  }
+
   async getAirports() {
     const airports = await Airport.find({})
-    .select("name address location.coordinates").lean()
-    return airports
+      .select("name address location.coordinates")
+      .lean();
+    return airports;
   }
 }
 

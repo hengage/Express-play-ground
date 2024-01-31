@@ -1,1 +1,1 @@
-export { landlordRoutes } from "./routes/landlord.routes";
+export { houseRentalRoutes } from "./routes/index.routes";

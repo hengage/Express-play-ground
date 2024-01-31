@@ -1,6 +1,9 @@
 export { transportRepo } from "./repository/transport.repo";
+<<<<<<< HEAD
 export { towingRepo } from "./repository/towing.repo";
 export { towingRoutes } from "./routes/towig.routes";
+=======
+>>>>>>> add_properties
 export { towingService } from "./services/towing.service";
 export { Airport } from "./models/airport.model";
 export { TransportTripOrder } from "./models/transportOrders.model";

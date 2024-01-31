@@ -9,7 +9,8 @@ class LandlordRoutes {
   }
 
   initializeRoutes() {
-    this.router.route("/landlord/signup").post(landlordController.signup);
+    this.router.route("/signup").post(landlordController.signup);
+    this.router.route("/login").post(landlordController.login);
   }
 }
 

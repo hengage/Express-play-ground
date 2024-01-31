@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { handleErrorResponse } from "../../../utils";
+import { handleErrorResponse, jwtUtils } from "../../../utils";
 import { landlordRepo } from "../repository/landlord.repo";
 import { STATUS_CODES } from "../../../constants";
 
@@ -7,9 +7,36 @@ class LandlordController {
   async signup(req: Request, res: Response) {
     try {
       const landlord = await landlordRepo.signup(req.body);
+
+      const jwtPayload = {
+        _id: landlord._id,
+        phoneNumber: landlord.phoneNumber,
+      };
+      const accessToken = jwtUtils.generateToken(jwtPayload, "1h");
+      const refreshToken = jwtUtils.generateToken(jwtPayload, "30d");
+
       res.status(STATUS_CODES.CREATED).json({
         message: "success",
-        data: { landlord },
+        data: { landlord, accessToken, refreshToken },
+      });
+    } catch (error: any) {
+      handleErrorResponse(res, error);
+    }
+  }
+
+  async login(req: Request, res: Response) {
+    try {
+      const landlord = await landlordRepo.login(req.body);
+      const jwtPayload = {
+        _id: landlord._id,
+        phoneNumber: landlord.phoneNumber,
+      };
+      const accessToken = jwtUtils.generateToken(jwtPayload, "1h");
+      const refreshToken = jwtUtils.generateToken(jwtPayload, "30d");
+
+      res.status(STATUS_CODES.CREATED).json({
+        message: "success",
+        data: { landlord, accessToken, refreshToken },
       });
     } catch (error: any) {
       handleErrorResponse(res, error);
