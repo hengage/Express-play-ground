@@ -33,4 +33,4 @@ landlordSchema.pre("save", async function (next) {
   next();
 });
 
-export const Landlord = model("Lanldord", landlordSchema);
+export const Landlord = model("Landlord", landlordSchema);
