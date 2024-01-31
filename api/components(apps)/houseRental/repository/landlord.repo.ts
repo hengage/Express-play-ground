@@ -1,12 +1,20 @@
 import { STATUS_CODES } from "../../../constants";
 import { HandleException, encryption } from "../../../utils";
+import { ILandlordDocument } from "../houseRental.interface";
 import { Landlord } from "../models/lanlord.model";
 
 class LandlordRepository {
-  async signup(payload: any) {
+  async signup(payload: any): Promise<Partial<ILandlordDocument>> {
     const landlord = await Landlord.create(payload);
 
-    return landlord;
+    return {
+      _id: landlord._id,
+      phoneNumber: landlord.phoneNumber,
+      email: landlord.email,
+      profilePhoto: landlord.profilePhoto,
+      address: landlord.address,
+      govtIdPhoto: landlord.govtIdPhoto,
+    };
   }
 
   async login(payload: { phoneNumber: string; password: string }) {
