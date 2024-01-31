@@ -1,3 +1,4 @@
+export { transportRepo } from "./repository/transport.repo";
 export { towingService } from "./services/towing.service";
 export { Airport } from "./models/airport.model";
 export { TransportTripOrder } from "./models/transportOrders.model";

@@ -13,7 +13,11 @@ import { driverRiderService } from "../components(apps)/driversAndRiders";
 import { findClosestDriverOrRider } from "./geospatial.services";
 import { makuService } from "../components(apps)/maku";
 import { messengerService } from "../components(apps)/messenger";
-import { towingService, transportService } from "../components(apps)/transport";
+import {
+  towingService,
+  transportRepo,
+  transportService,
+} from "../components(apps)/transport";
 import { makuNotificationService } from "../components(apps)/notifications/services/makuNotifications";
 import { walletService } from "../components(apps)/wallet";
 
@@ -381,7 +385,18 @@ class WebSocket {
           });
         socket.emit("found-transport-companies", transportCompanies);
       } catch (error: any) {
-        socket.emit("find-transport-companies-error");
+        socket.emit("find-transport-companies-error", error.message);
+      }
+    });
+
+    socket.on("update-transport-company-location", async (message: any) => {
+      // This function upates all transport company location, INLCUDING
+      // towing companies.
+      try {
+        const { transportCompanyId, coordinates } = message;
+        transportRepo.updateLocation({ transportCompanyId, coordinates });
+      } catch (error: any) {
+        socket.emit("update-transport-company-location-error", error.message);
       }
     });
 
