@@ -5,7 +5,7 @@ import { TowOrder } from "../models/transportOrders.model";
 import { ITowingOrder } from "../transport.interface";
 
 class TowingRepo {
-  async createOrder(payload: any): Promise<ITowingOrder["_id"]> {
+  async createOrder(payload: any): Promise<Partial<ITowingOrder>> {
     const towOrder = await TowOrder.create({
       customer: payload.customer,
       vehicleRegNumber: payload.vehicleRegNumber,
@@ -20,7 +20,16 @@ class TowingRepo {
       },
     });
 
-    return towOrder._id;
+    return {
+      _id: towOrder.id,
+      customer: towOrder.customer,
+      vehicleType: towOrder.vehicleType,
+      vehicleRegNumber: towOrder.vehicleRegNumber,
+      pickUpAddress: towOrder.pickUpAddress,
+      pickUpCoordinates: towOrder.pickUpCoordinates,
+      destinationAddress: towOrder.destinationAddress,
+      destinationCoordinates: towOrder.destinationCoordinates,
+    };
   }
 
   async getOrdersHistoryForCompany(companyId: string, page: number) {
@@ -44,12 +53,15 @@ class TowingRepo {
 
   async getOrderDetails(orderId: string) {
     const towOrder = await TowOrder.findById(orderId)
-    .select("pickUpAddress destinationAddress fee status createdAt")
-    .populate({path: "customer", select: "firstName lastName phoneNumber"})
-    .populate({path: "transportCompany", select: "name phoneNumber address"})
-    .populate({path: "vehicleType", select: "vehicleType"})
-    .lean()
-    .exec()
+      .select("pickUpAddress destinationAddress fee status createdAt")
+      .populate({ path: "customer", select: "firstName lastName phoneNumber" })
+      .populate({
+        path: "transportCompany",
+        select: "name phoneNumber address",
+      })
+      .populate({ path: "vehicleType", select: "vehicleType" })
+      .lean()
+      .exec();
 
     if (!towOrder) {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Tow order not found");

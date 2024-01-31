@@ -1,3 +1,5 @@
+export { transportRepo } from "./repository/transport.repo";
+export { towingRepo } from "./repository/towing.repo";
 export { towingRoutes } from "./routes/towig.routes";
 export { towingService } from "./services/towing.service";
 export { Airport } from "./models/airport.model";

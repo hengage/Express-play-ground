@@ -13,7 +13,12 @@ import { driverRiderService } from "../components(apps)/driversAndRiders";
 import { findClosestDriverOrRider } from "./geospatial.services";
 import { makuService } from "../components(apps)/maku";
 import { messengerService } from "../components(apps)/messenger";
-import { towingService, transportService } from "../components(apps)/transport";
+import {
+  towingRepo,
+  towingService,
+  transportRepo,
+  transportService,
+} from "../components(apps)/transport";
 import { makuNotificationService } from "../components(apps)/notifications/services/makuNotifications";
 import { walletService } from "../components(apps)/wallet";
 
@@ -371,10 +376,10 @@ class WebSocket {
     });
 
     socket.on("find-tow-companies", async (message: any) => {
-      const {  tripOrder } = message;
+      const { tripOrder } = message;
       try {
         const towCompanies = await towingService.findTowingCompanies({
-          tripOrder
+          tripOrder,
         });
         console.log({ towCompanies: JSON.stringify(towCompanies) });
         socket.emit("found-tow-companies", towCompanies);
@@ -384,15 +389,38 @@ class WebSocket {
     });
 
     socket.on("find-transport-companies", async (message: any) => {
-      const {   tripOrder } = message;
+      const { tripOrder } = message;
       try {
         const transportCompanies =
           await transportService.findTransportCompanies({
-            tripOrder
+            tripOrder,
           });
         socket.emit("found-transport-companies", transportCompanies);
       } catch (error: any) {
         socket.emit("find-transport-companies-error");
+      }
+    });
+
+    socket.on("create-towing-order", async (message) => {
+      try {
+        const { tripOrder } = message;
+        const towingOrder = await towingRepo.createOrder(tripOrder);
+        socket.emit("created-towing-order", towingOrder);
+      } catch (error: any) {
+        socket.emit("create-towing-order-error", error);
+      }
+    });
+
+    socket.on("create-transport-order", async (message) => {
+      try {
+        const { tripOrder } = message;
+        console.log({ message });
+        const transportOrder = await transportRepo.createTransportOrder(
+          tripOrder
+        );
+        socket.emit("created-transport-order", transportOrder);
+      } catch (error: any) {
+        socket.emit("create-transport-order-error", error);
       }
     });
 
