@@ -2,8 +2,10 @@ import { Property } from "../models/property.model";
 
 class PropertyRepository {
   async addProperty(payload: any, landlord: string) {
+
     const property = await Property.create({
-      lanlord: landlord,
+      landlord: landlord,
+      title: payload.title,
       description: payload.description,
       numberOfBedrooms: payload.numberOfBedrooms,
       numberOfBathrooms: payload.numberOfBathrooms,

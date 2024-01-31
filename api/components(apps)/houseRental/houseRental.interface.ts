@@ -14,6 +14,7 @@ export interface ILandlordDocument extends Document {
 
 export interface IPropertyDocument extends Document {
   _id: string;
+  title: string;
   landlord: ILandlordDocument["_id"];
   description: string;
   numberOfBedrooms: number;

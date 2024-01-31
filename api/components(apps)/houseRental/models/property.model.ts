@@ -8,9 +8,9 @@ const propertySchema = new Schema<IPropertyDocument>({
     type: String,
     default: () => stringsUtils.generateUniqueString(4),
   },
+  title: { type: String, required: true },
   landlord: { type: String, required: true, ref: "Landlord" },
   description: { type: String, required: true },
-
   numberOfBedrooms: { type: Number, required: true },
   numberOfBathrooms: { type: Number, required: true },
   pets: { type: String, required: true, enum: ["yes", "no"] },
@@ -20,7 +20,7 @@ const propertySchema = new Schema<IPropertyDocument>({
   address: { type: String, required: true },
   location: {
     type: { type: String, default: "Point" },
-    coordinates: { type: String, required: true },
+    coordinates: { type: [Number, Number], required: true },
   },
 });
 

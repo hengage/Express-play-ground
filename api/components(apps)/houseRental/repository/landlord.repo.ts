@@ -1,7 +1,7 @@
 import { STATUS_CODES } from "../../../constants";
 import { HandleException, encryption } from "../../../utils";
 import { ILandlordDocument } from "../houseRental.interface";
-import { Landlord } from "../models/lanlord.model";
+import { Landlord } from "../models/landlord.model";
 
 class LandlordRepository {
   async signup(payload: any): Promise<Partial<ILandlordDocument>> {
