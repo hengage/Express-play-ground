@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { handleErrorResponse } from "../../../utils";
 import { propertyRepo } from "../repository/property.repo";
 import { STATUS_CODES } from "../../../constants";
+import { compareSync } from "bcrypt";
 
 class PropertyController {
   async addProperty(req: Request, res: Response) {
@@ -29,6 +30,19 @@ class PropertyController {
       res.status(STATUS_CODES.OK).json({
         message: "success",
         data: { property },
+      });
+    } catch (error: any) {
+      handleErrorResponse(res, error);
+    }
+  }
+
+  async delete(req: Request, res: Response) {
+    const landlord = (req as any).user;
+
+    try {
+      await propertyRepo.delete(landlord._id, req.params.propertyId);
+      res.status(STATUS_CODES.OK).json({
+        message: "success",
       });
     } catch (error: any) {
       handleErrorResponse(res, error);

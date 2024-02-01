@@ -1,3 +1,5 @@
+import { STATUS_CODES } from "../../../constants";
+import { HandleException } from "../../../utils";
 import { Property } from "../models/property.model";
 
 class PropertyRepository {
@@ -22,7 +24,6 @@ class PropertyRepository {
   }
 
   async updateProperty(landlord: string, propertyId: string, payload: any) {
-
     if (payload.coordinates) {
       payload.location = {
         type: "Point",
@@ -43,6 +44,15 @@ class PropertyRepository {
     ).select(select);
 
     return property;
+  }
+
+  async delete(landlord: string, propertyId: string) {
+    console.log({ landlord, propertyId });
+    const result = Property.deleteOne({ landlord, _id: propertyId });
+
+    if ((await result).deletedCount === 0) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "property not found");
+    }
   }
 }
 
