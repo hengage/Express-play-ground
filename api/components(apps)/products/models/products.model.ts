@@ -1,7 +1,7 @@
 import mongoose, { Schema, model } from "mongoose";
 import { IProduct } from "../products.interface";
 import { stringsUtils } from "../../../utils";
-import paginate  from "mongoose-paginate-v2";
+import paginate from "mongoose-paginate-v2";
 
 const productSchema = new Schema<IProduct>(
   {
@@ -10,7 +10,12 @@ const productSchema = new Schema<IProduct>(
       required: true,
       default: () => stringsUtils.generateUniqueString(4),
     },
-    name: { type: String, required: true, set: stringsUtils.toLowerCaseSetter },
+    name: {
+      type: String,
+      required: true,
+      set: stringsUtils.toLowerCaseSetter,
+      Index: true,
+    },
     description: {
       type: String,
       required: true,
