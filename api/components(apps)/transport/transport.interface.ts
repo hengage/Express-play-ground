@@ -31,6 +31,7 @@ export interface ITransportCompany extends Document {
   vehicleType: ITransportVehicleType["_id"];
   vehicleRegNumber: string;
   vehiclePhotos: string[];
+  available: true | false;
   createdAt: Date;
   updatedAt: Date;
 }

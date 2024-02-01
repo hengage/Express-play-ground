@@ -52,7 +52,7 @@ const transportCompanySchema = new Schema<ITransportCompany>(
     },
     name: { type: String, default: null },
     phoneNumber: { type: String, required: true },
-    email: { type: String, required: true, },
+    email: { type: String, required: true },
     password: { type: String, required: true },
     address: { type: String, required: true },
     location: {
@@ -63,6 +63,7 @@ const transportCompanySchema = new Schema<ITransportCompany>(
     vehicleType: { type: String, required: true, ref: "TransportVehicleType" },
     vehicleRegNumber: { type: String, required: true, unique: true },
     vehiclePhotos: [{ type: String, required: true }],
+    available: { type: Boolean, default: false },
   },
   {
     timestamps: true,
@@ -70,7 +71,7 @@ const transportCompanySchema = new Schema<ITransportCompany>(
 );
 
 transportCompanySchema.plugin(paginate);
-transportCompanySchema.index({location: "2dsphere"})
+transportCompanySchema.index({ location: "2dsphere" });
 
 transportCompanySchema.pre("save", async function (next) {
   if (this.isModified("password")) {

@@ -412,6 +412,22 @@ class WebSocket {
       }
     });
 
+    socket.on("transport-company-start-working", async (message) => {
+      try {
+        await transportRepo.startWorking(message.transportCompanyId);
+      } catch (error: any) {
+        socket.emit("transport-company-start-working-error", error.message);
+      }
+    });
+
+    socket.on("transport-company-stop-working", async (message) => {
+      try {
+        await transportRepo.stopWorking(message.transportCompanyId);
+      } catch (error: any) {
+        socket.emit("transport-company-stop-working-error", error.message);
+      }
+    });
+
     socket.on("create-towing-order", async (message) => {
       try {
         const { tripOrder } = message;

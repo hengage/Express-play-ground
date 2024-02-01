@@ -158,6 +158,36 @@ class TransportRepository {
     console.log("updated location for transportCompany", transportCompany);
   }
 
+  async startWorking(transportCompanyId: string) {
+    const transportCompany = await TransportCompany.findById(
+      transportCompanyId
+    ).select("available");
+
+    if (!transportCompany) {
+      throw new HandleException(
+        STATUS_CODES.NOT_FOUND,
+        "Cannot find transportCompany"
+      );
+    }
+    transportCompany.available = true;
+    await transportCompany.save();
+  }
+
+  async stopWorking(transportCompanyId: string) {
+    const transportCompany = await TransportCompany.findById(
+      transportCompanyId
+    ).select("available");
+
+    if (!transportCompany) {
+      throw new HandleException(
+        STATUS_CODES.NOT_FOUND,
+        "Cannot find transportCompany"
+      );
+    }
+    transportCompany.available = false;
+    await transportCompany.save();
+  }
+
   async getAirports() {
     const airports = await Airport.find({})
       .select("name address location.coordinates")
