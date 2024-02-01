@@ -16,6 +16,7 @@ class LandlordRoutes {
     this.router.use(jwtUtils.verifyTokenMiddleware);
 
     this.router.route("/").patch(landlordController.update);
+    this.router.route("/").delete(landlordController.deleetAccount);
   }
 }
 

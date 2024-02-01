@@ -53,6 +53,14 @@ class LandlordRepository {
     }
     return landlord;
   }
+
+  async deleteAccount(landlordId: string) {
+    const landlord = await Landlord.findByIdAndDelete(landlordId);
+
+    if (!landlord) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "landlord not found ");
+    }
+  }
 }
 
 export const landlordRepo = new LandlordRepository();
