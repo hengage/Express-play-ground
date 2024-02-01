@@ -54,6 +54,18 @@ class PropertyRepository {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "property not found");
     }
   }
+
+  async getProperty(propertyId: string) {
+    const property = await Property.findById(propertyId).select(
+      "-__v -createdAt -updatedAt -location.type"
+    );
+
+    if (!property) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "property not found");
+    }
+
+    return property;
+  }
 }
 
 export const propertyRepo = new PropertyRepository();

@@ -15,6 +15,7 @@ class PropertyRoutes {
     this.router.route("/").post(propertyController.addProperty);
     this.router.route("/:propertyId").patch(propertyController.updateProperty);
     this.router.route("/:propertyId").delete(propertyController.delete);
+    this.router.route("/:propertyId").get(propertyController.getProperty);
   }
 }
 

@@ -48,6 +48,18 @@ class PropertyController {
       handleErrorResponse(res, error);
     }
   }
+
+  async getProperty(req: Request, res: Response) {
+    try {
+      const property = await propertyRepo.getProperty(req.params.propertyId);
+      res.status(STATUS_CODES.OK).json({
+        mesage: "success",
+        data: { property },
+      });
+    } catch (error: any) {
+      handleErrorResponse(res, error);
+    }
+  }
 }
 
 export const propertyController = new PropertyController();
