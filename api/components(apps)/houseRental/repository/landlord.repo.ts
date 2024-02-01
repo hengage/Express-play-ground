@@ -37,6 +37,22 @@ class LandlordRepository {
 
     return landlord;
   }
+
+  async update(landlordId: string, payload: any) {
+    const select = Object.keys(payload);
+    select.push("-_id");
+
+    const landlord = await Landlord.findByIdAndUpdate(
+      landlordId,
+      { $set: payload },
+      { new: true }
+    ).select(select);
+
+    if (!landlord) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "landlord not found ");
+    }
+    return landlord;
+  }
 }
 
 export const landlordRepo = new LandlordRepository();

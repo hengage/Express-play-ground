@@ -42,6 +42,20 @@ class LandlordController {
       handleErrorResponse(res, error);
     }
   }
+
+  async update(req: Request, res: Response) {
+    const landlordId = (req as any).user._id
+
+    try {
+      const landlord = await landlordRepo.update(landlordId, req.body);
+      res.status(STATUS_CODES.OK).json({
+        message: "success",
+        data: { landlord },
+      });
+    } catch (error: any) {
+      handleErrorResponse(res, error);
+    }
+  }
 }
 
 export const landlordController = new LandlordController();

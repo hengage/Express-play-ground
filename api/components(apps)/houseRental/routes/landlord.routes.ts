@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { landlordController } from "../controllers/lanlord.controller";
+import { jwtUtils } from "../../../utils";
 
 class LandlordRoutes {
   public router: Router;
@@ -11,6 +12,10 @@ class LandlordRoutes {
   initializeRoutes() {
     this.router.route("/signup").post(landlordController.signup);
     this.router.route("/login").post(landlordController.login);
+
+    this.router.use(jwtUtils.verifyTokenMiddleware);
+
+    this.router.route("/").patch(landlordController.update);
   }
 }
 
