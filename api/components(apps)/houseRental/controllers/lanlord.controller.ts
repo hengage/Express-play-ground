@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { HandleException, handleErrorResponse, jwtUtils } from "../../../utils";
 import { landlordRepo } from "../repository/landlord.repo";
 import { STATUS_CODES } from "../../../constants";
+import { landlordService } from "../services/landlord.service";
 
 class LandlordController {
   async signup(req: Request, res: Response) {
@@ -57,12 +58,27 @@ class LandlordController {
     }
   }
 
-  async deleetAccount(req: Request, res: Response) {
+  async deleteAccount(req: Request, res: Response) {
     const landlordId = (req as any).user._id;
     try {
       await landlordRepo.deleteAccount(landlordId);
       res.status(STATUS_CODES.OK).json({
         message: "success",
+      });
+    } catch (error: any) {
+      handleErrorResponse(res, error);
+    }
+  }
+
+  async getProperties(req: Request, res: Response) {
+    const page = parseInt(req.query.page as string) || 1;
+    const landlordId = (req as any).user._id;
+
+    try {
+      const properties = await landlordService.getProperties(landlordId, page);
+      res.status(STATUS_CODES.OK).json({
+        message: "success",
+        data: { properties },
       });
     } catch (error: any) {
       handleErrorResponse(res, error);
