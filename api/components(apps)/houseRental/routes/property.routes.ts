@@ -12,7 +12,8 @@ class PropertyRoutes {
 
   initializeRoutes() {
     this.router.use(jwtUtils.verifyTokenMiddleware)
-    this.router.route("/add").post(propertyController.addProperty);
+    this.router.route("/").post(propertyController.addProperty);
+    this.router.route("/:propertyId").patch(propertyController.updateProperty);
   }
 }
 
