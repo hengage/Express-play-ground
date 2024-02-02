@@ -1,4 +1,4 @@
-import { DateTime, Settings } from "luxon";
+import { DateTime } from "luxon";
 import {
   agenda,
   findClosestDriverOrRider,
