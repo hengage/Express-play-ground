@@ -29,6 +29,7 @@ class TowingRepo {
       pickUpCoordinates: towOrder.pickUpCoordinates,
       destinationAddress: towOrder.destinationAddress,
       destinationCoordinates: towOrder.destinationCoordinates,
+      status: towOrder.status
     };
   }
 
