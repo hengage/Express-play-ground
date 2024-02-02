@@ -1,4 +1,4 @@
-import { STATUS_CODES } from "../../../constants";
+import { STATUS_CODES, TransportServiceOrderStatus } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { TransportCompany } from "../models/transport.models";
 import { TowOrder } from "../models/transportOrders.model";
@@ -29,7 +29,7 @@ class TowingRepo {
       pickUpCoordinates: towOrder.pickUpCoordinates,
       destinationAddress: towOrder.destinationAddress,
       destinationCoordinates: towOrder.destinationCoordinates,
-      status: towOrder.status
+      status: towOrder.status,
     };
   }
 
@@ -87,6 +87,66 @@ class TowingRepo {
       .exec();
 
     return towingCompanies;
+  }
+
+  async setStatusToEnroute(towOrderId: string) {
+    const towOrder = await TowOrder.findById(towOrderId);
+    if (!towOrder) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Tow Order not found");
+    }
+
+    towOrder.status = TransportServiceOrderStatus.ENROUTE_PICKUP_LOCATION;
+    await towOrder.save();
+    return towOrder;
+  }
+
+  async setStatusToArrived(towOrderId: string) {
+    const towOrder = await TowOrder.findById(towOrderId);
+
+    if (!towOrder) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Tow Order not found");
+    }
+
+    towOrder.status = TransportServiceOrderStatus.ARRIVED_PICKUP_LOCATION;
+    await towOrder.save();
+    return towOrder;
+  }
+
+  async setStatusToStarted(towOrderId: string) {
+    const towOrder = await TowOrder.findById(towOrderId);
+
+    if (!towOrder) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Tow Order not found");
+    }
+
+    towOrder.status = TransportServiceOrderStatus.STARTED;
+    await towOrder.save();
+    return towOrder;
+  }
+
+  async setStatusToCompleted(towOrderId: string) {
+    const towOrder = await TowOrder.findById(towOrderId);
+
+    if (!towOrder) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Tow Order not found");
+    }
+
+    towOrder.status = TransportServiceOrderStatus.COMPLETED;
+    await towOrder.save();
+    return towOrder;
+  }
+
+  async setStatusToCancelled(towOrderId: string) {
+    const towOrder = await TowOrder.findById(towOrderId);
+    console.log({ repoTowOrder: towOrder });
+
+    if (!towOrder) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Tow Order not found");
+    }
+
+    towOrder.status = TransportServiceOrderStatus.CANCELLED;
+    await towOrder.save();
+    return towOrder;
   }
 }
 

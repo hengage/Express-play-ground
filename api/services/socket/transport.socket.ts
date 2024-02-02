@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
 import {
-    towingRepo,
+  towingRepo,
   towingService,
   transportRepo,
   transportService,
@@ -92,6 +92,62 @@ function listenForTransportServiceEvents(socket: Socket) {
       socket.emit("created-transport-order", transportOrder);
     } catch (error: any) {
       socket.emit("create-transport-order-error", error);
+    }
+  });
+
+  socket.on("towing-company-enroute-location", async (message) => {
+    console.log({ message });
+    try {
+      const towingTrip = await towingService.setStatusToEnroute(
+        message.towOrderId
+      );
+      socket.emit("towing-company-enroute", towingTrip);
+    } catch (error: any) {
+      socket.emit("towing-company-enroute-location-error");
+    }
+  });
+
+  socket.on("towing-company-arrived-location", async (message) => {
+    try {
+      const towingTrip = await towingService.setStatusToArrived(
+        message.towOrderId
+      );
+      socket.emit("towing-company-arrived", towingTrip);
+    } catch (error: any) {
+      socket.emit("towing-company-arrived-location-error");
+    }
+  });
+
+  socket.on("start-towing-trip", async (message) => {
+    try {
+      const towingTrip = await towingService.setStatusToStarted(
+        message.towOrderId
+      );
+      socket.emit("start-towing-trip", towingTrip);
+    } catch (error: any) {
+      socket.emit("start-towing-trip-error");
+    }
+  });
+
+  socket.on("complete-towing-trip", async (message) => {
+    try {
+      const towingTrip = await towingService.setStatusToCompleted(
+        message.towOrderId
+      );
+      socket.emit("completed-towing-trip", towingTrip);
+    } catch (error: any) {
+      socket.emit("complete-towing-trip-error");
+    }
+  });
+
+  socket.on("cancel-towing-trip", async (message) => {
+    try {
+      const towingTrip = await towingService.setStatusToCancelled(
+        message.towOrderId
+      );
+      socket.emit("cancelled-towing-trip", towingTrip);
+    } catch (error: any) {
+      socket.emit("cancel-towing-trip-error");
     }
   });
 }

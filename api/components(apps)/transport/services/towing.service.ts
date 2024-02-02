@@ -71,6 +71,31 @@ class TowingService {
 
     return vehicleTypes;
   }
+
+  async setStatusToEnroute(towOrderId: string) {
+    const towOrder = await towingRepo.setStatusToEnroute(towOrderId);
+    return towOrder;
+  }
+
+  async setStatusToArrived(towOrderId: string) {
+    const towOrder = await towingRepo.setStatusToArrived(towOrderId);
+    return towOrder;
+  }
+
+  async setStatusToStarted(towOrderId: string) {
+    const towOrder = await towingRepo.setStatusToStarted(towOrderId);
+    return towOrder;
+  }
+
+  async setStatusToCompleted(towOrderId: string) {
+    const towOrder = await towingRepo.setStatusToCompleted(towOrderId);
+    return towOrder;
+  }
+
+  async setStatusToCancelled(towOrderId: string) {
+    const towOrder = await towingRepo.setStatusToCancelled(towOrderId);
+    return towOrder;
+  }
 }
 
 export const towingService = new TowingService();
