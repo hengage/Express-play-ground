@@ -74,21 +74,41 @@ class TowingService {
 
   async setStatusToEnroute(towOrderId: string) {
     const towOrder = await towingRepo.setStatusToEnroute(towOrderId);
+    await towingNotificationService.notifyCustomerofOrderStatus(
+      towOrder,
+      "Tow truck Enroute",
+      "The tow truck is on the way to the pick-up location"
+    );
     return towOrder;
   }
 
   async setStatusToArrived(towOrderId: string) {
     const towOrder = await towingRepo.setStatusToArrived(towOrderId);
+    await towingNotificationService.notifyCustomerofOrderStatus(
+      towOrder,
+      "Truck arrived!",
+      "Towing truck has arrived the pick-up location"
+    );
     return towOrder;
   }
 
   async setStatusToStarted(towOrderId: string) {
     const towOrder = await towingRepo.setStatusToStarted(towOrderId);
+    await towingNotificationService.notifyCustomerofOrderStatus(
+      towOrder,
+      "Towing started",
+      "Your tow order has started"
+    );
     return towOrder;
   }
 
   async setStatusToCompleted(towOrderId: string) {
     const towOrder = await towingRepo.setStatusToCompleted(towOrderId);
+    await towingNotificationService.notifyCustomerofOrderStatus(
+      towOrder,
+      "Towing completed",
+      "The owing order has been completed"
+    );
     return towOrder;
   }
 

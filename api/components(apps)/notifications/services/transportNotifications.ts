@@ -21,6 +21,26 @@ class TransportNotificationService {
         };
         await notificationService.sendNotification(transportCompanyId, payload);
       }
+
+      
+  async notifyCustomerofOrderStatus(transportOrder: any, title: string, body: string ) {
+    const customerDeviceToken = await redisClient.get(
+      `device-token:${transportOrder.customer}`
+    );
+    console.log({ customerDeviceToken });
+    const payload = {
+      notification: {
+        title,
+        body,
+      },
+      data: {
+        type: "towing-trip",
+        data: JSON.stringify({ _id: transportOrder._id, status: transportOrder.status }),
+      },
+      token: `${customerDeviceToken}`,
+    };
+    await notificationService.sendNotification(transportOrder.customer, payload);
+  }
 }
 
 export const transportNotificationService = new TransportNotificationService()

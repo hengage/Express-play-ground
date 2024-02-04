@@ -182,26 +182,51 @@ class TransportService {
 
   async setStatusToEnroute(orderId: string) {
     const transportOrder = await transportRepo.setStatusToEnroute(orderId);
+    await transportNotificationService.notifyCustomerofOrderStatus(
+      orderId,
+      "Vehicle Enroute",
+      "The vehicle is on the way to the pick-up location"
+    );
     return transportOrder;
   }
 
   async setStatusToArrived(orderId: string) {
     const transportOrder = await transportRepo.setStatusToArrived(orderId);
+    await transportNotificationService.notifyCustomerofOrderStatus(
+      orderId,
+      "Vehicle arrived!",
+      "The vehicle has arrived the pick-up location"
+    );
     return transportOrder;
   }
 
   async setStatusToStarted(orderId: string) {
     const transportOrder = await transportRepo.setStatusToStarted(orderId);
+    await transportNotificationService.notifyCustomerofOrderStatus(
+      orderId,
+      "Vehicle arrived!",
+      "Your trip has started"
+    );
     return transportOrder;
   }
 
   async setStatusToCompleted(orderId: string) {
     const transportOrder = await transportRepo.setStatusToCompleted(orderId);
+    await transportNotificationService.notifyCustomerofOrderStatus(
+      orderId,
+      "Vehicle arrived!",
+      "Your trip is completed"
+    );
     return transportOrder;
   }
 
   async setStatusToCancelled(orderId: string) {
     const transportOrder = await transportRepo.setStatusToCancelled(orderId);
+    await transportNotificationService.notifyCustomerofOrderStatus(
+      orderId,
+      "Vehicle arrived!",
+      "Your trip has been cancelled"
+    );
     return transportOrder;
   }
 
