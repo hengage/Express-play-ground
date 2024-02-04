@@ -1,9 +1,9 @@
-import { STATUS_CODES } from "../../../constants";
+import { STATUS_CODES, TransportServiceOrderStatus } from "../../../constants";
 import { HandleException } from "../../../utils";
 import { Airport } from "../models/airport.model";
 import { TransportCompany } from "../models/transport.models";
 import { TransportDriver } from "../models/transportDrivers.model";
-import { TowOrder, TransportTripOrder } from "../models/transportOrders.model";
+import { TransportTripOrder } from "../models/transportOrders.model";
 import {
   ITowingOrder,
   ITransportCompany,
@@ -193,6 +193,81 @@ class TransportRepository {
       .select("name address location.coordinates")
       .lean();
     return airports;
+  }
+
+  async setStatusToEnroute(orderId: string) {
+    const transportOrder = await TransportTripOrder.findById(orderId);
+    if (!transportOrder) {
+      throw new HandleException(
+        STATUS_CODES.NOT_FOUND,
+        "Transport Order not found"
+      );
+    }
+
+    transportOrder.status = TransportServiceOrderStatus.ENROUTE_PICKUP_LOCATION;
+    await transportOrder.save();
+    return transportOrder;
+  }
+
+  async setStatusToArrived(orderId: string) {
+    const transportOrder = await TransportTripOrder.findById(orderId);
+
+    if (!transportOrder) {
+      throw new HandleException(
+        STATUS_CODES.NOT_FOUND,
+        "Transport Order not found"
+      );
+    }
+
+    transportOrder.status = TransportServiceOrderStatus.ARRIVED_PICKUP_LOCATION;
+    await transportOrder.save();
+    return transportOrder;
+  }
+
+  async setStatusToStarted(orderId: string) {
+    const transportOrder = await TransportTripOrder.findById(orderId);
+
+    if (!transportOrder) {
+      throw new HandleException(
+        STATUS_CODES.NOT_FOUND,
+        "Transport Order not found"
+      );
+    }
+
+    transportOrder.status = TransportServiceOrderStatus.STARTED;
+    await transportOrder.save();
+    return transportOrder;
+  }
+
+  async setStatusToCompleted(orderId: string) {
+    const transportOrder = await TransportTripOrder.findById(orderId);
+
+    if (!transportOrder) {
+      throw new HandleException(
+        STATUS_CODES.NOT_FOUND,
+        "Transport Order not found"
+      );
+    }
+
+    transportOrder.status = TransportServiceOrderStatus.COMPLETED;
+    await transportOrder.save();
+    return transportOrder;
+  }
+
+  async setStatusToCancelled(orderId: string) {
+    const transportOrder = await TransportTripOrder.findById(orderId);
+    console.log({ repotransportOrder: transportOrder });
+
+    if (!transportOrder) {
+      throw new HandleException(
+        STATUS_CODES.NOT_FOUND,
+        "Transport Order not found"
+      );
+    }
+
+    transportOrder.status = TransportServiceOrderStatus.CANCELLED;
+    await transportOrder.save();
+    return transportOrder;
   }
 }
 

@@ -94,7 +94,7 @@ function listenForTransportServiceEvents(socket: Socket) {
       socket.emit("create-transport-order-error", error);
     }
   });
-
+  
   socket.on("towing-company-enroute-location", async (message) => {
     console.log({ message });
     try {
@@ -123,7 +123,7 @@ function listenForTransportServiceEvents(socket: Socket) {
       const towingTrip = await towingService.setStatusToStarted(
         message.towOrderId
       );
-      socket.emit("start-towing-trip", towingTrip);
+      socket.emit("started-towing-trip", towingTrip);
     } catch (error: any) {
       socket.emit("start-towing-trip-error");
     }
@@ -150,6 +150,65 @@ function listenForTransportServiceEvents(socket: Socket) {
       socket.emit("cancel-towing-trip-error");
     }
   });
+
+
+  /// Transport (excluding towing service)
+  socket.on("transport-company-enroute-location", async (message) => {
+    console.log({ message });
+    try {
+      const transportTrip = await transportService.setStatusToEnroute(
+        message.transportOrderId
+      );
+      socket.emit("transport-company-enroute", transportTrip);
+    } catch (error: any) {
+      socket.emit("transport-company-enroute-location-error");
+    }
+  });
+
+  socket.on("transport-company-arrived-location", async (message) => {
+    try {
+      const transportTrip = await transportService.setStatusToArrived(
+        message.transportOrderId
+      );
+      socket.emit("transport-company-arrived", transportTrip);
+    } catch (error: any) {
+      socket.emit("transport-company-arrived-location-error");
+    }
+  });
+
+  socket.on("start-transport-trip", async (message) => {
+    try {
+      const transportTrip = await transportService.setStatusToStarted(
+        message.transportOrderId
+      );
+      socket.emit("started-transport-trip", transportTrip);
+    } catch (error: any) {
+      socket.emit("start-transport-trip-error");
+    }
+  });
+
+  socket.on("complete-transport-trip", async (message) => {
+    try {
+      const transportTrip = await transportService.setStatusToCompleted(
+        message.transportOrderId
+      );
+      socket.emit("completed-transport-trip", transportTrip);
+    } catch (error: any) {
+      socket.emit("complete-transport-trip-error");
+    }
+  });
+
+  socket.on("cancel-transport-trip", async (message) => {
+    try {
+      const transportTrip = await transportService.setStatusToCancelled(
+        message.transportOrderId
+      );
+      socket.emit("cancelled-transport-trip", transportTrip);
+    } catch (error: any) {
+      socket.emit("cancel-transport-trip-error");
+    }
+  });
+  
 }
 
 export { listenForTransportServiceEvents };

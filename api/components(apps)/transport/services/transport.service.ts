@@ -180,6 +180,31 @@ class TransportService {
     return transportCompanies;
   }
 
+  async setStatusToEnroute(orderId: string) {
+    const transportOrder = await transportRepo.setStatusToEnroute(orderId);
+    return transportOrder;
+  }
+
+  async setStatusToArrived(orderId: string) {
+    const transportOrder = await transportRepo.setStatusToArrived(orderId);
+    return transportOrder;
+  }
+
+  async setStatusToStarted(orderId: string) {
+    const transportOrder = await transportRepo.setStatusToStarted(orderId);
+    return transportOrder;
+  }
+
+  async setStatusToCompleted(orderId: string) {
+    const transportOrder = await transportRepo.setStatusToCompleted(orderId);
+    return transportOrder;
+  }
+
+  async setStatusToCancelled(orderId: string) {
+    const transportOrder = await transportRepo.setStatusToCancelled(orderId);
+    return transportOrder;
+  }
+
   async getTransportTripOrders(transportCompanyId: string, page: number) {
     const query = { transportCompany: transportCompanyId };
 
