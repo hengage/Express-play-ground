@@ -11,8 +11,11 @@ class VendorController {
   public async signup(req: Request, res: Response) {
     try {
       await validateVendors.signup(req.body);
-      await userService.isEmailTaken(req.body.email);
-      await vendorService.checkPhoneNumberIsTaken(req.body.phoneNumber);
+
+      await Promise.all([
+        userService.isEmailTaken(req.body.email),
+        vendorService.checkPhoneNumberIsTaken(req.body.phoneNumber),
+      ]);
 
       const vendor = await vendorService.signup(req.body);
       const payload = {

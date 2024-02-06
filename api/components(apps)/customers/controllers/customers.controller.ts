@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { customerService } from "../services/customers.services";
 import { userService } from "../../../services";
-import { HandleException, handleErrorResponse, jwtUtils } from "../../../utils";
+import { handleErrorResponse, jwtUtils } from "../../../utils";
 import { STATUS_CODES } from "../../../constants";
 import { customerRepo } from "../repository/customers.repo";
 import { validateCustomers } from "../validators/customers.validation";
@@ -10,15 +10,17 @@ class CustomerController {
   async signup(req: Request, res: Response): Promise<void> {
     try {
       await validateCustomers.signup(req.body);
-      await userService.isEmailTaken(req.body.email);
-      await customerService.checkPhoneNumberIsTaken(req.body.phoneNumber);
 
-      const customerData = req.body;
-      const savedCustomer = await customerService.signup(customerData);
+      await Promise.all([
+        userService.isEmailTaken(req.body.email),
+        customerService.checkPhoneNumberIsTaken(req.body.phoneNumber),
+      ]);
+
+      const customer = await customerService.signup(req.body);
 
       const payload = {
-        phoneNumber: savedCustomer.phoneNumber,
-        _id: savedCustomer._id,
+        phoneNumber: customer.phoneNumber,
+        _id: customer._id,
       };
       const accessToken = jwtUtils.generateToken(payload, "1h");
       const refreshToken = jwtUtils.generateToken(payload, "14d");
@@ -26,7 +28,7 @@ class CustomerController {
       res.status(201).json({
         message: "Customer created successfully",
         data: {
-          customerId: savedCustomer._id,
+          customerId: customer._id,
           accessToken,
           refreshToken,
         },

@@ -18,11 +18,14 @@ class DriversRidersController {
       }
 
       await validateDriversAndRiders.signup(req.body);
-      await userService.isEmailTaken(req.body.email);
-      await driverRiderService.checkPhoneNumberIsTaken(
-        req.body.phoneNumber,
-        accountType
-      );
+
+      await Promise.all([
+        userService.isEmailTaken(req.body.email),
+        driverRiderService.checkPhoneNumberIsTaken(
+          req.body.phoneNumber,
+          accountType
+        ),
+      ]);
 
       const driverRider = await driverRiderService.signup(
         req.body,
