@@ -41,35 +41,6 @@ class TransportController {
     }
   }
 
-  // async addVehicle(req: Request, res: Response) {
-  //   const { vehicle } = req.body;
-  //   const towingCompanyId = (req as any).user._id;
-  //   try {
-  //     await transportService.addVehicle({ vehicle }, towingCompanyId);
-  //     res.status(STATUS_CODES.OK).json({
-  //       message: "Added vehicle type",
-  //     });
-  //   } catch (error: any) {
-  //     handleErrorResponse(res, error);
-  //   }
-  // }
-
-  async addDriver(req: Request, res: Response) {
-    const transportCompanyId = (req as any).user._id;
-    try {
-      const driver = await transportService.addDriver(
-        req.body,
-        transportCompanyId
-      );
-      res.status(STATUS_CODES.CREATED).json({
-        message: "Added driver",
-        data: { driver },
-      });
-    } catch (error: any) {
-      handleErrorResponse(res, error);
-    }
-  }
-
   async getMe(req: Request, res: Response) {
     try {
       const _id = (req as any).user._id;
@@ -125,7 +96,78 @@ class TransportController {
     }
   }
 
-  async getTransportCompanyDrivers(req: Request, res: Response) {
+  async createTransportOrder(req: Request, res: Response) {
+    try {
+      const tripOrder = await transportRepo.createTransportOrder(req.body);
+      res.status(STATUS_CODES.CREATED).json({
+        message: "Created transport trip order",
+        data: { tripOrder },
+      });
+    } catch (error: any) {
+      handleErrorResponse(res, error);
+    }
+  }
+
+  async getTransportTripOrders(req: Request, res: Response) {
+    const page = parseInt(req.params.page as string) || 1;
+    const id = (req as any).user._id;
+    try {
+      const tripOrders = await transportService.getTransportTripOrders(
+        id,
+        page
+      );
+      res.status(STATUS_CODES.OK).json({
+        message: "Fetched trip orders",
+        data: { tripOrders },
+      });
+    } catch (error: any) {
+      handleErrorResponse(res, error);
+    }
+  }
+
+  async getAirports(req: Request, res: Response) {
+    try {
+      const airports = await transportRepo.getAirports();
+      res.status(STATUS_CODES.OK).json({
+        message: "success",
+        data: { airports },
+      });
+    } catch (error: any) {
+      handleErrorResponse(res, error);
+    }
+  }
+
+  /* Deprecated
+  async addVehicle(req: Request, res: Response) {
+    const { vehicle } = req.body;
+    const towingCompanyId = (req as any).user._id;
+    try {
+      await transportService.addVehicle({ vehicle }, towingCompanyId);
+      res.status(STATUS_CODES.OK).json({
+        message: "Added vehicle type",
+      });
+    } catch (error: any) {
+      handleErrorResponse(res, error);
+    }
+  }
+
+  async addDriver(req: Request, res: Response) {
+    const transportCompanyId = (req as any).user._id;
+    try {
+      const driver = await transportService.addDriver(
+        req.body,
+        transportCompanyId
+      );
+      res.status(STATUS_CODES.CREATED).json({
+        message: "Added driver",
+        data: { driver },
+      });
+    } catch (error: any) {
+      handleErrorResponse(res, error);
+    }
+  }
+
+    async getTransportCompanyDrivers(req: Request, res: Response) {
     const id = (req as any).user._id;
     try {
       const drivers = await transportService.getTransportCompanyDrivers(id);
@@ -182,47 +224,7 @@ class TransportController {
       handleErrorResponse(res, error);
     }
   }
-
-  async createTransportOrder(req: Request, res: Response) {
-    try {
-      const tripOrder = await transportRepo.createTransportOrder(req.body);
-      res.status(STATUS_CODES.CREATED).json({
-        message: "Created transport trip order",
-        data: { tripOrder },
-      });
-    } catch (error: any) {
-      handleErrorResponse(res, error);
-    }
-  }
-
-  async getTransportTripOrders(req: Request, res: Response) {
-    const page = parseInt(req.params.page as string) || 1;
-    const id = (req as any).user._id;
-    try {
-      const tripOrders = await transportService.getTransportTripOrders(
-        id,
-        page
-      );
-      res.status(STATUS_CODES.OK).json({
-        message: "Fetched trip orders",
-        data: { tripOrders },
-      });
-    } catch (error: any) {
-      handleErrorResponse(res, error);
-    }
-  }
-
-  async getAirports(req: Request, res: Response) {
-    try {
-      const airports = await transportRepo.getAirports();
-      res.status(STATUS_CODES.OK).json({
-        message: "success",
-        data: { airports },
-      });
-    } catch (error: any) {
-      handleErrorResponse(res, error);
-    }
-  }
+  */
 }
 
 export const transportController = new TransportController();

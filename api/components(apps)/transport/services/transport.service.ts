@@ -47,32 +47,7 @@ class TransportService {
     };
   }
 
-  // async addVehicle(payload: any, transportCompanyId: string) {
-  //   const { vehicle } = payload;
-  //   const transportCompany = await TransportCompany.findById(
-  //     transportCompanyId
-  //   ).select("vehicles");
 
-  //   if (!transportCompany) {
-  //     throw new HandleException(
-  //       STATUS_CODES.NOT_FOUND,
-  //       "Towing company not found"
-  //     );
-  //   }
-
-  //   if (
-  //     transportCompany.vehicles.some((vt) => vt.regNumber === vehicle.regNumber)
-  //   ) {
-  //     throw new HandleException(
-  //       STATUS_CODES.CONFLICT,
-  //       "A vehicle with the same registration number already exists for this business"
-  //     );
-  //   }
-
-  //   transportCompany.vehicles.push(vehicle);
-  //   await transportCompany.save();
-  //   return;
-  // }
 
   async addDriver(payload: any, transportCompany: string) {
     const licenseNumberExists = await TransportDriver.findOne({
@@ -137,30 +112,6 @@ class TransportService {
     return serviceTypes;
   }
 
-  async getTransportCompanyDrivers(transportCompanyId: string) {
-    const drivers = await TransportDriver.find({
-      transportCompany: transportCompanyId,
-    })
-      .select("_id firstName lastName photo phoneNumber")
-      .lean()
-      .exec();
-    return drivers;
-  }
-
-  async getTransportCompanyDriver(
-    transportCompanyId: string,
-    driverId: string
-  ) {
-    const driver = await TransportDriver.findOne({
-      _id: driverId,
-      transportCompany: transportCompanyId,
-    }).select("-__v -transportCompany");
-
-    if (!driver) {
-      throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
-    }
-    return driver;
-  }
 
   async findTransportCompanies(payload: { tripOrder: any }) {
     const { pickUpCoordinates, serviceType } = payload.tripOrder;
@@ -248,6 +199,60 @@ class TransportService {
     const transportTripOrders = TransportTripOrder.paginate(query, options);
     return transportTripOrders;
   }
+
+  /* Deprecated
+  async addVehicle(payload: any, transportCompanyId: string) {
+    const { vehicle } = payload;
+    const transportCompany = await TransportCompany.findById(
+      transportCompanyId
+    ).select("vehicles");
+
+    if (!transportCompany) {
+      throw new HandleException(
+        STATUS_CODES.NOT_FOUND,
+        "Towing company not found"
+      );
+    }
+
+    if (
+      transportCompany.vehicles.some((vt) => vt.regNumber === vehicle.regNumber)
+    ) {
+      throw new HandleException(
+        STATUS_CODES.CONFLICT,
+        "A vehicle with the same registration number already exists for this business"
+      );
+    }
+
+    transportCompany.vehicles.push(vehicle);
+    await transportCompany.save();
+    return;
+  }
+
+  
+  async getTransportCompanyDrivers(transportCompanyId: string) {
+    const drivers = await TransportDriver.find({
+      transportCompany: transportCompanyId,
+    })
+      .select("_id firstName lastName photo phoneNumber")
+      .lean()
+      .exec();
+    return drivers;
+  }
+
+  async getTransportCompanyDriver(
+    transportCompanyId: string,
+    driverId: string
+  ) {
+    const driver = await TransportDriver.findOne({
+      _id: driverId,
+      transportCompany: transportCompanyId,
+    }).select("-__v -transportCompany");
+
+    if (!driver) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Driver not found");
+    }
+    return driver;
+  }*/
 }
 
 export const transportService = new TransportService();

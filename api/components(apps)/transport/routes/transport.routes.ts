@@ -27,11 +27,12 @@ class TransportRoutes {
 
     this.router.use(jwtUtils.verifyTokenMiddleware);
 
-    // this.router.route("/add-vehicle").patch(transportController.addVehicle);
-    this.router.route("/add-driver").post(transportController.addDriver);
     this.router.route("/me").get(transportController.getMe);
     this.router.route("/me/update").patch(transportController.updateProfile);
 
+    /* Drivers and vehicle - Deprecated
+    this.router.route("/add-vehicle").patch(transportController.addVehicle);
+    this.router.route("/add-driver").post(transportController.addDriver);
     this.router
       .route("/drivers")
       .get(transportController.getTransportCompanyDrivers);
@@ -44,6 +45,9 @@ class TransportRoutes {
     this.router
       .route("/drivers/:driverId")
       .delete(transportController.deleteDriver);
+
+    */
+
     this.router.route("/tow-order").post(towingController.createTowOrder);
     this.router
       .route("/trip-order")
