@@ -8,6 +8,7 @@ class TowingRepo {
   async createOrder(payload: any): Promise<Partial<ITowingOrder>> {
     const towOrder = await TowOrder.create({
       customer: payload.customer,
+      towingCompany: payload.towingCompany,
       vehicleRegNumber: payload.vehicleRegNumber,
       vehicleType: payload.vehicleType,
       pickUpAddress: payload.pickUpAddress,
@@ -23,6 +24,7 @@ class TowingRepo {
     return {
       _id: towOrder.id,
       customer: towOrder.customer,
+      towingCompany: towOrder.towingCompany,
       vehicleType: towOrder.vehicleType,
       vehicleRegNumber: towOrder.vehicleRegNumber,
       pickUpAddress: towOrder.pickUpAddress,

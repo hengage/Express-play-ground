@@ -123,6 +123,7 @@ class TransportRepository {
   ): Promise<Partial<ITransportTripOrder>> {
     const tripOrder = await TransportTripOrder.create({
       customer: payload.customer,
+      transportCompany: payload.transportCompany,
       vehicleRegNumber: payload.vehicleRegNumber,
       serviceType: payload.serviceType,
       vehicleType: payload.vehicleType,
