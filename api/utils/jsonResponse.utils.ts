@@ -6,11 +6,11 @@ function handleErrorResponse(
     error: any,
     message: string = "Failed"
   ) {
-    console.log({ error: { status: error.status, message: error.message } });
+    console.log({ error: { status: error.status, message: error } });
   
     const errorMessage =
       (error.status && error.status >= 500) || error.status === undefined
-        ? STATUS_CODES.SERVER_ERROR
+        ? "Server error"
         : error.message;
   
     res.status(error.status || STATUS_CODES.SERVER_ERROR).json({

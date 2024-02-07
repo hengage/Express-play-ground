@@ -195,7 +195,7 @@ class CustomerService {
     };
 
     const trips = await MakuTrip.paginate(query, options);
-    await redisClient.setWithExpiry(cacheKey,  JSON.stringify(trips), 350);
+    await redisClient.setWithExpiry(cacheKey, JSON.stringify(trips), 350);
     return trips;
   }
 
@@ -232,7 +232,10 @@ class CustomerService {
       leanWithId: false,
     };
 
-    const transportTripOrders = await TransportTripOrder.paginate(query, options);
+    const transportTripOrders = await TransportTripOrder.paginate(
+      query,
+      options
+    );
     return transportTripOrders;
   }
 
@@ -243,9 +246,7 @@ class CustomerService {
       page,
       limit: 20,
       select: "createdAt status fee",
-      populate: [
-        { path: "transportCompany", select: "name" },
-      ],
+      populate: [{ path: "towingCompany", select: "name" }],
       lean: true,
       leanWithId: false,
     };
@@ -255,7 +256,7 @@ class CustomerService {
   }
 
   async messengerOrderHistory(customerId: string, page: number) {
-    const query = {customer: customerId}
+    const query = { customer: customerId };
     const options = {
       page,
       limit: 20,
@@ -264,11 +265,10 @@ class CustomerService {
       leanWithId: false,
       sort: { createdAt: -1 },
     };
-    
 
     const messengerOrders = await MessengerOrder.paginate(query, options);
 
-      return messengerOrders
+    return messengerOrders;
   }
 }
 
