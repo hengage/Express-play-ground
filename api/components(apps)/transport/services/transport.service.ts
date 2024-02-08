@@ -171,13 +171,23 @@ class TransportService {
     return transportOrder;
   }
 
-  async setStatusToCancelled(orderId: string) {
-    const transportOrder = await transportRepo.setStatusToCancelled(orderId);
-    await transportNotificationService.notifyCustomerofOrderStatus(
-      orderId,
-      "Vehicle arrived!",
-      "Your trip has been cancelled"
-    );
+  async setStatusToCancelled(params: {transportOrderId: string, customerId: string, transportCompanyId: string}) {
+    const {transportOrderId, customerId, transportCompanyId} = params
+    const transportOrder = await transportRepo.setStatusToCancelled(transportOrderId);
+
+    if (customerId) {
+      await transportNotificationService.notifyOnCancelledTrip({
+        transportOrder,
+        whoCancelled: "customer",
+        userId: transportOrder.transportCompany,
+      });
+    } else if (transportCompanyId) {
+      await transportNotificationService.notifyOnCancelledTrip({
+        transportOrder,
+        whoCancelled: "transport company",
+        userId: transportOrder.customer,
+      });
+    }
     return transportOrder;
   }
 

@@ -199,10 +199,13 @@ function listenForTransportServiceEvents(socket: Socket) {
   });
 
   socket.on("cancel-transport-trip", async (message) => {
+    const {transportOrderId, customerId, transportCompanyId} = message
     try {
-      const transportTrip = await transportService.setStatusToCancelled(
-        message.transportOrderId
-      );
+      const transportTrip = await transportService.setStatusToCancelled({
+        transportOrderId,
+        customerId,
+        transportCompanyId,
+    });
       socket.emit("cancelled-transport-trip", transportTrip);
     } catch (error: any) {
       socket.emit("cancel-transport-trip-error");

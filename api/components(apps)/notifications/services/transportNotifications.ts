@@ -34,12 +34,37 @@ class TransportNotificationService {
         body,
       },
       data: {
-        type: "towing-trip",
+        type: "transport-trip",
         data: JSON.stringify({ _id: transportOrder._id, status: transportOrder.status }),
       },
       token: `${customerDeviceToken}`,
     };
     await notificationService.sendNotification(transportOrder.customer, payload);
+  }
+
+  async notifyOnCancelledTrip(params: {
+    userId: string;
+    whoCancelled: string;
+    transportOrder: any;
+  }) {
+    const { userId, whoCancelled, transportOrder } = params;
+
+    const userDeviceToken = await redisClient.get(`device-token:${userId}`);
+    const payload = {
+      notification: {
+        title: "Transport order Cancelled",
+        body: `Unfortunately, your trip order has been cancelled by the ${whoCancelled}. We apologize for any inconvenience`,
+      },
+      data: {
+        type: "transport-trip",
+        data: JSON.stringify(transportOrder),
+      },
+
+      token: `${userDeviceToken}`,
+    };
+
+    console.log(payload.data);
+    await notificationService.sendNotification(userId, payload);
   }
 }
 
