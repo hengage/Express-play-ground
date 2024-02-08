@@ -85,7 +85,6 @@ function listenForTransportServiceEvents(socket: Socket) {
   socket.on("create-transport-order", async (message) => {
     try {
       const { tripOrder } = message;
-      console.log({ message });
       const transportOrder = await transportRepo.createTransportOrder(
         tripOrder
       );
@@ -96,14 +95,13 @@ function listenForTransportServiceEvents(socket: Socket) {
   });
   
   socket.on("towing-company-enroute-location", async (message) => {
-    console.log({ message });
     try {
       const towingTrip = await towingService.setStatusToEnroute(
         message.towOrderId
       );
       socket.emit("towing-company-enroute", towingTrip);
     } catch (error: any) {
-      socket.emit("towing-company-enroute-location-error");
+      socket.emit("towing-company-enroute-location-error", error.message);
     }
   });
 
@@ -114,7 +112,7 @@ function listenForTransportServiceEvents(socket: Socket) {
       );
       socket.emit("towing-company-arrived", towingTrip);
     } catch (error: any) {
-      socket.emit("towing-company-arrived-location-error");
+      socket.emit("towing-company-arrived-location-error", error.message);
     }
   });
 
@@ -125,7 +123,7 @@ function listenForTransportServiceEvents(socket: Socket) {
       );
       socket.emit("started-towing-trip", towingTrip);
     } catch (error: any) {
-      socket.emit("start-towing-trip-error");
+      socket.emit("start-towing-trip-error", error.message);
     }
   });
 
@@ -136,7 +134,7 @@ function listenForTransportServiceEvents(socket: Socket) {
       );
       socket.emit("completed-towing-trip", towingTrip);
     } catch (error: any) {
-      socket.emit("complete-towing-trip-error");
+      socket.emit("complete-towing-trip-error", error.message);
     }
   });
 
@@ -147,7 +145,7 @@ function listenForTransportServiceEvents(socket: Socket) {
       );
       socket.emit("cancelled-towing-trip", towingTrip);
     } catch (error: any) {
-      socket.emit("cancel-towing-trip-error");
+      socket.emit("cancel-towing-trip-error", error.message);
     }
   });
 
