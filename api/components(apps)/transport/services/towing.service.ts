@@ -112,8 +112,28 @@ class TowingService {
     return towOrder;
   }
 
-  async setStatusToCancelled(towOrderId: string) {
+  async setStatusToCancelled(params: {
+    towOrderId: string;
+    customerId?: string;
+    towingCompanyId?: string;
+  }) {
+    const { towOrderId, customerId, towingCompanyId } = params;
     const towOrder = await towingRepo.setStatusToCancelled(towOrderId);
+
+    if (customerId) {
+      await towingNotificationService.notifyOnCancelledTrip({
+        towOrder,
+        whoCancelled: "customer",
+        userId: towOrder.towingCompany,
+      });
+    } else if (towingCompanyId) {
+      await towingNotificationService.notifyOnCancelledTrip({
+        towOrder,
+        whoCancelled: "towing company",
+        userId: towOrder.customer,
+      });
+    }
+
     return towOrder;
   }
 }

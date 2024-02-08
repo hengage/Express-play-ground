@@ -93,7 +93,7 @@ function listenForTransportServiceEvents(socket: Socket) {
       socket.emit("create-transport-order-error", error);
     }
   });
-  
+
   socket.on("towing-company-enroute-location", async (message) => {
     try {
       const towingTrip = await towingService.setStatusToEnroute(
@@ -139,16 +139,18 @@ function listenForTransportServiceEvents(socket: Socket) {
   });
 
   socket.on("cancel-towing-trip", async (message) => {
+    const { towOrderId, customerId, towingCompanyId } = message;
     try {
-      const towingTrip = await towingService.setStatusToCancelled(
-        message.towOrderId
-      );
+      const towingTrip = await towingService.setStatusToCancelled({
+        towOrderId,
+        customerId,
+        towingCompanyId,
+      });
       socket.emit("cancelled-towing-trip", towingTrip);
     } catch (error: any) {
       socket.emit("cancel-towing-trip-error", error.message);
     }
   });
-
 
   /// Transport (excluding towing service)
   socket.on("transport-company-enroute-location", async (message) => {
@@ -206,7 +208,6 @@ function listenForTransportServiceEvents(socket: Socket) {
       socket.emit("cancel-transport-trip-error");
     }
   });
-  
 }
 
 export { listenForTransportServiceEvents };
