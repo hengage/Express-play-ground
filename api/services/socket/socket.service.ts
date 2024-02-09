@@ -34,7 +34,7 @@ class WebSocket {
   }
 
   private listenForEvents(socket: Socket, clientId: string) {
-    listenForTransportServiceEvents(socket);
+    listenForTransportServiceEvents(socket, this.io);
     listenForMakuEvents(socket, this.io);
     listenForShoppingOrderEvents(socket);
     deviceTokenEvents(socket);

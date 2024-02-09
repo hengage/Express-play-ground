@@ -7,32 +7,7 @@ import {
 } from "../../components(apps)/transport";
 import { redisClient } from "../redis.service";
 
-function listenForTransportServiceEvents(socket: Socket) {
-  socket.on("find-tow-companies", async (message: any) => {
-    const { tripOrder } = message;
-    try {
-      const towCompanies = await towingService.findTowingCompanies({
-        tripOrder,
-      });
-      console.log({ towCompanies: JSON.stringify(towCompanies) });
-      socket.emit("found-tow-companies", towCompanies);
-    } catch (error: any) {
-      socket.emit("find-tow-companies-error");
-    }
-  });
-
-  socket.on("find-transport-companies", async (message: any) => {
-    const { tripOrder } = message;
-    try {
-      const transportCompanies = await transportService.findTransportCompanies({
-        tripOrder,
-      });
-      socket.emit("found-transport-companies", transportCompanies);
-    } catch (error: any) {
-      socket.emit("find-transport-companies-error", error.message);
-    }
-  });
-
+function listenForTransportServiceEvents(socket: Socket, io: any) {
   socket.on("update-transport-company-location", async (message: any) => {
     // This function upates all transport company location, INLCUDING
     // towing companies.
@@ -72,11 +47,45 @@ function listenForTransportServiceEvents(socket: Socket) {
     }
   });
 
+  socket.on("find-transport-companies", async (message: any) => {
+    const { tripOrder } = message;
+    try {
+      const transportCompanies = await transportService.findTransportCompanies({
+        tripOrder,
+      });
+      socket.emit("found-transport-companies", transportCompanies);
+      const room = `transportOrder:${tripOrder.customer}`
+      socket.join(room)
+    } catch (error: any) {
+      socket.emit("find-transport-companies-error", error.message);
+    }
+  });
+
+  socket.on("find-tow-companies", async (message: any) => {
+    const { tripOrder } = message;
+
+    try {
+      const towCompanies = await towingService.findTowingCompanies({
+        tripOrder,
+      });
+      const room = `towingOrder:${tripOrder.customer}`
+      socket.join(room)
+
+      console.log({ towCompanies: JSON.stringify(towCompanies) });
+      socket.emit("found-tow-companies", towCompanies);
+    } catch (error: any) {
+      socket.emit("find-tow-companies-error");
+    }
+  });
+
   socket.on("create-towing-order", async (message) => {
     try {
       const { tripOrder } = message;
       const towingOrder = await towingRepo.createOrder(tripOrder);
-      socket.emit("created-towing-order", towingOrder);
+      const room = `towingOrder:${tripOrder.customer}`
+      socket.join(room)
+      io.to(room).emit("created-towing-order", towingOrder);
+
     } catch (error: any) {
       socket.emit("create-towing-order-error", error);
     }
@@ -88,7 +97,9 @@ function listenForTransportServiceEvents(socket: Socket) {
       const transportOrder = await transportRepo.createTransportOrder(
         tripOrder
       );
-      socket.emit("created-transport-order", transportOrder);
+      const room = `transportOrder:${tripOrder.customer}`
+      socket.join(room)
+      io.to(room).emit("created-transport-order", transportOrder);
     } catch (error: any) {
       socket.emit("create-transport-order-error", error);
     }
