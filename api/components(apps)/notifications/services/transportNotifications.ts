@@ -23,7 +23,7 @@ class TransportNotificationService {
       }
 
       
-  async notifyCustomerofOrderStatus(transportOrder: any, title: string, body: string ) {
+  async notifyCustomerOfOrderStatus(transportOrder: any, title: string, body: string ) {
     const customerDeviceToken = await redisClient.get(
       `device-token:${transportOrder.customer}`
     );

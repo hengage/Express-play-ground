@@ -240,6 +240,18 @@ class TransportRepository {
     return transportOrder;
   }
 
+  async arrivedDestination(transportOrderId: string) {
+    const transportOrder = await TransportTripOrder.findById(transportOrderId);
+
+    if (!transportOrder) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Transport Order not found");
+    }
+
+    transportOrder.status = TransportServiceOrderStatus.ARRIVED_DESTINATION;
+    await transportOrder.save();
+    return transportOrder;
+  }
+
   async setStatusToCompleted(orderId: string) {
     const transportOrder = await TransportTripOrder.findById(orderId);
 

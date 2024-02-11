@@ -52,6 +52,7 @@ export enum TransportServiceOrderStatus {
   ENROUTE_PICKUP_LOCATION = "enroute pickup location",
   ARRIVED_PICKUP_LOCATION = "arrived pick up location",
   STARTED = "started",
+  ARRIVED_DESTINATION = "arrived destination",
   COMPLETED = "completed",
   CANCELLED = "cancelled",
 }

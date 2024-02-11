@@ -133,7 +133,7 @@ class TransportService {
 
   async setStatusToEnroute(orderId: string) {
     const transportOrder = await transportRepo.setStatusToEnroute(orderId);
-    await transportNotificationService.notifyCustomerofOrderStatus(
+    await transportNotificationService.notifyCustomerOfOrderStatus(
       orderId,
       "Vehicle Enroute",
       "The vehicle is on the way to the pick-up location"
@@ -143,7 +143,7 @@ class TransportService {
 
   async setStatusToArrived(orderId: string) {
     const transportOrder = await transportRepo.setStatusToArrived(orderId);
-    await transportNotificationService.notifyCustomerofOrderStatus(
+    await transportNotificationService.notifyCustomerOfOrderStatus(
       orderId,
       "Vehicle arrived!",
       "The vehicle has arrived the pick-up location"
@@ -153,7 +153,7 @@ class TransportService {
 
   async setStatusToStarted(orderId: string) {
     const transportOrder = await transportRepo.setStatusToStarted(orderId);
-    await transportNotificationService.notifyCustomerofOrderStatus(
+    await transportNotificationService.notifyCustomerOfOrderStatus(
       orderId,
       "Vehicle arrived!",
       "Your trip has started"
@@ -161,9 +161,19 @@ class TransportService {
     return transportOrder;
   }
 
+  async arrivedDestination(towOrderId: string) {
+    const transportOrder = await transportRepo.arrivedDestination(towOrderId);
+    await transportNotificationService.notifyCustomerOfOrderStatus(
+      transportOrder,
+      "Transport vehicle at drop off location",
+      "The vehicle is at the destination"
+    );
+    return transportOrder;
+  }
+
   async setStatusToCompleted(orderId: string) {
     const transportOrder = await transportRepo.setStatusToCompleted(orderId);
-    await transportNotificationService.notifyCustomerofOrderStatus(
+    await transportNotificationService.notifyCustomerOfOrderStatus(
       orderId,
       "Vehicle arrived!",
       "Your trip is completed"

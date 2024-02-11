@@ -126,6 +126,18 @@ class TowingRepo {
     return towOrder;
   }
 
+  async arrivedDestination(towOrderId: string) {
+    const towOrder = await TowOrder.findById(towOrderId);
+
+    if (!towOrder) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Tow Order not found");
+    }
+
+    towOrder.status = TransportServiceOrderStatus.ARRIVED_DESTINATION;
+    await towOrder.save();
+    return towOrder;
+  }
+
   async setStatusToCompleted(towOrderId: string) {
     const towOrder = await TowOrder.findById(towOrderId);
 

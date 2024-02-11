@@ -54,8 +54,8 @@ function listenForTransportServiceEvents(socket: Socket, io: any) {
         tripOrder,
       });
       socket.emit("found-transport-companies", transportCompanies);
-      const room = `transportOrder:${tripOrder.customer}`
-      socket.join(room)
+      const room = `transportOrder:${tripOrder.customer}`;
+      socket.join(room);
     } catch (error: any) {
       socket.emit("find-transport-companies-error", error.message);
     }
@@ -68,8 +68,8 @@ function listenForTransportServiceEvents(socket: Socket, io: any) {
       const towCompanies = await towingService.findTowingCompanies({
         tripOrder,
       });
-      const room = `towingOrder:${tripOrder.customer}`
-      socket.join(room)
+      const room = `towingOrder:${tripOrder.customer}`;
+      socket.join(room);
 
       console.log({ towCompanies: JSON.stringify(towCompanies) });
       socket.emit("found-tow-companies", towCompanies);
@@ -82,10 +82,9 @@ function listenForTransportServiceEvents(socket: Socket, io: any) {
     try {
       const { tripOrder } = message;
       const towingOrder = await towingRepo.createOrder(tripOrder);
-      const room = `towingOrder:${tripOrder.customer}`
-      socket.join(room)
+      const room = `towingOrder:${tripOrder.customer}`;
+      socket.join(room);
       io.to(room).emit("created-towing-order", towingOrder);
-
     } catch (error: any) {
       socket.emit("create-towing-order-error", error);
     }
@@ -97,8 +96,8 @@ function listenForTransportServiceEvents(socket: Socket, io: any) {
       const transportOrder = await transportRepo.createTransportOrder(
         tripOrder
       );
-      const room = `transportOrder:${tripOrder.customer}`
-      socket.join(room)
+      const room = `transportOrder:${tripOrder.customer}`;
+      socket.join(room);
       io.to(room).emit("created-transport-order", transportOrder);
     } catch (error: any) {
       socket.emit("create-transport-order-error", error);
@@ -135,6 +134,17 @@ function listenForTransportServiceEvents(socket: Socket, io: any) {
       socket.emit("started-towing-trip", towingTrip);
     } catch (error: any) {
       socket.emit("start-towing-trip-error", error.message);
+    }
+  });
+
+  socket.on("towing-company-arrived-destination", async (message) => {
+    try {
+      const towingTrip = await towingService.arrivedDestination(
+        message.towOrderId
+      );
+      socket.emit("towing-company-arrived-dropoff-destination", towingTrip);
+    } catch (error: any) {
+      socket.emit("towing-company-arrived-destinationt-error", error.message);
     }
   });
 
@@ -198,6 +208,18 @@ function listenForTransportServiceEvents(socket: Socket, io: any) {
     }
   });
 
+  socket.on("transport-company-arrived-destination", async (message) => {
+    console.log({message});
+    try {
+      const transportTrip = await transportService.arrivedDestination(
+        message.transportOrderId
+      );
+      socket.emit("transport-company-arrived-dropoff-destination", transportTrip);
+    } catch (error: any) {
+      socket.emit("towing-company-arrived-destination-error", error.message);
+    }
+  });
+
   socket.on("complete-transport-trip", async (message) => {
     try {
       const transportTrip = await transportService.setStatusToCompleted(
@@ -210,13 +232,13 @@ function listenForTransportServiceEvents(socket: Socket, io: any) {
   });
 
   socket.on("cancel-transport-trip", async (message) => {
-    const {transportOrderId, customerId, transportCompanyId} = message
+    const { transportOrderId, customerId, transportCompanyId } = message;
     try {
       const transportTrip = await transportService.setStatusToCancelled({
         transportOrderId,
         customerId,
         transportCompanyId,
-    });
+      });
       socket.emit("cancelled-transport-trip", transportTrip);
     } catch (error: any) {
       socket.emit("cancel-transport-trip-error");

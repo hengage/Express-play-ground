@@ -102,6 +102,17 @@ class TowingService {
     return towOrder;
   }
 
+  async arrivedDestination(towOrderId: string) {
+    const towOrder = await towingRepo.arrivedDestination(towOrderId);
+    await towingNotificationService.notifyCustomerofOrderStatus(
+      towOrder,
+      "Towing arrived",
+      "Your towed vehicle is at the drop-off location"
+    );
+    return towOrder;
+  }
+
+  
   async setStatusToCompleted(towOrderId: string) {
     const towOrder = await towingRepo.setStatusToCompleted(towOrderId);
     await towingNotificationService.notifyCustomerofOrderStatus(
