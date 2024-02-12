@@ -59,8 +59,8 @@ class TowingRepo {
       .select("pickUpAddress destinationAddress fee status createdAt")
       .populate({ path: "customer", select: "firstName lastName phoneNumber" })
       .populate({
-        path: "transportCompany",
-        select: "name phoneNumber address",
+        path: "towingCompany",
+        select: "name phoneNumber address vehicleRegNumber",
       })
       .populate({ path: "vehicleType", select: "vehicleType" })
       .lean()
