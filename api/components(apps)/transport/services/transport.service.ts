@@ -133,8 +133,8 @@ class TransportService {
       await transportRepo.setStatusToEnrouteDropOffLocation(orderId);
     await transportNotificationService.notifyCustomerOfOrderStatus(
       orderId,
-      "Vehicle Enroute",
-      "The vehicle is on the way to the pick-up location"
+      "Vehicle enroute destination",
+      "The vehicle is on the way to the destination location"
     );
     return transportOrder;
   }

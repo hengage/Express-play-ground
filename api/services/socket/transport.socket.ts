@@ -181,7 +181,7 @@ function listenForTransportServiceEvents(socket: Socket, io: any) {
         await transportService.setStatusToEnrouteDropOffLocatioon(
           message.transportOrderId
         );
-      socket.emit("transport-company-enroute", transportTrip);
+      socket.emit("transport-company-enroute-dropff", transportTrip);
     } catch (error: any) {
       socket.emit("transport-company-enroute-dropoff-location-error");
     }

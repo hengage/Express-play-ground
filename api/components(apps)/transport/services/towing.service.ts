@@ -78,8 +78,8 @@ class TowingService {
     );
     await towingNotificationService.notifyCustomerofOrderStatus(
       towOrder,
-      "Tow truck Enroute",
-      "The tow truck is on the way to the pick-up location"
+      "Tow truck Enroute Drop-off location",
+      "The tow truck is on the way to the drop-off location"
     );
     return towOrder;
   }
