@@ -91,13 +91,13 @@ class TowingRepo {
     return towingCompanies;
   }
 
-  async setStatusToEnroute(towOrderId: string) {
+  async setStatusToEnrouteDropOffLocation(towOrderId: string) {
     const towOrder = await TowOrder.findById(towOrderId);
     if (!towOrder) {
       throw new HandleException(STATUS_CODES.NOT_FOUND, "Tow Order not found");
     }
 
-    towOrder.status = TransportServiceOrderStatus.ENROUTE_PICKUP_LOCATION;
+    towOrder.status = TransportServiceOrderStatus.ENROUTE_DROP_OFF_LOCATION;
     await towOrder.save();
     return towOrder;
   }

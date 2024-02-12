@@ -196,7 +196,7 @@ class TransportRepository {
     return airports;
   }
 
-  async setStatusToEnroute(orderId: string) {
+  async setStatusToEnrouteDropOffLocation(orderId: string) {
     const transportOrder = await TransportTripOrder.findById(orderId);
     if (!transportOrder) {
       throw new HandleException(
@@ -205,7 +205,7 @@ class TransportRepository {
       );
     }
 
-    transportOrder.status = TransportServiceOrderStatus.ENROUTE_PICKUP_LOCATION;
+    transportOrder.status = TransportServiceOrderStatus.ENROUTE_DROP_OFF_LOCATION;
     await transportOrder.save();
     return transportOrder;
   }

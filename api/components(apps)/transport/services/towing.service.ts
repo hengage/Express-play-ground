@@ -72,8 +72,10 @@ class TowingService {
     return vehicleTypes;
   }
 
-  async setStatusToEnroute(towOrderId: string) {
-    const towOrder = await towingRepo.setStatusToEnroute(towOrderId);
+  async setStatusToEnrouteDropOffLocation(towOrderId: string) {
+    const towOrder = await towingRepo.setStatusToEnrouteDropOffLocation(
+      towOrderId
+    );
     await towingNotificationService.notifyCustomerofOrderStatus(
       towOrder,
       "Tow truck Enroute",
@@ -112,7 +114,6 @@ class TowingService {
     return towOrder;
   }
 
-  
   async setStatusToCompleted(towOrderId: string) {
     const towOrder = await towingRepo.setStatusToCompleted(towOrderId);
     await towingNotificationService.notifyCustomerofOrderStatus(

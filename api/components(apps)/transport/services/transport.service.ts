@@ -47,8 +47,6 @@ class TransportService {
     };
   }
 
-
-
   async addDriver(payload: any, transportCompany: string) {
     const licenseNumberExists = await TransportDriver.findOne({
       transportCompany,
@@ -112,7 +110,6 @@ class TransportService {
     return serviceTypes;
   }
 
-
   async findTransportCompanies(payload: { tripOrder: any }) {
     const { pickUpCoordinates, serviceType } = payload.tripOrder;
 
@@ -131,8 +128,9 @@ class TransportService {
     return transportCompanies;
   }
 
-  async setStatusToEnroute(orderId: string) {
-    const transportOrder = await transportRepo.setStatusToEnroute(orderId);
+  async setStatusToEnrouteDropOffLocatioon(orderId: string) {
+    const transportOrder =
+      await transportRepo.setStatusToEnrouteDropOffLocation(orderId);
     await transportNotificationService.notifyCustomerOfOrderStatus(
       orderId,
       "Vehicle Enroute",
@@ -181,9 +179,15 @@ class TransportService {
     return transportOrder;
   }
 
-  async setStatusToCancelled(params: {transportOrderId: string, customerId: string, transportCompanyId: string}) {
-    const {transportOrderId, customerId, transportCompanyId} = params
-    const transportOrder = await transportRepo.setStatusToCancelled(transportOrderId);
+  async setStatusToCancelled(params: {
+    transportOrderId: string;
+    customerId: string;
+    transportCompanyId: string;
+  }) {
+    const { transportOrderId, customerId, transportCompanyId } = params;
+    const transportOrder = await transportRepo.setStatusToCancelled(
+      transportOrderId
+    );
 
     if (customerId) {
       await transportNotificationService.notifyOnCancelledTrip({

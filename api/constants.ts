@@ -48,7 +48,7 @@ export enum MakuCabStatus {
 }
 
 export enum TransportServiceOrderStatus {
-  PENDING = "pending",
+  ENROUTE_DROP_OFF_LOCATION = "enroute drop-off location",
   ENROUTE_PICKUP_LOCATION = "enroute pickup location",
   ARRIVED_PICKUP_LOCATION = "arrived pick up location",
   STARTED = "started",
