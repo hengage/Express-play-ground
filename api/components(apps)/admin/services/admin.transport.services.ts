@@ -56,7 +56,8 @@ class AdminTransportService {
     const options = {
       page,
       limit: 20,
-      select: "name email address",
+      select: "name email address vehicleRegNumber",
+      populate: [{ path: "serviceType", select: { name: 1, _id: 0 } }],
       lean: true,
       leanWithId: false,
     };
@@ -67,7 +68,8 @@ class AdminTransportService {
 
   async getCompanyDetails(companyId: string) {
     const transportCompany = await TransportCompany.findById(companyId)
-      .select("-__v -location")
+      // .select("-__v -location")
+      .select("name phoneNumber address vehicleRegNumber vehiclePhotos email")
       .populate({ path: "vehicleType", select: "vehicleType" })
       .populate({ path: "serviceType", select: "name" })
       .lean()
