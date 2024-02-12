@@ -156,7 +156,6 @@ class TransportRepository {
     }
     transportCompany.location.coordinates = payload.coordinates;
     await transportCompany.save();
-    console.log("updated location for transportCompany", transportCompany);
   }
 
   async startWorking(transportCompanyId: string) {
