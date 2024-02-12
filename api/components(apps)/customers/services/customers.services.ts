@@ -245,8 +245,8 @@ class CustomerService {
     const options = {
       page,
       limit: 20,
-      select: "createdAt status fee",
-      populate: [{ path: "towingCompany", select: "name" }],
+      select: "createdAt status destinationAddress",
+      // populate: [{ path: "towingCompany", select: "name" }],
       lean: true,
       leanWithId: false,
     };
