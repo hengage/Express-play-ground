@@ -223,9 +223,8 @@ class CustomerService {
     const options = {
       page,
       limit: 20,
-      select: "createdAt status fee",
+      select: "destinationAddress createdAt status",
       populate: [
-        { path: "transportCompany", select: "name" },
         { path: "serviceType", select: "name" },
       ],
       lean: true,
