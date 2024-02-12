@@ -104,16 +104,16 @@ function listenForTransportServiceEvents(socket: Socket, io: any) {
     }
   });
 
-  socket.on("towing-company-enroute-location", async (message) => {
-    try {
-      const towingTrip = await towingService.setStatusToEnroute(
-        message.towOrderId
-      );
-      socket.emit("towing-company-enroute", towingTrip);
-    } catch (error: any) {
-      socket.emit("towing-company-enroute-location-error", error.message);
-    }
-  });
+  // socket.on("towing-company-enroute-location", async (message) => {
+  //   try {
+  //     const towingTrip = await towingService.setStatusToEnroute(
+  //       message.towOrderId
+  //     );
+  //     socket.emit("towing-company-enroute", towingTrip);
+  //   } catch (error: any) {
+  //     socket.emit("towing-company-enroute-location-error", error.message);
+  //   }
+  // });
 
   socket.on("towing-company-arrived-location", async (message) => {
     try {
@@ -173,18 +173,18 @@ function listenForTransportServiceEvents(socket: Socket, io: any) {
     }
   });
 
-  /// Transport (excluding towing service)
-  socket.on("transport-company-enroute-location", async (message) => {
-    console.log({ message });
-    try {
-      const transportTrip = await transportService.setStatusToEnroute(
-        message.transportOrderId
-      );
-      socket.emit("transport-company-enroute", transportTrip);
-    } catch (error: any) {
-      socket.emit("transport-company-enroute-location-error");
-    }
-  });
+  //  Transport (excluding towing service)
+  // socket.on("transport-company-enroute-location", async (message) => {
+  //   console.log({ message });
+  //   try {
+  //     const transportTrip = await transportService.setStatusToEnroute(
+  //       message.transportOrderId
+  //     );
+  //     socket.emit("transport-company-enroute", transportTrip);
+  //   } catch (error: any) {
+  //     socket.emit("transport-company-enroute-location-error");
+  //   }
+  // });
 
   socket.on("transport-company-arrived-location", async (message) => {
     try {
@@ -209,12 +209,15 @@ function listenForTransportServiceEvents(socket: Socket, io: any) {
   });
 
   socket.on("transport-company-arrived-destination", async (message) => {
-    console.log({message});
+    console.log({ message });
     try {
       const transportTrip = await transportService.arrivedDestination(
         message.transportOrderId
       );
-      socket.emit("transport-company-arrived-dropoff-destination", transportTrip);
+      socket.emit(
+        "transport-company-arrived-dropoff-destination",
+        transportTrip
+      );
     } catch (error: any) {
       socket.emit("towing-company-arrived-destination-error", error.message);
     }

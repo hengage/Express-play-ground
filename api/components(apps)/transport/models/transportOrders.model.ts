@@ -45,7 +45,7 @@ const towOrderSchema = new Schema<ITowingOrder>(
     fee: { type: String },
     status: {
       type: String,
-      default: TransportServiceOrderStatus.PENDING,
+      default: TransportServiceOrderStatus.ENROUTE_PICKUP_LOCATION,
     },
   },
   {
@@ -93,7 +93,7 @@ const transportTripOrderSchema = new Schema<ITransportTripOrder>(
     fee: { type: String },
     status: {
       type: String,
-      default: TransportServiceOrderStatus.PENDING,
+      default: TransportServiceOrderStatus.ENROUTE_PICKUP_LOCATION,
     },
   },
   {
