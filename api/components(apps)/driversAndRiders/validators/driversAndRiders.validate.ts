@@ -6,7 +6,7 @@ class ValidateDriversAndRiders {
   signup = async (payload: any) => {
     const signUpSchema = Joi.object({
       firstName: Joi.string().required().label("First name"),
-      middleName: Joi.string().required().label("Middle name"),
+      middleName: Joi.string().label("Middle name"),
       lastName: Joi.string().required().label("Last name"),
       email: Joi.string().required().label("Email"),
       phoneNumber: Joi.string().required().label("Phone number"),
