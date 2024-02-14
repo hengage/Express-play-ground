@@ -104,6 +104,7 @@ class TransportRepository {
         },
       },
       serviceType: payload.serviceType,
+      available: true
     })
       .select({
         name: 1,
