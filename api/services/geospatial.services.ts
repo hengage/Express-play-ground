@@ -1,22 +1,11 @@
 import { DriverRider } from "../components(apps)/driversAndRiders";
 
-const geohash = require("ngeohash");
-
-function generateGeohash(latitude: number, longitude: number, precision = 9) {
-  return geohash.encode(latitude, longitude, precision);
-}
-
 async function findClosestDriverOrRider(
   coordinates: [number, number],
   accountType: string,
   distanceInKilometers = 20,
   vehicleType?: string
 ) {
-  //   const targetGeohash = generateGeohash(...coordinates, precision);
-
-  //   const centerPoint = geohash.decode(targetGeohash);
-  //   const nearbyGeohashes = geohash.neighbors(targetGeohash);
-  // console.log({centerPoint, targetGeohash})
   const filter: {
     accountType: string;
     available: boolean;
@@ -48,7 +37,7 @@ async function findClosestDriverOrRider(
         lastName: 1,
         vehicleType: 1,
         phoneNumber: 1,
-        distance: 1
+        distance: 1,
       },
     },
     {

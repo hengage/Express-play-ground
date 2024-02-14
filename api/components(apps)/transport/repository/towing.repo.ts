@@ -56,7 +56,7 @@ class TowingRepo {
 
   async getOrderDetails(orderId: string) {
     const towOrder = await TowOrder.findById(orderId)
-      .select("pickUpAddress destinationAddress fee status createdAt")
+      .select("pickUpAddress destinationAddress destinationCoordinates.coordinates fee status createdAt")
       .populate({ path: "customer", select: "firstName lastName phoneNumber" })
       .populate({
         path: "towingCompany",
