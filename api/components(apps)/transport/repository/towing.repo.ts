@@ -5,7 +5,7 @@ import { TowOrder } from "../models/transportOrders.model";
 import { ITowingOrder } from "../transport.interface";
 
 class TowingRepo {
-  async createOrder(payload: any): Promise<Partial<ITowingOrder>> {
+  async createOrder(payload: any): Promise<Partial<ITowingOrder["_id"]>> {
     const towOrder = await TowOrder.create({
       customer: payload.customer,
       towingCompany: payload.towingCompany,
@@ -21,18 +21,16 @@ class TowingRepo {
       },
     });
 
-    return {
-      _id: towOrder.id,
-      customer: towOrder.customer,
-      towingCompany: towOrder.towingCompany,
-      vehicleType: towOrder.vehicleType,
-      vehicleRegNumber: towOrder.vehicleRegNumber,
-      pickUpAddress: towOrder.pickUpAddress,
-      pickUpCoordinates: towOrder.pickUpCoordinates,
-      destinationAddress: towOrder.destinationAddress,
-      destinationCoordinates: towOrder.destinationCoordinates,
-      status: towOrder.status,
-    };
+    return towOrder.id
+      // customer: towOrder.customer,
+      // towingCompany: towOrder.towingCompany,
+      // vehicleType: towOrder.vehicleType,
+      // vehicleRegNumber: towOrder.vehicleRegNumber,
+      // pickUpAddress: towOrder.pickUpAddress,
+      // pickUpCoordinates: towOrder.pickUpCoordinates,
+      // destinationAddress: towOrder.destinationAddress,
+      // destinationCoordinates: towOrder.destinationCoordinates,
+      // status: towOrder.status,
   }
 
   async getOrdersHistoryForCompany(companyId: string, page: number) {

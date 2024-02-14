@@ -81,7 +81,7 @@ function listenForTransportServiceEvents(socket: Socket, io: any) {
   socket.on("create-towing-order", async (message) => {
     try {
       const { tripOrder } = message;
-      const towingOrder = await towingRepo.createOrder(tripOrder);
+      const towingOrder = await towingService.createOrder(tripOrder);
       const room = `towingOrder:${tripOrder.customer}`;
       socket.join(room);
       io.to(room).emit("created-towing-order", towingOrder);
@@ -93,7 +93,7 @@ function listenForTransportServiceEvents(socket: Socket, io: any) {
   socket.on("create-transport-order", async (message) => {
     try {
       const { tripOrder } = message;
-      const transportOrder = await transportRepo.createTransportOrder(
+      const transportOrder = await transportService.createOrder(
         tripOrder
       );
       const room = `transportOrder:${tripOrder.customer}`;

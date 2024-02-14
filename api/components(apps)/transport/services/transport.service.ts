@@ -128,6 +128,14 @@ class TransportService {
     return transportCompanies;
   }
 
+  async createOrder(payload: any) {
+    const transportOrderId = await transportRepo.createTransportOrder(payload);
+    const transportOrderDetails = await transportRepo.getOrderDetails(
+      transportOrderId
+    );
+    return transportOrderDetails;
+  }
+
   async setStatusToEnrouteDropOffLocatioon(orderId: string) {
     const transportOrder =
       await transportRepo.setStatusToEnrouteDropOffLocation(orderId);

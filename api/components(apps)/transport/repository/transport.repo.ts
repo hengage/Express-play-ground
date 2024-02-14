@@ -121,7 +121,7 @@ class TransportRepository {
 
   async createTransportOrder(
     payload: any
-  ): Promise<Partial<ITransportTripOrder>> {
+  ): Promise<ITransportTripOrder["_id"]> {
     const tripOrder = await TransportTripOrder.create({
       customer: payload.customer,
       transportCompany: payload.transportCompany,
@@ -138,7 +138,25 @@ class TransportRepository {
       },
     });
 
-    return tripOrder;
+    return tripOrder._id;
+  }
+
+  async getOrderDetails(orderId: string) {
+    const towOrder = await TransportTripOrder.findById(orderId)
+      .select("pickUpAddress destinationAddress destinationCoordinates.coordinates fee status createdAt")
+      .populate({ path: "customer", select: "firstName lastName phoneNumber" })
+      .populate({
+        path: "transportCompany",
+        select: "name phoneNumber address vehicleRegNumber",
+      })
+      .populate({ path: "vehicleType", select: "vehicleType" })
+      .lean()
+      .exec();
+
+    if (!towOrder) {
+      throw new HandleException(STATUS_CODES.NOT_FOUND, "Tow order not found");
+    }
+    return towOrder;
   }
 
   async updateLocation(payload: {

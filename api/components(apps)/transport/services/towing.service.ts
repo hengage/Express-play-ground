@@ -61,6 +61,12 @@ class TowingService {
     return towingCompanies;
   }
 
+  async createOrder(tripOrder: any) {
+    const towingOrder = await towingRepo.createOrder(tripOrder);
+    const orderDetails = await towingRepo.getOrderDetails(towingOrder)
+    return orderDetails
+  }
+
   async getTowingServiceVehicleTypes() {
     const vehicleTypes = TransportVehicleType.find({
       serviceType: "c6a56821",
